@@ -12,9 +12,11 @@ class ElasticAppSearch {
 
   static const String _errorMessage = "Unable to get response from API server";
 
+  String apiUrl(String engine) => '$endPoint/api/as/v1/engines/$engine/search';
+
   Future<Response> post(Query query) async {
     final response = await dio.post<Map>(
-      '$endPoint/api/as/v1/engines/${query.engine!.name}/search',
+      apiUrl(query.engine!.name),
       options: Options(
         headers: {
           "Content-Type": "application/json",
