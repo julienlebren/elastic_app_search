@@ -5,3 +5,6 @@
 # Dart/Flutter package for using Elastic App Search
 
 This package is a ready-to-use API for Elastic App Search.
+
+20th march, 2022:
+All the doc and an example is currently being typed: it will be published in the next days.

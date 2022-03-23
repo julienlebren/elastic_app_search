@@ -110,12 +110,15 @@ class SearchFiltersConverter
   @override
   Map? toJson(List<SearchFilter>? searchFilters) {
     if (searchFilters == null) return null;
-
-    var value = {};
-    for (final searchFilter in searchFilters) {
-      value[searchFilter.name] = searchFilter.value;
+    if (searchFilters.length == 1) {
+      return {"${searchFilters.first.name}": searchFilters.first.value};
     }
-    return value;
+
+    var values = [];
+    for (final searchFilter in searchFilters) {
+      values.add({"${searchFilter.name}": searchFilter.value});
+    }
+    return {"all": values};
   }
 }
 
