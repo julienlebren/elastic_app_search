@@ -4,7 +4,7 @@
 
 # Dart/Flutter package for using Elastic App Search
 
-![Elastic](https://raw.githubusercontent.com/julienlebren/elastic_app_search/main/assets/logo.png)
+![GitHub Light](https://raw.githubusercontent.com/julienlebren/elastic_app_search/main/assets/logo.png)
 
 This package is a ready-to-use API for Elastic App Search.
 
