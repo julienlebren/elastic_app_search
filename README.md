@@ -34,17 +34,17 @@ ElasticQuery response = await service
 for (ElasticResult result in response.results) {
   final data = result.data;
   if (data != null) {
-    print("${data!["title"]}: ${data!["description"]}");
+    print("${data!["title"]}: ${data["description"]}");
   }
 }
 ```
 
-This example will query the parks containing "parks" in any field of the documents.
-The results will be filtering the parks based in California, with the flag world_heritage_site set to true.
-Only the title and a snippet of 140 chars of the description of the park will be returned by the query.
+This example will query the parks containing *parks"* in any field of the documents.
+The results will be filtering the parks based in *California*, with the flag *world_heritage_site* set to *true*.
+Only the **title** and a snippet of 140 chars of the **description** of the park will be returned by the query.
 We request the first page, limited to 50 documents.
 
-### Elastic Service
+## Elastic Service
 
 Before any operation, you need to create an instance of `ElasticAppSearch`.
 
@@ -55,32 +55,31 @@ final service = ElasticAppSearch(
 );
 ```
 
-Param | Description
------------- | -------------
-String endPoint | The URL of your end point
-String searchKey = false | The search key of your deployment
+Param | Type | Description
+----- | ---- | -------------
+endPoint | String | The URL of your end point
+searchKey | String | The search key of your deployment
 
 Both values are available in your deployment, when going to `App Search` then `Credentials`. 
 Warning: use the search-key, not the private-key!
 
-### Elastic Engine
+## Elastic Engine
 
 All the queries must be sent to an engine. 
 To make instantiating an engine easy, we created this syntax:
 
 ```dart
 final engine = service.engine("engine_name");
-);
 ```
 
-Param | Description
+Type | Description
 ------------ | -------------
 String | The name of your engine
 
-### Elastic Query
+## Elastic Query
 
 The only required parameter to instanciate a query is a string which is the word you are looking for through your documents.
-See [https://www.elastic.co/guide/en/app-search/current/search.html]
+See https://www.elastic.co/guide/en/app-search/current/search.html
 
 ```dart
 final query = engine.query("query");
@@ -90,13 +89,13 @@ Type | Description
 ------------ | -------------
 String | The keyword
 
-## Optional parameters
+### Optional parameters
 
-# Search filters
+#### Search filters
 
 This feature intends to filter documents that contain a specific field value.
 It's only available on text, number, and date fields.
-See [https://www.elastic.co/guide/en/app-search/current/filters.html]
+See https://www.elastic.co/guide/en/app-search/current/filters.html
 
 **Important**: As for now, this object only handles "all" filters, which means that all the filters added to the query will be handled as a "AND" query.
 The other filters available, "or" and "not", will be added in a future release of the package.
