@@ -92,7 +92,7 @@ class ElasticQuery with _$ElasticQuery {
   /// The value of the precision parameter must be an integer between 1 and 11, inclusive.
   /// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
   /// Lower values favor recall, while higher values favor precision.
-  @Assert('precision >= 1 && precision <= 11',
+  @Assert('precision < 1 || precision > 11',
       'The value of the precision parameter must be an integer between 1 and 11, inclusive.')
   ElasticQuery precision(int precision) => copyWith(queryPrecision: precision);
 
@@ -100,13 +100,17 @@ class ElasticQuery with _$ElasticQuery {
   ///
   /// It will restrict a query to search only specific fields.
   ///
+  /// Weight is given between 10 (most relevant) to 1 (least relevant).
+  ///
   /// Restricting fields will result in faster queries, especially for schemas with many text fields
   /// Only available within text fields.
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/search-fields-weights.html]
+  @Assert('weight != null && (weight < 1 || weight > 10)',
+      'The value of the weight parameter must be an integer between 1 and 10.')
   ElasticQuery searchField(
     String field, {
-    double? weight,
+    int? weight,
   }) {
     return copyWith(
       searchFields: [
@@ -128,7 +132,7 @@ class ElasticQuery with _$ElasticQuery {
   /// the results and highlight the query matches.
   /// The example of the package presents a use case of this feature.
   ///
-  /// More information on [https://www.elastic.co/guide/en/app-search/current/result-fields-highlights.html]
+  /// See [https://www.elastic.co/guide/en/app-search/current/result-fields-highlights.html]
   ElasticQuery resultField(
     String field, {
     int? rawSize,
@@ -255,7 +259,7 @@ class ElasticSearchField with _$ElasticSearchField {
 
     // Optionnal. Apply Weights to each search field.
     // Engine level Weight settings will be applied is none are provided.
-    double? weight,
+    int? weight,
   }) = _ElasticSearchField;
 
   factory ElasticSearchField.fromJson(Map<String, dynamic> json) =>

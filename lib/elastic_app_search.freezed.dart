@@ -66,18 +66,18 @@ mixin _$ElasticQuery {
   String get query =>
       throw _privateConstructorUsedError; // Use the precision parameter of the search API to tune precision
 // and recall for a query. Learn more in Precision tuning (beta).
-// More information available on [https://www.elastic.co/guide/en/app-search/current/search-api-precision.html]
+// See [https://www.elastic.co/guide/en/app-search/current/search-api-precision.html]
 //
 // The value of the precision parameter must be an integer between 1 and 11, inclusive.
-//The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
-//Lower values favor recall, while higher values favor precision.
+// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
+// Lower values favor recall, while higher values favor precision.
   @JsonKey(name: "precision")
   int? get queryPrecision =>
       throw _privateConstructorUsedError; // Object to delimit the pagination parameters.
   @JsonKey(name: "page")
   ElasticSearchPage? get searchPage =>
       throw _privateConstructorUsedError; // Object to filter documents that contain a specific field value.
-// More information available on [https://www.elastic.co/guide/en/app-search/current/filters.html]
+// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
   @_ElasticSearchFiltersConverter()
   List<ElasticSearchFilter>? get filters =>
       throw _privateConstructorUsedError; // Object which restricts a query to search only specific fields.
@@ -298,18 +298,18 @@ class _$_ElasticQuery implements _ElasticQuery {
   final String query;
   @override // Use the precision parameter of the search API to tune precision
 // and recall for a query. Learn more in Precision tuning (beta).
-// More information available on [https://www.elastic.co/guide/en/app-search/current/search-api-precision.html]
+// See [https://www.elastic.co/guide/en/app-search/current/search-api-precision.html]
 //
 // The value of the precision parameter must be an integer between 1 and 11, inclusive.
-//The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
-//Lower values favor recall, while higher values favor precision.
+// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
+// Lower values favor recall, while higher values favor precision.
   @JsonKey(name: "precision")
   final int? queryPrecision;
   @override // Object to delimit the pagination parameters.
   @JsonKey(name: "page")
   final ElasticSearchPage? searchPage;
   @override // Object to filter documents that contain a specific field value.
-// More information available on [https://www.elastic.co/guide/en/app-search/current/filters.html]
+// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
   @_ElasticSearchFiltersConverter()
   final List<ElasticSearchFilter>? filters;
   @override // Object which restricts a query to search only specific fields.
@@ -394,18 +394,18 @@ abstract class _ElasticQuery implements ElasticQuery {
   String get query;
   @override // Use the precision parameter of the search API to tune precision
 // and recall for a query. Learn more in Precision tuning (beta).
-// More information available on [https://www.elastic.co/guide/en/app-search/current/search-api-precision.html]
+// See [https://www.elastic.co/guide/en/app-search/current/search-api-precision.html]
 //
 // The value of the precision parameter must be an integer between 1 and 11, inclusive.
-//The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
-//Lower values favor recall, while higher values favor precision.
+// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
+// Lower values favor recall, while higher values favor precision.
   @JsonKey(name: "precision")
   int? get queryPrecision;
   @override // Object to delimit the pagination parameters.
   @JsonKey(name: "page")
   ElasticSearchPage? get searchPage;
   @override // Object to filter documents that contain a specific field value.
-// More information available on [https://www.elastic.co/guide/en/app-search/current/filters.html]
+// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
   @_ElasticSearchFiltersConverter()
   List<ElasticSearchFilter>? get filters;
   @override // Object which restricts a query to search only specific fields.
@@ -798,7 +798,7 @@ ElasticSearchField _$ElasticSearchFieldFromJson(Map<String, dynamic> json) {
 class _$ElasticSearchFieldTearOff {
   const _$ElasticSearchFieldTearOff();
 
-  _ElasticSearchField call({required String name, double? weight}) {
+  _ElasticSearchField call({required String name, int? weight}) {
     return _ElasticSearchField(
       name: name,
       weight: weight,
@@ -819,7 +819,7 @@ mixin _$ElasticSearchField {
   String get name =>
       throw _privateConstructorUsedError; // Optionnal. Apply Weights to each search field.
 // Engine level Weight settings will be applied is none are provided.
-  double? get weight => throw _privateConstructorUsedError;
+  int? get weight => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -832,7 +832,7 @@ abstract class $ElasticSearchFieldCopyWith<$Res> {
   factory $ElasticSearchFieldCopyWith(
           ElasticSearchField value, $Res Function(ElasticSearchField) then) =
       _$ElasticSearchFieldCopyWithImpl<$Res>;
-  $Res call({String name, double? weight});
+  $Res call({String name, int? weight});
 }
 
 /// @nodoc
@@ -857,7 +857,7 @@ class _$ElasticSearchFieldCopyWithImpl<$Res>
       weight: weight == freezed
           ? _value.weight
           : weight // ignore: cast_nullable_to_non_nullable
-              as double?,
+              as int?,
     ));
   }
 }
@@ -869,7 +869,7 @@ abstract class _$ElasticSearchFieldCopyWith<$Res>
           _ElasticSearchField value, $Res Function(_ElasticSearchField) then) =
       __$ElasticSearchFieldCopyWithImpl<$Res>;
   @override
-  $Res call({String name, double? weight});
+  $Res call({String name, int? weight});
 }
 
 /// @nodoc
@@ -896,7 +896,7 @@ class __$ElasticSearchFieldCopyWithImpl<$Res>
       weight: weight == freezed
           ? _value.weight
           : weight // ignore: cast_nullable_to_non_nullable
-              as double?,
+              as int?,
     ));
   }
 }
@@ -914,7 +914,7 @@ class _$_ElasticSearchField implements _ElasticSearchField {
   final String name;
   @override // Optionnal. Apply Weights to each search field.
 // Engine level Weight settings will be applied is none are provided.
-  final double? weight;
+  final int? weight;
 
   @override
   String toString() {
@@ -948,7 +948,7 @@ class _$_ElasticSearchField implements _ElasticSearchField {
 }
 
 abstract class _ElasticSearchField implements ElasticSearchField {
-  const factory _ElasticSearchField({required String name, double? weight}) =
+  const factory _ElasticSearchField({required String name, int? weight}) =
       _$_ElasticSearchField;
 
   factory _ElasticSearchField.fromJson(Map<String, dynamic> json) =
@@ -958,7 +958,7 @@ abstract class _ElasticSearchField implements ElasticSearchField {
   String get name;
   @override // Optionnal. Apply Weights to each search field.
 // Engine level Weight settings will be applied is none are provided.
-  double? get weight;
+  int? get weight;
   @override
   @JsonKey(ignore: true)
   _$ElasticSearchFieldCopyWith<_ElasticSearchField> get copyWith =>
@@ -1957,8 +1957,10 @@ const $ElasticResultMeta = _$ElasticResultMetaTearOff();
 
 /// @nodoc
 mixin _$ElasticResultMeta {
-  String get id => throw _privateConstructorUsedError;
-  String get engine => throw _privateConstructorUsedError;
+// The document ID
+  String get id => throw _privateConstructorUsedError; // The engine name
+  String get engine =>
+      throw _privateConstructorUsedError; // The relevance of the result
   double get score => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -2060,11 +2062,11 @@ class _$_ElasticResultMeta implements _ElasticResultMeta {
   factory _$_ElasticResultMeta.fromJson(Map<String, dynamic> json) =>
       _$$_ElasticResultMetaFromJson(json);
 
-  @override
+  @override // The document ID
   final String id;
-  @override
+  @override // The engine name
   final String engine;
-  @override
+  @override // The relevance of the result
   final double score;
 
   @override
@@ -2109,11 +2111,11 @@ abstract class _ElasticResultMeta implements ElasticResultMeta {
   factory _ElasticResultMeta.fromJson(Map<String, dynamic> json) =
       _$_ElasticResultMeta.fromJson;
 
-  @override
+  @override // The document ID
   String get id;
-  @override
+  @override // The engine name
   String get engine;
-  @override
+  @override // The relevance of the result
   double get score;
   @override
   @JsonKey(ignore: true)
@@ -2150,9 +2152,16 @@ const $ElasticResult = _$ElasticResultTearOff();
 
 /// @nodoc
 mixin _$ElasticResult {
-  Map<String, dynamic>? get data => throw _privateConstructorUsedError;
+// A map of the raw data of the document, containing the fields
+// requested in the [ElasticResultField] passed to the query
+//
+// You must handle the result of this [Map] on your side, please check
+// the example of the package to learn more about this.
+  Map<String, dynamic>? get data =>
+      throw _privateConstructorUsedError; // A map of the snippet, please check the documentation of
+// [ElasticResultSnippet] to learn more.
   Map<String, ElasticResultSnippet>? get snippets =>
-      throw _privateConstructorUsedError;
+      throw _privateConstructorUsedError; // An object containing information about a given result
   @JsonKey(name: "_meta")
   ElasticResultMeta get meta => throw _privateConstructorUsedError;
 
@@ -2273,11 +2282,16 @@ class _$_ElasticResult implements _ElasticResult {
   factory _$_ElasticResult.fromJson(Map<String, dynamic> json) =>
       _$$_ElasticResultFromJson(json);
 
-  @override
+  @override // A map of the raw data of the document, containing the fields
+// requested in the [ElasticResultField] passed to the query
+//
+// You must handle the result of this [Map] on your side, please check
+// the example of the package to learn more about this.
   final Map<String, dynamic>? data;
-  @override
+  @override // A map of the snippet, please check the documentation of
+// [ElasticResultSnippet] to learn more.
   final Map<String, ElasticResultSnippet>? snippets;
-  @override
+  @override // An object containing information about a given result
   @JsonKey(name: "_meta")
   final ElasticResultMeta meta;
 
@@ -2324,11 +2338,16 @@ abstract class _ElasticResult implements ElasticResult {
   factory _ElasticResult.fromJson(Map<String, dynamic> json) =
       _$_ElasticResult.fromJson;
 
-  @override
+  @override // A map of the raw data of the document, containing the fields
+// requested in the [ElasticResultField] passed to the query
+//
+// You must handle the result of this [Map] on your side, please check
+// the example of the package to learn more about this.
   Map<String, dynamic>? get data;
-  @override
+  @override // A map of the snippet, please check the documentation of
+// [ElasticResultSnippet] to learn more.
   Map<String, ElasticResultSnippet>? get snippets;
-  @override
+  @override // An object containing information about a given result
   @JsonKey(name: "_meta")
   ElasticResultMeta get meta;
   @override
@@ -2366,8 +2385,19 @@ const $ElasticResultSnippet = _$ElasticResultSnippetTearOff();
 
 /// @nodoc
 mixin _$ElasticResultSnippet {
-  String get fullText => throw _privateConstructorUsedError;
-  List<String> get textParts => throw _privateConstructorUsedError;
+// The full snippet, matching the size provided in the [ElasticResultField]
+//passed to the query.
+  String get fullText =>
+      throw _privateConstructorUsedError; // The snippet splitted in parts around the matched query.
+// For example, if the document contains the string "The weather is beautiful in Florida today"
+// and your query is "beautiful", this array will contain:
+// "The weather is ", "beautiful", " in Florida today".
+// This feature intends to build [RichText] on your app to highlight the query
+// in the result.
+  List<String> get textParts =>
+      throw _privateConstructorUsedError; // The words matching the query. They can be many because even if you are querying
+// something like "car", the result can also contain "cars". So we need to
+// return all the words Elastic decided to match in order to highlight all the matching words.
   List<String> get highlights => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -2471,11 +2501,19 @@ class _$_ElasticResultSnippet implements _ElasticResultSnippet {
   factory _$_ElasticResultSnippet.fromJson(Map<String, dynamic> json) =>
       _$$_ElasticResultSnippetFromJson(json);
 
-  @override
+  @override // The full snippet, matching the size provided in the [ElasticResultField]
+//passed to the query.
   final String fullText;
-  @override
+  @override // The snippet splitted in parts around the matched query.
+// For example, if the document contains the string "The weather is beautiful in Florida today"
+// and your query is "beautiful", this array will contain:
+// "The weather is ", "beautiful", " in Florida today".
+// This feature intends to build [RichText] on your app to highlight the query
+// in the result.
   final List<String> textParts;
-  @override
+  @override // The words matching the query. They can be many because even if you are querying
+// something like "car", the result can also contain "cars". So we need to
+// return all the words Elastic decided to match in order to highlight all the matching words.
   final List<String> highlights;
 
   @override
@@ -2522,11 +2560,19 @@ abstract class _ElasticResultSnippet implements ElasticResultSnippet {
   factory _ElasticResultSnippet.fromJson(Map<String, dynamic> json) =
       _$_ElasticResultSnippet.fromJson;
 
-  @override
+  @override // The full snippet, matching the size provided in the [ElasticResultField]
+//passed to the query.
   String get fullText;
-  @override
+  @override // The snippet splitted in parts around the matched query.
+// For example, if the document contains the string "The weather is beautiful in Florida today"
+// and your query is "beautiful", this array will contain:
+// "The weather is ", "beautiful", " in Florida today".
+// This feature intends to build [RichText] on your app to highlight the query
+// in the result.
   List<String> get textParts;
-  @override
+  @override // The words matching the query. They can be many because even if you are querying
+// something like "car", the result can also contain "cars". So we need to
+// return all the words Elastic decided to match in order to highlight all the matching words.
   List<String> get highlights;
   @override
   @JsonKey(ignore: true)

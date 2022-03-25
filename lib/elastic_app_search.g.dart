@@ -84,7 +84,7 @@ _$_ElasticSearchField _$$_ElasticSearchFieldFromJson(
         Map<String, dynamic> json) =>
     _$_ElasticSearchField(
       name: json['name'] as String,
-      weight: (json['weight'] as num?)?.toDouble(),
+      weight: json['weight'] as int?,
     );
 
 Map<String, dynamic> _$$_ElasticSearchFieldToJson(
