@@ -91,6 +91,8 @@ final query = engine.query("query");
 
 ### Precision
 
+This setting is available through the query modifier `.precision`.
+
 The value of the precision parameter must be an integer between 1 and 11, inclusive.
 The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
 Lower values favor recall, while higher values favor precision.
@@ -101,6 +103,8 @@ final query = query.precision(5);
 ```
 
 ### Search filters
+
+This setting is available through the query modifier `.filter`.
 
 This feature intends to filter documents that contain a specific field value.
 It's only available on text, number, and date fields.
@@ -126,6 +130,8 @@ final query = query.filter("field", whereIn: ["value1", "value2"]);
 
 ### Search fields
 
+This setting is available through the query modifier `.searchField`.
+
 It will restrict a query to search only specific fields.
 Restricting fields will result in faster queries, especially for schemas with many text fields
 Only available within text fields.
@@ -145,7 +151,7 @@ final query = query
 
 ### Result fields
 
-`.resultField()`
+This setting is available through the query modifier `.resultField`.
 
 The fields which appear in search results and how their values are rendered.
 Raw is an exact representation of the value within a field.
