@@ -1,74 +1,121 @@
 part of elastic_app_search;
 
+const _highlightStart = '<em>';
+const _highlightEnd = '</em>';
+
+/// An object containing information about a given result
 @freezed
-class Response with _$Response {
-  factory Response({
-    required ResponseMeta meta,
-    required List<Result> results,
-  }) = _Response;
-
-  factory Response.fromJson(Map<String, dynamic> json) =>
-      _$ResponseFromJson(json);
-}
-
-@freezed
-class ResponseMeta with _$ResponseMeta {
-  factory ResponseMeta({
-    required ResponsePage page,
-    required int precision,
-    required List<dynamic> alerts,
-    required List<dynamic> warnings,
-    required String request_id,
-  }) = _ResponseMeta;
-
-  factory ResponseMeta.fromJson(Map<String, dynamic> json) =>
-      _$ResponseMetaFromJson(json);
-}
-
-@freezed
-class ResponsePage with _$ResponsePage {
-  factory ResponsePage({
-    required int current,
-    @JsonKey(name: "total_pages") required int totalPages,
-    @JsonKey(name: "total_results") required int totalResults,
-    required int size,
-  }) = _ResponsePage;
-
-  factory ResponsePage.fromJson(Map<String, dynamic> json) =>
-      _$ResponsePageFromJson(json);
-}
-
-@freezed
-class ResultMeta with _$ResultMeta {
-  factory ResultMeta({
+class ElasticResultMeta with _$ElasticResultMeta {
+  factory ElasticResultMeta({
+    // The document ID
     required String id,
-    required String engine,
-    required double score,
-  }) = _ResultMeta;
 
-  factory ResultMeta.fromJson(Map<String, dynamic> json) =>
-      _$ResultMetaFromJson(json);
+    // The engine name
+    required String engine,
+
+    // The relevance of the result
+    required double score,
+  }) = _ElasticResultMeta;
+
+  factory ElasticResultMeta.fromJson(Map<String, dynamic> json) =>
+      _$ElasticResultMetaFromJson(json);
 }
 
+/// An object presenting a result to the query
 @freezed
-class Result with _$Result {
-  factory Result({
+class ElasticResult with _$ElasticResult {
+  factory ElasticResult({
+    // A map of the raw data of the document, containing the fields
+    // requested in the [ElasticResultField] passed to the query
+    //
+    // You must handle the result of this [Map] on your side, please check
+    // the example of the package to learn more about this.
     Map<String, dynamic>? data,
-    @JsonKey(name: "_meta") required ResultMeta meta,
-  }) = _Result;
 
-  factory Result.fromJson(Map<String, dynamic> json) =>
-      Result.fromJsonWithData(json);
+    // A map of the snippet, please check the documentation of
+    // [ElasticResultSnippet] to learn more.
+    Map<String, ElasticResultSnippet>? snippets,
 
-  factory Result.fromJsonWithData(Map<String, dynamic> json) {
+    // An object containing information about a given result
+    @JsonKey(name: "_meta") required ElasticResultMeta meta,
+  }) = _ElasticResult;
+
+  factory ElasticResult.fromJson(Map<String, dynamic> json) =>
+      ElasticResult.fromJsonWithData(json);
+
+  factory ElasticResult.fromJsonWithData(Map<String, dynamic> json) {
+    var unescape = HtmlUnescape();
     var _data = <String, dynamic>{};
+    var _snippets = <String, ElasticResultSnippet>{};
     for (var key in json.keys) {
-      if (!key.contains('_')) _data[key] = json[key]["raw"];
+      if (!key.contains('_')) {
+        if (json[key]["raw"] != null) {
+          _data[key] = json[key]["raw"];
+        }
+        if (json[key]["snippet"] != null) {
+          final text = unescape
+              .convert(json[key]["snippet"])
+              .replaceAll("\n", "")
+              .trim();
+
+          final highlightExp = RegExp(r'<em>([^<]*)</em>');
+
+          List<String?> highlights = highlightExp
+              .allMatches(text)
+              .map((match) => match.group(0))
+              .whereNotNull()
+              .toList();
+
+          _snippets[key] = ElasticResultSnippet(
+            fullText: text
+                .replaceAll(_highlightStart, "")
+                .replaceAll(_highlightEnd, ""),
+            textParts: text
+                .replaceAll(_highlightEnd, _highlightStart)
+                .split(_highlightStart),
+            highlights: highlights
+                .map((e) => e!
+                    .replaceAll(_highlightStart, "")
+                    .replaceAll(_highlightEnd, ""))
+                .toList(),
+          );
+        }
+      }
     }
-    return _$ResultFromJson(json).copyWith(data: _data);
+    return _$ElasticResultFromJson(json).copyWith(
+      data: _data,
+      snippets: _snippets,
+    );
   }
 }
 
-extension ResultX on Result {
+extension ElasticResultX on ElasticResult {
+  // An easier way to get the document id
   String get id => meta.id;
+}
+
+/// An object contaning the snippet of the result
+@freezed
+class ElasticResultSnippet with _$ElasticResultSnippet {
+  factory ElasticResultSnippet({
+    // The full snippet, matching the size provided in the [ElasticResultField]
+    //passed to the query.
+    required String fullText,
+
+    // The snippet splitted in parts around the matched query.
+    // For example, if the document contains the string "The weather is beautiful in Florida today"
+    // and your query is "beautiful", this array will contain:
+    // "The weather is ", "beautiful", " in Florida today".
+    // This feature intends to build [RichText] on your app to highlight the query
+    // in the result.
+    required List<String> textParts,
+
+    // The words matching the query. They can be many because even if you are querying
+    // something like "car", the result can also contain "cars". So we need to
+    // return all the words Elastic decided to match in order to highlight all the matching words.
+    required List<String> highlights,
+  }) = _ElasticResultSnippet;
+
+  factory ElasticResultSnippet.fromJson(Map<String, dynamic> json) =>
+      _$ElasticResultSnippetFromJson(json);
 }

@@ -2,7 +2,7 @@
 ![https://dart.dev/](https://img.shields.io/badge/Dart-2.0-blue)
 ![https://flutter.dev/](https://img.shields.io/badge/Flutter-2.0-blue)
 
-# Dart/Flutter package for using Elastic App Search
+# Dart/Flutter package for using Elastic App Search through a simple API returning easy to handle objects
 
 ![Elastic](https://raw.githubusercontent.com/julienlebren/elastic_app_search/main/assets/logo_light.png#gh-light-mode-only)
 ![Elastic](https://raw.githubusercontent.com/julienlebren/elastic_app_search/main/assets/logo_dark.png#gh-dark-mode-only)

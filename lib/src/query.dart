@@ -1,114 +1,232 @@
 part of elastic_app_search;
 
+/// An object contaning all the settings to execute a query
+///
+/// See https://www.elastic.co/guide/en/app-search/current/search.html
+/// to get more information abouit all the parameters.
+///
+/// Note: All the paramaters of Elastic App Search are not currently
+/// available in this package.
 @freezed
-class Query with _$Query {
+class ElasticQuery with _$ElasticQuery {
   @JsonSerializable(
     explicitToJson: true,
     includeIfNull: false,
   )
-  @Assert('engine != null', 'An engine is required to build a query')
-  const factory Query({
-    @JsonKey(ignore: true) Engine? engine,
+  @Assert('engine != null', 'An engine is required to build a query.')
+  @Assert('precision != null && (precision < 1 || precision > 11)',
+      'The value of the precision parameter must be an integer between 1 and 11, inclusive.')
+  const factory ElasticQuery({
+    // An object representing an Elastic engine
+    @JsonKey(ignore: true) ElasticEngine? engine,
+
+    // String or number to match.
     required String query,
-    SearchPage? page,
-    List<Map<String, String>>? sort,
-    Map<String, String>? group,
-    @SearchFiltersConverter() List<SearchFilter>? filters,
-    @SearchFieldsConverter()
+
+    // Use the precision parameter of the search API to tune precision
+    // and recall for a query. Learn more in Precision tuning (beta).
+    // See [https://www.elastic.co/guide/en/app-search/current/search-api-precision.html]
+    //
+    // The value of the precision parameter must be an integer between 1 and 11, inclusive.
+    // The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
+    // Lower values favor recall, while higher values favor precision.
+    @JsonKey(name: "precision") int? queryPrecision,
+
+    // Object to delimit the pagination parameters.
+    @JsonKey(name: "page") ElasticSearchPage? searchPage,
+
+    // Object to filter documents that contain a specific field value.
+    // See [https://www.elastic.co/guide/en/app-search/current/filters.html]
+    @_ElasticSearchFiltersConverter() List<ElasticSearchFilter>? filters,
+
+    // Object which restricts a query to search only specific fields.
+    @_ElasticSearchFieldsConverter()
     @JsonKey(name: "search_fields")
-        List<SearchField>? searchFields,
-    @ResultFieldsConverter()
+        List<ElasticSearchField>? searchFields,
+
+    // Object to define the fields which appear in search results and how their values are rendered.
+    @_ElasticResultFieldsConverter()
     @Default([])
     @JsonKey(name: "result_fields")
-        List<ResultField>? resultFields,
-  }) = _Query;
+        List<ElasticResultField>? resultFields,
+  }) = _ElasticQuery;
 
-  factory Query.fromJson(Map<String, dynamic> json) => _$QueryFromJson(json);
-}
+  factory ElasticQuery.fromJson(Map<String, dynamic> json) =>
+      _$ElasticQueryFromJson(json);
 
-extension QueryX on Query {
-  @Assert('isEqualTo != null || arrayContains != null')
-  Query filter(
+  /// Creates and returns a new [ElasticQuery] with additional [ElasticSearchFilter],
+  /// an object to filter documents that contain a specific field value.
+  /// Available on text, number, and date fields.
+  ///
+  /// Note: As for now, this object only handles "all" filters, which means that all
+  /// the filters added to the query will be handled as a "AND" query.
+  /// The other filters available, "or" and "not", will be added in a future release
+  /// of the package.
+  ///
+  /// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
+  @Assert('isEqualTo != null || whereIn != null',
+      'You must provide at least one condition (isEqualTo, isNotEqualTo, whereIn, whereNotIn, isMaybeEqualTo, whereMaybeIn)')
+  ElasticQuery filter(
     String field, {
     String? isEqualTo,
-    List<String>? arrayContains,
+    List<String>? whereIn,
+    /*String? isNotEqualTo,
+    List<String>? whereNotIn,
+    String? isMaybeEqualTo,
+    List<String>? whereMaybeIn,*/
   }) {
     return copyWith(
       filters: [
         ...?filters,
-        SearchFilter(
+        ElasticSearchFilter(
           name: field,
-          value: arrayContains ?? [isEqualTo],
+          value: whereIn ?? [isEqualTo],
         ),
       ],
     );
   }
 
-  Query searchField(
+  /// Takes a precision [int], creates and returns a new [ElasticQuery]
+  /// See [https://www.elastic.co/guide/en/app-search/current/search-api-precision.html]
+  //
+  /// The value of the precision parameter must be an integer between 1 and 11, inclusive.
+  /// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
+  /// Lower values favor recall, while higher values favor precision.
+  @Assert('precision >= 1 && precision <= 11',
+      'The value of the precision parameter must be an integer between 1 and 11, inclusive.')
+  ElasticQuery precision(int precision) => copyWith(queryPrecision: precision);
+
+  /// Takes a field with an optionnal `weight`, creates and returns a new [ElasticQuery]
+  ///
+  /// It will restrict a query to search only specific fields.
+  ///
+  /// Restricting fields will result in faster queries, especially for schemas with many text fields
+  /// Only available within text fields.
+  ///
+  /// See [https://www.elastic.co/guide/en/app-search/current/search-fields-weights.html]
+  ElasticQuery searchField(
     String field, {
     double? weight,
   }) {
     return copyWith(
       searchFields: [
         ...?searchFields,
-        SearchField(name: field),
-      ],
-    );
-  }
-
-  Query resultField(
-    String field, {
-    int? size,
-  }) {
-    return copyWith(
-      resultFields: [
-        ...?resultFields,
-        ResultField(
+        ElasticSearchField(
           name: field,
-          size: size,
+          weight: weight,
         ),
       ],
     );
   }
 
-  Future<Response> get() {
-    return engine!.get(this);
+  /// Creates and returns a new [ElasticQuery] with additional [ElasticResultField], an object
+  /// which defines the fields which appear in search results and how their values are rendered.
+  ///
+  /// Raw: An exact representation of the value within a field.
+  /// Snippet: A snippet is a representation of the value within a field, where query matches are returned
+  /// in a specific field and other parts are splitted, in order to user [RichText] to display
+  /// the results and highlight the query matches.
+  /// The example of the package presents a use case of this feature.
+  ///
+  /// More information on [https://www.elastic.co/guide/en/app-search/current/result-fields-highlights.html]
+  ElasticQuery resultField(
+    String field, {
+    int? rawSize,
+    int? snippetSize,
+    bool fallback = true,
+  }) {
+    return copyWith(
+      resultFields: [
+        ...?resultFields,
+        ElasticResultField(
+          name: field,
+          rawSize: rawSize,
+          snippetSize: snippetSize,
+          fallback: fallback,
+        ),
+      ],
+    );
+  }
+
+  /// Creates and returns a new [ElasticQuery] with new pagination parameters.
+  ///
+  /// See [https://www.elastic.co/guide/en/app-search/current/search-guide.html#search-guide-paginate]
+  ElasticQuery page(
+    int current, {
+    int size = 10,
+  }) {
+    return copyWith(
+      searchPage: ElasticSearchPage(
+        current: current,
+        size: size,
+      ),
+    );
+  }
+
+  Future<ElasticResponse> get([CancelToken? cancelToken]) {
+    return engine!.get(this, cancelToken);
   }
 }
 
+/// Object to delimit the pagination parameters.
+///
+/// See [https://www.elastic.co/guide/en/app-search/current/search-guide.html#search-guide-paginate]
 @freezed
-class SearchPage with _$SearchPage {
+class ElasticSearchPage with _$ElasticSearchPage {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory SearchPage({
+  @Assert('size != null && (size < 1 || size > 1000)',
+      'The number of results per page must be greater than or equal to 1 and less than or equal to 1000.')
+  @Assert('current != null && (current < 1 || current > 100)',
+      'The current must be greater than or equal to 1 and less than or equal to 100.')
+  const factory ElasticSearchPage({
+    // Number of results per page.
+    // Must be greater than or equal to 1 and less than or equal to 1000.
+    // Defaults to 10.
     @Default(10) int? size,
+
+    // Page number of results to return.
+    //// Must be greater than or equal to 1 and less than or equal to 100.
+    ///Defaults to 1.
     @Default(1) int? current,
-  }) = _SearchPage;
+  }) = _ElasticSearchPage;
 
-  factory SearchPage.fromJson(Map<String, dynamic> json) =>
-      _$SearchPageFromJson(json);
+  factory ElasticSearchPage.fromJson(Map<String, dynamic> json) =>
+      _$ElasticSearchPageFromJson(json);
 }
 
+/// Object to filter documents that contain a specific field value.
+/// Available on text, number, and date fields.
+///
+/// Note: As for now, this object only handles "all" filters, which means that all
+/// the filters added to the query will be handled as a "AND" query.
+/// The other filters available, "or" and "not", will be added in a future release
+/// of the package.
+///
+/// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
 @freezed
-class SearchFilter with _$SearchFilter {
+class ElasticSearchFilter with _$ElasticSearchFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory SearchFilter({
+  const factory ElasticSearchFilter({
+    // The field from your schema upon which to apply your filter.
     required String name,
+    // The value upon which to filter. The value must be an exact match,
+    // and can be a String, a boolean, a number, or an array of these types.
     required List<dynamic> value,
-  }) = _SearchFilter;
+  }) = _ElasticSearchFilter;
 
-  factory SearchFilter.fromJson(Map<String, dynamic> json) =>
-      _$SearchFilterFromJson(json);
+  factory ElasticSearchFilter.fromJson(Map<String, dynamic> json) =>
+      _$ElasticSearchFilterFromJson(json);
 }
 
-class SearchFiltersConverter
-    implements JsonConverter<List<SearchFilter>?, Map?> {
-  const SearchFiltersConverter();
+class _ElasticSearchFiltersConverter
+    implements JsonConverter<List<ElasticSearchFilter>?, Map?> {
+  const _ElasticSearchFiltersConverter();
 
   @override
-  List<SearchFilter>? fromJson(Map? value) => null;
+  List<ElasticSearchFilter>? fromJson(Map? value) => null;
 
   @override
-  Map? toJson(List<SearchFilter>? searchFilters) {
+  Map? toJson(List<ElasticSearchFilter>? searchFilters) {
     if (searchFilters == null) return null;
     if (searchFilters.length == 1) {
       return {"${searchFilters.first.name}": searchFilters.first.value};
@@ -122,26 +240,37 @@ class SearchFiltersConverter
   }
 }
 
+/// Object which restricts a query to search only specific fields.
+///
+/// Restricting fields will result in faster queries, especially for schemas with many text fields
+/// Only available within text fields.
+///
+/// See [https://www.elastic.co/guide/en/app-search/current/search-fields-weights.html]
 @freezed
-class SearchField with _$SearchField {
+class ElasticSearchField with _$ElasticSearchField {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory SearchField({
+  const factory ElasticSearchField({
+    // The name of the field. It must exist within your Engine schema and be of type text.
     required String name,
-    double? weight,
-  }) = _SearchField;
 
-  factory SearchField.fromJson(Map<String, dynamic> json) =>
-      _$SearchFieldFromJson(json);
+    // Optionnal. Apply Weights to each search field.
+    // Engine level Weight settings will be applied is none are provided.
+    double? weight,
+  }) = _ElasticSearchField;
+
+  factory ElasticSearchField.fromJson(Map<String, dynamic> json) =>
+      _$ElasticSearchFieldFromJson(json);
 }
 
-class SearchFieldsConverter implements JsonConverter<List<SearchField>?, Map?> {
-  const SearchFieldsConverter();
+class _ElasticSearchFieldsConverter
+    implements JsonConverter<List<ElasticSearchField>?, Map?> {
+  const _ElasticSearchFieldsConverter();
 
   @override
-  List<SearchField>? fromJson(Map? value) => null;
+  List<ElasticSearchField>? fromJson(Map? value) => null;
 
   @override
-  Map? toJson(List<SearchField>? searchFields) {
+  Map? toJson(List<ElasticSearchField>? searchFields) {
     if (searchFields == null) return null;
 
     var value = {};
@@ -158,33 +287,62 @@ class SearchFieldsConverter implements JsonConverter<List<SearchField>?, Map?> {
   }
 }
 
+/// Object to define the fields which appear in search results and how their values are rendered.
+///
+/// Raw: An exact representation of the value within a field.
+/// Snippet: A snippet is a representation of the value within a field, where query matches are returned
+/// in a specific field and other parts are splitted, in order to user [RichText] to display
+/// the results and highlight the query matches.
+/// The example of the package presents a use case of this feature.
+///
+/// More information on [https://www.elastic.co/guide/en/app-search/current/result-fields-highlights.html]
 @freezed
-class ResultField with _$ResultField {
+class ElasticResultField with _$ElasticResultField {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory ResultField({
+  @Assert('rawSize != null && rawSize < 20', 'Raw size must be at least 20.')
+  @Assert('snippetSize != null && snippetSize < 20',
+      'Raw size must be at least 20.')
+  const factory ElasticResultField({
+    // The name of the field. It must exist within your Engine schema and be of type text.
     required String name,
-    int? size,
-  }) = _ResultField;
 
-  factory ResultField.fromJson(Map<String, dynamic> json) =>
-      _$ResultFieldFromJson(json);
+    // Length of the return value.
+    // Must be at least 20; defaults to the entire text field.
+    // If given for a different field type other than text, it will be silently ignored.
+    int? rawSize,
+
+    // Length of the snippet returned.
+    // Must be at least 20; defaults to 100.
+    int? snippetSize,
+    @Default(true) bool fallback,
+  }) = _ElasticResultField;
+
+  factory ElasticResultField.fromJson(Map<String, dynamic> json) =>
+      _$ElasticResultFieldFromJson(json);
 }
 
-class ResultFieldsConverter implements JsonConverter<List<ResultField>?, Map?> {
-  const ResultFieldsConverter();
+class _ElasticResultFieldsConverter
+    implements JsonConverter<List<ElasticResultField>?, Map?> {
+  const _ElasticResultFieldsConverter();
 
   @override
-  List<ResultField>? fromJson(Map? value) => null;
+  List<ElasticResultField>? fromJson(Map? value) => null;
 
   @override
-  Map? toJson(List<ResultField>? resultFields) {
+  Map? toJson(List<ElasticResultField>? resultFields) {
     if (resultFields == null) return null;
 
-    var value = {};
+    var value = <String, Map?>{};
     for (final resultField in resultFields) {
       value[resultField.name] = {
-        "raw": resultField.size != null ? {"size": resultField.size} : {}
+        "raw": {"size": resultField.rawSize ?? 20}
       };
+      if (resultField.snippetSize != null) {
+        value[resultField.name]!["snippet"] = {
+          "size": resultField.snippetSize,
+          "fallback": resultField.fallback,
+        };
+      }
     }
     return value;
   }

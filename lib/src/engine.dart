@@ -1,15 +1,22 @@
 part of elastic_app_search;
 
-class Engine {
-  const Engine({
+/// An object representing an Elastic engine
+class ElasticEngine {
+  const ElasticEngine({
     required this.name,
     required this.service,
   });
 
+  // The name must fit one of the engines created in your Elastic deployment
   final String name;
+
+  // An instance of [ElasticAppSearch] is required to handle queries through the object
   final ElasticAppSearch service;
 
-  Query query(String query) => Query(engine: this, query: query);
+  // Creates a [ElasticQuery] object related to this engine
+  ElasticQuery query(String query) => ElasticQuery(engine: this, query: query);
 
-  Future<Response> get(Query query) => service.post(query);
+  // Executes the given query on this engine
+  Future<ElasticResponse> get(ElasticQuery query, [CancelToken? cancelToken]) =>
+      service.post(query, cancelToken);
 }

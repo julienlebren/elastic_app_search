@@ -9,5 +9,6 @@ part 'elastic_app_search.g.dart';
 
 part 'src/engine.dart';
 part 'src/query.dart';
+part 'src/response.dart';
 part 'src/result.dart';
 part 'src/service.dart';
