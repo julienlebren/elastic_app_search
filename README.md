@@ -89,9 +89,7 @@ Type | Description
 ------------ | -------------
 String | The keyword
 
-### Optional parameters
-
-#### Search filters
+### Search filters
 
 This feature intends to filter documents that contain a specific field value.
 It's only available on text, number, and date fields.
@@ -109,6 +107,6 @@ Param | Type | Description
 ----- | ---- | -------------
 *(unnamed)* | String | The field name
 isEqualTo | String | The value that the field must match
-whereIn | List<String> | The values that the field can match
+whereIn | List\<String\> | The values that the field can match
 
 **Warning:** You cannot use `isEqualTo` and `whereIn` on the same field at the same time, otherwise it will raise an exception.
