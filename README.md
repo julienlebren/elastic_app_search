@@ -145,6 +145,8 @@ final query = query
 
 ### Result fields
 
+`.resultField()`
+
 The fields which appear in search results and how their values are rendered.
 Raw is an exact representation of the value within a field.
 Snippet is a representation of the value within a field, where query matches are returned in a specific field and other parts are splitted, in order to user [RichText] to display the results and highlight the query matches.
