@@ -91,7 +91,7 @@ final query = engine.query("query");
 
 ### Precision
 
-This setting is available through the query modifier `.precision`.
+This setting is available through the query modifier `.precision`
 
 The value of the precision parameter must be an integer between 1 and 11, inclusive.
 The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
@@ -104,7 +104,7 @@ final query = query.precision(5);
 
 ### Search filters
 
-This setting is available through the query modifier `.filter`.
+This setting is available through the query modifier `.filter`
 
 This feature intends to filter documents that contain a specific field value.
 It's only available on text, number, and date fields.
@@ -130,7 +130,7 @@ final query = query.filter("field", whereIn: ["value1", "value2"]);
 
 ### Search fields
 
-This setting is available through the query modifier `.searchField`.
+This setting is available through the query modifier `.searchField`
 
 It will restrict a query to search only specific fields.
 Restricting fields will result in faster queries, especially for schemas with many text fields
@@ -141,7 +141,7 @@ See https://www.elastic.co/guide/en/app-search/current/search-fields-weights.htm
 Param | Type | Description
 ----- | ---- | -------------
 *(unnamed)* | String | The field name
-weight | int | *(optionnal)* The weight of the field in the query
+weight | int *(optionnal)* | The weight of the field in the query
 
 ```dart
 final query = query
@@ -151,7 +151,7 @@ final query = query
 
 ### Result fields
 
-This setting is available through the query modifier `.resultField`.
+This setting is available through the query modifier `.resultField`
 
 The fields which appear in search results and how their values are rendered.
 Raw is an exact representation of the value within a field.
@@ -161,9 +161,9 @@ See https://www.elastic.co/guide/en/app-search/current/result-fields-highlights.
 Param | Type | Description
 ----- | ---- | -------------
 *(unnamed)* | String | The field name
-rawSize | int | *(optionnal)* The length of the field value which is returned
-snippetSize | int | *(optionnal)* The length of the snippet value which is returned
-fallback | bool | *(optionnal)* If true, return the raw text field if no snippet is found. If false, only use snippets.
+rawSize | int *(optionnal)*  | The length of the field value which is returned
+snippetSize | int *(optionnal)* | The length of the snippet value which is returned
+fallback | bool *(optionnal)* | If true, return the raw text field if no snippet is found. If false, only use snippets.
 
 ```dart
 final query = query
