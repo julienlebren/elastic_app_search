@@ -47,6 +47,18 @@ We request the first page, limited to 50 documents.
 ## Table of contents
 
 * [ElasticAppSearch](#ElasticAppSearch)
+* [ElasticEngine](#ElasticEngine)
+* [ElasticQuery](#ElasticQuery)
+  * [Precision](#Precision)
+  * [Search filters](#search-filters)
+  * [Search fields](#search-fields)
+  * [Result fields](#result-fields)
+* [ElasticResponse](#ElasticResponse)
+  * [ElasticResponseMeta](#ElasticResponseMeta)
+    * [ElasticResponseMetaPage](#ElasticResponseMetaPage)
+  * [ElasticResult](#ElasticResult)
+    * [ElasticResultMeta](#ElasticResultMeta)
+    * [ElasticResultSnippet](#ElasticResultSnippet)
 
 ## ElasticAppSearch
 
