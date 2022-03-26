@@ -6,21 +6,14 @@ issue_tracker: https://github.com/julienlebren/elastic_app_search/issues
 
 environment:
   sdk: ">=2.16.1 <3.0.0"
-  flutter: ">=1.17.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
   dio: ^4.0.4
   freezed_annotation: ^1.1.0
   html_unescape: ^2.0.0
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^1.0.0
+  lints: ^1.0.1
   build_runner: ^2.1.5
   freezed: ^1.1.1
   json_serializable: ^6.1.5
-  
-flutter:
