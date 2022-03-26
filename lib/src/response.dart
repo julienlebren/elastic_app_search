@@ -24,7 +24,7 @@ class ElasticResponse with _$ElasticResponse {
 class ElasticResponseMeta with _$ElasticResponseMeta {
   factory ElasticResponseMeta({
     // String ID representing the request. Guaranteed to be unique.
-    required String request_id,
+    @JsonKey(name: "request_id") required String requestId,
 
     // Array of warnings for the query.
     //
@@ -37,8 +37,7 @@ class ElasticResponseMeta with _$ElasticResponseMeta {
     required List<dynamic> alerts,
 
     // Object delimiting the pagination meta data.
-    required ElasticMetaPage page,
-    required int precision,
+    required ElasticResponseMetaPage page,
   }) = _ElasticResponseMeta;
 
   factory ElasticResponseMeta.fromJson(Map<String, dynamic> json) =>
@@ -47,8 +46,8 @@ class ElasticResponseMeta with _$ElasticResponseMeta {
 
 /// Object delimiting the pagination meta data.
 @freezed
-class ElasticMetaPage with _$ElasticMetaPage {
-  factory ElasticMetaPage({
+class ElasticResponseMetaPage with _$ElasticResponseMetaPage {
+  factory ElasticResponseMetaPage({
     // Number representing the current page of results.
     required int current,
 
@@ -70,8 +69,8 @@ class ElasticMetaPage with _$ElasticMetaPage {
     // See [https://www.elastic.co/guide/en/app-search/current/search-guide.html#search-guide-display-total]
     // and [https://www.elastic.co/guide/en/app-search/current/search-guide.html#search-guide-count-documents]
     @JsonKey(name: "total_results") required int totalResults,
-  }) = _ElasticMetaPage;
+  }) = _ElasticResponseMetaPage;
 
-  factory ElasticMetaPage.fromJson(Map<String, dynamic> json) =>
-      _$ElasticMetaPageFromJson(json);
+  factory ElasticResponseMetaPage.fromJson(Map<String, dynamic> json) =>
+      _$ElasticResponseMetaPageFromJson(json);
 }

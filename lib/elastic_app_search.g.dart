@@ -147,32 +147,33 @@ Map<String, dynamic> _$$_ElasticResponseToJson(_$_ElasticResponse instance) =>
 _$_ElasticResponseMeta _$$_ElasticResponseMetaFromJson(
         Map<String, dynamic> json) =>
     _$_ElasticResponseMeta(
-      request_id: json['request_id'] as String,
+      requestId: json['request_id'] as String,
       warnings: json['warnings'] as List<dynamic>,
       alerts: json['alerts'] as List<dynamic>,
-      page: ElasticMetaPage.fromJson(json['page'] as Map<String, dynamic>),
-      precision: json['precision'] as int,
+      page: ElasticResponseMetaPage.fromJson(
+          json['page'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_ElasticResponseMetaToJson(
         _$_ElasticResponseMeta instance) =>
     <String, dynamic>{
-      'request_id': instance.request_id,
+      'request_id': instance.requestId,
       'warnings': instance.warnings,
       'alerts': instance.alerts,
       'page': instance.page,
-      'precision': instance.precision,
     };
 
-_$_ElasticMetaPage _$$_ElasticMetaPageFromJson(Map<String, dynamic> json) =>
-    _$_ElasticMetaPage(
+_$_ElasticResponseMetaPage _$$_ElasticResponseMetaPageFromJson(
+        Map<String, dynamic> json) =>
+    _$_ElasticResponseMetaPage(
       current: json['current'] as int,
       size: json['size'] as int,
       totalPages: json['total_pages'] as int,
       totalResults: json['total_results'] as int,
     );
 
-Map<String, dynamic> _$$_ElasticMetaPageToJson(_$_ElasticMetaPage instance) =>
+Map<String, dynamic> _$$_ElasticResponseMetaPageToJson(
+        _$_ElasticResponseMetaPage instance) =>
     <String, dynamic>{
       'current': instance.current,
       'size': instance.size,

@@ -79,7 +79,8 @@ final engine = service.engine("engine_name");
 ## Elastic Query
 
 The only required parameter to instanciate a query is a string which is the word you are looking for through your documents.
-See https://www.elastic.co/guide/en/app-search/current/search.html
+
+🔍 See https://www.elastic.co/guide/en/app-search/current/search.html
 
 Type | Description
 ------------ | -------------
@@ -96,7 +97,8 @@ This setting is available through the query modifier `.precision`
 The value of the precision parameter must be an integer between 1 and 11, inclusive.
 The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
 Lower values favor recall, while higher values favor precision.
-See https://www.elastic.co/guide/en/app-search/current/search-api-precision.html
+
+🔍 See https://www.elastic.co/guide/en/app-search/current/search-api-precision.html
 
 ```dart
 final query = query.precision(5);
@@ -108,7 +110,8 @@ This setting is available through the query modifier `.filter`
 
 This feature intends to filter documents that contain a specific field value.
 It's only available on text, number, and date fields.
-See https://www.elastic.co/guide/en/app-search/current/filters.html
+
+🔍 See https://www.elastic.co/guide/en/app-search/current/filters.html
 
 **Important**: As for now, this object only handles "all" filters, which means that all the filters added to the query will be handled as a "AND" query.
 The other filters available, "or" and "not", will be added in a future release of the package.
@@ -135,8 +138,10 @@ This setting is available through the query modifier `.searchField`
 It will restrict a query to search only specific fields.
 Restricting fields will result in faster queries, especially for schemas with many text fields
 Only available within text fields.
+
 Weight is given between 10 (most relevant) to 1 (least relevant).
-See https://www.elastic.co/guide/en/app-search/current/search-fields-weights.html
+
+🔍 See https://www.elastic.co/guide/en/app-search/current/search-fields-weights.html
 
 Param | Type | Description
 ----- | ---- | -------------
@@ -154,9 +159,11 @@ final query = query
 This setting is available through the query modifier `.resultField`
 
 The fields which appear in search results and how their values are rendered.
+
 Raw is an exact representation of the value within a field.
 Snippet is a representation of the value within a field, where query matches are returned in a specific field and other parts are splitted, in order to user [RichText] to display the results and highlight the query matches.
-See https://www.elastic.co/guide/en/app-search/current/result-fields-highlights.html
+
+🔍 See https://www.elastic.co/guide/en/app-search/current/result-fields-highlights.html
 
 Param | Type | Description
 ----- | ---- | -------------
@@ -172,5 +179,90 @@ final query = query
   .resultField("field3", rawSize: 80, snippetSize: 80, fallback: true);
 ```
 
-## Elastic Response
+## ElasticResponse
 
+The response object contains two parts, the meta in a [ElasticResponseMeta] object and the results in a list of [ElasticResult] objects.
+
+🔍 See https://www.elastic.co/guide/en/app-search/current/search.html#search-api-response-body
+
+Param | Type | Description
+----- | ---- | -------------
+meta | ElasticResponseMeta | Object delimiting the results meta data
+results | List\<ElasticResult\> | Array of results matching the search
+
+### ElasticResponseMeta
+
+An object containing information about the results, especially the pagination details in `page`.
+
+Param | Type | Description
+----- | ---- | -------------
+requestId | String | ID representing the request. Guaranteed to be unique
+warnings | List\<dynamic\> | Array of warnings for the query
+alerts | List\<dynamic\> | Array of alerts for your deployment
+page | ElasticMetaPage | Object delimiting the pagination meta data
+
+#### ElasticResponseMetaPage
+
+Object delimiting the results meta data.
+
+Param | Type | Description
+----- | ---- | -------------
+current | int | Number representing the current page of results
+size | int | Number representing the results per page
+totalPages | int | Number representing the total pages of results
+totalResults | int | Number representing the total results across all pages
+
+### ElasticResult
+
+An object presenting a result to the query.
+
+The data param is a map of the fields requested with the `.searchResult` modfifier. If this modifier was omitted, all the fields of the document are returned.
+
+The snippets is a map of the snippets returned by the query, if requested with the `.searchResult` modfifier. By default, Elastic returns the snippets as HTML snippets. This package manipulates the result to return some stuff that can be handled by Flutter: an [ElasticResultSnippet] object.
+
+Param | Type | Description
+----- | ---- | -------------
+data | Map\<String, dynamic\> | A map of the raw data of the document
+snippets | Map\<String, ElasticResultSnippet\> | A map of the snippets
+meta | ElasticResultMeta | An object containing information about a given result
+
+#### ElasticResultMeta
+
+An object containing information about a given result.
+
+Param | Type | Description
+----- | ---- | -------------
+id | String | The document ID
+engine | String | The engine name
+score | double | The relevance of the result
+
+#### ElasticResultSnippet
+
+An object contaning the snippet of the result.
+If you don't want to display your search results with highlights on the matching keyword, just ignore `textParts` and `highlights` and use only `fullText`.
+
+`textParts` and `highlights` can be used to build a [RichText] widget in Flutter, please look at the example of the package to have a concrete example.
+
+Param | Type | Description
+----- | ---- | -------------
+fullText | String | The full snippet
+textParts | List\<String\> | The snippet splitted in parts around the matched query
+highlights | List\<String\> | The words matching the query
+
+## Third party packages
+
+This app uses some external librairies:
+
+- [x] [Freezed](https://pub.dev/packages/freezed) to generate immutable models
+- [x] [Dio](https://pub.dev/packages/dio) for http requests
+- [x] [html_unescape](https://pub.dev/packages/html_unescape) to strip html tags from results
+
+## Credits
+
+This package was originally created for my personnal needs but feel free to use it, it does not covers all the features available in Elastic App Search, but I will try to cover all the features over time.
+
+I am not related to Elastic in any way, I am just a developer who needed to use this API and created this library to do so.
+
+If you have questions, feel free to ask on [Twitter](https://twitter.com/hikeland).
+
+## [LICENSE: MIT](LICENSE.md)

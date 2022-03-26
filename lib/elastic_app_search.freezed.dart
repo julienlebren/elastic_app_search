@@ -1395,17 +1395,15 @@ class _$ElasticResponseMetaTearOff {
   const _$ElasticResponseMetaTearOff();
 
   _ElasticResponseMeta call(
-      {required String request_id,
+      {@JsonKey(name: "request_id") required String requestId,
       required List<dynamic> warnings,
       required List<dynamic> alerts,
-      required ElasticMetaPage page,
-      required int precision}) {
+      required ElasticResponseMetaPage page}) {
     return _ElasticResponseMeta(
-      request_id: request_id,
+      requestId: requestId,
       warnings: warnings,
       alerts: alerts,
       page: page,
-      precision: precision,
     );
   }
 
@@ -1420,7 +1418,8 @@ const $ElasticResponseMeta = _$ElasticResponseMetaTearOff();
 /// @nodoc
 mixin _$ElasticResponseMeta {
 // String ID representing the request. Guaranteed to be unique.
-  String get request_id =>
+  @JsonKey(name: "request_id")
+  String get requestId =>
       throw _privateConstructorUsedError; // Array of warnings for the query.
 //
 // Included with error responses and success responses, so inspect all responses for warnings.
@@ -1430,8 +1429,7 @@ mixin _$ElasticResponseMeta {
 // Included with error responses and success responses, so inspect all responses for alerts.
   List<dynamic> get alerts =>
       throw _privateConstructorUsedError; // Object delimiting the pagination meta data.
-  ElasticMetaPage get page => throw _privateConstructorUsedError;
-  int get precision => throw _privateConstructorUsedError;
+  ElasticResponseMetaPage get page => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1445,13 +1443,12 @@ abstract class $ElasticResponseMetaCopyWith<$Res> {
           ElasticResponseMeta value, $Res Function(ElasticResponseMeta) then) =
       _$ElasticResponseMetaCopyWithImpl<$Res>;
   $Res call(
-      {String request_id,
+      {@JsonKey(name: "request_id") String requestId,
       List<dynamic> warnings,
       List<dynamic> alerts,
-      ElasticMetaPage page,
-      int precision});
+      ElasticResponseMetaPage page});
 
-  $ElasticMetaPageCopyWith<$Res> get page;
+  $ElasticResponseMetaPageCopyWith<$Res> get page;
 }
 
 /// @nodoc
@@ -1465,16 +1462,15 @@ class _$ElasticResponseMetaCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? request_id = freezed,
+    Object? requestId = freezed,
     Object? warnings = freezed,
     Object? alerts = freezed,
     Object? page = freezed,
-    Object? precision = freezed,
   }) {
     return _then(_value.copyWith(
-      request_id: request_id == freezed
-          ? _value.request_id
-          : request_id // ignore: cast_nullable_to_non_nullable
+      requestId: requestId == freezed
+          ? _value.requestId
+          : requestId // ignore: cast_nullable_to_non_nullable
               as String,
       warnings: warnings == freezed
           ? _value.warnings
@@ -1487,17 +1483,13 @@ class _$ElasticResponseMetaCopyWithImpl<$Res>
       page: page == freezed
           ? _value.page
           : page // ignore: cast_nullable_to_non_nullable
-              as ElasticMetaPage,
-      precision: precision == freezed
-          ? _value.precision
-          : precision // ignore: cast_nullable_to_non_nullable
-              as int,
+              as ElasticResponseMetaPage,
     ));
   }
 
   @override
-  $ElasticMetaPageCopyWith<$Res> get page {
-    return $ElasticMetaPageCopyWith<$Res>(_value.page, (value) {
+  $ElasticResponseMetaPageCopyWith<$Res> get page {
+    return $ElasticResponseMetaPageCopyWith<$Res>(_value.page, (value) {
       return _then(_value.copyWith(page: value));
     });
   }
@@ -1511,14 +1503,13 @@ abstract class _$ElasticResponseMetaCopyWith<$Res>
       __$ElasticResponseMetaCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String request_id,
+      {@JsonKey(name: "request_id") String requestId,
       List<dynamic> warnings,
       List<dynamic> alerts,
-      ElasticMetaPage page,
-      int precision});
+      ElasticResponseMetaPage page});
 
   @override
-  $ElasticMetaPageCopyWith<$Res> get page;
+  $ElasticResponseMetaPageCopyWith<$Res> get page;
 }
 
 /// @nodoc
@@ -1534,16 +1525,15 @@ class __$ElasticResponseMetaCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? request_id = freezed,
+    Object? requestId = freezed,
     Object? warnings = freezed,
     Object? alerts = freezed,
     Object? page = freezed,
-    Object? precision = freezed,
   }) {
     return _then(_ElasticResponseMeta(
-      request_id: request_id == freezed
-          ? _value.request_id
-          : request_id // ignore: cast_nullable_to_non_nullable
+      requestId: requestId == freezed
+          ? _value.requestId
+          : requestId // ignore: cast_nullable_to_non_nullable
               as String,
       warnings: warnings == freezed
           ? _value.warnings
@@ -1556,11 +1546,7 @@ class __$ElasticResponseMetaCopyWithImpl<$Res>
       page: page == freezed
           ? _value.page
           : page // ignore: cast_nullable_to_non_nullable
-              as ElasticMetaPage,
-      precision: precision == freezed
-          ? _value.precision
-          : precision // ignore: cast_nullable_to_non_nullable
-              as int,
+              as ElasticResponseMetaPage,
     ));
   }
 }
@@ -1569,17 +1555,17 @@ class __$ElasticResponseMetaCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ElasticResponseMeta implements _ElasticResponseMeta {
   _$_ElasticResponseMeta(
-      {required this.request_id,
+      {@JsonKey(name: "request_id") required this.requestId,
       required this.warnings,
       required this.alerts,
-      required this.page,
-      required this.precision});
+      required this.page});
 
   factory _$_ElasticResponseMeta.fromJson(Map<String, dynamic> json) =>
       _$$_ElasticResponseMetaFromJson(json);
 
   @override // String ID representing the request. Guaranteed to be unique.
-  final String request_id;
+  @JsonKey(name: "request_id")
+  final String requestId;
   @override // Array of warnings for the query.
 //
 // Included with error responses and success responses, so inspect all responses for warnings.
@@ -1589,13 +1575,11 @@ class _$_ElasticResponseMeta implements _ElasticResponseMeta {
 // Included with error responses and success responses, so inspect all responses for alerts.
   final List<dynamic> alerts;
   @override // Object delimiting the pagination meta data.
-  final ElasticMetaPage page;
-  @override
-  final int precision;
+  final ElasticResponseMetaPage page;
 
   @override
   String toString() {
-    return 'ElasticResponseMeta(request_id: $request_id, warnings: $warnings, alerts: $alerts, page: $page, precision: $precision)';
+    return 'ElasticResponseMeta(requestId: $requestId, warnings: $warnings, alerts: $alerts, page: $page)';
   }
 
   @override
@@ -1603,22 +1587,19 @@ class _$_ElasticResponseMeta implements _ElasticResponseMeta {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ElasticResponseMeta &&
-            const DeepCollectionEquality()
-                .equals(other.request_id, request_id) &&
+            const DeepCollectionEquality().equals(other.requestId, requestId) &&
             const DeepCollectionEquality().equals(other.warnings, warnings) &&
             const DeepCollectionEquality().equals(other.alerts, alerts) &&
-            const DeepCollectionEquality().equals(other.page, page) &&
-            const DeepCollectionEquality().equals(other.precision, precision));
+            const DeepCollectionEquality().equals(other.page, page));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(request_id),
+      const DeepCollectionEquality().hash(requestId),
       const DeepCollectionEquality().hash(warnings),
       const DeepCollectionEquality().hash(alerts),
-      const DeepCollectionEquality().hash(page),
-      const DeepCollectionEquality().hash(precision));
+      const DeepCollectionEquality().hash(page));
 
   @JsonKey(ignore: true)
   @override
@@ -1634,17 +1615,17 @@ class _$_ElasticResponseMeta implements _ElasticResponseMeta {
 
 abstract class _ElasticResponseMeta implements ElasticResponseMeta {
   factory _ElasticResponseMeta(
-      {required String request_id,
+      {@JsonKey(name: "request_id") required String requestId,
       required List<dynamic> warnings,
       required List<dynamic> alerts,
-      required ElasticMetaPage page,
-      required int precision}) = _$_ElasticResponseMeta;
+      required ElasticResponseMetaPage page}) = _$_ElasticResponseMeta;
 
   factory _ElasticResponseMeta.fromJson(Map<String, dynamic> json) =
       _$_ElasticResponseMeta.fromJson;
 
   @override // String ID representing the request. Guaranteed to be unique.
-  String get request_id;
+  @JsonKey(name: "request_id")
+  String get requestId;
   @override // Array of warnings for the query.
 //
 // Included with error responses and success responses, so inspect all responses for warnings.
@@ -1654,29 +1635,28 @@ abstract class _ElasticResponseMeta implements ElasticResponseMeta {
 // Included with error responses and success responses, so inspect all responses for alerts.
   List<dynamic> get alerts;
   @override // Object delimiting the pagination meta data.
-  ElasticMetaPage get page;
-  @override
-  int get precision;
+  ElasticResponseMetaPage get page;
   @override
   @JsonKey(ignore: true)
   _$ElasticResponseMetaCopyWith<_ElasticResponseMeta> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-ElasticMetaPage _$ElasticMetaPageFromJson(Map<String, dynamic> json) {
-  return _ElasticMetaPage.fromJson(json);
+ElasticResponseMetaPage _$ElasticResponseMetaPageFromJson(
+    Map<String, dynamic> json) {
+  return _ElasticResponseMetaPage.fromJson(json);
 }
 
 /// @nodoc
-class _$ElasticMetaPageTearOff {
-  const _$ElasticMetaPageTearOff();
+class _$ElasticResponseMetaPageTearOff {
+  const _$ElasticResponseMetaPageTearOff();
 
-  _ElasticMetaPage call(
+  _ElasticResponseMetaPage call(
       {required int current,
       required int size,
       @JsonKey(name: "total_pages") required int totalPages,
       @JsonKey(name: "total_results") required int totalResults}) {
-    return _ElasticMetaPage(
+    return _ElasticResponseMetaPage(
       current: current,
       size: size,
       totalPages: totalPages,
@@ -1684,16 +1664,16 @@ class _$ElasticMetaPageTearOff {
     );
   }
 
-  ElasticMetaPage fromJson(Map<String, Object?> json) {
-    return ElasticMetaPage.fromJson(json);
+  ElasticResponseMetaPage fromJson(Map<String, Object?> json) {
+    return ElasticResponseMetaPage.fromJson(json);
   }
 }
 
 /// @nodoc
-const $ElasticMetaPage = _$ElasticMetaPageTearOff();
+const $ElasticResponseMetaPage = _$ElasticResponseMetaPageTearOff();
 
 /// @nodoc
-mixin _$ElasticMetaPage {
+mixin _$ElasticResponseMetaPage {
 // Number representing the current page of results.
   int get current =>
       throw _privateConstructorUsedError; // Number representing the results per page.
@@ -1717,15 +1697,15 @@ mixin _$ElasticMetaPage {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ElasticMetaPageCopyWith<ElasticMetaPage> get copyWith =>
+  $ElasticResponseMetaPageCopyWith<ElasticResponseMetaPage> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ElasticMetaPageCopyWith<$Res> {
-  factory $ElasticMetaPageCopyWith(
-          ElasticMetaPage value, $Res Function(ElasticMetaPage) then) =
-      _$ElasticMetaPageCopyWithImpl<$Res>;
+abstract class $ElasticResponseMetaPageCopyWith<$Res> {
+  factory $ElasticResponseMetaPageCopyWith(ElasticResponseMetaPage value,
+          $Res Function(ElasticResponseMetaPage) then) =
+      _$ElasticResponseMetaPageCopyWithImpl<$Res>;
   $Res call(
       {int current,
       int size,
@@ -1734,13 +1714,13 @@ abstract class $ElasticMetaPageCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ElasticMetaPageCopyWithImpl<$Res>
-    implements $ElasticMetaPageCopyWith<$Res> {
-  _$ElasticMetaPageCopyWithImpl(this._value, this._then);
+class _$ElasticResponseMetaPageCopyWithImpl<$Res>
+    implements $ElasticResponseMetaPageCopyWith<$Res> {
+  _$ElasticResponseMetaPageCopyWithImpl(this._value, this._then);
 
-  final ElasticMetaPage _value;
+  final ElasticResponseMetaPage _value;
   // ignore: unused_field
-  final $Res Function(ElasticMetaPage) _then;
+  final $Res Function(ElasticResponseMetaPage) _then;
 
   @override
   $Res call({
@@ -1771,11 +1751,11 @@ class _$ElasticMetaPageCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$ElasticMetaPageCopyWith<$Res>
-    implements $ElasticMetaPageCopyWith<$Res> {
-  factory _$ElasticMetaPageCopyWith(
-          _ElasticMetaPage value, $Res Function(_ElasticMetaPage) then) =
-      __$ElasticMetaPageCopyWithImpl<$Res>;
+abstract class _$ElasticResponseMetaPageCopyWith<$Res>
+    implements $ElasticResponseMetaPageCopyWith<$Res> {
+  factory _$ElasticResponseMetaPageCopyWith(_ElasticResponseMetaPage value,
+          $Res Function(_ElasticResponseMetaPage) then) =
+      __$ElasticResponseMetaPageCopyWithImpl<$Res>;
   @override
   $Res call(
       {int current,
@@ -1785,15 +1765,16 @@ abstract class _$ElasticMetaPageCopyWith<$Res>
 }
 
 /// @nodoc
-class __$ElasticMetaPageCopyWithImpl<$Res>
-    extends _$ElasticMetaPageCopyWithImpl<$Res>
-    implements _$ElasticMetaPageCopyWith<$Res> {
-  __$ElasticMetaPageCopyWithImpl(
-      _ElasticMetaPage _value, $Res Function(_ElasticMetaPage) _then)
-      : super(_value, (v) => _then(v as _ElasticMetaPage));
+class __$ElasticResponseMetaPageCopyWithImpl<$Res>
+    extends _$ElasticResponseMetaPageCopyWithImpl<$Res>
+    implements _$ElasticResponseMetaPageCopyWith<$Res> {
+  __$ElasticResponseMetaPageCopyWithImpl(_ElasticResponseMetaPage _value,
+      $Res Function(_ElasticResponseMetaPage) _then)
+      : super(_value, (v) => _then(v as _ElasticResponseMetaPage));
 
   @override
-  _ElasticMetaPage get _value => super._value as _ElasticMetaPage;
+  _ElasticResponseMetaPage get _value =>
+      super._value as _ElasticResponseMetaPage;
 
   @override
   $Res call({
@@ -1802,7 +1783,7 @@ class __$ElasticMetaPageCopyWithImpl<$Res>
     Object? totalPages = freezed,
     Object? totalResults = freezed,
   }) {
-    return _then(_ElasticMetaPage(
+    return _then(_ElasticResponseMetaPage(
       current: current == freezed
           ? _value.current
           : current // ignore: cast_nullable_to_non_nullable
@@ -1825,15 +1806,15 @@ class __$ElasticMetaPageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ElasticMetaPage implements _ElasticMetaPage {
-  _$_ElasticMetaPage(
+class _$_ElasticResponseMetaPage implements _ElasticResponseMetaPage {
+  _$_ElasticResponseMetaPage(
       {required this.current,
       required this.size,
       @JsonKey(name: "total_pages") required this.totalPages,
       @JsonKey(name: "total_results") required this.totalResults});
 
-  factory _$_ElasticMetaPage.fromJson(Map<String, dynamic> json) =>
-      _$$_ElasticMetaPageFromJson(json);
+  factory _$_ElasticResponseMetaPage.fromJson(Map<String, dynamic> json) =>
+      _$$_ElasticResponseMetaPageFromJson(json);
 
   @override // Number representing the current page of results.
   final int current;
@@ -1858,14 +1839,14 @@ class _$_ElasticMetaPage implements _ElasticMetaPage {
 
   @override
   String toString() {
-    return 'ElasticMetaPage(current: $current, size: $size, totalPages: $totalPages, totalResults: $totalResults)';
+    return 'ElasticResponseMetaPage(current: $current, size: $size, totalPages: $totalPages, totalResults: $totalResults)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _ElasticMetaPage &&
+            other is _ElasticResponseMetaPage &&
             const DeepCollectionEquality().equals(other.current, current) &&
             const DeepCollectionEquality().equals(other.size, size) &&
             const DeepCollectionEquality()
@@ -1884,25 +1865,26 @@ class _$_ElasticMetaPage implements _ElasticMetaPage {
 
   @JsonKey(ignore: true)
   @override
-  _$ElasticMetaPageCopyWith<_ElasticMetaPage> get copyWith =>
-      __$ElasticMetaPageCopyWithImpl<_ElasticMetaPage>(this, _$identity);
+  _$ElasticResponseMetaPageCopyWith<_ElasticResponseMetaPage> get copyWith =>
+      __$ElasticResponseMetaPageCopyWithImpl<_ElasticResponseMetaPage>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ElasticMetaPageToJson(this);
+    return _$$_ElasticResponseMetaPageToJson(this);
   }
 }
 
-abstract class _ElasticMetaPage implements ElasticMetaPage {
-  factory _ElasticMetaPage(
+abstract class _ElasticResponseMetaPage implements ElasticResponseMetaPage {
+  factory _ElasticResponseMetaPage(
           {required int current,
           required int size,
           @JsonKey(name: "total_pages") required int totalPages,
           @JsonKey(name: "total_results") required int totalResults}) =
-      _$_ElasticMetaPage;
+      _$_ElasticResponseMetaPage;
 
-  factory _ElasticMetaPage.fromJson(Map<String, dynamic> json) =
-      _$_ElasticMetaPage.fromJson;
+  factory _ElasticResponseMetaPage.fromJson(Map<String, dynamic> json) =
+      _$_ElasticResponseMetaPage.fromJson;
 
   @override // Number representing the current page of results.
   int get current;
@@ -1926,7 +1908,7 @@ abstract class _ElasticMetaPage implements ElasticMetaPage {
   int get totalResults;
   @override
   @JsonKey(ignore: true)
-  _$ElasticMetaPageCopyWith<_ElasticMetaPage> get copyWith =>
+  _$ElasticResponseMetaPageCopyWith<_ElasticResponseMetaPage> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -2158,7 +2140,7 @@ mixin _$ElasticResult {
 // You must handle the result of this [Map] on your side, please check
 // the example of the package to learn more about this.
   Map<String, dynamic>? get data =>
-      throw _privateConstructorUsedError; // A map of the snippet, please check the documentation of
+      throw _privateConstructorUsedError; // A map of the snippets, please check the documentation of
 // [ElasticResultSnippet] to learn more.
   Map<String, ElasticResultSnippet>? get snippets =>
       throw _privateConstructorUsedError; // An object containing information about a given result
@@ -2288,7 +2270,7 @@ class _$_ElasticResult implements _ElasticResult {
 // You must handle the result of this [Map] on your side, please check
 // the example of the package to learn more about this.
   final Map<String, dynamic>? data;
-  @override // A map of the snippet, please check the documentation of
+  @override // A map of the snippets, please check the documentation of
 // [ElasticResultSnippet] to learn more.
   final Map<String, ElasticResultSnippet>? snippets;
   @override // An object containing information about a given result
@@ -2344,7 +2326,7 @@ abstract class _ElasticResult implements ElasticResult {
 // You must handle the result of this [Map] on your side, please check
 // the example of the package to learn more about this.
   Map<String, dynamic>? get data;
-  @override // A map of the snippet, please check the documentation of
+  @override // A map of the snippets, please check the documentation of
 // [ElasticResultSnippet] to learn more.
   Map<String, ElasticResultSnippet>? get snippets;
   @override // An object containing information about a given result

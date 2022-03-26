@@ -32,7 +32,7 @@ class ElasticResult with _$ElasticResult {
     // the example of the package to learn more about this.
     Map<String, dynamic>? data,
 
-    // A map of the snippet, please check the documentation of
+    // A map of the snippets, please check the documentation of
     // [ElasticResultSnippet] to learn more.
     Map<String, ElasticResultSnippet>? snippets,
 
