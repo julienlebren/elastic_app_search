@@ -39,12 +39,16 @@ for (ElasticResult result in response.results) {
 }
 ```
 
-This example will query the parks containing *parks"* in any field of the documents.
+This example will query the parks containing *parks* in any field of the documents.
 The results will be filtering the parks based in *California*, with the flag *world_heritage_site* set to *true*.
 Only the **title** and a snippet of 140 chars of the **description** of the park will be returned by the query.
 We request the first page, limited to 50 documents.
 
-## Elastic Service
+## Table of contents
+
+* [ElasticAppSearch](#ElasticAppSearch)
+
+## ElasticAppSearch
 
 Before any operation, you need to create an instance of `ElasticAppSearch`.
 
@@ -63,7 +67,7 @@ final service = ElasticAppSearch(
 );
 ```
 
-## Elastic Engine
+## ElasticEngine
 
 All the queries must be sent to an engine. 
 To make instantiating an engine easy, we created this syntax:
@@ -76,7 +80,7 @@ String | The name of your engine
 final engine = service.engine("engine_name");
 ```
 
-## Elastic Query
+## ElasticQuery
 
 The only required parameter to instanciate a query is a string which is the word you are looking for through your documents.
 
@@ -181,7 +185,7 @@ final query = query
 
 ## ElasticResponse
 
-The response object contains two parts, the meta in a [ElasticResponseMeta] object and the results in a list of [ElasticResult] objects.
+The response object contains two parts, the meta in a `ElasticResponseMeta` object and the results in a list of `ElasticResult` objects.
 
 🔍 See https://www.elastic.co/guide/en/app-search/current/search.html#search-api-response-body
 
@@ -218,7 +222,7 @@ An object presenting a result to the query.
 
 The data param is a map of the fields requested with the `.searchResult` modfifier. If this modifier was omitted, all the fields of the document are returned.
 
-The snippets is a map of the snippets returned by the query, if requested with the `.searchResult` modfifier. By default, Elastic returns the snippets as HTML snippets. This package manipulates the result to return some stuff that can be handled by Flutter: an [ElasticResultSnippet] object.
+The snippets is a map of the snippets returned by the query, if requested with the `.searchResult` modfifier. By default, Elastic returns the snippets as HTML snippets. This package manipulates the result to return some stuff that can be handled by Flutter: an `ElasticResultSnippet` object.
 
 Param | Type | Description
 ----- | ---- | -------------
@@ -241,7 +245,7 @@ score | double | The relevance of the result
 An object contaning the snippet of the result.
 If you don't want to display your search results with highlights on the matching keyword, just ignore `textParts` and `highlights` and use only `fullText`.
 
-`textParts` and `highlights` can be used to build a [RichText] widget in Flutter, please look at the example of the package to have a concrete example.
+`textParts` and `highlights` can be used to build a `RichText` widget in Flutter, please look at the example of the package to have a concrete example.
 
 Param | Type | Description
 ----- | ---- | -------------
