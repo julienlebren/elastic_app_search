@@ -70,12 +70,12 @@ extension ElasticQueryX on ElasticQuery {
       'You must provide at least one condition (isEqualTo, isNotEqualTo, whereIn, whereNotIn, isMaybeEqualTo, whereMaybeIn)')
   ElasticQuery filter(
     String field, {
-    String? isEqualTo,
-    List<String>? whereIn,
-    /*String? isNotEqualTo,
-    List<String>? whereNotIn,
-    String? isMaybeEqualTo,
-    List<String>? whereMaybeIn,*/
+    Object? isEqualTo,
+    List<Object?>? whereIn,
+    /*Object? isNotEqualTo,
+    List<Object?>? whereNotIn,
+    Object? isMaybeEqualTo,
+    List<Object?>? whereMaybeIn,*/
   }) {
     return copyWith(
       filters: [
