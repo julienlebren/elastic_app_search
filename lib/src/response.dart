@@ -6,10 +6,10 @@ part of elastic_app_search;
 @freezed
 class ElasticResponse with _$ElasticResponse {
   factory ElasticResponse({
-    // Object delimiting the results meta data.
+    /// Object delimiting the results meta data.
     required ElasticResponseMeta meta,
 
-    // Array of results matching the search.
+    /// Array of results matching the search.
     required List<ElasticResult> results,
   }) = _ElasticResponse;
 
@@ -23,20 +23,20 @@ class ElasticResponse with _$ElasticResponse {
 @freezed
 class ElasticResponseMeta with _$ElasticResponseMeta {
   factory ElasticResponseMeta({
-    // String ID representing the request. Guaranteed to be unique.
+    /// String ID representing the request. Guaranteed to be unique.
     @JsonKey(name: "request_id") required String requestId,
 
-    // Array of warnings for the query.
-    //
-    // Included with error responses and success responses, so inspect all responses for warnings.
+    /// Array of warnings for the query.
+    ///
+    /// Included with error responses and success responses, so inspect all responses for warnings.
     required List<dynamic> warnings,
 
-    // Array of alerts for your deployment.
-    //
-    // Included with error responses and success responses, so inspect all responses for alerts.
+    /// Array of alerts for your deployment.
+    ///
+    /// Included with error responses and success responses, so inspect all responses for alerts.
     required List<dynamic> alerts,
 
-    // Object delimiting the pagination meta data.
+    /// Object delimiting the pagination meta data.
     required ElasticResponseMetaPage page,
   }) = _ElasticResponseMeta;
 
@@ -48,26 +48,26 @@ class ElasticResponseMeta with _$ElasticResponseMeta {
 @freezed
 class ElasticResponseMetaPage with _$ElasticResponseMetaPage {
   factory ElasticResponseMetaPage({
-    // Number representing the current page of results.
+    /// Number representing the current page of results.
     required int current,
 
-    // Number representing the results per page.
+    /// Number representing the results per page.
     required int size,
 
-    // Number representing the total pages of results.
-    // Value is 0 when you paginate beyond 10,000 results.
-    //
-    // See [https://www.elastic.co/guide/en/app-search/current/search-guide.html#search-guide-paginate]
+    /// Number representing the total pages of results.
+    /// Value is 0 when you paginate beyond 10,000 results.
+    ///
+    /// See [https://www.elastic.co/guide/en/app-search/current/search-guide.html#search-guide-paginate]
     @JsonKey(name: "total_pages") required int totalPages,
 
-    // Number representing the total results across all pages.
-    //
-    // The values 0 through 9999 are exact counts.
-    //
-    // The value 10000 is a pseudo keyword representing greater than or equal to 10,000 results.
-    //
-    // See [https://www.elastic.co/guide/en/app-search/current/search-guide.html#search-guide-display-total]
-    // and [https://www.elastic.co/guide/en/app-search/current/search-guide.html#search-guide-count-documents]
+    /// Number representing the total results across all pages.
+    ///
+    /// The values 0 through 9999 are exact counts.
+    ///
+    /// The value 10000 is a pseudo keyword representing greater than or equal to 10,000 results.
+    ///
+    /// See [https://www.elastic.co/guide/en/app-search/current/search-guide.html#search-guide-display-total]
+    /// and [https://www.elastic.co/guide/en/app-search/current/search-guide.html#search-guide-count-documents]
     @JsonKey(name: "total_results") required int totalResults,
   }) = _ElasticResponseMetaPage;
 

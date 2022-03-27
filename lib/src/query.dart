@@ -17,34 +17,34 @@ class ElasticQuery with _$ElasticQuery {
   @Assert('precision != null && (precision < 1 || precision > 11)',
       'The value of the precision parameter must be an integer between 1 and 11, inclusive.')
   const factory ElasticQuery({
-    // An object representing an Elastic engine
+    /// An object representing an Elastic engine
     @JsonKey(ignore: true) ElasticEngine? engine,
 
-    // String or number to match.
+    /// String or number to match.
     required String query,
 
-    // Use the precision parameter of the search API to tune precision
-    // and recall for a query. Learn more in Precision tuning (beta).
-    // See [https://www.elastic.co/guide/en/app-search/current/search-api-precision.html]
-    //
-    // The value of the precision parameter must be an integer between 1 and 11, inclusive.
-    // The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
-    // Lower values favor recall, while higher values favor precision.
+    /// Use the precision parameter of the search API to tune precision
+    /// and recall for a query. Learn more in Precision tuning (beta).
+    /// See [https://www.elastic.co/guide/en/app-search/current/search-api-precision.html]
+    ///
+    /// The value of the precision parameter must be an integer between 1 and 11, inclusive.
+    /// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
+    /// Lower values favor recall, while higher values favor precision.
     @JsonKey(name: "precision") int? queryPrecision,
 
-    // Object to delimit the pagination parameters.
+    /// Object to delimit the pagination parameters.
     @JsonKey(name: "page") ElasticSearchPage? searchPage,
 
-    // Object to filter documents that contain a specific field value.
-    // See [https://www.elastic.co/guide/en/app-search/current/filters.html]
+    /// Object to filter documents that contain a specific field value.
+    /// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
     @_ElasticSearchFiltersConverter() List<ElasticSearchFilter>? filters,
 
-    // Object which restricts a query to search only specific fields.
+    /// Object which restricts a query to search only specific fields.
     @_ElasticSearchFieldsConverter()
     @JsonKey(name: "search_fields")
         List<ElasticSearchField>? searchFields,
 
-    // Object to define the fields which appear in search results and how their values are rendered.
+    /// Object to define the fields which appear in search results and how their values are rendered.
     @_ElasticResultFieldsConverter()
     @Default([])
     @JsonKey(name: "result_fields")
@@ -53,7 +53,9 @@ class ElasticQuery with _$ElasticQuery {
 
   factory ElasticQuery.fromJson(Map<String, dynamic> json) =>
       _$ElasticQueryFromJson(json);
+}
 
+extension ElasticQueryX on ElasticQuery {
   /// Creates and returns a new [ElasticQuery] with additional [ElasticSearchFilter],
   /// an object to filter documents that contain a specific field value.
   /// Available on text, number, and date fields.
@@ -92,9 +94,9 @@ class ElasticQuery with _$ElasticQuery {
   /// The value of the precision parameter must be an integer between 1 and 11, inclusive.
   /// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
   /// Lower values favor recall, while higher values favor precision.
-  @Assert('precision < 1 || precision > 11',
+  @Assert('value < 1 || value > 11',
       'The value of the precision parameter must be an integer between 1 and 11, inclusive.')
-  ElasticQuery precision(int precision) => copyWith(queryPrecision: precision);
+  ElasticQuery precision(int value) => copyWith(queryPrecision: value);
 
   /// Takes a field with an optionnal `weight`, creates and returns a new [ElasticQuery]
   ///
@@ -183,14 +185,14 @@ class ElasticSearchPage with _$ElasticSearchPage {
   @Assert('current != null && (current < 1 || current > 100)',
       'The current must be greater than or equal to 1 and less than or equal to 100.')
   const factory ElasticSearchPage({
-    // Number of results per page.
-    // Must be greater than or equal to 1 and less than or equal to 1000.
-    // Defaults to 10.
+    /// Number of results per page.
+    /// Must be greater than or equal to 1 and less than or equal to 1000.
+    /// Defaults to 10.
     @Default(10) int? size,
 
-    // Page number of results to return.
-    //// Must be greater than or equal to 1 and less than or equal to 100.
-    ///Defaults to 1.
+    /// Page number of results to return.
+    /// Must be greater than or equal to 1 and less than or equal to 100.
+    /// Defaults to 1.
     @Default(1) int? current,
   }) = _ElasticSearchPage;
 
@@ -211,10 +213,11 @@ class ElasticSearchPage with _$ElasticSearchPage {
 class ElasticSearchFilter with _$ElasticSearchFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory ElasticSearchFilter({
-    // The field from your schema upon which to apply your filter.
+    /// The field from your schema upon which to apply your filter.
     required String name,
-    // The value upon which to filter. The value must be an exact match,
-    // and can be a String, a boolean, a number, or an array of these types.
+
+    /// The value upon which to filter. The value must be an exact match,
+    /// and can be a String, a boolean, a number, or an array of these types.
     required List<dynamic> value,
   }) = _ElasticSearchFilter;
 
@@ -254,11 +257,11 @@ class _ElasticSearchFiltersConverter
 class ElasticSearchField with _$ElasticSearchField {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory ElasticSearchField({
-    // The name of the field. It must exist within your Engine schema and be of type text.
+    /// The name of the field. It must exist within your Engine schema and be of type text.
     required String name,
 
-    // Optionnal. Apply Weights to each search field.
-    // Engine level Weight settings will be applied is none are provided.
+    /// Optionnal. Apply Weights to each search field.
+    /// Engine level Weight settings will be applied is none are provided.
     int? weight,
   }) = _ElasticSearchField;
 
@@ -307,17 +310,19 @@ class ElasticResultField with _$ElasticResultField {
   @Assert('snippetSize != null && snippetSize < 20',
       'Raw size must be at least 20.')
   const factory ElasticResultField({
-    // The name of the field. It must exist within your Engine schema and be of type text.
+    /// The name of the field. It must exist within your Engine schema and be of type text.
     required String name,
 
-    // Length of the return value.
-    // Must be at least 20; defaults to the entire text field.
-    // If given for a different field type other than text, it will be silently ignored.
+    /// Length of the return value.
+    /// Must be at least 20; defaults to the entire text field.
+    /// If given for a different field type other than text, it will be silently ignored.
     int? rawSize,
 
-    // Length of the snippet returned.
-    // Must be at least 20; defaults to 100.
+    /// Length of the snippet returned.
+    /// Must be at least 20; defaults to 100.
     int? snippetSize,
+
+    /// If true, return the raw text field if no snippet is found. If false, only use snippets.
     @Default(true) bool fallback,
   }) = _ElasticResultField;
 

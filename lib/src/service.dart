@@ -23,11 +23,11 @@ class ElasticAppSearch {
 
   final String _endPoint;
   final String _searchKey;
-  final dio = Dio();
+  final _dio = Dio();
 
   static const String _errorMessage = "Unable to get response from API server";
 
-  // Returns an instance for the specified `endPoint` and `searchKey`.
+  /// Returns an instance for the specified `endPoint` and `searchKey`.
   ElasticAppSearch get instance => ElasticAppSearch._(
         endPoint: _endPoint,
         searchKey: _searchKey,
@@ -36,16 +36,16 @@ class ElasticAppSearch {
   String _apiUrl(String engine) =>
       '$_endPoint/api/as/v1/engines/$engine/search';
 
-  // Executes a request on Elastic App Search and returns a [ElasticResponse] object
-  // An [ElasticQuery] must be provided with the parameters of the query.
-  //
-  // The [CancelToken] is optionnal and can be provided to cancel requests if needed.
-  // A use case is available in the example.
+  /// Executes a request on Elastic App Search and returns a [ElasticResponse] object
+  /// An [ElasticQuery] must be provided with the parameters of the query.
+  ///
+  /// The [CancelToken] is optionnal and can be provided to cancel requests if needed.
+  /// A use case is available in the example.
   Future<ElasticResponse> post(
     ElasticQuery query, [
     CancelToken? cancelToken,
   ]) async {
-    final response = await dio.post<Map>(
+    final response = await _dio.post<Map>(
       _apiUrl(query.engine!.name),
       options: Options(
         headers: {
@@ -64,7 +64,7 @@ class ElasticAppSearch {
     }
   }
 
-  // Creates and retuens a new [ElasticObject] linked to this instance of service.
+  /// Creates and retuens a new [ElasticObject] linked to this instance of service.
   ElasticEngine engine(String name) {
     assert(
       name.isNotEmpty,

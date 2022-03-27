@@ -7,13 +7,13 @@ const _highlightEnd = '</em>';
 @freezed
 class ElasticResultMeta with _$ElasticResultMeta {
   factory ElasticResultMeta({
-    // The document ID
+    /// The document ID
     required String id,
 
-    // The engine name
+    /// The engine name
     required String engine,
 
-    // The relevance of the result
+    /// The relevance of the result
     required double score,
   }) = _ElasticResultMeta;
 
@@ -25,18 +25,18 @@ class ElasticResultMeta with _$ElasticResultMeta {
 @freezed
 class ElasticResult with _$ElasticResult {
   factory ElasticResult({
-    // A map of the raw data of the document, containing the fields
-    // requested in the [ElasticResultField] passed to the query
-    //
-    // You must handle the result of this [Map] on your side, please check
-    // the example of the package to learn more about this.
+    /// A map of the raw data of the document, containing the fields
+    /// requested in the [ElasticResultField] passed to the query
+    ///
+    /// You must handle the result of this [Map] on your side, please check
+    /// the example of the package to learn more about this.
     Map<String, dynamic>? data,
 
-    // A map of the snippets, please check the documentation of
-    // [ElasticResultSnippet] to learn more.
+    /// A map of the snippets, please check the documentation of
+    /// [ElasticResultSnippet] to learn more.
     Map<String, ElasticResultSnippet>? snippets,
 
-    // An object containing information about a given result
+    /// An object containing information about a given result
     @JsonKey(name: "_meta") required ElasticResultMeta meta,
   }) = _ElasticResult;
 
@@ -90,7 +90,7 @@ class ElasticResult with _$ElasticResult {
 }
 
 extension ElasticResultX on ElasticResult {
-  // An easier way to get the document id
+  /// An easier way to get the document id
   String get id => meta.id;
 }
 
@@ -98,21 +98,21 @@ extension ElasticResultX on ElasticResult {
 @freezed
 class ElasticResultSnippet with _$ElasticResultSnippet {
   factory ElasticResultSnippet({
-    // The full snippet, matching the size provided in the [ElasticResultField]
-    //passed to the query.
+    /// The full snippet, matching the size provided in the [ElasticResultField]
+    /// passed to the query.
     required String fullText,
 
-    // The snippet splitted in parts around the matched query.
-    // For example, if the document contains the string "The weather is beautiful in Florida today"
-    // and your query is "beautiful", this array will contain:
-    // "The weather is ", "beautiful", " in Florida today".
-    // This feature intends to build [RichText] on your app to highlight the query
-    // in the result.
+    /// The snippet splitted in parts around the matched query.
+    /// For example, if the document contains the string "The weather is beautiful in Florida today"
+    /// and your query is "beautiful", this array will contain:
+    /// "The weather is ", "beautiful", " in Florida today".
+    /// This feature intends to build [RichText] on your app to highlight the query
+    /// in the result.
     required List<String> textParts,
 
-    // The words matching the query. They can be many because even if you are querying
-    // something like "car", the result can also contain "cars". So we need to
-    // return all the words Elastic decided to match in order to highlight all the matching words.
+    /// The words matching the query. They can be many because even if you are querying
+    /// something like "car", the result can also contain "cars". So we need to
+    /// return all the words Elastic decided to match in order to highlight all the matching words.
     required List<String> highlights,
   }) = _ElasticResultSnippet;
 
