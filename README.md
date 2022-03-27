@@ -21,7 +21,7 @@ final service = ElasticAppSearch(
     searchKey: "search-soaewu2ye6uc45dr8mcd54v8",
 );
 
-ElasticQuery response = await service
+ElasticResponse response = await service
   .engine("national-parks-demo")
   .query("parks")
   .filter("states", isEqualTo: "California")
@@ -34,7 +34,7 @@ ElasticQuery response = await service
 for (ElasticResult result in response.results) {
   final data = result.data;
   if (data != null) {
-    print("${data!["title"]}: ${data["description"]}");
+    print("${data["title"]}: ${data["description"]}");
   }
 }
 ```
