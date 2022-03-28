@@ -1,3 +1,7 @@
+## 0.1.1+3
+
+* Fixed lints errors
+
 ## 0.1.1+2
 
 * Fixed error in `.searchFilter` parameters
