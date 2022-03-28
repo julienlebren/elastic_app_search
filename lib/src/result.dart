@@ -24,6 +24,8 @@ class ElasticResultMeta with _$ElasticResultMeta {
 /// An object presenting a result to the query
 @freezed
 class ElasticResult with _$ElasticResult {
+  const ElasticResult._();
+
   factory ElasticResult({
     /// A map of the raw data of the document, containing the fields
     /// requested in the [ElasticResultField] passed to the query
@@ -87,9 +89,7 @@ class ElasticResult with _$ElasticResult {
       snippets: _snippets,
     );
   }
-}
 
-extension ElasticResultX on ElasticResult {
   /// An easier way to get the document id
   String get id => meta.id;
 }

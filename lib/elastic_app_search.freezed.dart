@@ -274,7 +274,7 @@ class __$ElasticQueryCopyWithImpl<$Res> extends _$ElasticQueryCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$_ElasticQuery implements _ElasticQuery {
+class _$_ElasticQuery extends _ElasticQuery {
   const _$_ElasticQuery(
       {@JsonKey(ignore: true)
           this.engine,
@@ -295,7 +295,8 @@ class _$_ElasticQuery implements _ElasticQuery {
         assert(
             queryPrecision != null &&
                 (queryPrecision < 1 || queryPrecision > 11),
-            'The value of the precision parameter must be an integer between 1 and 11, inclusive.');
+            'The value of the precision parameter must be an integer between 1 and 11, inclusive.'),
+        super._();
 
   factory _$_ElasticQuery.fromJson(Map<String, dynamic> json) =>
       _$$_ElasticQueryFromJson(json);
@@ -389,7 +390,7 @@ class _$_ElasticQuery implements _ElasticQuery {
   }
 }
 
-abstract class _ElasticQuery implements ElasticQuery {
+abstract class _ElasticQuery extends ElasticQuery {
   const factory _ElasticQuery(
       {@JsonKey(ignore: true)
           ElasticEngine? engine,
@@ -406,6 +407,7 @@ abstract class _ElasticQuery implements ElasticQuery {
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           List<ElasticResultField>? resultFields}) = _$_ElasticQuery;
+  const _ElasticQuery._() : super._();
 
   factory _ElasticQuery.fromJson(Map<String, dynamic> json) =
       _$_ElasticQuery.fromJson;
@@ -2406,9 +2408,10 @@ class __$ElasticResultCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ElasticResult implements _ElasticResult {
+class _$_ElasticResult extends _ElasticResult {
   _$_ElasticResult(
-      {this.data, this.snippets, @JsonKey(name: "_meta") required this.meta});
+      {this.data, this.snippets, @JsonKey(name: "_meta") required this.meta})
+      : super._();
 
   factory _$_ElasticResult.fromJson(Map<String, dynamic> json) =>
       _$$_ElasticResultFromJson(json);
@@ -2465,12 +2468,13 @@ class _$_ElasticResult implements _ElasticResult {
   }
 }
 
-abstract class _ElasticResult implements ElasticResult {
+abstract class _ElasticResult extends ElasticResult {
   factory _ElasticResult(
           {Map<String, dynamic>? data,
           Map<String, ElasticResultSnippet>? snippets,
           @JsonKey(name: "_meta") required ElasticResultMeta meta}) =
       _$_ElasticResult;
+  _ElasticResult._() : super._();
 
   factory _ElasticResult.fromJson(Map<String, dynamic> json) =
       _$_ElasticResult.fromJson;

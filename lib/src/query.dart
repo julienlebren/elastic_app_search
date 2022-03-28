@@ -9,6 +9,8 @@ part of elastic_app_search;
 /// available in this package.
 @freezed
 class ElasticQuery with _$ElasticQuery {
+  const ElasticQuery._();
+
   @JsonSerializable(
     explicitToJson: true,
     includeIfNull: false,
@@ -54,9 +56,7 @@ class ElasticQuery with _$ElasticQuery {
 
   factory ElasticQuery.fromJson(Map<String, dynamic> json) =>
       _$ElasticQueryFromJson(json);
-}
 
-extension ElasticQueryX on ElasticQuery {
   /// Creates and returns a new [ElasticQuery] with additional [ElasticSearchFilter],
   /// an object to filter documents that contain a specific field value.
   /// Available on text, number, and date fields.
@@ -168,6 +168,7 @@ extension ElasticQueryX on ElasticQuery {
     );
   }
 
+  /// Fetch the documents for this query.
   Future<ElasticResponse> get([CancelToken? cancelToken]) {
     return engine!.get(this, cancelToken);
   }
