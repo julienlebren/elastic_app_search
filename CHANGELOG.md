@@ -1,4 +1,4 @@
-## 0.1.3
+## 0.1.2+1
 
 * `ElasticResult`.`fromJsonWithData` has been transformed to private method
 
