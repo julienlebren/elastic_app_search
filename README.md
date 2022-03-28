@@ -135,13 +135,16 @@ The other filters available, "or" and "not", will be added in a future release o
 Param | Type | Description
 ----- | ---- | -------------
 *(unnamed)* | String | The field name
-isEqualTo | String | The value that the field must match
-whereIn | List\<String\> | The field must match one of these values 
+isEqualTo | dynamic| The value that the field must match
+whereIn | List\<dynamic\> | The field must match one of these values 
 
 **Warning:** You cannot use `isEqualTo` and `whereIn` on the same field at the same time, otherwise it will raise an exception.
 
 ```dart
 final query = query.filter("field", isEqualTo: "value");
+```
+```dart
+final query = query.filter("field", isEqualTo: true);
 ```
 ```dart
 final query = query.filter("field", whereIn: ["value1", "value2"]);
