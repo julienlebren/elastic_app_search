@@ -1,3 +1,7 @@
+## 0.1.3
+
+* `ElasticResult`.`fromJsonWithData` has been transformed to private method
+
 ## 0.1.2
 
 * Removed `ElasticQuery`and `ElasticResult` extensions and moved their functions into the main classes

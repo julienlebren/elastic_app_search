@@ -43,9 +43,9 @@ class ElasticResult with _$ElasticResult {
   }) = _ElasticResult;
 
   factory ElasticResult.fromJson(Map<String, dynamic> json) =>
-      ElasticResult.fromJsonWithData(json);
+      ElasticResult._fromJsonWithData(json);
 
-  factory ElasticResult.fromJsonWithData(Map<String, dynamic> json) {
+  factory ElasticResult._fromJsonWithData(Map<String, dynamic> json) {
     var unescape = HtmlUnescape();
     var _data = <String, dynamic>{};
     var _snippets = <String, ElasticResultSnippet>{};
