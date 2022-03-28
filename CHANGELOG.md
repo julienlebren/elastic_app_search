@@ -1,3 +1,8 @@
+## 0.1.2
+
+* Removed `ElasticQuery`and `ElasticResult` extensions and moved their functions into the main classes
+* Fixed lints errors to pass static analysis
+
 ## 0.1.1+3
 
 * Fixed lints errors
