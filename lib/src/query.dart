@@ -236,12 +236,12 @@ class _ElasticSearchFiltersConverter
   Map? toJson(List<ElasticSearchFilter>? searchFilters) {
     if (searchFilters == null) return null;
     if (searchFilters.length == 1) {
-      return {"${searchFilters.first.name}": searchFilters.first.value};
+      return {searchFilters.first.name: searchFilters.first.value};
     }
 
     var values = [];
     for (final searchFilter in searchFilters) {
-      values.add({"${searchFilter.name}": searchFilter.value});
+      values.add({searchFilter.name: searchFilter.value});
     }
     return {"all": values};
   }
