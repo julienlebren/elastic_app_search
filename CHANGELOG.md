@@ -1,3 +1,7 @@
+## 0.1.3
+
+* Some classes are now private
+
 ## 0.1.2+6
 
 * Fixed error in `ElasticSearchPage` assert
