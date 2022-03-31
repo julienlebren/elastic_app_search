@@ -292,11 +292,6 @@ class _$_ElasticQuery extends _ElasticQuery {
       @JsonKey(name: "result_fields")
           this.resultFields = const []})
       : assert(engine != null, 'An engine is required to build a query.'),
-        assert(
-            queryPrecision == null ||
-                (queryPrecision != null &&
-                    (queryPrecision < 1 || queryPrecision > 11)),
-            'The value of the precision parameter must be an integer between 1 and 11, inclusive.'),
         super._();
 
   factory _$_ElasticQuery.fromJson(Map<String, dynamic> json) =>
