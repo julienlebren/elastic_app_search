@@ -10,13 +10,10 @@ _$_ElasticQuery _$$_ElasticQueryFromJson(Map<String, dynamic> json) =>
     _$_ElasticQuery(
       query: json['query'] as String,
       queryPrecision: json['precision'] as int?,
-      searchPage: json['page'] == null
-          ? null
-          : ElasticSearchPage.fromJson(json['page'] as Map<String, dynamic>),
+      searchPage: json['page'],
       filters: const _ElasticSearchFiltersConverter()
           .fromJson(json['filters'] as Map?),
-      searchFields: const _ElasticSearchFieldsConverter()
-          .fromJson(json['search_fields'] as Map?),
+      searchFields: json['search_fields'] as List<dynamic>?,
       resultFields: json['result_fields'] == null
           ? const []
           : const _ElasticResultFieldsConverter()
@@ -35,24 +32,24 @@ Map<String, dynamic> _$$_ElasticQueryToJson(_$_ElasticQuery instance) {
   }
 
   writeNotNull('precision', instance.queryPrecision);
-  writeNotNull('page', instance.searchPage?.toJson());
+  writeNotNull('page', instance.searchPage);
   writeNotNull('filters',
       const _ElasticSearchFiltersConverter().toJson(instance.filters));
-  writeNotNull('search_fields',
-      const _ElasticSearchFieldsConverter().toJson(instance.searchFields));
+  writeNotNull('search_fields', instance.searchFields);
   writeNotNull('result_fields',
       const _ElasticResultFieldsConverter().toJson(instance.resultFields));
   return val;
 }
 
-_$_ElasticSearchPage _$$_ElasticSearchPageFromJson(Map<String, dynamic> json) =>
-    _$_ElasticSearchPage(
+_$__ElasticSearchPage _$$__ElasticSearchPageFromJson(
+        Map<String, dynamic> json) =>
+    _$__ElasticSearchPage(
       size: json['size'] as int? ?? 10,
       current: json['current'] as int? ?? 1,
     );
 
-Map<String, dynamic> _$$_ElasticSearchPageToJson(
-    _$_ElasticSearchPage instance) {
+Map<String, dynamic> _$$__ElasticSearchPageToJson(
+    _$__ElasticSearchPage instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
@@ -66,29 +63,29 @@ Map<String, dynamic> _$$_ElasticSearchPageToJson(
   return val;
 }
 
-_$_ElasticSearchFilter _$$_ElasticSearchFilterFromJson(
+_$__ElasticSearchFilter _$$__ElasticSearchFilterFromJson(
         Map<String, dynamic> json) =>
-    _$_ElasticSearchFilter(
+    _$__ElasticSearchFilter(
       name: json['name'] as String,
       value: json['value'] as List<dynamic>,
     );
 
-Map<String, dynamic> _$$_ElasticSearchFilterToJson(
-        _$_ElasticSearchFilter instance) =>
+Map<String, dynamic> _$$__ElasticSearchFilterToJson(
+        _$__ElasticSearchFilter instance) =>
     <String, dynamic>{
       'name': instance.name,
       'value': instance.value,
     };
 
-_$_ElasticSearchField _$$_ElasticSearchFieldFromJson(
+_$__ElasticSearchField _$$__ElasticSearchFieldFromJson(
         Map<String, dynamic> json) =>
-    _$_ElasticSearchField(
+    _$__ElasticSearchField(
       name: json['name'] as String,
       weight: json['weight'] as int?,
     );
 
-Map<String, dynamic> _$$_ElasticSearchFieldToJson(
-    _$_ElasticSearchField instance) {
+Map<String, dynamic> _$$__ElasticSearchFieldToJson(
+    _$__ElasticSearchField instance) {
   final val = <String, dynamic>{
     'name': instance.name,
   };
@@ -103,17 +100,17 @@ Map<String, dynamic> _$$_ElasticSearchFieldToJson(
   return val;
 }
 
-_$_ElasticResultField _$$_ElasticResultFieldFromJson(
+_$__ElasticResultField _$$__ElasticResultFieldFromJson(
         Map<String, dynamic> json) =>
-    _$_ElasticResultField(
+    _$__ElasticResultField(
       name: json['name'] as String,
       rawSize: json['rawSize'] as int?,
       snippetSize: json['snippetSize'] as int?,
       fallback: json['fallback'] as bool? ?? true,
     );
 
-Map<String, dynamic> _$$_ElasticResultFieldToJson(
-    _$_ElasticResultField instance) {
+Map<String, dynamic> _$$__ElasticResultFieldToJson(
+    _$__ElasticResultField instance) {
   final val = <String, dynamic>{
     'name': instance.name,
   };

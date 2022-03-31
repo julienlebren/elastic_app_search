@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 part of elastic_app_search;
 
 /// An object contaning all the settings to execute a query
@@ -33,22 +35,22 @@ class ElasticQuery with _$ElasticQuery {
     @JsonKey(name: "precision") int? queryPrecision,
 
     /// Object to delimit the pagination parameters.
-    @JsonKey(name: "page") ElasticSearchPage? searchPage,
+    @JsonKey(name: "page") _ElasticSearchPage? searchPage,
 
     /// Object to filter documents that contain a specific field value.
     /// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
-    @_ElasticSearchFiltersConverter() List<ElasticSearchFilter>? filters,
+    @_ElasticSearchFiltersConverter() List<_ElasticSearchFilter>? filters,
 
     /// Object which restricts a query to search only specific fields.
     @_ElasticSearchFieldsConverter()
     @JsonKey(name: "search_fields")
-        List<ElasticSearchField>? searchFields,
+        List<_ElasticSearchField>? searchFields,
 
     /// Object to define the fields which appear in search results and how their values are rendered.
     @_ElasticResultFieldsConverter()
     @Default([])
     @JsonKey(name: "result_fields")
-        List<ElasticResultField>? resultFields,
+        List<_ElasticResultField>? resultFields,
   }) = _ElasticQuery;
 
   factory ElasticQuery.fromJson(Map<String, dynamic> json) =>
@@ -78,7 +80,7 @@ class ElasticQuery with _$ElasticQuery {
     return copyWith(
       filters: [
         ...?filters,
-        ElasticSearchFilter(
+        _ElasticSearchFilter(
           name: field,
           value: whereIn ?? [isEqualTo],
         ),
@@ -115,7 +117,7 @@ class ElasticQuery with _$ElasticQuery {
     return copyWith(
       searchFields: [
         ...?searchFields,
-        ElasticSearchField(
+        _ElasticSearchField(
           name: field,
           weight: weight,
         ),
@@ -146,7 +148,7 @@ class ElasticQuery with _$ElasticQuery {
     return copyWith(
       resultFields: [
         ...?resultFields,
-        ElasticResultField(
+        _ElasticResultField(
           name: field,
           rawSize: rawSize,
           snippetSize: snippetSize,
@@ -164,7 +166,7 @@ class ElasticQuery with _$ElasticQuery {
     int size = 10,
   }) {
     return copyWith(
-      searchPage: ElasticSearchPage(
+      searchPage: _ElasticSearchPage(
         current: current,
         size: size,
       ),
@@ -181,14 +183,14 @@ class ElasticQuery with _$ElasticQuery {
 ///
 /// See [https://www.elastic.co/guide/en/app-search/current/search-guide.html#search-guide-paginate]
 @freezed
-class ElasticSearchPage with _$ElasticSearchPage {
+class _ElasticSearchPage with _$_ElasticSearchPage {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   @Assert('size == null || (size != null && size >= 1 && size <= 1000)',
       'The number of results per page must be greater than or equal to 1 and less than or equal to 1000.')
   @Assert(
       'current == null || (current != null && current >= 1 && current <= 100)',
       'The current must be greater than or equal to 1 and less than or equal to 100.')
-  const factory ElasticSearchPage({
+  const factory _ElasticSearchPage({
     /// Number of results per page.
     /// Must be greater than or equal to 1 and less than or equal to 1000.
     /// Defaults to 10.
@@ -198,10 +200,10 @@ class ElasticSearchPage with _$ElasticSearchPage {
     /// Must be greater than or equal to 1 and less than or equal to 100.
     /// Defaults to 1.
     @Default(1) int? current,
-  }) = _ElasticSearchPage;
+  }) = __ElasticSearchPage;
 
-  factory ElasticSearchPage.fromJson(Map<String, dynamic> json) =>
-      _$ElasticSearchPageFromJson(json);
+  factory _ElasticSearchPage.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticSearchPageFromJson(json);
 }
 
 /// Object to filter documents that contain a specific field value.
@@ -214,30 +216,30 @@ class ElasticSearchPage with _$ElasticSearchPage {
 ///
 /// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
 @freezed
-class ElasticSearchFilter with _$ElasticSearchFilter {
+class _ElasticSearchFilter with _$_ElasticSearchFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory ElasticSearchFilter({
+  const factory _ElasticSearchFilter({
     /// The field from your schema upon which to apply your filter.
     required String name,
 
     /// The value upon which to filter. The value must be an exact match,
     /// and can be a String, a boolean, a number, or an array of these types.
     required List<dynamic> value,
-  }) = _ElasticSearchFilter;
+  }) = __ElasticSearchFilter;
 
-  factory ElasticSearchFilter.fromJson(Map<String, dynamic> json) =>
-      _$ElasticSearchFilterFromJson(json);
+  factory _ElasticSearchFilter.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticSearchFilterFromJson(json);
 }
 
 class _ElasticSearchFiltersConverter
-    implements JsonConverter<List<ElasticSearchFilter>?, Map?> {
+    implements JsonConverter<List<_ElasticSearchFilter>?, Map?> {
   const _ElasticSearchFiltersConverter();
 
   @override
-  List<ElasticSearchFilter>? fromJson(Map? value) => null;
+  List<_ElasticSearchFilter>? fromJson(Map? value) => null;
 
   @override
-  Map? toJson(List<ElasticSearchFilter>? searchFilters) {
+  Map? toJson(List<_ElasticSearchFilter>? searchFilters) {
     if (searchFilters == null) return null;
     if (searchFilters.length == 1) {
       return {searchFilters.first.name: searchFilters.first.value};
@@ -258,30 +260,30 @@ class _ElasticSearchFiltersConverter
 ///
 /// See [https://www.elastic.co/guide/en/app-search/current/search-fields-weights.html]
 @freezed
-class ElasticSearchField with _$ElasticSearchField {
+class _ElasticSearchField with _$_ElasticSearchField {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory ElasticSearchField({
+  const factory _ElasticSearchField({
     /// The name of the field. It must exist within your Engine schema and be of type text.
     required String name,
 
     /// Optionnal. Apply Weights to each search field.
     /// Engine level Weight settings will be applied is none are provided.
     int? weight,
-  }) = _ElasticSearchField;
+  }) = __ElasticSearchField;
 
-  factory ElasticSearchField.fromJson(Map<String, dynamic> json) =>
-      _$ElasticSearchFieldFromJson(json);
+  factory _ElasticSearchField.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticSearchFieldFromJson(json);
 }
 
 class _ElasticSearchFieldsConverter
-    implements JsonConverter<List<ElasticSearchField>?, Map?> {
+    implements JsonConverter<List<_ElasticSearchField>?, Map?> {
   const _ElasticSearchFieldsConverter();
 
   @override
-  List<ElasticSearchField>? fromJson(Map? value) => null;
+  List<_ElasticSearchField>? fromJson(Map? value) => null;
 
   @override
-  Map? toJson(List<ElasticSearchField>? searchFields) {
+  Map? toJson(List<_ElasticSearchField>? searchFields) {
     if (searchFields == null) return null;
 
     var value = {};
@@ -308,10 +310,9 @@ class _ElasticSearchFieldsConverter
 ///
 /// More information on [https://www.elastic.co/guide/en/app-search/current/result-fields-highlights.html]
 @freezed
-@protected
-class ElasticResultField with _$ElasticResultField {
+class _ElasticResultField with _$_ElasticResultField {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory ElasticResultField({
+  const factory _ElasticResultField({
     /// The name of the field. It must exist within your Engine schema and be of type text.
     required String name,
 
@@ -326,21 +327,21 @@ class ElasticResultField with _$ElasticResultField {
 
     /// If true, return the raw text field if no snippet is found. If false, only use snippets.
     @Default(true) bool fallback,
-  }) = _ElasticResultField;
+  }) = __ElasticResultField;
 
-  factory ElasticResultField.fromJson(Map<String, dynamic> json) =>
-      _$ElasticResultFieldFromJson(json);
+  factory _ElasticResultField.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticResultFieldFromJson(json);
 }
 
 class _ElasticResultFieldsConverter
-    implements JsonConverter<List<ElasticResultField>?, Map?> {
+    implements JsonConverter<List<_ElasticResultField>?, Map?> {
   const _ElasticResultFieldsConverter();
 
   @override
-  List<ElasticResultField>? fromJson(Map? value) => null;
+  List<_ElasticResultField>? fromJson(Map? value) => null;
 
   @override
-  Map? toJson(List<ElasticResultField>? resultFields) {
+  Map? toJson(List<_ElasticResultField>? resultFields) {
     if (resultFields == null) return null;
 
     var value = <String, Map?>{};
