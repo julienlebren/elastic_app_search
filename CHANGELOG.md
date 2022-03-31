@@ -1,3 +1,7 @@
+## 0.1.2+2
+
+* Assert error on query precision
+
 ## 0.1.2+1
 
 * `ElasticResult`.`fromJsonWithData` has been transformed to private method

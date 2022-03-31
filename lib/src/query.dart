@@ -17,7 +17,7 @@ class ElasticQuery with _$ElasticQuery {
   )
   @Assert('engine != null', 'An engine is required to build a query.')
   @Assert(
-      'queryPrecision != null && (queryPrecision < 1 || queryPrecision > 11)',
+      'queryPrecision == null  || (queryPrecision != null && (queryPrecision < 1 || queryPrecision > 11))',
       'The value of the precision parameter must be an integer between 1 and 11, inclusive.')
   const factory ElasticQuery({
     /// An object representing an Elastic engine
