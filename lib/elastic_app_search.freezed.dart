@@ -577,9 +577,11 @@ class __$ElasticSearchPageCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _$_ElasticSearchPage implements _ElasticSearchPage {
   const _$_ElasticSearchPage({this.size = 10, this.current = 1})
-      : assert(size != null && (size < 1 || size > 1000),
+      : assert(size == null || (size != null && size >= 1 && size <= 1000),
             'The number of results per page must be greater than or equal to 1 and less than or equal to 1000.'),
-        assert(current != null && (current < 1 || current > 100),
+        assert(
+            current == null ||
+                (current != null && current >= 1 && current <= 100),
             'The current must be greater than or equal to 1 and less than or equal to 100.');
 
   factory _$_ElasticSearchPage.fromJson(Map<String, dynamic> json) =>

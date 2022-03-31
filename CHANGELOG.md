@@ -1,3 +1,7 @@
+## 0.1.2+6
+
+* Fixed error in `ElasticSearchPage` assert
+
 ## 0.1.2+5
 
 * Moved `ElasticResultField` assert to its modifier
