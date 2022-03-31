@@ -1,3 +1,7 @@
+## 0.1.2+4
+
+* Moved precision assert to modifier
+
 ## 0.1.2+3
 
 * Rebuilt freezed classes
