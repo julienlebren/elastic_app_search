@@ -2495,11 +2495,15 @@ class _$ElasticResultTearOff {
   _ElasticResult call(
       {Map<String, dynamic>? data,
       Map<String, ElasticResultSnippet>? snippets,
-      @JsonKey(name: "_meta") required ElasticResultMeta meta}) {
+      @JsonKey(name: "_meta") required ElasticResultMeta meta,
+      @JsonKey(name: "_group") List<ElasticResult>? group,
+      @JsonKey(name: "_group_key") String? groupKey}) {
     return _ElasticResult(
       data: data,
       snippets: snippets,
       meta: meta,
+      group: group,
+      groupKey: groupKey,
     );
   }
 
@@ -2529,6 +2533,16 @@ mixin _$ElasticResult {
   @JsonKey(name: "_meta")
   ElasticResultMeta get meta => throw _privateConstructorUsedError;
 
+  /// An array of the [ElasticResult] related to this result
+  /// if a group has been set on the query
+  @JsonKey(name: "_group")
+  List<ElasticResult>? get group => throw _privateConstructorUsedError;
+
+  /// The value on which these elements have been grouped
+  /// if a group has been set on the query
+  @JsonKey(name: "_group_key")
+  String? get groupKey => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $ElasticResultCopyWith<ElasticResult> get copyWith =>
@@ -2543,7 +2557,9 @@ abstract class $ElasticResultCopyWith<$Res> {
   $Res call(
       {Map<String, dynamic>? data,
       Map<String, ElasticResultSnippet>? snippets,
-      @JsonKey(name: "_meta") ElasticResultMeta meta});
+      @JsonKey(name: "_meta") ElasticResultMeta meta,
+      @JsonKey(name: "_group") List<ElasticResult>? group,
+      @JsonKey(name: "_group_key") String? groupKey});
 
   $ElasticResultMetaCopyWith<$Res> get meta;
 }
@@ -2562,6 +2578,8 @@ class _$ElasticResultCopyWithImpl<$Res>
     Object? data = freezed,
     Object? snippets = freezed,
     Object? meta = freezed,
+    Object? group = freezed,
+    Object? groupKey = freezed,
   }) {
     return _then(_value.copyWith(
       data: data == freezed
@@ -2576,6 +2594,14 @@ class _$ElasticResultCopyWithImpl<$Res>
           ? _value.meta
           : meta // ignore: cast_nullable_to_non_nullable
               as ElasticResultMeta,
+      group: group == freezed
+          ? _value.group
+          : group // ignore: cast_nullable_to_non_nullable
+              as List<ElasticResult>?,
+      groupKey: groupKey == freezed
+          ? _value.groupKey
+          : groupKey // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 
@@ -2597,7 +2623,9 @@ abstract class _$ElasticResultCopyWith<$Res>
   $Res call(
       {Map<String, dynamic>? data,
       Map<String, ElasticResultSnippet>? snippets,
-      @JsonKey(name: "_meta") ElasticResultMeta meta});
+      @JsonKey(name: "_meta") ElasticResultMeta meta,
+      @JsonKey(name: "_group") List<ElasticResult>? group,
+      @JsonKey(name: "_group_key") String? groupKey});
 
   @override
   $ElasticResultMetaCopyWith<$Res> get meta;
@@ -2619,6 +2647,8 @@ class __$ElasticResultCopyWithImpl<$Res>
     Object? data = freezed,
     Object? snippets = freezed,
     Object? meta = freezed,
+    Object? group = freezed,
+    Object? groupKey = freezed,
   }) {
     return _then(_ElasticResult(
       data: data == freezed
@@ -2633,6 +2663,14 @@ class __$ElasticResultCopyWithImpl<$Res>
           ? _value.meta
           : meta // ignore: cast_nullable_to_non_nullable
               as ElasticResultMeta,
+      group: group == freezed
+          ? _value.group
+          : group // ignore: cast_nullable_to_non_nullable
+              as List<ElasticResult>?,
+      groupKey: groupKey == freezed
+          ? _value.groupKey
+          : groupKey // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -2641,7 +2679,11 @@ class __$ElasticResultCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ElasticResult extends _ElasticResult {
   _$_ElasticResult(
-      {this.data, this.snippets, @JsonKey(name: "_meta") required this.meta})
+      {this.data,
+      this.snippets,
+      @JsonKey(name: "_meta") required this.meta,
+      @JsonKey(name: "_group") this.group,
+      @JsonKey(name: "_group_key") this.groupKey})
       : super._();
 
   factory _$_ElasticResult.fromJson(Map<String, dynamic> json) =>
@@ -2665,10 +2707,22 @@ class _$_ElasticResult extends _ElasticResult {
   /// An object containing information about a given result
   @JsonKey(name: "_meta")
   final ElasticResultMeta meta;
+  @override
+
+  /// An array of the [ElasticResult] related to this result
+  /// if a group has been set on the query
+  @JsonKey(name: "_group")
+  final List<ElasticResult>? group;
+  @override
+
+  /// The value on which these elements have been grouped
+  /// if a group has been set on the query
+  @JsonKey(name: "_group_key")
+  final String? groupKey;
 
   @override
   String toString() {
-    return 'ElasticResult(data: $data, snippets: $snippets, meta: $meta)';
+    return 'ElasticResult(data: $data, snippets: $snippets, meta: $meta, group: $group, groupKey: $groupKey)';
   }
 
   @override
@@ -2678,7 +2732,9 @@ class _$_ElasticResult extends _ElasticResult {
             other is _ElasticResult &&
             const DeepCollectionEquality().equals(other.data, data) &&
             const DeepCollectionEquality().equals(other.snippets, snippets) &&
-            const DeepCollectionEquality().equals(other.meta, meta));
+            const DeepCollectionEquality().equals(other.meta, meta) &&
+            const DeepCollectionEquality().equals(other.group, group) &&
+            const DeepCollectionEquality().equals(other.groupKey, groupKey));
   }
 
   @override
@@ -2686,7 +2742,9 @@ class _$_ElasticResult extends _ElasticResult {
       runtimeType,
       const DeepCollectionEquality().hash(data),
       const DeepCollectionEquality().hash(snippets),
-      const DeepCollectionEquality().hash(meta));
+      const DeepCollectionEquality().hash(meta),
+      const DeepCollectionEquality().hash(group),
+      const DeepCollectionEquality().hash(groupKey));
 
   @JsonKey(ignore: true)
   @override
@@ -2701,10 +2759,11 @@ class _$_ElasticResult extends _ElasticResult {
 
 abstract class _ElasticResult extends ElasticResult {
   factory _ElasticResult(
-          {Map<String, dynamic>? data,
-          Map<String, ElasticResultSnippet>? snippets,
-          @JsonKey(name: "_meta") required ElasticResultMeta meta}) =
-      _$_ElasticResult;
+      {Map<String, dynamic>? data,
+      Map<String, ElasticResultSnippet>? snippets,
+      @JsonKey(name: "_meta") required ElasticResultMeta meta,
+      @JsonKey(name: "_group") List<ElasticResult>? group,
+      @JsonKey(name: "_group_key") String? groupKey}) = _$_ElasticResult;
   _ElasticResult._() : super._();
 
   factory _ElasticResult.fromJson(Map<String, dynamic> json) =
@@ -2728,6 +2787,18 @@ abstract class _ElasticResult extends ElasticResult {
   /// An object containing information about a given result
   @JsonKey(name: "_meta")
   ElasticResultMeta get meta;
+  @override
+
+  /// An array of the [ElasticResult] related to this result
+  /// if a group has been set on the query
+  @JsonKey(name: "_group")
+  List<ElasticResult>? get group;
+  @override
+
+  /// The value on which these elements have been grouped
+  /// if a group has been set on the query
+  @JsonKey(name: "_group_key")
+  String? get groupKey;
   @override
   @JsonKey(ignore: true)
   _$ElasticResultCopyWith<_ElasticResult> get copyWith =>

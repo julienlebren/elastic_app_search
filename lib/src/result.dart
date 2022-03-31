@@ -40,6 +40,14 @@ class ElasticResult with _$ElasticResult {
 
     /// An object containing information about a given result
     @JsonKey(name: "_meta") required ElasticResultMeta meta,
+
+    /// An array of the [ElasticResult] related to this result
+    /// if a group has been set on the query
+    @JsonKey(name: "_group") List<ElasticResult>? group,
+
+    /// The value on which these elements have been grouped
+    /// if a group has been set on the query
+    @JsonKey(name: "_group_key") String? groupKey,
   }) = _ElasticResult;
 
   factory ElasticResult.fromJson(Map<String, dynamic> json) =>

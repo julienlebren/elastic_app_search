@@ -230,6 +230,10 @@ _$_ElasticResult _$$_ElasticResultFromJson(Map<String, dynamic> json) =>
             k, ElasticResultSnippet.fromJson(e as Map<String, dynamic>)),
       ),
       meta: ElasticResultMeta.fromJson(json['_meta'] as Map<String, dynamic>),
+      group: (json['_group'] as List<dynamic>?)
+          ?.map((e) => ElasticResult.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      groupKey: json['_group_key'] as String?,
     );
 
 Map<String, dynamic> _$$_ElasticResultToJson(_$_ElasticResult instance) =>
@@ -237,6 +241,8 @@ Map<String, dynamic> _$$_ElasticResultToJson(_$_ElasticResult instance) =>
       'data': instance.data,
       'snippets': instance.snippets,
       '_meta': instance.meta,
+      '_group': instance.group,
+      '_group_key': instance.groupKey,
     };
 
 _$_ElasticResultSnippet _$$_ElasticResultSnippetFromJson(
