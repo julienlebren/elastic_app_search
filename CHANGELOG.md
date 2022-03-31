@@ -1,3 +1,7 @@
+## 0.1.2+3
+
+* Rebuilt freezed classes
+
 ## 0.1.2+2
 
 * Assert error on query precision

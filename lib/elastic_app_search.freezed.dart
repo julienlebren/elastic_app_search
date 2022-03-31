@@ -293,8 +293,9 @@ class _$_ElasticQuery extends _ElasticQuery {
           this.resultFields = const []})
       : assert(engine != null, 'An engine is required to build a query.'),
         assert(
-            queryPrecision != null &&
-                (queryPrecision < 1 || queryPrecision > 11),
+            queryPrecision == null ||
+                (queryPrecision != null &&
+                    (queryPrecision < 1 || queryPrecision > 11)),
             'The value of the precision parameter must be an integer between 1 and 11, inclusive.'),
         super._();
 
