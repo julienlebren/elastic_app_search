@@ -29,12 +29,12 @@ class _$ElasticQueryTearOff {
       @JsonKey(name: "precision")
           int? queryPrecision,
       @JsonKey(name: "page")
-          ElasticSearchPage? searchPage,
+          _ElasticSearchPage? searchPage,
       @_ElasticSearchFiltersConverter()
           List<_ElasticSearchFilter>? filters,
       @_ElasticSearchFieldsConverter()
       @JsonKey(name: "search_fields")
-          List<ElasticSearchField>? searchFields,
+          List<_ElasticSearchField>? searchFields,
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields = const []}) {
@@ -78,7 +78,7 @@ mixin _$ElasticQuery {
 
   /// Object to delimit the pagination parameters.
   @JsonKey(name: "page")
-  ElasticSearchPage? get searchPage => throw _privateConstructorUsedError;
+  _ElasticSearchPage? get searchPage => throw _privateConstructorUsedError;
 
   /// Object to filter documents that contain a specific field value.
   /// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
@@ -88,7 +88,7 @@ mixin _$ElasticQuery {
   /// Object which restricts a query to search only specific fields.
   @_ElasticSearchFieldsConverter()
   @JsonKey(name: "search_fields")
-  List<ElasticSearchField>? get searchFields =>
+  List<_ElasticSearchField>? get searchFields =>
       throw _privateConstructorUsedError;
 
   /// Object to define the fields which appear in search results and how their values are rendered.
@@ -115,15 +115,17 @@ abstract class $ElasticQueryCopyWith<$Res> {
       @JsonKey(name: "precision")
           int? queryPrecision,
       @JsonKey(name: "page")
-          ElasticSearchPage? searchPage,
+          _ElasticSearchPage? searchPage,
       @_ElasticSearchFiltersConverter()
           List<_ElasticSearchFilter>? filters,
       @_ElasticSearchFieldsConverter()
       @JsonKey(name: "search_fields")
-          List<ElasticSearchField>? searchFields,
+          List<_ElasticSearchField>? searchFields,
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields});
+
+  _$ElasticSearchPageCopyWith<$Res>? get searchPage;
 }
 
 /// @nodoc
@@ -160,7 +162,7 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
       searchPage: searchPage == freezed
           ? _value.searchPage
           : searchPage // ignore: cast_nullable_to_non_nullable
-              as ElasticSearchPage?,
+              as _ElasticSearchPage?,
       filters: filters == freezed
           ? _value.filters
           : filters // ignore: cast_nullable_to_non_nullable
@@ -168,12 +170,23 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
       searchFields: searchFields == freezed
           ? _value.searchFields
           : searchFields // ignore: cast_nullable_to_non_nullable
-              as List<ElasticSearchField>?,
+              as List<_ElasticSearchField>?,
       resultFields: resultFields == freezed
           ? _value.resultFields
           : resultFields // ignore: cast_nullable_to_non_nullable
               as List<_ElasticResultField>?,
     ));
+  }
+
+  @override
+  _$ElasticSearchPageCopyWith<$Res>? get searchPage {
+    if (_value.searchPage == null) {
+      return null;
+    }
+
+    return _$ElasticSearchPageCopyWith<$Res>(_value.searchPage!, (value) {
+      return _then(_value.copyWith(searchPage: value));
+    });
   }
 }
 
@@ -191,15 +204,18 @@ abstract class _$ElasticQueryCopyWith<$Res>
       @JsonKey(name: "precision")
           int? queryPrecision,
       @JsonKey(name: "page")
-          ElasticSearchPage? searchPage,
+          _ElasticSearchPage? searchPage,
       @_ElasticSearchFiltersConverter()
           List<_ElasticSearchFilter>? filters,
       @_ElasticSearchFieldsConverter()
       @JsonKey(name: "search_fields")
-          List<ElasticSearchField>? searchFields,
+          List<_ElasticSearchField>? searchFields,
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields});
+
+  @override
+  _$ElasticSearchPageCopyWith<$Res>? get searchPage;
 }
 
 /// @nodoc
@@ -238,7 +254,7 @@ class __$ElasticQueryCopyWithImpl<$Res> extends _$ElasticQueryCopyWithImpl<$Res>
       searchPage: searchPage == freezed
           ? _value.searchPage
           : searchPage // ignore: cast_nullable_to_non_nullable
-              as ElasticSearchPage?,
+              as _ElasticSearchPage?,
       filters: filters == freezed
           ? _value.filters
           : filters // ignore: cast_nullable_to_non_nullable
@@ -246,7 +262,7 @@ class __$ElasticQueryCopyWithImpl<$Res> extends _$ElasticQueryCopyWithImpl<$Res>
       searchFields: searchFields == freezed
           ? _value.searchFields
           : searchFields // ignore: cast_nullable_to_non_nullable
-              as List<ElasticSearchField>?,
+              as List<_ElasticSearchField>?,
       resultFields: resultFields == freezed
           ? _value.resultFields
           : resultFields // ignore: cast_nullable_to_non_nullable
@@ -305,7 +321,7 @@ class _$_ElasticQuery extends _ElasticQuery {
 
   /// Object to delimit the pagination parameters.
   @JsonKey(name: "page")
-  final ElasticSearchPage? searchPage;
+  final _ElasticSearchPage? searchPage;
   @override
 
   /// Object to filter documents that contain a specific field value.
@@ -317,7 +333,7 @@ class _$_ElasticQuery extends _ElasticQuery {
   /// Object which restricts a query to search only specific fields.
   @_ElasticSearchFieldsConverter()
   @JsonKey(name: "search_fields")
-  final List<ElasticSearchField>? searchFields;
+  final List<_ElasticSearchField>? searchFields;
   @override
 
   /// Object to define the fields which appear in search results and how their values are rendered.
@@ -378,12 +394,12 @@ abstract class _ElasticQuery extends ElasticQuery {
       @JsonKey(name: "precision")
           int? queryPrecision,
       @JsonKey(name: "page")
-          ElasticSearchPage? searchPage,
+          _ElasticSearchPage? searchPage,
       @_ElasticSearchFiltersConverter()
           List<_ElasticSearchFilter>? filters,
       @_ElasticSearchFieldsConverter()
       @JsonKey(name: "search_fields")
-          List<ElasticSearchField>? searchFields,
+          List<_ElasticSearchField>? searchFields,
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields}) = _$_ElasticQuery;
@@ -416,7 +432,7 @@ abstract class _ElasticQuery extends ElasticQuery {
 
   /// Object to delimit the pagination parameters.
   @JsonKey(name: "page")
-  ElasticSearchPage? get searchPage;
+  _ElasticSearchPage? get searchPage;
   @override
 
   /// Object to filter documents that contain a specific field value.
@@ -428,7 +444,7 @@ abstract class _ElasticQuery extends ElasticQuery {
   /// Object which restricts a query to search only specific fields.
   @_ElasticSearchFieldsConverter()
   @JsonKey(name: "search_fields")
-  List<ElasticSearchField>? get searchFields;
+  List<_ElasticSearchField>? get searchFields;
   @override
 
   /// Object to define the fields which appear in search results and how their values are rendered.

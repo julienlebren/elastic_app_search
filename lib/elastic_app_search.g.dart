@@ -10,10 +10,13 @@ _$_ElasticQuery _$$_ElasticQueryFromJson(Map<String, dynamic> json) =>
     _$_ElasticQuery(
       query: json['query'] as String,
       queryPrecision: json['precision'] as int?,
-      searchPage: json['page'],
+      searchPage: json['page'] == null
+          ? null
+          : _ElasticSearchPage.fromJson(json['page'] as Map<String, dynamic>),
       filters: const _ElasticSearchFiltersConverter()
           .fromJson(json['filters'] as Map?),
-      searchFields: json['search_fields'] as List<dynamic>?,
+      searchFields: const _ElasticSearchFieldsConverter()
+          .fromJson(json['search_fields'] as Map?),
       resultFields: json['result_fields'] == null
           ? const []
           : const _ElasticResultFieldsConverter()
@@ -32,10 +35,11 @@ Map<String, dynamic> _$$_ElasticQueryToJson(_$_ElasticQuery instance) {
   }
 
   writeNotNull('precision', instance.queryPrecision);
-  writeNotNull('page', instance.searchPage);
+  writeNotNull('page', instance.searchPage?.toJson());
   writeNotNull('filters',
       const _ElasticSearchFiltersConverter().toJson(instance.filters));
-  writeNotNull('search_fields', instance.searchFields);
+  writeNotNull('search_fields',
+      const _ElasticSearchFieldsConverter().toJson(instance.searchFields));
   writeNotNull('result_fields',
       const _ElasticResultFieldsConverter().toJson(instance.resultFields));
   return val;
