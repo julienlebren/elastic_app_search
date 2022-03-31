@@ -133,6 +133,10 @@ class ElasticQuery with _$ElasticQuery {
   /// The example of the package presents a use case of this feature.
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/result-fields-highlights.html]
+  @Assert('rawSize == null || (rawSize != null && rawSize >= 20)',
+      'Raw size must be at least 20.')
+  @Assert('snippetSize == null || (snippetSize != null && snippetSize >= 20)',
+      'Raw size must be at least 20.')
   ElasticQuery resultField(
     String field, {
     int? rawSize,
@@ -303,11 +307,9 @@ class _ElasticSearchFieldsConverter
 ///
 /// More information on [https://www.elastic.co/guide/en/app-search/current/result-fields-highlights.html]
 @freezed
+@protected
 class ElasticResultField with _$ElasticResultField {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  @Assert('rawSize != null && rawSize < 20', 'Raw size must be at least 20.')
-  @Assert('snippetSize != null && snippetSize < 20',
-      'Raw size must be at least 20.')
   const factory ElasticResultField({
     /// The name of the field. It must exist within your Engine schema and be of type text.
     required String name,

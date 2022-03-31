@@ -1,3 +1,7 @@
+## 0.1.2+5
+
+* Moved `ElasticResultField` assert to its modifier
+
 ## 0.1.2+4
 
 * Moved precision assert to modifier

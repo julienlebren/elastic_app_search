@@ -1181,11 +1181,7 @@ class _$_ElasticResultField implements _ElasticResultField {
       {required this.name,
       this.rawSize,
       this.snippetSize,
-      this.fallback = true})
-      : assert(
-            rawSize != null && rawSize < 20, 'Raw size must be at least 20.'),
-        assert(snippetSize != null && snippetSize < 20,
-            'Raw size must be at least 20.');
+      this.fallback = true});
 
   factory _$_ElasticResultField.fromJson(Map<String, dynamic> json) =>
       _$$_ElasticResultFieldFromJson(json);
