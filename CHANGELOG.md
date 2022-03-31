@@ -1,3 +1,8 @@
+## 0.2.0
+
+* Added grouping support in an `ElasticQuery` with the `.group` modifier
+* Renamed queryPrecision to precisionTuning
+
 ## 0.1.3
 
 * Some classes are now private

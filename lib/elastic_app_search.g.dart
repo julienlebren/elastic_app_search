@@ -9,7 +9,7 @@ part of elastic_app_search;
 _$_ElasticQuery _$$_ElasticQueryFromJson(Map<String, dynamic> json) =>
     _$_ElasticQuery(
       query: json['query'] as String,
-      queryPrecision: json['precision'] as int?,
+      precisionTuning: json['precision'] as int?,
       searchPage: json['page'] == null
           ? null
           : _ElasticSearchPage.fromJson(json['page'] as Map<String, dynamic>),
@@ -21,6 +21,9 @@ _$_ElasticQuery _$$_ElasticQueryFromJson(Map<String, dynamic> json) =>
           ? const []
           : const _ElasticResultFieldsConverter()
               .fromJson(json['result_fields'] as Map?),
+      groupBy: json['group'] == null
+          ? null
+          : _ElasticGroup.fromJson(json['group'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_ElasticQueryToJson(_$_ElasticQuery instance) {
@@ -34,7 +37,7 @@ Map<String, dynamic> _$$_ElasticQueryToJson(_$_ElasticQuery instance) {
     }
   }
 
-  writeNotNull('precision', instance.queryPrecision);
+  writeNotNull('precision', instance.precisionTuning);
   writeNotNull('page', instance.searchPage?.toJson());
   writeNotNull('filters',
       const _ElasticSearchFiltersConverter().toJson(instance.filters));
@@ -42,6 +45,7 @@ Map<String, dynamic> _$$_ElasticQueryToJson(_$_ElasticQuery instance) {
       const _ElasticSearchFieldsConverter().toJson(instance.searchFields));
   writeNotNull('result_fields',
       const _ElasticResultFieldsConverter().toJson(instance.resultFields));
+  writeNotNull('group', instance.groupBy?.toJson());
   return val;
 }
 
@@ -128,6 +132,27 @@ Map<String, dynamic> _$$__ElasticResultFieldToJson(
   writeNotNull('rawSize', instance.rawSize);
   writeNotNull('snippetSize', instance.snippetSize);
   val['fallback'] = instance.fallback;
+  return val;
+}
+
+_$__ElasticGroup _$$__ElasticGroupFromJson(Map<String, dynamic> json) =>
+    _$__ElasticGroup(
+      field: json['field'] as String,
+      size: json['size'] as int?,
+    );
+
+Map<String, dynamic> _$$__ElasticGroupToJson(_$__ElasticGroup instance) {
+  final val = <String, dynamic>{
+    'field': instance.field,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('size', instance.size);
   return val;
 }
 

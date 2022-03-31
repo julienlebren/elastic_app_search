@@ -27,7 +27,7 @@ class _$ElasticQueryTearOff {
           ElasticEngine? engine,
       required String query,
       @JsonKey(name: "precision")
-          int? queryPrecision,
+          int? precisionTuning,
       @JsonKey(name: "page")
           _ElasticSearchPage? searchPage,
       @_ElasticSearchFiltersConverter()
@@ -37,15 +37,18 @@ class _$ElasticQueryTearOff {
           List<_ElasticSearchField>? searchFields,
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
-          List<_ElasticResultField>? resultFields = const []}) {
+          List<_ElasticResultField>? resultFields = const [],
+      @JsonKey(name: "group")
+          _ElasticGroup? groupBy}) {
     return _ElasticQuery(
       engine: engine,
       query: query,
-      queryPrecision: queryPrecision,
+      precisionTuning: precisionTuning,
       searchPage: searchPage,
       filters: filters,
       searchFields: searchFields,
       resultFields: resultFields,
+      groupBy: groupBy,
     );
   }
 
@@ -74,7 +77,7 @@ mixin _$ElasticQuery {
   /// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
   /// Lower values favor recall, while higher values favor precision.
   @JsonKey(name: "precision")
-  int? get queryPrecision => throw _privateConstructorUsedError;
+  int? get precisionTuning => throw _privateConstructorUsedError;
 
   /// Object to delimit the pagination parameters.
   @JsonKey(name: "page")
@@ -97,6 +100,10 @@ mixin _$ElasticQuery {
   List<_ElasticResultField>? get resultFields =>
       throw _privateConstructorUsedError;
 
+  /// Grouped results based on shared fields
+  @JsonKey(name: "group")
+  _ElasticGroup? get groupBy => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $ElasticQueryCopyWith<ElasticQuery> get copyWith =>
@@ -113,7 +120,7 @@ abstract class $ElasticQueryCopyWith<$Res> {
           ElasticEngine? engine,
       String query,
       @JsonKey(name: "precision")
-          int? queryPrecision,
+          int? precisionTuning,
       @JsonKey(name: "page")
           _ElasticSearchPage? searchPage,
       @_ElasticSearchFiltersConverter()
@@ -123,9 +130,12 @@ abstract class $ElasticQueryCopyWith<$Res> {
           List<_ElasticSearchField>? searchFields,
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
-          List<_ElasticResultField>? resultFields});
+          List<_ElasticResultField>? resultFields,
+      @JsonKey(name: "group")
+          _ElasticGroup? groupBy});
 
   _$ElasticSearchPageCopyWith<$Res>? get searchPage;
+  _$ElasticGroupCopyWith<$Res>? get groupBy;
 }
 
 /// @nodoc
@@ -140,11 +150,12 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
   $Res call({
     Object? engine = freezed,
     Object? query = freezed,
-    Object? queryPrecision = freezed,
+    Object? precisionTuning = freezed,
     Object? searchPage = freezed,
     Object? filters = freezed,
     Object? searchFields = freezed,
     Object? resultFields = freezed,
+    Object? groupBy = freezed,
   }) {
     return _then(_value.copyWith(
       engine: engine == freezed
@@ -155,9 +166,9 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
               as String,
-      queryPrecision: queryPrecision == freezed
-          ? _value.queryPrecision
-          : queryPrecision // ignore: cast_nullable_to_non_nullable
+      precisionTuning: precisionTuning == freezed
+          ? _value.precisionTuning
+          : precisionTuning // ignore: cast_nullable_to_non_nullable
               as int?,
       searchPage: searchPage == freezed
           ? _value.searchPage
@@ -175,6 +186,10 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
           ? _value.resultFields
           : resultFields // ignore: cast_nullable_to_non_nullable
               as List<_ElasticResultField>?,
+      groupBy: groupBy == freezed
+          ? _value.groupBy
+          : groupBy // ignore: cast_nullable_to_non_nullable
+              as _ElasticGroup?,
     ));
   }
 
@@ -186,6 +201,17 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
 
     return _$ElasticSearchPageCopyWith<$Res>(_value.searchPage!, (value) {
       return _then(_value.copyWith(searchPage: value));
+    });
+  }
+
+  @override
+  _$ElasticGroupCopyWith<$Res>? get groupBy {
+    if (_value.groupBy == null) {
+      return null;
+    }
+
+    return _$ElasticGroupCopyWith<$Res>(_value.groupBy!, (value) {
+      return _then(_value.copyWith(groupBy: value));
     });
   }
 }
@@ -202,7 +228,7 @@ abstract class _$ElasticQueryCopyWith<$Res>
           ElasticEngine? engine,
       String query,
       @JsonKey(name: "precision")
-          int? queryPrecision,
+          int? precisionTuning,
       @JsonKey(name: "page")
           _ElasticSearchPage? searchPage,
       @_ElasticSearchFiltersConverter()
@@ -212,10 +238,14 @@ abstract class _$ElasticQueryCopyWith<$Res>
           List<_ElasticSearchField>? searchFields,
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
-          List<_ElasticResultField>? resultFields});
+          List<_ElasticResultField>? resultFields,
+      @JsonKey(name: "group")
+          _ElasticGroup? groupBy});
 
   @override
   _$ElasticSearchPageCopyWith<$Res>? get searchPage;
+  @override
+  _$ElasticGroupCopyWith<$Res>? get groupBy;
 }
 
 /// @nodoc
@@ -232,11 +262,12 @@ class __$ElasticQueryCopyWithImpl<$Res> extends _$ElasticQueryCopyWithImpl<$Res>
   $Res call({
     Object? engine = freezed,
     Object? query = freezed,
-    Object? queryPrecision = freezed,
+    Object? precisionTuning = freezed,
     Object? searchPage = freezed,
     Object? filters = freezed,
     Object? searchFields = freezed,
     Object? resultFields = freezed,
+    Object? groupBy = freezed,
   }) {
     return _then(_ElasticQuery(
       engine: engine == freezed
@@ -247,9 +278,9 @@ class __$ElasticQueryCopyWithImpl<$Res> extends _$ElasticQueryCopyWithImpl<$Res>
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
               as String,
-      queryPrecision: queryPrecision == freezed
-          ? _value.queryPrecision
-          : queryPrecision // ignore: cast_nullable_to_non_nullable
+      precisionTuning: precisionTuning == freezed
+          ? _value.precisionTuning
+          : precisionTuning // ignore: cast_nullable_to_non_nullable
               as int?,
       searchPage: searchPage == freezed
           ? _value.searchPage
@@ -267,6 +298,10 @@ class __$ElasticQueryCopyWithImpl<$Res> extends _$ElasticQueryCopyWithImpl<$Res>
           ? _value.resultFields
           : resultFields // ignore: cast_nullable_to_non_nullable
               as List<_ElasticResultField>?,
+      groupBy: groupBy == freezed
+          ? _value.groupBy
+          : groupBy // ignore: cast_nullable_to_non_nullable
+              as _ElasticGroup?,
     ));
   }
 }
@@ -280,7 +315,7 @@ class _$_ElasticQuery extends _ElasticQuery {
           this.engine,
       required this.query,
       @JsonKey(name: "precision")
-          this.queryPrecision,
+          this.precisionTuning,
       @JsonKey(name: "page")
           this.searchPage,
       @_ElasticSearchFiltersConverter()
@@ -290,7 +325,9 @@ class _$_ElasticQuery extends _ElasticQuery {
           this.searchFields,
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
-          this.resultFields = const []})
+          this.resultFields = const [],
+      @JsonKey(name: "group")
+          this.groupBy})
       : assert(engine != null, 'An engine is required to build a query.'),
         super._();
 
@@ -316,7 +353,7 @@ class _$_ElasticQuery extends _ElasticQuery {
   /// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
   /// Lower values favor recall, while higher values favor precision.
   @JsonKey(name: "precision")
-  final int? queryPrecision;
+  final int? precisionTuning;
   @override
 
   /// Object to delimit the pagination parameters.
@@ -340,10 +377,15 @@ class _$_ElasticQuery extends _ElasticQuery {
   @_ElasticResultFieldsConverter()
   @JsonKey(name: "result_fields")
   final List<_ElasticResultField>? resultFields;
+  @override
+
+  /// Grouped results based on shared fields
+  @JsonKey(name: "group")
+  final _ElasticGroup? groupBy;
 
   @override
   String toString() {
-    return 'ElasticQuery(engine: $engine, query: $query, queryPrecision: $queryPrecision, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields)';
+    return 'ElasticQuery(engine: $engine, query: $query, precisionTuning: $precisionTuning, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, groupBy: $groupBy)';
   }
 
   @override
@@ -354,14 +396,15 @@ class _$_ElasticQuery extends _ElasticQuery {
             const DeepCollectionEquality().equals(other.engine, engine) &&
             const DeepCollectionEquality().equals(other.query, query) &&
             const DeepCollectionEquality()
-                .equals(other.queryPrecision, queryPrecision) &&
+                .equals(other.precisionTuning, precisionTuning) &&
             const DeepCollectionEquality()
                 .equals(other.searchPage, searchPage) &&
             const DeepCollectionEquality().equals(other.filters, filters) &&
             const DeepCollectionEquality()
                 .equals(other.searchFields, searchFields) &&
             const DeepCollectionEquality()
-                .equals(other.resultFields, resultFields));
+                .equals(other.resultFields, resultFields) &&
+            const DeepCollectionEquality().equals(other.groupBy, groupBy));
   }
 
   @override
@@ -369,11 +412,12 @@ class _$_ElasticQuery extends _ElasticQuery {
       runtimeType,
       const DeepCollectionEquality().hash(engine),
       const DeepCollectionEquality().hash(query),
-      const DeepCollectionEquality().hash(queryPrecision),
+      const DeepCollectionEquality().hash(precisionTuning),
       const DeepCollectionEquality().hash(searchPage),
       const DeepCollectionEquality().hash(filters),
       const DeepCollectionEquality().hash(searchFields),
-      const DeepCollectionEquality().hash(resultFields));
+      const DeepCollectionEquality().hash(resultFields),
+      const DeepCollectionEquality().hash(groupBy));
 
   @JsonKey(ignore: true)
   @override
@@ -392,7 +436,7 @@ abstract class _ElasticQuery extends ElasticQuery {
           ElasticEngine? engine,
       required String query,
       @JsonKey(name: "precision")
-          int? queryPrecision,
+          int? precisionTuning,
       @JsonKey(name: "page")
           _ElasticSearchPage? searchPage,
       @_ElasticSearchFiltersConverter()
@@ -402,7 +446,9 @@ abstract class _ElasticQuery extends ElasticQuery {
           List<_ElasticSearchField>? searchFields,
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
-          List<_ElasticResultField>? resultFields}) = _$_ElasticQuery;
+          List<_ElasticResultField>? resultFields,
+      @JsonKey(name: "group")
+          _ElasticGroup? groupBy}) = _$_ElasticQuery;
   const _ElasticQuery._() : super._();
 
   factory _ElasticQuery.fromJson(Map<String, dynamic> json) =
@@ -427,7 +473,7 @@ abstract class _ElasticQuery extends ElasticQuery {
   /// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
   /// Lower values favor recall, while higher values favor precision.
   @JsonKey(name: "precision")
-  int? get queryPrecision;
+  int? get precisionTuning;
   @override
 
   /// Object to delimit the pagination parameters.
@@ -451,6 +497,11 @@ abstract class _ElasticQuery extends ElasticQuery {
   @_ElasticResultFieldsConverter()
   @JsonKey(name: "result_fields")
   List<_ElasticResultField>? get resultFields;
+  @override
+
+  /// Grouped results based on shared fields
+  @JsonKey(name: "group")
+  _ElasticGroup? get groupBy;
   @override
   @JsonKey(ignore: true)
   _$ElasticQueryCopyWith<_ElasticQuery> get copyWith =>
@@ -1279,6 +1330,190 @@ abstract class __ElasticResultField implements _ElasticResultField {
   @override
   @JsonKey(ignore: true)
   _$_ElasticResultFieldCopyWith<__ElasticResultField> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+_ElasticGroup _$_ElasticGroupFromJson(Map<String, dynamic> json) {
+  return __ElasticGroup.fromJson(json);
+}
+
+/// @nodoc
+class _$_ElasticGroupTearOff {
+  const _$_ElasticGroupTearOff();
+
+  __ElasticGroup call({required String field, int? size}) {
+    return __ElasticGroup(
+      field: field,
+      size: size,
+    );
+  }
+
+  _ElasticGroup fromJson(Map<String, Object?> json) {
+    return _ElasticGroup.fromJson(json);
+  }
+}
+
+/// @nodoc
+const _$ElasticGroup = _$_ElasticGroupTearOff();
+
+/// @nodoc
+mixin _$_ElasticGroup {
+  /// Field name to group results on.
+  String get field => throw _privateConstructorUsedError;
+
+  /// Number of results to be included in the _group key of the returned document.
+  /// Can be between 1 and 10. Defaults to 10.
+  int? get size => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$ElasticGroupCopyWith<_ElasticGroup> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$ElasticGroupCopyWith<$Res> {
+  factory _$ElasticGroupCopyWith(
+          _ElasticGroup value, $Res Function(_ElasticGroup) then) =
+      __$ElasticGroupCopyWithImpl<$Res>;
+  $Res call({String field, int? size});
+}
+
+/// @nodoc
+class __$ElasticGroupCopyWithImpl<$Res>
+    implements _$ElasticGroupCopyWith<$Res> {
+  __$ElasticGroupCopyWithImpl(this._value, this._then);
+
+  final _ElasticGroup _value;
+  // ignore: unused_field
+  final $Res Function(_ElasticGroup) _then;
+
+  @override
+  $Res call({
+    Object? field = freezed,
+    Object? size = freezed,
+  }) {
+    return _then(_value.copyWith(
+      field: field == freezed
+          ? _value.field
+          : field // ignore: cast_nullable_to_non_nullable
+              as String,
+      size: size == freezed
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$_ElasticGroupCopyWith<$Res>
+    implements _$ElasticGroupCopyWith<$Res> {
+  factory _$_ElasticGroupCopyWith(
+          __ElasticGroup value, $Res Function(__ElasticGroup) then) =
+      __$_ElasticGroupCopyWithImpl<$Res>;
+  @override
+  $Res call({String field, int? size});
+}
+
+/// @nodoc
+class __$_ElasticGroupCopyWithImpl<$Res>
+    extends __$ElasticGroupCopyWithImpl<$Res>
+    implements _$_ElasticGroupCopyWith<$Res> {
+  __$_ElasticGroupCopyWithImpl(
+      __ElasticGroup _value, $Res Function(__ElasticGroup) _then)
+      : super(_value, (v) => _then(v as __ElasticGroup));
+
+  @override
+  __ElasticGroup get _value => super._value as __ElasticGroup;
+
+  @override
+  $Res call({
+    Object? field = freezed,
+    Object? size = freezed,
+  }) {
+    return _then(__ElasticGroup(
+      field: field == freezed
+          ? _value.field
+          : field // ignore: cast_nullable_to_non_nullable
+              as String,
+      size: size == freezed
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as int?,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _$__ElasticGroup implements __ElasticGroup {
+  const _$__ElasticGroup({required this.field, this.size});
+
+  factory _$__ElasticGroup.fromJson(Map<String, dynamic> json) =>
+      _$$__ElasticGroupFromJson(json);
+
+  @override
+
+  /// Field name to group results on.
+  final String field;
+  @override
+
+  /// Number of results to be included in the _group key of the returned document.
+  /// Can be between 1 and 10. Defaults to 10.
+  final int? size;
+
+  @override
+  String toString() {
+    return '_ElasticGroup(field: $field, size: $size)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is __ElasticGroup &&
+            const DeepCollectionEquality().equals(other.field, field) &&
+            const DeepCollectionEquality().equals(other.size, size));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(field),
+      const DeepCollectionEquality().hash(size));
+
+  @JsonKey(ignore: true)
+  @override
+  _$_ElasticGroupCopyWith<__ElasticGroup> get copyWith =>
+      __$_ElasticGroupCopyWithImpl<__ElasticGroup>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$__ElasticGroupToJson(this);
+  }
+}
+
+abstract class __ElasticGroup implements _ElasticGroup {
+  const factory __ElasticGroup({required String field, int? size}) =
+      _$__ElasticGroup;
+
+  factory __ElasticGroup.fromJson(Map<String, dynamic> json) =
+      _$__ElasticGroup.fromJson;
+
+  @override
+
+  /// Field name to group results on.
+  String get field;
+  @override
+
+  /// Number of results to be included in the _group key of the returned document.
+  /// Can be between 1 and 10. Defaults to 10.
+  int? get size;
+  @override
+  @JsonKey(ignore: true)
+  _$_ElasticGroupCopyWith<__ElasticGroup> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

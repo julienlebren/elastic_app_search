@@ -32,7 +32,7 @@ class ElasticQuery with _$ElasticQuery {
     /// The value of the precision parameter must be an integer between 1 and 11, inclusive.
     /// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
     /// Lower values favor recall, while higher values favor precision.
-    @JsonKey(name: "precision") int? queryPrecision,
+    @JsonKey(name: "precision") int? precisionTuning,
 
     /// Object to delimit the pagination parameters.
     @JsonKey(name: "page") _ElasticSearchPage? searchPage,
@@ -51,6 +51,9 @@ class ElasticQuery with _$ElasticQuery {
     @Default([])
     @JsonKey(name: "result_fields")
         List<_ElasticResultField>? resultFields,
+
+    /// Grouped results based on shared fields
+    @JsonKey(name: "group") _ElasticGroup? groupBy,
   }) = _ElasticQuery;
 
   factory ElasticQuery.fromJson(Map<String, dynamic> json) =>
@@ -96,7 +99,7 @@ class ElasticQuery with _$ElasticQuery {
   /// Lower values favor recall, while higher values favor precision.
   @Assert('value >= 1 && value <= 11',
       'The value of the precision parameter must be an integer between 1 and 11, inclusive.')
-  ElasticQuery precision(int value) => copyWith(queryPrecision: value);
+  ElasticQuery precision(int value) => copyWith(precisionTuning: value);
 
   /// Takes a field with an optionnal `weight`, creates and returns a new [ElasticQuery]
   ///
@@ -155,6 +158,25 @@ class ElasticQuery with _$ElasticQuery {
           fallback: fallback,
         ),
       ],
+    );
+  }
+
+  /// Takes a field with an optionnal `size`, creates and returns a new [ElasticQuery]
+  /// which will return grouped results based on shared fields.
+  ///
+  /// See [https://www.elastic.co/guide/en/app-search/current/grouping.html]
+  @Assert('field != null', 'Field name to group results on must not be null')
+  @Assert('size == null || (size != null && size >= 1 && size <= 10',
+      'size must be between 1 and 10')
+  ElasticQuery group(
+    String field, {
+    int? size,
+  }) {
+    return copyWith(
+      groupBy: _ElasticGroup(
+        field: field,
+        size: size,
+      ),
     );
   }
 
@@ -358,4 +380,27 @@ class _ElasticResultFieldsConverter
     }
     return value;
   }
+}
+
+/// Object which generate grouped results based on shared fields.
+///
+/// The most relevant document will have a _group key.
+/// The key includes all other documents that share an identical value within the grouped field.
+/// Documents in the _group key will not appear anywhere else in the search response.
+///
+/// See [https://www.elastic.co/guide/en/app-search/current/grouping.html]
+@freezed
+class _ElasticGroup with _$_ElasticGroup {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  const factory _ElasticGroup({
+    /// Field name to group results on.
+    required String field,
+
+    /// Number of results to be included in the _group key of the returned document.
+    /// Can be between 1 and 10. Defaults to 10.
+    int? size,
+  }) = __ElasticGroup;
+
+  factory _ElasticGroup.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticGroupFromJson(json);
 }
