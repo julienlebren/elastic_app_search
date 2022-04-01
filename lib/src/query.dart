@@ -32,7 +32,7 @@ class ElasticQuery with _$ElasticQuery {
     /// The value of the precision parameter must be an integer between 1 and 11, inclusive.
     /// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
     /// Lower values favor recall, while higher values favor precision.
-    @JsonKey(name: "precision") int? precisionTuning,
+    @JsonKey(name: "precision") int? _precision,
 
     /// Object to delimit the pagination parameters.
     @JsonKey(name: "page") _ElasticSearchPage? searchPage,
@@ -53,7 +53,7 @@ class ElasticQuery with _$ElasticQuery {
         List<_ElasticResultField>? resultFields,
 
     /// Grouped results based on shared fields
-    @JsonKey(name: "group") _ElasticGroup? groupBy,
+    @JsonKey(name: "group") _ElasticGroup? _group,
   }) = _ElasticQuery;
 
   factory ElasticQuery.fromJson(Map<String, dynamic> json) =>
@@ -99,7 +99,7 @@ class ElasticQuery with _$ElasticQuery {
   /// Lower values favor recall, while higher values favor precision.
   @Assert('value >= 1 && value <= 11',
       'The value of the precision parameter must be an integer between 1 and 11, inclusive.')
-  ElasticQuery precision(int value) => copyWith(precisionTuning: value);
+  ElasticQuery precision(int value) => copyWith(_precision: value);
 
   /// Takes a field with an optionnal `weight`, creates and returns a new [ElasticQuery]
   ///
@@ -173,7 +173,7 @@ class ElasticQuery with _$ElasticQuery {
     int? size,
   }) {
     return copyWith(
-      groupBy: _ElasticGroup(
+      _group: _ElasticGroup(
         field: field,
         size: size,
       ),
