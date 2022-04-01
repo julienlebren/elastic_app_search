@@ -9,6 +9,7 @@ part of elastic_app_search;
 _$_ElasticQuery _$$_ElasticQueryFromJson(Map<String, dynamic> json) =>
     _$_ElasticQuery(
       query: json['query'] as String,
+      precisionTuning: json['precision'] as int?,
       searchPage: json['page'] == null
           ? null
           : _ElasticSearchPage.fromJson(json['page'] as Map<String, dynamic>),
@@ -20,6 +21,9 @@ _$_ElasticQuery _$$_ElasticQueryFromJson(Map<String, dynamic> json) =>
           ? const []
           : const _ElasticResultFieldsConverter()
               .fromJson(json['result_fields'] as Map?),
+      groupBy: json['group'] == null
+          ? null
+          : _ElasticGroup.fromJson(json['group'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_ElasticQueryToJson(_$_ElasticQuery instance) {
@@ -33,6 +37,7 @@ Map<String, dynamic> _$$_ElasticQueryToJson(_$_ElasticQuery instance) {
     }
   }
 
+  writeNotNull('precision', instance.precisionTuning);
   writeNotNull('page', instance.searchPage?.toJson());
   writeNotNull('filters',
       const _ElasticSearchFiltersConverter().toJson(instance.filters));
@@ -40,6 +45,7 @@ Map<String, dynamic> _$$_ElasticQueryToJson(_$_ElasticQuery instance) {
       const _ElasticSearchFieldsConverter().toJson(instance.searchFields));
   writeNotNull('result_fields',
       const _ElasticResultFieldsConverter().toJson(instance.resultFields));
+  writeNotNull('group', instance.groupBy?.toJson());
   return val;
 }
 

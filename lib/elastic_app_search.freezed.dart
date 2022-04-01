@@ -26,8 +26,9 @@ class _$ElasticQueryTearOff {
       {@JsonKey(ignore: true)
           ElasticEngine? engine,
       required String query,
+      @protected
       @JsonKey(name: "precision")
-          int? _precision,
+          int? precisionTuning,
       @JsonKey(name: "page")
           _ElasticSearchPage? searchPage,
       @_ElasticSearchFiltersConverter()
@@ -38,17 +39,18 @@ class _$ElasticQueryTearOff {
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields = const [],
+      @protected
       @JsonKey(name: "group")
-          _ElasticGroup? _group}) {
+          _ElasticGroup? groupBy}) {
     return _ElasticQuery(
       engine: engine,
       query: query,
-      _precision: _precision,
+      precisionTuning: precisionTuning,
       searchPage: searchPage,
       filters: filters,
       searchFields: searchFields,
       resultFields: resultFields,
-      _group: _group,
+      groupBy: groupBy,
     );
   }
 
@@ -76,8 +78,9 @@ mixin _$ElasticQuery {
   /// The value of the precision parameter must be an integer between 1 and 11, inclusive.
   /// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
   /// Lower values favor recall, while higher values favor precision.
+  @protected
   @JsonKey(name: "precision")
-  int? get _precision => throw _privateConstructorUsedError;
+  int? get precisionTuning => throw _privateConstructorUsedError;
 
   /// Object to delimit the pagination parameters.
   @JsonKey(name: "page")
@@ -101,8 +104,9 @@ mixin _$ElasticQuery {
       throw _privateConstructorUsedError;
 
   /// Grouped results based on shared fields
+  @protected
   @JsonKey(name: "group")
-  _ElasticGroup? get _group => throw _privateConstructorUsedError;
+  _ElasticGroup? get groupBy => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -119,8 +123,9 @@ abstract class $ElasticQueryCopyWith<$Res> {
       {@JsonKey(ignore: true)
           ElasticEngine? engine,
       String query,
+      @protected
       @JsonKey(name: "precision")
-          int? _precision,
+          int? precisionTuning,
       @JsonKey(name: "page")
           _ElasticSearchPage? searchPage,
       @_ElasticSearchFiltersConverter()
@@ -131,11 +136,12 @@ abstract class $ElasticQueryCopyWith<$Res> {
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields,
+      @protected
       @JsonKey(name: "group")
-          _ElasticGroup? _group});
+          _ElasticGroup? groupBy});
 
   _$ElasticSearchPageCopyWith<$Res>? get searchPage;
-  _$ElasticGroupCopyWith<$Res>? get _group;
+  _$ElasticGroupCopyWith<$Res>? get groupBy;
 }
 
 /// @nodoc
@@ -150,12 +156,12 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
   $Res call({
     Object? engine = freezed,
     Object? query = freezed,
-    Object? _precision = freezed,
+    Object? precisionTuning = freezed,
     Object? searchPage = freezed,
     Object? filters = freezed,
     Object? searchFields = freezed,
     Object? resultFields = freezed,
-    Object? _group = freezed,
+    Object? groupBy = freezed,
   }) {
     return _then(_value.copyWith(
       engine: engine == freezed
@@ -166,9 +172,9 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
               as String,
-      _precision: _precision == freezed
-          ? _value._precision
-          : _precision // ignore: cast_nullable_to_non_nullable
+      precisionTuning: precisionTuning == freezed
+          ? _value.precisionTuning
+          : precisionTuning // ignore: cast_nullable_to_non_nullable
               as int?,
       searchPage: searchPage == freezed
           ? _value.searchPage
@@ -186,9 +192,9 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
           ? _value.resultFields
           : resultFields // ignore: cast_nullable_to_non_nullable
               as List<_ElasticResultField>?,
-      _group: _group == freezed
-          ? _value._group
-          : _group // ignore: cast_nullable_to_non_nullable
+      groupBy: groupBy == freezed
+          ? _value.groupBy
+          : groupBy // ignore: cast_nullable_to_non_nullable
               as _ElasticGroup?,
     ));
   }
@@ -205,13 +211,13 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
   }
 
   @override
-  _$ElasticGroupCopyWith<$Res>? get _group {
-    if (_value._group == null) {
+  _$ElasticGroupCopyWith<$Res>? get groupBy {
+    if (_value.groupBy == null) {
       return null;
     }
 
-    return _$ElasticGroupCopyWith<$Res>(_value._group!, (value) {
-      return _then(_value.copyWith(_group: value));
+    return _$ElasticGroupCopyWith<$Res>(_value.groupBy!, (value) {
+      return _then(_value.copyWith(groupBy: value));
     });
   }
 }
@@ -227,8 +233,9 @@ abstract class _$ElasticQueryCopyWith<$Res>
       {@JsonKey(ignore: true)
           ElasticEngine? engine,
       String query,
+      @protected
       @JsonKey(name: "precision")
-          int? _precision,
+          int? precisionTuning,
       @JsonKey(name: "page")
           _ElasticSearchPage? searchPage,
       @_ElasticSearchFiltersConverter()
@@ -239,13 +246,14 @@ abstract class _$ElasticQueryCopyWith<$Res>
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields,
+      @protected
       @JsonKey(name: "group")
-          _ElasticGroup? _group});
+          _ElasticGroup? groupBy});
 
   @override
   _$ElasticSearchPageCopyWith<$Res>? get searchPage;
   @override
-  _$ElasticGroupCopyWith<$Res>? get _group;
+  _$ElasticGroupCopyWith<$Res>? get groupBy;
 }
 
 /// @nodoc
@@ -262,12 +270,12 @@ class __$ElasticQueryCopyWithImpl<$Res> extends _$ElasticQueryCopyWithImpl<$Res>
   $Res call({
     Object? engine = freezed,
     Object? query = freezed,
-    Object? _precision = freezed,
+    Object? precisionTuning = freezed,
     Object? searchPage = freezed,
     Object? filters = freezed,
     Object? searchFields = freezed,
     Object? resultFields = freezed,
-    Object? _group = freezed,
+    Object? groupBy = freezed,
   }) {
     return _then(_ElasticQuery(
       engine: engine == freezed
@@ -278,9 +286,9 @@ class __$ElasticQueryCopyWithImpl<$Res> extends _$ElasticQueryCopyWithImpl<$Res>
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
               as String,
-      _precision: _precision == freezed
-          ? _value._precision
-          : _precision // ignore: cast_nullable_to_non_nullable
+      precisionTuning: precisionTuning == freezed
+          ? _value.precisionTuning
+          : precisionTuning // ignore: cast_nullable_to_non_nullable
               as int?,
       searchPage: searchPage == freezed
           ? _value.searchPage
@@ -298,9 +306,9 @@ class __$ElasticQueryCopyWithImpl<$Res> extends _$ElasticQueryCopyWithImpl<$Res>
           ? _value.resultFields
           : resultFields // ignore: cast_nullable_to_non_nullable
               as List<_ElasticResultField>?,
-      _group: _group == freezed
-          ? _value._group
-          : _group // ignore: cast_nullable_to_non_nullable
+      groupBy: groupBy == freezed
+          ? _value.groupBy
+          : groupBy // ignore: cast_nullable_to_non_nullable
               as _ElasticGroup?,
     ));
   }
@@ -314,8 +322,9 @@ class _$_ElasticQuery extends _ElasticQuery {
       {@JsonKey(ignore: true)
           this.engine,
       required this.query,
+      @protected
       @JsonKey(name: "precision")
-          this._precision,
+          this.precisionTuning,
       @JsonKey(name: "page")
           this.searchPage,
       @_ElasticSearchFiltersConverter()
@@ -326,8 +335,9 @@ class _$_ElasticQuery extends _ElasticQuery {
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           this.resultFields = const [],
+      @protected
       @JsonKey(name: "group")
-          this._group})
+          this.groupBy})
       : assert(engine != null, 'An engine is required to build a query.'),
         super._();
 
@@ -352,8 +362,9 @@ class _$_ElasticQuery extends _ElasticQuery {
   /// The value of the precision parameter must be an integer between 1 and 11, inclusive.
   /// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
   /// Lower values favor recall, while higher values favor precision.
+  @protected
   @JsonKey(name: "precision")
-  final int? _precision;
+  final int? precisionTuning;
   @override
 
   /// Object to delimit the pagination parameters.
@@ -380,12 +391,13 @@ class _$_ElasticQuery extends _ElasticQuery {
   @override
 
   /// Grouped results based on shared fields
+  @protected
   @JsonKey(name: "group")
-  final _ElasticGroup? _group;
+  final _ElasticGroup? groupBy;
 
   @override
   String toString() {
-    return 'ElasticQuery(engine: $engine, query: $query, _precision: $_precision, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, _group: $_group)';
+    return 'ElasticQuery(engine: $engine, query: $query, precisionTuning: $precisionTuning, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, groupBy: $groupBy)';
   }
 
   @override
@@ -396,7 +408,7 @@ class _$_ElasticQuery extends _ElasticQuery {
             const DeepCollectionEquality().equals(other.engine, engine) &&
             const DeepCollectionEquality().equals(other.query, query) &&
             const DeepCollectionEquality()
-                .equals(other._precision, _precision) &&
+                .equals(other.precisionTuning, precisionTuning) &&
             const DeepCollectionEquality()
                 .equals(other.searchPage, searchPage) &&
             const DeepCollectionEquality().equals(other.filters, filters) &&
@@ -404,7 +416,7 @@ class _$_ElasticQuery extends _ElasticQuery {
                 .equals(other.searchFields, searchFields) &&
             const DeepCollectionEquality()
                 .equals(other.resultFields, resultFields) &&
-            const DeepCollectionEquality().equals(other._group, _group));
+            const DeepCollectionEquality().equals(other.groupBy, groupBy));
   }
 
   @override
@@ -412,12 +424,12 @@ class _$_ElasticQuery extends _ElasticQuery {
       runtimeType,
       const DeepCollectionEquality().hash(engine),
       const DeepCollectionEquality().hash(query),
-      const DeepCollectionEquality().hash(_precision),
+      const DeepCollectionEquality().hash(precisionTuning),
       const DeepCollectionEquality().hash(searchPage),
       const DeepCollectionEquality().hash(filters),
       const DeepCollectionEquality().hash(searchFields),
       const DeepCollectionEquality().hash(resultFields),
-      const DeepCollectionEquality().hash(_group));
+      const DeepCollectionEquality().hash(groupBy));
 
   @JsonKey(ignore: true)
   @override
@@ -435,8 +447,9 @@ abstract class _ElasticQuery extends ElasticQuery {
       {@JsonKey(ignore: true)
           ElasticEngine? engine,
       required String query,
+      @protected
       @JsonKey(name: "precision")
-          int? _precision,
+          int? precisionTuning,
       @JsonKey(name: "page")
           _ElasticSearchPage? searchPage,
       @_ElasticSearchFiltersConverter()
@@ -447,8 +460,9 @@ abstract class _ElasticQuery extends ElasticQuery {
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields,
+      @protected
       @JsonKey(name: "group")
-          _ElasticGroup? _group}) = _$_ElasticQuery;
+          _ElasticGroup? groupBy}) = _$_ElasticQuery;
   const _ElasticQuery._() : super._();
 
   factory _ElasticQuery.fromJson(Map<String, dynamic> json) =
@@ -472,8 +486,9 @@ abstract class _ElasticQuery extends ElasticQuery {
   /// The value of the precision parameter must be an integer between 1 and 11, inclusive.
   /// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
   /// Lower values favor recall, while higher values favor precision.
+  @protected
   @JsonKey(name: "precision")
-  int? get _precision;
+  int? get precisionTuning;
   @override
 
   /// Object to delimit the pagination parameters.
@@ -500,8 +515,9 @@ abstract class _ElasticQuery extends ElasticQuery {
   @override
 
   /// Grouped results based on shared fields
+  @protected
   @JsonKey(name: "group")
-  _ElasticGroup? get _group;
+  _ElasticGroup? get groupBy;
   @override
   @JsonKey(ignore: true)
   _$ElasticQueryCopyWith<_ElasticQuery> get copyWith =>
