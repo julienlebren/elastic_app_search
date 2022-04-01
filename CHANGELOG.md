@@ -2,6 +2,7 @@
 
 * Added grouping support in an `ElasticQuery` with the `.group` modifier
 * Renamed queryPrecision to precisionTuning
+* Now showing Dio `CancelToken` in export to avoid to import Dio when using this package
 
 ## 0.1.3
 

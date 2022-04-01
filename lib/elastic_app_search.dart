@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:html_unescape/html_unescape.dart';
 
+export 'package:dio/dio.dart' show CancelToken;
+
 part 'elastic_app_search.freezed.dart';
 part 'elastic_app_search.g.dart';
 
