@@ -58,7 +58,7 @@ class ElasticResult with _$ElasticResult {
     var _data = <String, dynamic>{};
     var _snippets = <String, ElasticResultSnippet>{};
     for (var key in json.keys) {
-      if (!key.contains('_')) {
+      if (!key.startsWith('_')) {
         if (json[key]["raw"] != null) {
           _data[key] = json[key]["raw"];
         }

@@ -1,3 +1,7 @@
+## 0.2.1
+
+* Fields containing "_" were not returned
+
 ## 0.2.0
 
 * Added grouping support in an `ElasticQuery` with the `.group` modifier
