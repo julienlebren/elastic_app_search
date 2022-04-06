@@ -1,6 +1,6 @@
 name: elastic_app_search
 description: Dart/Flutter package for using Elastic App Search through a simple API returning easy to handle objects
-version: 0.2.1-dev2
+version: 0.2.1-dev3
 repository: https://github.com/julienlebren/elastic_app_search
 issue_tracker: https://github.com/julienlebren/elastic_app_search/issues
 

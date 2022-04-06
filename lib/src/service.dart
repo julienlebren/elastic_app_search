@@ -45,6 +45,7 @@ class ElasticAppSearch {
     ElasticQuery query, [
     CancelToken? cancelToken,
   ]) async {
+    print(query.toJson());
     final response = await _dio.post<Map>(
       _apiUrl(query.engine!.name),
       options: Options(
