@@ -164,7 +164,7 @@ class _AppState extends State<App> {
                               )
                             : SizedBox.shrink(),
                       ),
-                      Text("World Heritage Site"),
+                      Text("World Heritage"),
                     ],
                   ),
                   value: true,

@@ -17,13 +17,13 @@ Here is a simple example of how you can query your Elastic engine:
 
 ```dart
 final service = ElasticAppSearch(
-    endPoint: "https://localhost:5601", 
-    searchKey: "search-soaewu2ye6uc45dr8mcd54v8",
+  endPoint: "https://host-2376rb.api.swiftype.com",
+  searchKey: "search-371auk61r2bwqtdzocdgutmg",
 );
 
 ElasticResponse response = await service
-  .engine("national-parks-demo")
-  .query("parks")
+  .engine("search-ui-examples")
+  .query("mountains")
   .filter("states", isEqualTo: "California")
   .filter("world_heritage_site", isEqualTo: true)
   .resultField("title")
@@ -43,6 +43,13 @@ This example will query the parks containing *parks* in any field of the documen
 The results will be filtering the parks based in *California*, with the flag *world_heritage_site* set to *true*.
 Only the **title** and a snippet of 140 chars of the **description** of the park will be returned by the query.
 We request the first page, limited to 50 documents.
+
+### A full use case is available in `example/main.dart`, with the following rendering: 
+
+* The search bar makes dynamic queries to Elastic
+* The popup menu allows you to filter parks if they are World Heritage or not
+
+![App preview](https://raw.githubusercontent.com/julienlebren/elastic_app_search/main/assets/screenshot.jpg)
 
 ## Table of contents
 
