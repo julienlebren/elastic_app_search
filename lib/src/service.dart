@@ -57,6 +57,7 @@ class ElasticAppSearch {
       data: query.toJson(),
       cancelToken: cancelToken,
     );
+    print(response);
 
     if (response.statusCode == 200 && response.data != null) {
       return ElasticResponse.fromJson(response.data as Map<String, dynamic>);
