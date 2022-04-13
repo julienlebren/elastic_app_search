@@ -209,16 +209,12 @@ Map<String, dynamic> _$$_ElasticResponseMetaPageToJson(
 
 _$_ElasticResultMeta _$$_ElasticResultMetaFromJson(Map<String, dynamic> json) =>
     _$_ElasticResultMeta(
-      id: json['id'] as String?,
-      engine: json['engine'] as String?,
       score: (json['score'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$$_ElasticResultMetaToJson(
         _$_ElasticResultMeta instance) =>
     <String, dynamic>{
-      'id': instance.id,
-      'engine': instance.engine,
       'score': instance.score,
     };
 

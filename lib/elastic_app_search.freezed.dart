@@ -2300,10 +2300,8 @@ ElasticResultMeta _$ElasticResultMetaFromJson(Map<String, dynamic> json) {
 class _$ElasticResultMetaTearOff {
   const _$ElasticResultMetaTearOff();
 
-  _ElasticResultMeta call({String? id, String? engine, required double score}) {
+  _ElasticResultMeta call({required double score}) {
     return _ElasticResultMeta(
-      id: id,
-      engine: engine,
       score: score,
     );
   }
@@ -2318,12 +2316,6 @@ const $ElasticResultMeta = _$ElasticResultMetaTearOff();
 
 /// @nodoc
 mixin _$ElasticResultMeta {
-  /// The document ID
-  String? get id => throw _privateConstructorUsedError;
-
-  /// The engine name
-  String? get engine => throw _privateConstructorUsedError;
-
   /// The relevance of the result
   double get score => throw _privateConstructorUsedError;
 
@@ -2338,7 +2330,7 @@ abstract class $ElasticResultMetaCopyWith<$Res> {
   factory $ElasticResultMetaCopyWith(
           ElasticResultMeta value, $Res Function(ElasticResultMeta) then) =
       _$ElasticResultMetaCopyWithImpl<$Res>;
-  $Res call({String? id, String? engine, double score});
+  $Res call({double score});
 }
 
 /// @nodoc
@@ -2352,19 +2344,9 @@ class _$ElasticResultMetaCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? id = freezed,
-    Object? engine = freezed,
     Object? score = freezed,
   }) {
     return _then(_value.copyWith(
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      engine: engine == freezed
-          ? _value.engine
-          : engine // ignore: cast_nullable_to_non_nullable
-              as String?,
       score: score == freezed
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
@@ -2380,7 +2362,7 @@ abstract class _$ElasticResultMetaCopyWith<$Res>
           _ElasticResultMeta value, $Res Function(_ElasticResultMeta) then) =
       __$ElasticResultMetaCopyWithImpl<$Res>;
   @override
-  $Res call({String? id, String? engine, double score});
+  $Res call({double score});
 }
 
 /// @nodoc
@@ -2396,19 +2378,9 @@ class __$ElasticResultMetaCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? id = freezed,
-    Object? engine = freezed,
     Object? score = freezed,
   }) {
     return _then(_ElasticResultMeta(
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String?,
-      engine: engine == freezed
-          ? _value.engine
-          : engine // ignore: cast_nullable_to_non_nullable
-              as String?,
       score: score == freezed
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
@@ -2420,19 +2392,11 @@ class __$ElasticResultMetaCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_ElasticResultMeta implements _ElasticResultMeta {
-  _$_ElasticResultMeta({this.id, this.engine, required this.score});
+  _$_ElasticResultMeta({required this.score});
 
   factory _$_ElasticResultMeta.fromJson(Map<String, dynamic> json) =>
       _$$_ElasticResultMetaFromJson(json);
 
-  @override
-
-  /// The document ID
-  final String? id;
-  @override
-
-  /// The engine name
-  final String? engine;
   @override
 
   /// The relevance of the result
@@ -2440,7 +2404,7 @@ class _$_ElasticResultMeta implements _ElasticResultMeta {
 
   @override
   String toString() {
-    return 'ElasticResultMeta(id: $id, engine: $engine, score: $score)';
+    return 'ElasticResultMeta(score: $score)';
   }
 
   @override
@@ -2448,17 +2412,12 @@ class _$_ElasticResultMeta implements _ElasticResultMeta {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ElasticResultMeta &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.engine, engine) &&
             const DeepCollectionEquality().equals(other.score, score));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(engine),
-      const DeepCollectionEquality().hash(score));
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(score));
 
   @JsonKey(ignore: true)
   @override
@@ -2472,22 +2431,11 @@ class _$_ElasticResultMeta implements _ElasticResultMeta {
 }
 
 abstract class _ElasticResultMeta implements ElasticResultMeta {
-  factory _ElasticResultMeta(
-      {String? id,
-      String? engine,
-      required double score}) = _$_ElasticResultMeta;
+  factory _ElasticResultMeta({required double score}) = _$_ElasticResultMeta;
 
   factory _ElasticResultMeta.fromJson(Map<String, dynamic> json) =
       _$_ElasticResultMeta.fromJson;
 
-  @override
-
-  /// The document ID
-  String? get id;
-  @override
-
-  /// The engine name
-  String? get engine;
   @override
 
   /// The relevance of the result

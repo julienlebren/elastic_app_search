@@ -369,7 +369,7 @@ class _ElasticResultFieldsConverter
     var value = <String, Map?>{};
     for (final resultField in resultFields) {
       value[resultField.name] = {
-        "raw": {"size": resultField.rawSize ?? 20}
+        "raw": resultField.rawSize != null ? {"size": resultField.rawSize} : {}
       };
       if (resultField.snippetSize != null) {
         value[resultField.name]!["snippet"] = {
