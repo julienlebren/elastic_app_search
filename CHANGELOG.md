@@ -3,6 +3,7 @@
 * Fields containing "_" were not returned
 * [ElasticResultMeta] variables `id` and `engine` have been removed
 * `.filter.isEqualTo` now accepts booleans
+* Added a full example
 
 ## 0.2.0
 

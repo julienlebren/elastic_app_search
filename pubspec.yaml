@@ -18,6 +18,7 @@ dependencies:
 dev_dependencies:
   lints: ^1.0.1
   build_runner: ^2.1.5
+  cached_network_image: ^3.2.0
   freezed: ^1.1.1
   json_serializable: ^6.1.5
 
