@@ -85,7 +85,7 @@ abstract class ElasticQuery with _$ElasticQuery {
         ...?filters,
         _ElasticSearchFilter(
           name: field,
-          value: whereIn ?? [isEqualTo],
+          value: whereIn ?? [isEqualTo.toString()],
         ),
       ],
     );

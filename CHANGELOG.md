@@ -1,6 +1,8 @@
 ## 0.2.1
 
 * Fields containing "_" were not returned
+* [ElasticResultMeta] variables `id` and `engine` have been removed
+* `.filter.isEqualTo` now accepts booleans
 
 ## 0.2.0
 
