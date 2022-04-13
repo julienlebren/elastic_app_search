@@ -8,10 +8,10 @@ const _highlightEnd = '</em>';
 class ElasticResultMeta with _$ElasticResultMeta {
   factory ElasticResultMeta({
     /// The document ID
-    required String id,
+    String? id,
 
     /// The engine name
-    required String engine,
+    String? engine,
 
     /// The relevance of the result
     required double score,
@@ -99,7 +99,7 @@ class ElasticResult with _$ElasticResult {
   }
 
   /// An easier way to get the document id
-  String get id => meta.id;
+  String? get id => meta.id;
 }
 
 /// An object contaning the snippet of the result
