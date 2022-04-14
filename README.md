@@ -258,8 +258,6 @@ An object containing information about a given result.
 
 Param | Type | Description
 ----- | ---- | -------------
-id | String | The document ID
-engine | String | The engine name
 score | double | The relevance of the result
 
 #### ElasticResultSnippet
