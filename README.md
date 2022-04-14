@@ -277,8 +277,8 @@ highlights | List\<String\> | The words matching the query
 
 This app uses some external librairies:
 
-- [x] [Freezed](https://pub.dev/packages/freezed) to generate immutable models
-- [x] [Dio](https://pub.dev/packages/dio) for http requests
+- [x] [freezed](https://pub.dev/packages/freezed) to generate immutable models
+- [x] [dio](https://pub.dev/packages/dio) for http requests
 - [x] [html_unescape](https://pub.dev/packages/html_unescape) to strip html tags from results
 
 ## Credits
