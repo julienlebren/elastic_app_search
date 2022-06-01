@@ -386,7 +386,7 @@ class _ElasticResultFieldsConverter
 
   @override
   Map? toJson(List<_ElasticResultField>? resultFields) {
-    if (resultFields == null) return null;
+    if (resultFields == null || resultFields.isEmpty) return null;
 
     var value = <String, Map?>{};
     for (final resultField in resultFields) {
@@ -455,7 +455,7 @@ class _ElasticSortConverter
 
   @override
   List<Map>? toJson(List<_ElasticSort>? sortBys) {
-    if (sortBys == null) return null;
+    if (sortBys == null || sortBys.isEmpty) return null;
     var value = <Map<String, String>>[];
     for (final sortBy in sortBys) {
       value.add({sortBy.field: sortBy.descending ? "desc" : "asc"});
