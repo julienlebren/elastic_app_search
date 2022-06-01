@@ -10,7 +10,7 @@ part of elastic_app_search;
 /// Note: All the paramaters of Elastic App Search are not currently
 /// available in this package.
 @freezed
-abstract class ElasticQuery with _$ElasticQuery {
+class ElasticQuery with _$ElasticQuery {
   const ElasticQuery._();
 
   @JsonSerializable(
@@ -54,6 +54,12 @@ abstract class ElasticQuery with _$ElasticQuery {
 
     /// Grouped results based on shared fields
     @protected @JsonKey(name: "group") _ElasticGroup? groupBy,
+
+    /// Object to sort your results in an order other than document score.
+    @_ElasticSortConverter()
+    @Default([])
+    @JsonKey(name: "sort")
+        List<_ElasticSort>? sortBy,
   }) = _ElasticQuery;
 
   factory ElasticQuery.fromJson(Map<String, dynamic> json) =>
@@ -178,6 +184,22 @@ abstract class ElasticQuery with _$ElasticQuery {
         size: size,
       ),
     );
+  }
+
+  /// Takes a field with an optionnal `descending`, creates and returns a new [ElasticQuery]
+  /// which will sort your results in an order other than document score.
+  ///
+  /// See [https://www.elastic.co/guide/en/app-search/current/sort.html]
+  @Assert('field != null', 'Field name to sort results must not be null')
+  ElasticQuery sort(
+    String field, {
+    bool descending = false,
+  }) {
+    final newSortBy = _ElasticSort(
+      field: field,
+      descending: descending,
+    );
+    return copyWith(sortBy: sortBy ?? <_ElasticSort>[] + [newSortBy]);
   }
 
   /// Creates and returns a new [ElasticQuery] with new pagination parameters.
@@ -403,4 +425,41 @@ class _ElasticGroup with _$_ElasticGroup {
 
   factory _ElasticGroup.fromJson(Map<String, dynamic> json) =>
       _$_ElasticGroupFromJson(json);
+}
+
+/// Object which sorts results based on shared fields.
+///
+/// Sort your results in an order other than document score.
+/// Using sort will override the default relevance scoring method.
+///
+/// See [https://www.elastic.co/guide/en/app-search/current/sort.html]
+@freezed
+class _ElasticSort with _$_ElasticSort {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  const factory _ElasticSort({
+    /// Field name to sort results
+    required String field,
+    @Default(false) bool descending,
+  }) = __ElasticSort;
+
+  factory _ElasticSort.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticSortFromJson(json);
+}
+
+class _ElasticSortConverter
+    implements JsonConverter<List<_ElasticSort>?, List<Map>?> {
+  const _ElasticSortConverter();
+
+  @override
+  List<_ElasticSort>? fromJson(List<Map>? value) => null;
+
+  @override
+  List<Map>? toJson(List<_ElasticSort>? sortBys) {
+    if (sortBys == null) return null;
+    var value = <Map<String, String>>[];
+    for (final sortBy in sortBys) {
+      value.add({sortBy.field: sortBy.descending ? "desc" : "asc"});
+    }
+    return value;
+  }
 }

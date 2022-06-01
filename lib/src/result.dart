@@ -67,7 +67,7 @@ class ElasticResult with _$ElasticResult {
           List<String?> highlights = highlightExp
               .allMatches(text)
               .map((match) => match.group(0))
-              .whereNotNull()
+              .where((element) => element != null)
               .toList();
 
           _snippets[key] = ElasticResultSnippet(

@@ -41,7 +41,10 @@ class _$ElasticQueryTearOff {
           List<_ElasticResultField>? resultFields = const [],
       @protected
       @JsonKey(name: "group")
-          _ElasticGroup? groupBy}) {
+          _ElasticGroup? groupBy,
+      @_ElasticSortConverter()
+      @JsonKey(name: "sort")
+          List<_ElasticSort>? sortBy = const []}) {
     return _ElasticQuery(
       engine: engine,
       query: query,
@@ -51,6 +54,7 @@ class _$ElasticQueryTearOff {
       searchFields: searchFields,
       resultFields: resultFields,
       groupBy: groupBy,
+      sortBy: sortBy,
     );
   }
 
@@ -108,6 +112,11 @@ mixin _$ElasticQuery {
   @JsonKey(name: "group")
   _ElasticGroup? get groupBy => throw _privateConstructorUsedError;
 
+  /// Object to sort your results in an order other than document score.
+  @_ElasticSortConverter()
+  @JsonKey(name: "sort")
+  List<_ElasticSort>? get sortBy => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $ElasticQueryCopyWith<ElasticQuery> get copyWith =>
@@ -138,7 +147,10 @@ abstract class $ElasticQueryCopyWith<$Res> {
           List<_ElasticResultField>? resultFields,
       @protected
       @JsonKey(name: "group")
-          _ElasticGroup? groupBy});
+          _ElasticGroup? groupBy,
+      @_ElasticSortConverter()
+      @JsonKey(name: "sort")
+          List<_ElasticSort>? sortBy});
 
   _$ElasticSearchPageCopyWith<$Res>? get searchPage;
   _$ElasticGroupCopyWith<$Res>? get groupBy;
@@ -162,6 +174,7 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
     Object? searchFields = freezed,
     Object? resultFields = freezed,
     Object? groupBy = freezed,
+    Object? sortBy = freezed,
   }) {
     return _then(_value.copyWith(
       engine: engine == freezed
@@ -196,6 +209,10 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
           ? _value.groupBy
           : groupBy // ignore: cast_nullable_to_non_nullable
               as _ElasticGroup?,
+      sortBy: sortBy == freezed
+          ? _value.sortBy
+          : sortBy // ignore: cast_nullable_to_non_nullable
+              as List<_ElasticSort>?,
     ));
   }
 
@@ -248,7 +265,10 @@ abstract class _$ElasticQueryCopyWith<$Res>
           List<_ElasticResultField>? resultFields,
       @protected
       @JsonKey(name: "group")
-          _ElasticGroup? groupBy});
+          _ElasticGroup? groupBy,
+      @_ElasticSortConverter()
+      @JsonKey(name: "sort")
+          List<_ElasticSort>? sortBy});
 
   @override
   _$ElasticSearchPageCopyWith<$Res>? get searchPage;
@@ -276,6 +296,7 @@ class __$ElasticQueryCopyWithImpl<$Res> extends _$ElasticQueryCopyWithImpl<$Res>
     Object? searchFields = freezed,
     Object? resultFields = freezed,
     Object? groupBy = freezed,
+    Object? sortBy = freezed,
   }) {
     return _then(_ElasticQuery(
       engine: engine == freezed
@@ -310,6 +331,10 @@ class __$ElasticQueryCopyWithImpl<$Res> extends _$ElasticQueryCopyWithImpl<$Res>
           ? _value.groupBy
           : groupBy // ignore: cast_nullable_to_non_nullable
               as _ElasticGroup?,
+      sortBy: sortBy == freezed
+          ? _value.sortBy
+          : sortBy // ignore: cast_nullable_to_non_nullable
+              as List<_ElasticSort>?,
     ));
   }
 }
@@ -337,7 +362,10 @@ class _$_ElasticQuery extends _ElasticQuery {
           this.resultFields = const [],
       @protected
       @JsonKey(name: "group")
-          this.groupBy})
+          this.groupBy,
+      @_ElasticSortConverter()
+      @JsonKey(name: "sort")
+          this.sortBy = const []})
       : assert(engine != null, 'An engine is required to build a query.'),
         super._();
 
@@ -394,10 +422,16 @@ class _$_ElasticQuery extends _ElasticQuery {
   @protected
   @JsonKey(name: "group")
   final _ElasticGroup? groupBy;
+  @override
+
+  /// Object to sort your results in an order other than document score.
+  @_ElasticSortConverter()
+  @JsonKey(name: "sort")
+  final List<_ElasticSort>? sortBy;
 
   @override
   String toString() {
-    return 'ElasticQuery(engine: $engine, query: $query, precisionTuning: $precisionTuning, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, groupBy: $groupBy)';
+    return 'ElasticQuery(engine: $engine, query: $query, precisionTuning: $precisionTuning, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, groupBy: $groupBy, sortBy: $sortBy)';
   }
 
   @override
@@ -416,7 +450,8 @@ class _$_ElasticQuery extends _ElasticQuery {
                 .equals(other.searchFields, searchFields) &&
             const DeepCollectionEquality()
                 .equals(other.resultFields, resultFields) &&
-            const DeepCollectionEquality().equals(other.groupBy, groupBy));
+            const DeepCollectionEquality().equals(other.groupBy, groupBy) &&
+            const DeepCollectionEquality().equals(other.sortBy, sortBy));
   }
 
   @override
@@ -429,7 +464,8 @@ class _$_ElasticQuery extends _ElasticQuery {
       const DeepCollectionEquality().hash(filters),
       const DeepCollectionEquality().hash(searchFields),
       const DeepCollectionEquality().hash(resultFields),
-      const DeepCollectionEquality().hash(groupBy));
+      const DeepCollectionEquality().hash(groupBy),
+      const DeepCollectionEquality().hash(sortBy));
 
   @JsonKey(ignore: true)
   @override
@@ -462,7 +498,10 @@ abstract class _ElasticQuery extends ElasticQuery {
           List<_ElasticResultField>? resultFields,
       @protected
       @JsonKey(name: "group")
-          _ElasticGroup? groupBy}) = _$_ElasticQuery;
+          _ElasticGroup? groupBy,
+      @_ElasticSortConverter()
+      @JsonKey(name: "sort")
+          List<_ElasticSort>? sortBy}) = _$_ElasticQuery;
   const _ElasticQuery._() : super._();
 
   factory _ElasticQuery.fromJson(Map<String, dynamic> json) =
@@ -518,6 +557,12 @@ abstract class _ElasticQuery extends ElasticQuery {
   @protected
   @JsonKey(name: "group")
   _ElasticGroup? get groupBy;
+  @override
+
+  /// Object to sort your results in an order other than document score.
+  @_ElasticSortConverter()
+  @JsonKey(name: "sort")
+  List<_ElasticSort>? get sortBy;
   @override
   @JsonKey(ignore: true)
   _$ElasticQueryCopyWith<_ElasticQuery> get copyWith =>
@@ -1530,6 +1575,181 @@ abstract class __ElasticGroup implements _ElasticGroup {
   @override
   @JsonKey(ignore: true)
   _$_ElasticGroupCopyWith<__ElasticGroup> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+_ElasticSort _$_ElasticSortFromJson(Map<String, dynamic> json) {
+  return __ElasticSort.fromJson(json);
+}
+
+/// @nodoc
+class _$_ElasticSortTearOff {
+  const _$_ElasticSortTearOff();
+
+  __ElasticSort call({required String field, bool descending = false}) {
+    return __ElasticSort(
+      field: field,
+      descending: descending,
+    );
+  }
+
+  _ElasticSort fromJson(Map<String, Object?> json) {
+    return _ElasticSort.fromJson(json);
+  }
+}
+
+/// @nodoc
+const _$ElasticSort = _$_ElasticSortTearOff();
+
+/// @nodoc
+mixin _$_ElasticSort {
+  /// Field name to sort results
+  String get field => throw _privateConstructorUsedError;
+  bool get descending => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$ElasticSortCopyWith<_ElasticSort> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$ElasticSortCopyWith<$Res> {
+  factory _$ElasticSortCopyWith(
+          _ElasticSort value, $Res Function(_ElasticSort) then) =
+      __$ElasticSortCopyWithImpl<$Res>;
+  $Res call({String field, bool descending});
+}
+
+/// @nodoc
+class __$ElasticSortCopyWithImpl<$Res> implements _$ElasticSortCopyWith<$Res> {
+  __$ElasticSortCopyWithImpl(this._value, this._then);
+
+  final _ElasticSort _value;
+  // ignore: unused_field
+  final $Res Function(_ElasticSort) _then;
+
+  @override
+  $Res call({
+    Object? field = freezed,
+    Object? descending = freezed,
+  }) {
+    return _then(_value.copyWith(
+      field: field == freezed
+          ? _value.field
+          : field // ignore: cast_nullable_to_non_nullable
+              as String,
+      descending: descending == freezed
+          ? _value.descending
+          : descending // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$_ElasticSortCopyWith<$Res>
+    implements _$ElasticSortCopyWith<$Res> {
+  factory _$_ElasticSortCopyWith(
+          __ElasticSort value, $Res Function(__ElasticSort) then) =
+      __$_ElasticSortCopyWithImpl<$Res>;
+  @override
+  $Res call({String field, bool descending});
+}
+
+/// @nodoc
+class __$_ElasticSortCopyWithImpl<$Res> extends __$ElasticSortCopyWithImpl<$Res>
+    implements _$_ElasticSortCopyWith<$Res> {
+  __$_ElasticSortCopyWithImpl(
+      __ElasticSort _value, $Res Function(__ElasticSort) _then)
+      : super(_value, (v) => _then(v as __ElasticSort));
+
+  @override
+  __ElasticSort get _value => super._value as __ElasticSort;
+
+  @override
+  $Res call({
+    Object? field = freezed,
+    Object? descending = freezed,
+  }) {
+    return _then(__ElasticSort(
+      field: field == freezed
+          ? _value.field
+          : field // ignore: cast_nullable_to_non_nullable
+              as String,
+      descending: descending == freezed
+          ? _value.descending
+          : descending // ignore: cast_nullable_to_non_nullable
+              as bool,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _$__ElasticSort implements __ElasticSort {
+  const _$__ElasticSort({required this.field, this.descending = false});
+
+  factory _$__ElasticSort.fromJson(Map<String, dynamic> json) =>
+      _$$__ElasticSortFromJson(json);
+
+  @override
+
+  /// Field name to sort results
+  final String field;
+  @JsonKey()
+  @override
+  final bool descending;
+
+  @override
+  String toString() {
+    return '_ElasticSort(field: $field, descending: $descending)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is __ElasticSort &&
+            const DeepCollectionEquality().equals(other.field, field) &&
+            const DeepCollectionEquality()
+                .equals(other.descending, descending));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(field),
+      const DeepCollectionEquality().hash(descending));
+
+  @JsonKey(ignore: true)
+  @override
+  _$_ElasticSortCopyWith<__ElasticSort> get copyWith =>
+      __$_ElasticSortCopyWithImpl<__ElasticSort>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$__ElasticSortToJson(this);
+  }
+}
+
+abstract class __ElasticSort implements _ElasticSort {
+  const factory __ElasticSort({required String field, bool descending}) =
+      _$__ElasticSort;
+
+  factory __ElasticSort.fromJson(Map<String, dynamic> json) =
+      _$__ElasticSort.fromJson;
+
+  @override
+
+  /// Field name to sort results
+  String get field;
+  @override
+  bool get descending;
+  @override
+  @JsonKey(ignore: true)
+  _$_ElasticSortCopyWith<__ElasticSort> get copyWith =>
       throw _privateConstructorUsedError;
 }
 

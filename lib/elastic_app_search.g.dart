@@ -24,6 +24,10 @@ _$_ElasticQuery _$$_ElasticQueryFromJson(Map<String, dynamic> json) =>
       groupBy: json['group'] == null
           ? null
           : _ElasticGroup.fromJson(json['group'] as Map<String, dynamic>),
+      sortBy: (json['sort'] as List<dynamic>?)
+              ?.map((e) => _ElasticSort.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$_ElasticQueryToJson(_$_ElasticQuery instance) {
@@ -46,6 +50,7 @@ Map<String, dynamic> _$$_ElasticQueryToJson(_$_ElasticQuery instance) {
   writeNotNull('result_fields',
       const _ElasticResultFieldsConverter().toJson(instance.resultFields));
   writeNotNull('group', instance.groupBy?.toJson());
+  writeNotNull('sort', instance.sortBy?.map((e) => e.toJson()).toList());
   return val;
 }
 
@@ -155,6 +160,18 @@ Map<String, dynamic> _$$__ElasticGroupToJson(_$__ElasticGroup instance) {
   writeNotNull('size', instance.size);
   return val;
 }
+
+_$__ElasticSort _$$__ElasticSortFromJson(Map<String, dynamic> json) =>
+    _$__ElasticSort(
+      field: json['field'] as String,
+      descending: json['descending'] as bool? ?? false,
+    );
+
+Map<String, dynamic> _$$__ElasticSortToJson(_$__ElasticSort instance) =>
+    <String, dynamic>{
+      'field': instance.field,
+      'descending': instance.descending,
+    };
 
 _$_ElasticResponse _$$_ElasticResponseFromJson(Map<String, dynamic> json) =>
     _$_ElasticResponse(
