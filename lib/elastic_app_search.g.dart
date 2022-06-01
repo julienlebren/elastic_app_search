@@ -17,17 +17,13 @@ _$_ElasticQuery _$$_ElasticQueryFromJson(Map<String, dynamic> json) =>
           .fromJson(json['filters'] as Map?),
       searchFields: const _ElasticSearchFieldsConverter()
           .fromJson(json['search_fields'] as Map?),
-      resultFields: json['result_fields'] == null
-          ? const []
-          : const _ElasticResultFieldsConverter()
-              .fromJson(json['result_fields'] as Map?),
+      resultFields: const _ElasticResultFieldsConverter()
+          .fromJson(json['result_fields'] as Map?),
       groupBy: json['group'] == null
           ? null
           : _ElasticGroup.fromJson(json['group'] as Map<String, dynamic>),
-      sortBy: (json['sort'] as List<dynamic>?)
-              ?.map((e) => _ElasticSort.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const [],
+      sortBy: const _ElasticSortConverter()
+          .fromJson(json['sort'] as List<Map<dynamic, dynamic>>?),
     );
 
 Map<String, dynamic> _$$_ElasticQueryToJson(_$_ElasticQuery instance) {
@@ -50,7 +46,7 @@ Map<String, dynamic> _$$_ElasticQueryToJson(_$_ElasticQuery instance) {
   writeNotNull('result_fields',
       const _ElasticResultFieldsConverter().toJson(instance.resultFields));
   writeNotNull('group', instance.groupBy?.toJson());
-  writeNotNull('sort', instance.sortBy?.map((e) => e.toJson()).toList());
+  writeNotNull('sort', const _ElasticSortConverter().toJson(instance.sortBy));
   return val;
 }
 

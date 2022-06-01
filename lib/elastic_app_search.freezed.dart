@@ -38,13 +38,13 @@ class _$ElasticQueryTearOff {
           List<_ElasticSearchField>? searchFields,
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
-          List<_ElasticResultField>? resultFields = const [],
+          List<_ElasticResultField>? resultFields,
       @protected
       @JsonKey(name: "group")
           _ElasticGroup? groupBy,
       @_ElasticSortConverter()
       @JsonKey(name: "sort")
-          List<_ElasticSort>? sortBy = const []}) {
+          List<_ElasticSort>? sortBy}) {
     return _ElasticQuery(
       engine: engine,
       query: query,
@@ -359,13 +359,13 @@ class _$_ElasticQuery extends _ElasticQuery {
           this.searchFields,
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
-          this.resultFields = const [],
+          this.resultFields,
       @protected
       @JsonKey(name: "group")
           this.groupBy,
       @_ElasticSortConverter()
       @JsonKey(name: "sort")
-          this.sortBy = const []})
+          this.sortBy})
       : assert(engine != null, 'An engine is required to build a query.'),
         super._();
 

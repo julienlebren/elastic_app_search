@@ -48,7 +48,6 @@ class ElasticQuery with _$ElasticQuery {
 
     /// Object to define the fields which appear in search results and how their values are rendered.
     @_ElasticResultFieldsConverter()
-    @Default([])
     @JsonKey(name: "result_fields")
         List<_ElasticResultField>? resultFields,
 
@@ -56,10 +55,7 @@ class ElasticQuery with _$ElasticQuery {
     @protected @JsonKey(name: "group") _ElasticGroup? groupBy,
 
     /// Object to sort your results in an order other than document score.
-    @_ElasticSortConverter()
-    @Default([])
-    @JsonKey(name: "sort")
-        List<_ElasticSort>? sortBy,
+    @_ElasticSortConverter() @JsonKey(name: "sort") List<_ElasticSort>? sortBy,
   }) = _ElasticQuery;
 
   factory ElasticQuery.fromJson(Map<String, dynamic> json) =>
