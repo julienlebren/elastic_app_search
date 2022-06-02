@@ -168,16 +168,14 @@ class ElasticQuery with _$ElasticQuery {
 
   /// Dev in progress - no doc
   @Assert('from != null || to != null',
-      'You must provide at least `from` or `to` to create an _ElasticRange object.')
-  @Assert('from != null && (from is double || from is Date)',
-      '`from` must be a double or a Date')
+      'You must provide at least `from` or `to` to create an date range facet.')
   @Assert('to != null && (to is double || to is Date)',
       '`from` must be a double or a Date')
   ElasticQuery rangeFacet(
     String field, {
     String? name,
-    Object? from,
-    Object? to,
+    dynamic from,
+    dynamic to,
   }) {
     return copyWith(
       facets: [
@@ -562,9 +560,44 @@ class _ElasticRangeFacet with _$_ElasticRangeFacet {
   const factory _ElasticRangeFacet({
     @protected @Default("range") String type,
     String? name,
-    required List<_ElasticRange> ranges,
+    @_ElasticRangesConverter() required List<_ElasticRange> ranges,
   }) = __ElasticRangeFacet;
 
   factory _ElasticRangeFacet.fromJson(Map<String, dynamic> json) =>
       _$_ElasticRangeFacetFromJson(json);
+}
+
+class _ElasticRangesConverter
+    implements JsonConverter<List<_ElasticRange>?, List<Map>?> {
+  const _ElasticRangesConverter();
+
+  @override
+  List<_ElasticRange>? fromJson(List<Map>? value) => null;
+
+  @override
+  List<Map>? toJson(List<_ElasticRange>? ranges) {
+    if (ranges == null || ranges.isEmpty) return null;
+
+    var values = <Map>[];
+    for (final range in ranges) {
+      var _range = {};
+      if (range.name != null) {
+        _range["name"] = range.name!;
+      }
+      if (range.from is double) {
+        _range["from"] = range.from!;
+      }
+      if (range.to is double) {
+        _range["to"] = range.to!;
+      }
+      if (range.from is DateTime) {
+        _range["from"] = (range.from! as DateTime).toIso8601String();
+      }
+      if (range.to is DateTime) {
+        _range["to"] = (range.to! as DateTime).toIso8601String();
+      }
+      values.add(_range);
+    }
+    return values;
+  }
 }
