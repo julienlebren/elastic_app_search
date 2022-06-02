@@ -199,13 +199,15 @@ Map<String, dynamic> _$$__ElasticRangeToJson(_$__ElasticRange instance) {
 _$__ElasticFacet _$$__ElasticFacetFromJson(Map<String, dynamic> json) =>
     _$__ElasticFacet(
       field: json['field'] as String,
-      facets: json['facets'] as List<dynamic>,
+      facets: (json['facets'] as List<dynamic>)
+          .map((e) => _ElasticRangeFacet.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$__ElasticFacetToJson(_$__ElasticFacet instance) =>
     <String, dynamic>{
       'field': instance.field,
-      'facets': instance.facets,
+      'facets': instance.facets.map((e) => e.toJson()).toList(),
     };
 
 _$__ElasticValueFacet _$$__ElasticValueFacetFromJson(

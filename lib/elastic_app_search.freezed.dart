@@ -1986,7 +1986,8 @@ _ElasticFacet _$_ElasticFacetFromJson(Map<String, dynamic> json) {
 class _$_ElasticFacetTearOff {
   const _$_ElasticFacetTearOff();
 
-  __ElasticFacet call({required String field, required List<dynamic> facets}) {
+  __ElasticFacet call(
+      {required String field, required List<_ElasticRangeFacet> facets}) {
     return __ElasticFacet(
       field: field,
       facets: facets,
@@ -2004,7 +2005,7 @@ const _$ElasticFacet = _$_ElasticFacetTearOff();
 /// @nodoc
 mixin _$_ElasticFacet {
   String get field => throw _privateConstructorUsedError;
-  List<dynamic> get facets => throw _privateConstructorUsedError;
+  List<_ElasticRangeFacet> get facets => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -2017,7 +2018,7 @@ abstract class _$ElasticFacetCopyWith<$Res> {
   factory _$ElasticFacetCopyWith(
           _ElasticFacet value, $Res Function(_ElasticFacet) then) =
       __$ElasticFacetCopyWithImpl<$Res>;
-  $Res call({String field, List<dynamic> facets});
+  $Res call({String field, List<_ElasticRangeFacet> facets});
 }
 
 /// @nodoc
@@ -2042,7 +2043,7 @@ class __$ElasticFacetCopyWithImpl<$Res>
       facets: facets == freezed
           ? _value.facets
           : facets // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<_ElasticRangeFacet>,
     ));
   }
 }
@@ -2054,7 +2055,7 @@ abstract class _$_ElasticFacetCopyWith<$Res>
           __ElasticFacet value, $Res Function(__ElasticFacet) then) =
       __$_ElasticFacetCopyWithImpl<$Res>;
   @override
-  $Res call({String field, List<dynamic> facets});
+  $Res call({String field, List<_ElasticRangeFacet> facets});
 }
 
 /// @nodoc
@@ -2081,7 +2082,7 @@ class __$_ElasticFacetCopyWithImpl<$Res>
       facets: facets == freezed
           ? _value.facets
           : facets // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<_ElasticRangeFacet>,
     ));
   }
 }
@@ -2098,7 +2099,7 @@ class _$__ElasticFacet implements __ElasticFacet {
   @override
   final String field;
   @override
-  final List<dynamic> facets;
+  final List<_ElasticRangeFacet> facets;
 
   @override
   String toString() {
@@ -2134,7 +2135,7 @@ class _$__ElasticFacet implements __ElasticFacet {
 abstract class __ElasticFacet implements _ElasticFacet {
   const factory __ElasticFacet(
       {required String field,
-      required List<dynamic> facets}) = _$__ElasticFacet;
+      required List<_ElasticRangeFacet> facets}) = _$__ElasticFacet;
 
   factory __ElasticFacet.fromJson(Map<String, dynamic> json) =
       _$__ElasticFacet.fromJson;
@@ -2142,7 +2143,7 @@ abstract class __ElasticFacet implements _ElasticFacet {
   @override
   String get field;
   @override
-  List<dynamic> get facets;
+  List<_ElasticRangeFacet> get facets;
   @override
   @JsonKey(ignore: true)
   _$_ElasticFacetCopyWith<__ElasticFacet> get copyWith =>
