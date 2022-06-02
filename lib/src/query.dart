@@ -52,7 +52,7 @@ class ElasticQuery with _$ElasticQuery {
         List<_ElasticResultField>? resultFields,
 
     /// Dev in progress - no doc
-    @_ElasticFacetConverter() @protected List<_ElasticFacet>? facets,
+    @protected List<_ElasticFacet>? facets,
 
     /// Grouped results based on shared fields
     @protected @JsonKey(name: "group") _ElasticGroup? groupBy,
@@ -167,15 +167,18 @@ class ElasticQuery with _$ElasticQuery {
   }
 
   /// Dev in progress - no doc
+  /// .rangeFacet(
+  ///   "location",
+  /// )
   @Assert('from != null || to != null',
       'You must provide at least `from` or `to` to create an date range facet.')
   @Assert('to != null && (to is double || to is Date)',
       '`from` must be a double or a Date')
-  ElasticQuery rangeFacet(
+  ElasticQuery dateRangeFacet(
     String field, {
     String? name,
-    dynamic from,
-    dynamic to,
+    DateTime? from,
+    DateTime? to,
   }) {
     return copyWith(
       facets: [
@@ -185,10 +188,10 @@ class ElasticQuery with _$ElasticQuery {
             _ElasticRangeFacet(
               name: name,
               ranges: [
-                /*_ElasticRange(
+                _ElasticRange(
                   from: from,
                   to: to,
-                ),*/
+                ),
               ],
             ),
           ],
@@ -500,8 +503,8 @@ class _ElasticRange with _$_ElasticRange {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticRange({
     String? name,
-    dynamic from,
-    dynamic to,
+    DateTime? from,
+    DateTime? to,
   }) = __ElasticRange;
 
   factory _ElasticRange.fromJson(Map<String, dynamic> json) =>
@@ -520,6 +523,7 @@ class _ElasticFacet with _$_ElasticFacet {
       _$_ElasticFacetFromJson(json);
 }
 
+/*
 class _ElasticFacetConverter
     implements JsonConverter<List<_ElasticFacet>?, Map?> {
   const _ElasticFacetConverter();
@@ -533,11 +537,13 @@ class _ElasticFacetConverter
 
     var value = <String, List?>{};
     for (final facet in facets) {
-      value[facet.field] = facet.facets;
+      if (facet.facets.first is _ElasticRangeFacet)
+        value[facet.field] = facet.facets;
     }
     return value;
   }
 }
+*/
 
 @freezed
 class _ElasticValueFacet with _$_ElasticValueFacet {
@@ -560,13 +566,14 @@ class _ElasticRangeFacet with _$_ElasticRangeFacet {
   const factory _ElasticRangeFacet({
     @protected @Default("range") String type,
     String? name,
-    @_ElasticRangesConverter() required List<_ElasticRange> ranges,
+    required List<_ElasticRange> ranges,
   }) = __ElasticRangeFacet;
 
   factory _ElasticRangeFacet.fromJson(Map<String, dynamic> json) =>
       _$_ElasticRangeFacetFromJson(json);
 }
 
+/*
 class _ElasticRangesConverter
     implements JsonConverter<List<_ElasticRange>?, List<Map>?> {
   const _ElasticRangesConverter();
@@ -601,3 +608,4 @@ class _ElasticRangesConverter
     return values;
   }
 }
+*/
