@@ -534,9 +534,10 @@ class _ElasticFacetConverter
   Map? toJson(List<_ElasticFacet>? facets) {
     if (facets == null || facets.isEmpty) return null;
 
-    var value = <String, List?>{};
+    var value = <String, String?>{};
     for (final facet in facets) {
-      value[facet.field] = facet.facets;
+      value[facet.field] = "test";
+      //facet.facets;
     }
     return value;
   }
