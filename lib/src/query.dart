@@ -185,10 +185,10 @@ class ElasticQuery with _$ElasticQuery {
             _ElasticRangeFacet(
               name: name,
               ranges: [
-                _ElasticRange(
+                /*_ElasticRange(
                   from: from,
                   to: to,
-                ),
+                ),*/
               ],
             ),
           ],
