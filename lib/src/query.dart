@@ -459,3 +459,68 @@ class _ElasticSortConverter
     return value;
   }
 }
+
+/// DEV in progress - no doc
+@freezed
+class _ElasticRange with _$_ElasticRange {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  @Assert('from != null || to != null',
+      'You must provide at least `from` or `to` to create an _ElasticRange object.')
+  @Assert('from != null && (from is double || from is Date)',
+      '`from` must be a double or a Date')
+  @Assert('to != null && (to is double || to is Date)',
+      '`from` must be a double or a Date')
+  const factory _ElasticRange({
+    String? name,
+    Object? from,
+    Object? to,
+  }) = __ElasticRange;
+
+  factory _ElasticRange.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticRangeFromJson(json);
+}
+
+@freezed
+class _ElasticValueFacet with _$_ElasticValueFacet {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  @Assert('size == null || (size != null && size >= 1 && size <= 250)',
+      'The number of facets must be greater than or equal to 1 and less than or equal to 250.')
+  const factory _ElasticValueFacet({
+    @protected @Default("value") String type,
+    String? name,
+    double? size,
+  }) = __ElasticValueFacet;
+
+  factory _ElasticValueFacet.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticValueFacetFromJson(json);
+}
+
+@freezed
+class _ElasticRangeFacet with _$_ElasticRangeFacet {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  const factory _ElasticRangeFacet({
+    @protected @Default("range") String type,
+    String? name,
+    required List<_ElasticRange> ranges,
+  }) = __ElasticRangeFacet;
+
+  factory _ElasticRangeFacet.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticRangeFacetFromJson(json);
+}
+
+
+/*
+    "facets": {
+        "created_at": [
+            {
+                "type": "range",
+                "ranges": [
+                    {
+                        "from": "1900-01-01T00:00:00+00:00",
+                        "to": "2100-01-01T00:00:00+00:00"
+                    }
+                ]
+            }
+        ]
+    }
+    */

@@ -169,6 +169,80 @@ Map<String, dynamic> _$$__ElasticSortToJson(_$__ElasticSort instance) =>
       'descending': instance.descending,
     };
 
+_$__ElasticRange _$$__ElasticRangeFromJson(Map<String, dynamic> json) =>
+    _$__ElasticRange(
+      name: json['name'] as String?,
+      from: json['from'],
+      to: json['to'],
+    );
+
+Map<String, dynamic> _$$__ElasticRangeToJson(_$__ElasticRange instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('name', instance.name);
+  writeNotNull('from', instance.from);
+  writeNotNull('to', instance.to);
+  return val;
+}
+
+_$__ElasticValueFacet _$$__ElasticValueFacetFromJson(
+        Map<String, dynamic> json) =>
+    _$__ElasticValueFacet(
+      type: json['type'] as String? ?? "value",
+      name: json['name'] as String?,
+      size: (json['size'] as num?)?.toDouble(),
+    );
+
+Map<String, dynamic> _$$__ElasticValueFacetToJson(
+    _$__ElasticValueFacet instance) {
+  final val = <String, dynamic>{
+    'type': instance.type,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('name', instance.name);
+  writeNotNull('size', instance.size);
+  return val;
+}
+
+_$__ElasticRangeFacet _$$__ElasticRangeFacetFromJson(
+        Map<String, dynamic> json) =>
+    _$__ElasticRangeFacet(
+      type: json['type'] as String? ?? "range",
+      name: json['name'] as String?,
+      ranges: (json['ranges'] as List<dynamic>)
+          .map((e) => _ElasticRange.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$__ElasticRangeFacetToJson(
+    _$__ElasticRangeFacet instance) {
+  final val = <String, dynamic>{
+    'type': instance.type,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('name', instance.name);
+  val['ranges'] = instance.ranges.map((e) => e.toJson()).toList();
+  return val;
+}
+
 _$_ElasticResponse _$$_ElasticResponseFromJson(Map<String, dynamic> json) =>
     _$_ElasticResponse(
       meta: ElasticResponseMeta.fromJson(json['meta'] as Map<String, dynamic>),
