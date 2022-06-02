@@ -222,7 +222,7 @@ Map<String, dynamic> _$$_ElasticResponseMetaPageToJson(
 
 _$_ElasticResultMeta _$$_ElasticResultMetaFromJson(Map<String, dynamic> json) =>
     _$_ElasticResultMeta(
-      score: (json['score'] as num).toDouble(),
+      score: (json['score'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$$_ElasticResultMetaToJson(

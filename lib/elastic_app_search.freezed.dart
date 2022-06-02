@@ -2520,7 +2520,7 @@ ElasticResultMeta _$ElasticResultMetaFromJson(Map<String, dynamic> json) {
 class _$ElasticResultMetaTearOff {
   const _$ElasticResultMetaTearOff();
 
-  _ElasticResultMeta call({required double score}) {
+  _ElasticResultMeta call({double? score}) {
     return _ElasticResultMeta(
       score: score,
     );
@@ -2537,7 +2537,7 @@ const $ElasticResultMeta = _$ElasticResultMetaTearOff();
 /// @nodoc
 mixin _$ElasticResultMeta {
   /// The relevance of the result
-  double get score => throw _privateConstructorUsedError;
+  double? get score => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -2550,7 +2550,7 @@ abstract class $ElasticResultMetaCopyWith<$Res> {
   factory $ElasticResultMetaCopyWith(
           ElasticResultMeta value, $Res Function(ElasticResultMeta) then) =
       _$ElasticResultMetaCopyWithImpl<$Res>;
-  $Res call({double score});
+  $Res call({double? score});
 }
 
 /// @nodoc
@@ -2570,7 +2570,7 @@ class _$ElasticResultMetaCopyWithImpl<$Res>
       score: score == freezed
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
     ));
   }
 }
@@ -2582,7 +2582,7 @@ abstract class _$ElasticResultMetaCopyWith<$Res>
           _ElasticResultMeta value, $Res Function(_ElasticResultMeta) then) =
       __$ElasticResultMetaCopyWithImpl<$Res>;
   @override
-  $Res call({double score});
+  $Res call({double? score});
 }
 
 /// @nodoc
@@ -2604,7 +2604,7 @@ class __$ElasticResultMetaCopyWithImpl<$Res>
       score: score == freezed
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
     ));
   }
 }
@@ -2612,7 +2612,7 @@ class __$ElasticResultMetaCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_ElasticResultMeta implements _ElasticResultMeta {
-  _$_ElasticResultMeta({required this.score});
+  _$_ElasticResultMeta({this.score});
 
   factory _$_ElasticResultMeta.fromJson(Map<String, dynamic> json) =>
       _$$_ElasticResultMetaFromJson(json);
@@ -2620,7 +2620,7 @@ class _$_ElasticResultMeta implements _ElasticResultMeta {
   @override
 
   /// The relevance of the result
-  final double score;
+  final double? score;
 
   @override
   String toString() {
@@ -2651,7 +2651,7 @@ class _$_ElasticResultMeta implements _ElasticResultMeta {
 }
 
 abstract class _ElasticResultMeta implements ElasticResultMeta {
-  factory _ElasticResultMeta({required double score}) = _$_ElasticResultMeta;
+  factory _ElasticResultMeta({double? score}) = _$_ElasticResultMeta;
 
   factory _ElasticResultMeta.fromJson(Map<String, dynamic> json) =
       _$_ElasticResultMeta.fromJson;
@@ -2659,7 +2659,7 @@ abstract class _ElasticResultMeta implements ElasticResultMeta {
   @override
 
   /// The relevance of the result
-  double get score;
+  double? get score;
   @override
   @JsonKey(ignore: true)
   _$ElasticResultMetaCopyWith<_ElasticResultMeta> get copyWith =>

@@ -8,7 +8,7 @@ const _highlightEnd = '</em>';
 class ElasticResultMeta with _$ElasticResultMeta {
   factory ElasticResultMeta({
     /// The relevance of the result
-    required double score,
+    double? score,
   }) = _ElasticResultMeta;
 
   factory ElasticResultMeta.fromJson(Map<String, dynamic> json) =>
@@ -93,7 +93,7 @@ class ElasticResult with _$ElasticResult {
   }
 
   /// An easier way to get the score
-  double get score => meta.score;
+  double? get score => meta.score;
 }
 
 /// An object contaning the snippet of the result
