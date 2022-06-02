@@ -52,7 +52,7 @@ class ElasticQuery with _$ElasticQuery {
         List<_ElasticResultField>? resultFields,
 
     /// Dev in progress - no doc
-    @_ElasticFacetConverter() @protected List<_ElasticFacet>? facets,
+    @protected Map<String, _ElasticFacet>? facets,
 
     /// Grouped results based on shared fields
     @protected @JsonKey(name: "group") _ElasticGroup? groupBy,
@@ -180,24 +180,18 @@ class ElasticQuery with _$ElasticQuery {
     DateTime? from,
     DateTime? to,
   }) {
-    return copyWith(
-      facets: [
-        _ElasticFacet(
-          field: field,
-          facets: [
-            _ElasticRangeFacet(
-              name: name,
-              ranges: [
-                _ElasticRange(
-                  from: from?.toIso8601String().replaceAll(".000Z", "+00:00"),
-                  to: to?.toIso8601String().replaceAll(".000Z", "+00:00"),
-                ),
-              ],
-            ),
-          ],
+    var _facets = facets ?? {};
+    _facets[field] = _ElasticFacet(
+      type: "range",
+      name: name,
+      ranges: [
+        _ElasticRange(
+          from: from?.toIso8601String().replaceAll(".000Z", "+00:00"),
+          to: to?.toIso8601String().replaceAll(".000Z", "+00:00"),
         ),
       ],
     );
+    return copyWith(facets: _facets);
   }
 
   /// Takes a field with an optionnal `size`, creates and returns a new [ElasticQuery]
@@ -498,31 +492,7 @@ class _ElasticSortConverter
 }
 
 /// DEV in progress - no doc
-@freezed
-class _ElasticRange with _$_ElasticRange {
-  @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory _ElasticRange({
-    String? name,
-    String? from,
-    String? to,
-  }) = __ElasticRange;
-
-  factory _ElasticRange.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticRangeFromJson(json);
-}
-
-@freezed
-class _ElasticFacet with _$_ElasticFacet {
-  @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory _ElasticFacet({
-    required String field,
-    required List<_ElasticRangeFacet> facets,
-  }) = __ElasticFacet;
-
-  factory _ElasticFacet.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticFacetFromJson(json);
-}
-
+/*
 class _ElasticFacetConverter
     implements JsonConverter<List<_ElasticFacet>?, Map?> {
   const _ElasticFacetConverter();
@@ -568,41 +538,5 @@ class _ElasticRangeFacet with _$_ElasticRangeFacet {
 
   factory _ElasticRangeFacet.fromJson(Map<String, dynamic> json) =>
       _$_ElasticRangeFacetFromJson(json);
-}
-
-/*
-class _ElasticRangesConverter
-    implements JsonConverter<List<_ElasticRange>?, List<Map>?> {
-  const _ElasticRangesConverter();
-
-  @override
-  List<_ElasticRange>? fromJson(List<Map>? value) => null;
-
-  @override
-  List<Map>? toJson(List<_ElasticRange>? ranges) {
-    if (ranges == null || ranges.isEmpty) return null;
-
-    var values = <Map>[];
-    for (final range in ranges) {
-      var _range = {};
-      if (range.name != null) {
-        _range["name"] = range.name!;
-      }
-      if (range.from is double) {
-        _range["from"] = range.from!;
-      }
-      if (range.to is double) {
-        _range["to"] = range.to!;
-      }
-      if (range.from is DateTime) {
-        _range["from"] = (range.from! as DateTime).toIso8601String();
-      }
-      if (range.to is DateTime) {
-        _range["to"] = (range.to! as DateTime).toIso8601String();
-      }
-      values.add(_range);
-    }
-    return values;
-  }
 }
 */

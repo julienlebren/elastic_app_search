@@ -6,6 +6,59 @@ part of elastic_app_search;
 // JsonSerializableGenerator
 // **************************************************************************
 
+_$__ElasticFacet _$$__ElasticFacetFromJson(Map<String, dynamic> json) =>
+    _$__ElasticFacet(
+      type: json['type'] as String,
+      name: json['name'] as String?,
+      ranges: (json['ranges'] as List<dynamic>?)
+          ?.map((e) => _ElasticRange.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => _ElasticRange.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$__ElasticFacetToJson(_$__ElasticFacet instance) {
+  final val = <String, dynamic>{
+    'type': instance.type,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('name', instance.name);
+  writeNotNull('ranges', instance.ranges?.map((e) => e.toJson()).toList());
+  writeNotNull('data', instance.data?.map((e) => e.toJson()).toList());
+  return val;
+}
+
+_$__ElasticRange _$$__ElasticRangeFromJson(Map<String, dynamic> json) =>
+    _$__ElasticRange(
+      name: json['name'] as String?,
+      from: json['from'] as String?,
+      to: json['to'] as String?,
+      count: json['count'] as int?,
+    );
+
+Map<String, dynamic> _$$__ElasticRangeToJson(_$__ElasticRange instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('name', instance.name);
+  writeNotNull('from', instance.from);
+  writeNotNull('to', instance.to);
+  writeNotNull('count', instance.count);
+  return val;
+}
+
 _$_ElasticQuery _$$_ElasticQueryFromJson(Map<String, dynamic> json) =>
     _$_ElasticQuery(
       query: json['query'] as String,
@@ -19,7 +72,10 @@ _$_ElasticQuery _$$_ElasticQueryFromJson(Map<String, dynamic> json) =>
           .fromJson(json['search_fields'] as Map?),
       resultFields: const _ElasticResultFieldsConverter()
           .fromJson(json['result_fields'] as Map?),
-      facets: const _ElasticFacetConverter().fromJson(json['facets'] as Map?),
+      facets: (json['facets'] as Map<String, dynamic>?)?.map(
+        (k, e) =>
+            MapEntry(k, _ElasticFacet.fromJson(e as Map<String, dynamic>)),
+      ),
       groupBy: json['group'] == null
           ? null
           : _ElasticGroup.fromJson(json['group'] as Map<String, dynamic>),
@@ -47,7 +103,7 @@ Map<String, dynamic> _$$_ElasticQueryToJson(_$_ElasticQuery instance) {
   writeNotNull('result_fields',
       const _ElasticResultFieldsConverter().toJson(instance.resultFields));
   writeNotNull(
-      'facets', const _ElasticFacetConverter().toJson(instance.facets));
+      'facets', instance.facets?.map((k, e) => MapEntry(k, e.toJson())));
   writeNotNull('group', instance.groupBy?.toJson());
   writeNotNull('sort', const _ElasticSortConverter().toJson(instance.sortBy));
   return val;
@@ -172,106 +228,26 @@ Map<String, dynamic> _$$__ElasticSortToJson(_$__ElasticSort instance) =>
       'descending': instance.descending,
     };
 
-_$__ElasticRange _$$__ElasticRangeFromJson(Map<String, dynamic> json) =>
-    _$__ElasticRange(
-      name: json['name'] as String?,
-      from: json['from'] as String?,
-      to: json['to'] as String?,
-    );
-
-Map<String, dynamic> _$$__ElasticRangeToJson(_$__ElasticRange instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('name', instance.name);
-  writeNotNull('from', instance.from);
-  writeNotNull('to', instance.to);
-  return val;
-}
-
-_$__ElasticFacet _$$__ElasticFacetFromJson(Map<String, dynamic> json) =>
-    _$__ElasticFacet(
-      field: json['field'] as String,
-      facets: (json['facets'] as List<dynamic>)
-          .map((e) => _ElasticRangeFacet.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$$__ElasticFacetToJson(_$__ElasticFacet instance) =>
-    <String, dynamic>{
-      'field': instance.field,
-      'facets': instance.facets.map((e) => e.toJson()).toList(),
-    };
-
-_$__ElasticValueFacet _$$__ElasticValueFacetFromJson(
-        Map<String, dynamic> json) =>
-    _$__ElasticValueFacet(
-      type: json['type'] as String? ?? "value",
-      name: json['name'] as String?,
-      size: (json['size'] as num?)?.toDouble(),
-    );
-
-Map<String, dynamic> _$$__ElasticValueFacetToJson(
-    _$__ElasticValueFacet instance) {
-  final val = <String, dynamic>{
-    'type': instance.type,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('name', instance.name);
-  writeNotNull('size', instance.size);
-  return val;
-}
-
-_$__ElasticRangeFacet _$$__ElasticRangeFacetFromJson(
-        Map<String, dynamic> json) =>
-    _$__ElasticRangeFacet(
-      type: json['type'] as String? ?? "range",
-      name: json['name'] as String?,
-      ranges: (json['ranges'] as List<dynamic>)
-          .map((e) => _ElasticRange.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
-
-Map<String, dynamic> _$$__ElasticRangeFacetToJson(
-    _$__ElasticRangeFacet instance) {
-  final val = <String, dynamic>{
-    'type': instance.type,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('name', instance.name);
-  val['ranges'] = instance.ranges.map((e) => e.toJson()).toList();
-  return val;
-}
-
 _$_ElasticResponse _$$_ElasticResponseFromJson(Map<String, dynamic> json) =>
     _$_ElasticResponse(
       meta: ElasticResponseMeta.fromJson(json['meta'] as Map<String, dynamic>),
       results: (json['results'] as List<dynamic>)
           .map((e) => ElasticResult.fromJson(e as Map<String, dynamic>))
           .toList(),
+      facets: (json['facets'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(
+            k,
+            (e as List<dynamic>)
+                .map((e) => _ElasticFacet.fromJson(e as Map<String, dynamic>))
+                .toList()),
+      ),
     );
 
 Map<String, dynamic> _$$_ElasticResponseToJson(_$_ElasticResponse instance) =>
     <String, dynamic>{
       'meta': instance.meta,
       'results': instance.results,
+      'facets': instance.facets,
     };
 
 _$_ElasticResponseMeta _$$_ElasticResponseMetaFromJson(
