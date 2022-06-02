@@ -2350,14 +2350,10 @@ _ElasticRangeFacet _$_ElasticRangeFacetFromJson(Map<String, dynamic> json) {
 class _$_ElasticRangeFacetTearOff {
   const _$_ElasticRangeFacetTearOff();
 
-  __ElasticRangeFacet call(
-      {@protected String type = "range",
-      String? name,
-      required List<_ElasticRange> ranges}) {
+  __ElasticRangeFacet call({@protected String type = "range", String? name}) {
     return __ElasticRangeFacet(
       type: type,
       name: name,
-      ranges: ranges,
     );
   }
 
@@ -2374,7 +2370,6 @@ mixin _$_ElasticRangeFacet {
   @protected
   String get type => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
-  List<_ElasticRange> get ranges => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -2387,7 +2382,7 @@ abstract class _$ElasticRangeFacetCopyWith<$Res> {
   factory _$ElasticRangeFacetCopyWith(
           _ElasticRangeFacet value, $Res Function(_ElasticRangeFacet) then) =
       __$ElasticRangeFacetCopyWithImpl<$Res>;
-  $Res call({@protected String type, String? name, List<_ElasticRange> ranges});
+  $Res call({@protected String type, String? name});
 }
 
 /// @nodoc
@@ -2403,7 +2398,6 @@ class __$ElasticRangeFacetCopyWithImpl<$Res>
   $Res call({
     Object? type = freezed,
     Object? name = freezed,
-    Object? ranges = freezed,
   }) {
     return _then(_value.copyWith(
       type: type == freezed
@@ -2414,10 +2408,6 @@ class __$ElasticRangeFacetCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      ranges: ranges == freezed
-          ? _value.ranges
-          : ranges // ignore: cast_nullable_to_non_nullable
-              as List<_ElasticRange>,
     ));
   }
 }
@@ -2429,7 +2419,7 @@ abstract class _$_ElasticRangeFacetCopyWith<$Res>
           __ElasticRangeFacet value, $Res Function(__ElasticRangeFacet) then) =
       __$_ElasticRangeFacetCopyWithImpl<$Res>;
   @override
-  $Res call({@protected String type, String? name, List<_ElasticRange> ranges});
+  $Res call({@protected String type, String? name});
 }
 
 /// @nodoc
@@ -2447,7 +2437,6 @@ class __$_ElasticRangeFacetCopyWithImpl<$Res>
   $Res call({
     Object? type = freezed,
     Object? name = freezed,
-    Object? ranges = freezed,
   }) {
     return _then(__ElasticRangeFacet(
       type: type == freezed
@@ -2458,10 +2447,6 @@ class __$_ElasticRangeFacetCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      ranges: ranges == freezed
-          ? _value.ranges
-          : ranges // ignore: cast_nullable_to_non_nullable
-              as List<_ElasticRange>,
     ));
   }
 }
@@ -2470,8 +2455,7 @@ class __$_ElasticRangeFacetCopyWithImpl<$Res>
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _$__ElasticRangeFacet implements __ElasticRangeFacet {
-  const _$__ElasticRangeFacet(
-      {@protected this.type = "range", this.name, required this.ranges});
+  const _$__ElasticRangeFacet({@protected this.type = "range", this.name});
 
   factory _$__ElasticRangeFacet.fromJson(Map<String, dynamic> json) =>
       _$$__ElasticRangeFacetFromJson(json);
@@ -2482,12 +2466,10 @@ class _$__ElasticRangeFacet implements __ElasticRangeFacet {
   final String type;
   @override
   final String? name;
-  @override
-  final List<_ElasticRange> ranges;
 
   @override
   String toString() {
-    return '_ElasticRangeFacet(type: $type, name: $name, ranges: $ranges)';
+    return '_ElasticRangeFacet(type: $type, name: $name)';
   }
 
   @override
@@ -2496,16 +2478,14 @@ class _$__ElasticRangeFacet implements __ElasticRangeFacet {
         (other.runtimeType == runtimeType &&
             other is __ElasticRangeFacet &&
             const DeepCollectionEquality().equals(other.type, type) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality().equals(other.ranges, ranges));
+            const DeepCollectionEquality().equals(other.name, name));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(ranges));
+      const DeepCollectionEquality().hash(name));
 
   @JsonKey(ignore: true)
   @override
@@ -2519,10 +2499,8 @@ class _$__ElasticRangeFacet implements __ElasticRangeFacet {
 }
 
 abstract class __ElasticRangeFacet implements _ElasticRangeFacet {
-  const factory __ElasticRangeFacet(
-      {@protected String type,
-      String? name,
-      required List<_ElasticRange> ranges}) = _$__ElasticRangeFacet;
+  const factory __ElasticRangeFacet({@protected String type, String? name}) =
+      _$__ElasticRangeFacet;
 
   factory __ElasticRangeFacet.fromJson(Map<String, dynamic> json) =
       _$__ElasticRangeFacet.fromJson;
@@ -2532,8 +2510,6 @@ abstract class __ElasticRangeFacet implements _ElasticRangeFacet {
   String get type;
   @override
   String? get name;
-  @override
-  List<_ElasticRange> get ranges;
   @override
   @JsonKey(ignore: true)
   _$_ElasticRangeFacetCopyWith<__ElasticRangeFacet> get copyWith =>

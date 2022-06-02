@@ -186,12 +186,12 @@ class ElasticQuery with _$ElasticQuery {
           facets: [
             _ElasticRangeFacet(
               name: name,
-              ranges: [
+              /*ranges: [
                 _ElasticRange(
                   from: from,
                   to: to,
                 ),
-              ],
+              ],*/
             ),
           ],
         ),
@@ -562,26 +562,9 @@ class _ElasticRangeFacet with _$_ElasticRangeFacet {
   const factory _ElasticRangeFacet({
     @protected @Default("range") String type,
     String? name,
-    required List<_ElasticRange> ranges,
+    //required List<_ElasticRange> ranges,
   }) = __ElasticRangeFacet;
 
   factory _ElasticRangeFacet.fromJson(Map<String, dynamic> json) =>
       _$_ElasticRangeFacetFromJson(json);
 }
-
-
-/*
-    "facets": {
-        "created_at": [
-            {
-                "type": "range",
-                "ranges": [
-                    {
-                        "from": "1900-01-01T00:00:00+00:00",
-                        "to": "2100-01-01T00:00:00+00:00"
-                    }
-                ]
-            }
-        ]
-    }
-    */

@@ -237,9 +237,6 @@ _$__ElasticRangeFacet _$$__ElasticRangeFacetFromJson(
     _$__ElasticRangeFacet(
       type: json['type'] as String? ?? "range",
       name: json['name'] as String?,
-      ranges: (json['ranges'] as List<dynamic>)
-          .map((e) => _ElasticRange.fromJson(e as Map<String, dynamic>))
-          .toList(),
     );
 
 Map<String, dynamic> _$$__ElasticRangeFacetToJson(
@@ -255,7 +252,6 @@ Map<String, dynamic> _$$__ElasticRangeFacetToJson(
   }
 
   writeNotNull('name', instance.name);
-  val['ranges'] = instance.ranges.map((e) => e.toJson()).toList();
   return val;
 }
 
