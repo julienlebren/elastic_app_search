@@ -51,6 +51,9 @@ class ElasticQuery with _$ElasticQuery {
     @JsonKey(name: "result_fields")
         List<_ElasticResultField>? resultFields,
 
+    /// Dev in progress - no doc
+    @_ElasticFacetConverter() @protected List<_ElasticFacet>? facets,
+
     /// Grouped results based on shared fields
     @protected @JsonKey(name: "group") _ElasticGroup? groupBy,
 
@@ -161,6 +164,21 @@ class ElasticQuery with _$ElasticQuery {
         ),
       ],
     );
+  }
+
+  /// Dev in progress - no doc
+  @Assert('from != null || to != null',
+      'You must provide at least `from` or `to` to create an _ElasticRange object.')
+  @Assert('from != null && (from is double || from is Date)',
+      '`from` must be a double or a Date')
+  @Assert('to != null && (to is double || to is Date)',
+      '`from` must be a double or a Date')
+  ElasticQuery rangeFacet({
+    String? name,
+    Object? from,
+    Object? to,
+  }) {
+    return copyWith();
   }
 
   /// Takes a field with an optionnal `size`, creates and returns a new [ElasticQuery]
@@ -464,12 +482,6 @@ class _ElasticSortConverter
 @freezed
 class _ElasticRange with _$_ElasticRange {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  @Assert('from != null || to != null',
-      'You must provide at least `from` or `to` to create an _ElasticRange object.')
-  @Assert('from != null && (from is double || from is Date)',
-      '`from` must be a double or a Date')
-  @Assert('to != null && (to is double || to is Date)',
-      '`from` must be a double or a Date')
   const factory _ElasticRange({
     String? name,
     Object? from,
@@ -478,6 +490,37 @@ class _ElasticRange with _$_ElasticRange {
 
   factory _ElasticRange.fromJson(Map<String, dynamic> json) =>
       _$_ElasticRangeFromJson(json);
+}
+
+@freezed
+class _ElasticFacet with _$_ElasticFacet {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  const factory _ElasticFacet({
+    required String field,
+    required List<Object> facets,
+  }) = __ElasticFacet;
+
+  factory _ElasticFacet.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticFacetFromJson(json);
+}
+
+class _ElasticFacetConverter
+    implements JsonConverter<List<_ElasticFacet>?, Map?> {
+  const _ElasticFacetConverter();
+
+  @override
+  List<_ElasticFacet>? fromJson(Map? value) => null;
+
+  @override
+  Map? toJson(List<_ElasticFacet>? facets) {
+    if (facets == null || facets.isEmpty) return null;
+
+    var value = <String, List?>{};
+    for (final facet in facets) {
+      value[facet.field] = facet.facets;
+    }
+    return value;
+  }
 }
 
 @freezed
