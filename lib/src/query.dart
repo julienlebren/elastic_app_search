@@ -189,8 +189,8 @@ class ElasticQuery with _$ElasticQuery {
               name: name,
               ranges: [
                 _ElasticRange(
-                  from: from,
-                  to: to,
+                  from: from?.toIso8601String(),
+                  to: to?.toIso8601String(),
                 ),
               ],
             ),
@@ -503,8 +503,8 @@ class _ElasticRange with _$_ElasticRange {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticRange({
     String? name,
-    DateTime? from,
-    DateTime? to,
+    String? from,
+    String? to,
   }) = __ElasticRange;
 
   factory _ElasticRange.fromJson(Map<String, dynamic> json) =>

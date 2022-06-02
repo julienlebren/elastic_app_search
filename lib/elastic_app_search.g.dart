@@ -175,9 +175,8 @@ Map<String, dynamic> _$$__ElasticSortToJson(_$__ElasticSort instance) =>
 _$__ElasticRange _$$__ElasticRangeFromJson(Map<String, dynamic> json) =>
     _$__ElasticRange(
       name: json['name'] as String?,
-      from:
-          json['from'] == null ? null : DateTime.parse(json['from'] as String),
-      to: json['to'] == null ? null : DateTime.parse(json['to'] as String),
+      from: json['from'] as String?,
+      to: json['to'] as String?,
     );
 
 Map<String, dynamic> _$$__ElasticRangeToJson(_$__ElasticRange instance) {
@@ -190,8 +189,8 @@ Map<String, dynamic> _$$__ElasticRangeToJson(_$__ElasticRange instance) {
   }
 
   writeNotNull('name', instance.name);
-  writeNotNull('from', instance.from?.toIso8601String());
-  writeNotNull('to', instance.to?.toIso8601String());
+  writeNotNull('from', instance.from);
+  writeNotNull('to', instance.to);
   return val;
 }
 
