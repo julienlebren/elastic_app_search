@@ -19,9 +19,7 @@ _$_ElasticQuery _$$_ElasticQueryFromJson(Map<String, dynamic> json) =>
           .fromJson(json['search_fields'] as Map?),
       resultFields: const _ElasticResultFieldsConverter()
           .fromJson(json['result_fields'] as Map?),
-      facets: (json['facets'] as List<dynamic>?)
-          ?.map((e) => _ElasticFacet.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      facets: const _ElasticFacetConverter().fromJson(json['facets'] as Map?),
       groupBy: json['group'] == null
           ? null
           : _ElasticGroup.fromJson(json['group'] as Map<String, dynamic>),
@@ -48,7 +46,8 @@ Map<String, dynamic> _$$_ElasticQueryToJson(_$_ElasticQuery instance) {
       const _ElasticSearchFieldsConverter().toJson(instance.searchFields));
   writeNotNull('result_fields',
       const _ElasticResultFieldsConverter().toJson(instance.resultFields));
-  writeNotNull('facets', instance.facets?.map((e) => e.toJson()).toList());
+  writeNotNull(
+      'facets', const _ElasticFacetConverter().toJson(instance.facets));
   writeNotNull('group', instance.groupBy?.toJson());
   writeNotNull('sort', const _ElasticSortConverter().toJson(instance.sortBy));
   return val;

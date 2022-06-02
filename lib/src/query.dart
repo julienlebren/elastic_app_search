@@ -52,7 +52,7 @@ class ElasticQuery with _$ElasticQuery {
         List<_ElasticResultField>? resultFields,
 
     /// Dev in progress - no doc
-    @protected List<_ElasticFacet>? facets,
+    @_ElasticFacetConverter() @protected List<_ElasticFacet>? facets,
 
     /// Grouped results based on shared fields
     @protected @JsonKey(name: "group") _ElasticGroup? groupBy,
@@ -523,7 +523,6 @@ class _ElasticFacet with _$_ElasticFacet {
       _$_ElasticFacetFromJson(json);
 }
 
-/*
 class _ElasticFacetConverter
     implements JsonConverter<List<_ElasticFacet>?, Map?> {
   const _ElasticFacetConverter();
@@ -537,13 +536,11 @@ class _ElasticFacetConverter
 
     var value = <String, List?>{};
     for (final facet in facets) {
-      if (facet.facets.first is _ElasticRangeFacet)
-        value[facet.field] = facet.facets;
+      value[facet.field] = facet.facets;
     }
     return value;
   }
 }
-*/
 
 @freezed
 class _ElasticValueFacet with _$_ElasticValueFacet {

@@ -39,6 +39,7 @@ class _$ElasticQueryTearOff {
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields,
+      @_ElasticFacetConverter()
       @protected
           List<_ElasticFacet>? facets,
       @protected
@@ -111,6 +112,7 @@ mixin _$ElasticQuery {
       throw _privateConstructorUsedError;
 
   /// Dev in progress - no doc
+  @_ElasticFacetConverter()
   @protected
   List<_ElasticFacet>? get facets => throw _privateConstructorUsedError;
 
@@ -152,6 +154,7 @@ abstract class $ElasticQueryCopyWith<$Res> {
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields,
+      @_ElasticFacetConverter()
       @protected
           List<_ElasticFacet>? facets,
       @protected
@@ -277,6 +280,7 @@ abstract class _$ElasticQueryCopyWith<$Res>
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields,
+      @_ElasticFacetConverter()
       @protected
           List<_ElasticFacet>? facets,
       @protected
@@ -381,6 +385,7 @@ class _$_ElasticQuery extends _ElasticQuery {
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           this.resultFields,
+      @_ElasticFacetConverter()
       @protected
           this.facets,
       @protected
@@ -442,6 +447,7 @@ class _$_ElasticQuery extends _ElasticQuery {
   @override
 
   /// Dev in progress - no doc
+  @_ElasticFacetConverter()
   @protected
   final List<_ElasticFacet>? facets;
   @override
@@ -526,6 +532,7 @@ abstract class _ElasticQuery extends ElasticQuery {
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields,
+      @_ElasticFacetConverter()
       @protected
           List<_ElasticFacet>? facets,
       @protected
@@ -586,6 +593,7 @@ abstract class _ElasticQuery extends ElasticQuery {
   @override
 
   /// Dev in progress - no doc
+  @_ElasticFacetConverter()
   @protected
   List<_ElasticFacet>? get facets;
   @override
