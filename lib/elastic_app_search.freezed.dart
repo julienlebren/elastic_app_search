@@ -39,7 +39,6 @@ class _$ElasticQueryTearOff {
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields,
-      @_ElasticFacetConverter()
       @protected
           List<_ElasticFacet>? facets,
       @protected
@@ -112,7 +111,6 @@ mixin _$ElasticQuery {
       throw _privateConstructorUsedError;
 
   /// Dev in progress - no doc
-  @_ElasticFacetConverter()
   @protected
   List<_ElasticFacet>? get facets => throw _privateConstructorUsedError;
 
@@ -154,7 +152,6 @@ abstract class $ElasticQueryCopyWith<$Res> {
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields,
-      @_ElasticFacetConverter()
       @protected
           List<_ElasticFacet>? facets,
       @protected
@@ -280,7 +277,6 @@ abstract class _$ElasticQueryCopyWith<$Res>
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields,
-      @_ElasticFacetConverter()
       @protected
           List<_ElasticFacet>? facets,
       @protected
@@ -385,7 +381,6 @@ class _$_ElasticQuery extends _ElasticQuery {
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           this.resultFields,
-      @_ElasticFacetConverter()
       @protected
           this.facets,
       @protected
@@ -447,7 +442,6 @@ class _$_ElasticQuery extends _ElasticQuery {
   @override
 
   /// Dev in progress - no doc
-  @_ElasticFacetConverter()
   @protected
   final List<_ElasticFacet>? facets;
   @override
@@ -532,7 +526,6 @@ abstract class _ElasticQuery extends ElasticQuery {
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields,
-      @_ElasticFacetConverter()
       @protected
           List<_ElasticFacet>? facets,
       @protected
@@ -593,7 +586,6 @@ abstract class _ElasticQuery extends ElasticQuery {
   @override
 
   /// Dev in progress - no doc
-  @_ElasticFacetConverter()
   @protected
   List<_ElasticFacet>? get facets;
   @override
@@ -1806,7 +1798,7 @@ _ElasticRange _$_ElasticRangeFromJson(Map<String, dynamic> json) {
 class _$_ElasticRangeTearOff {
   const _$_ElasticRangeTearOff();
 
-  __ElasticRange call({String? name, dynamic from, dynamic to}) {
+  __ElasticRange call({String? name, DateTime? from, DateTime? to}) {
     return __ElasticRange(
       name: name,
       from: from,
@@ -1825,8 +1817,8 @@ const _$ElasticRange = _$_ElasticRangeTearOff();
 /// @nodoc
 mixin _$_ElasticRange {
   String? get name => throw _privateConstructorUsedError;
-  dynamic get from => throw _privateConstructorUsedError;
-  dynamic get to => throw _privateConstructorUsedError;
+  DateTime? get from => throw _privateConstructorUsedError;
+  DateTime? get to => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1839,7 +1831,7 @@ abstract class _$ElasticRangeCopyWith<$Res> {
   factory _$ElasticRangeCopyWith(
           _ElasticRange value, $Res Function(_ElasticRange) then) =
       __$ElasticRangeCopyWithImpl<$Res>;
-  $Res call({String? name, dynamic from, dynamic to});
+  $Res call({String? name, DateTime? from, DateTime? to});
 }
 
 /// @nodoc
@@ -1865,11 +1857,11 @@ class __$ElasticRangeCopyWithImpl<$Res>
       from: from == freezed
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as DateTime?,
       to: to == freezed
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as DateTime?,
     ));
   }
 }
@@ -1881,7 +1873,7 @@ abstract class _$_ElasticRangeCopyWith<$Res>
           __ElasticRange value, $Res Function(__ElasticRange) then) =
       __$_ElasticRangeCopyWithImpl<$Res>;
   @override
-  $Res call({String? name, dynamic from, dynamic to});
+  $Res call({String? name, DateTime? from, DateTime? to});
 }
 
 /// @nodoc
@@ -1909,11 +1901,11 @@ class __$_ElasticRangeCopyWithImpl<$Res>
       from: from == freezed
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as DateTime?,
       to: to == freezed
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as DateTime?,
     ));
   }
 }
@@ -1930,9 +1922,9 @@ class _$__ElasticRange implements __ElasticRange {
   @override
   final String? name;
   @override
-  final dynamic from;
+  final DateTime? from;
   @override
-  final dynamic to;
+  final DateTime? to;
 
   @override
   String toString() {
@@ -1968,7 +1960,7 @@ class _$__ElasticRange implements __ElasticRange {
 }
 
 abstract class __ElasticRange implements _ElasticRange {
-  const factory __ElasticRange({String? name, dynamic from, dynamic to}) =
+  const factory __ElasticRange({String? name, DateTime? from, DateTime? to}) =
       _$__ElasticRange;
 
   factory __ElasticRange.fromJson(Map<String, dynamic> json) =
@@ -1977,9 +1969,9 @@ abstract class __ElasticRange implements _ElasticRange {
   @override
   String? get name;
   @override
-  dynamic get from;
+  DateTime? get from;
   @override
-  dynamic get to;
+  DateTime? get to;
   @override
   @JsonKey(ignore: true)
   _$_ElasticRangeCopyWith<__ElasticRange> get copyWith =>
