@@ -21,8 +21,8 @@ class _ElasticRange with _$_ElasticRange {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticRange({
     String? name,
-    String? from,
-    String? to,
+    DateTime? from,
+    DateTime? to,
     int? count,
   }) = __ElasticRange;
 
