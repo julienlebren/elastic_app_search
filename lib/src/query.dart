@@ -189,8 +189,8 @@ class ElasticQuery with _$ElasticQuery {
               name: name,
               ranges: [
                 _ElasticRange(
-                  from: from?.toIso8601String(),
-                  to: to?.toIso8601String(),
+                  from: from?.toIso8601String().replaceAll(".000Z", "+00:00"),
+                  to: to?.toIso8601String().replaceAll(".000Z", "+00:00"),
                 ),
               ],
             ),
