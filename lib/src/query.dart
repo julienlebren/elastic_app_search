@@ -516,7 +516,7 @@ class _ElasticFacet with _$_ElasticFacet {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticFacet({
     required String field,
-    required List<dynamic> facets,
+    required List<_ElasticRangeFacet> facets,
   }) = __ElasticFacet;
 
   factory _ElasticFacet.fromJson(Map<String, dynamic> json) =>
