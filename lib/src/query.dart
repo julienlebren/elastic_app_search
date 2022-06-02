@@ -186,12 +186,12 @@ class ElasticQuery with _$ElasticQuery {
           facets: [
             _ElasticRangeFacet(
               name: name,
-              /*ranges: [
+              ranges: [
                 _ElasticRange(
                   from: from,
                   to: to,
                 ),
-              ],*/
+              ],
             ),
           ],
         ),
@@ -502,8 +502,8 @@ class _ElasticRange with _$_ElasticRange {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticRange({
     String? name,
-    Object? from,
-    Object? to,
+    dynamic from,
+    dynamic to,
   }) = __ElasticRange;
 
   factory _ElasticRange.fromJson(Map<String, dynamic> json) =>
@@ -515,7 +515,7 @@ class _ElasticFacet with _$_ElasticFacet {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticFacet({
     required String field,
-    required List<Object> facets,
+    required List<dynamic> facets,
   }) = __ElasticFacet;
 
   factory _ElasticFacet.fromJson(Map<String, dynamic> json) =>
@@ -562,7 +562,7 @@ class _ElasticRangeFacet with _$_ElasticRangeFacet {
   const factory _ElasticRangeFacet({
     @protected @Default("range") String type,
     String? name,
-    //required List<_ElasticRange> ranges,
+    required List<_ElasticRange> ranges,
   }) = __ElasticRangeFacet;
 
   factory _ElasticRangeFacet.fromJson(Map<String, dynamic> json) =>
