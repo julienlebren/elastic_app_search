@@ -173,12 +173,30 @@ class ElasticQuery with _$ElasticQuery {
       '`from` must be a double or a Date')
   @Assert('to != null && (to is double || to is Date)',
       '`from` must be a double or a Date')
-  ElasticQuery rangeFacet({
+  ElasticQuery rangeFacet(
+    String field, {
     String? name,
     Object? from,
     Object? to,
   }) {
-    return copyWith();
+    return copyWith(
+      facets: [
+        _ElasticFacet(
+          field: field,
+          facets: [
+            _ElasticRangeFacet(
+              name: name,
+              ranges: [
+                _ElasticRange(
+                  from: from,
+                  to: to,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
   }
 
   /// Takes a field with an optionnal `size`, creates and returns a new [ElasticQuery]
