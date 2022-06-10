@@ -76,21 +76,33 @@ class ElasticQuery with _$ElasticQuery {
   /// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
   @Assert('isEqualTo != null || whereIn != null',
       'You must provide at least one condition (isEqualTo, isNotEqualTo, whereIn, whereNotIn, isMaybeEqualTo, whereMaybeIn)')
+  @Assert('isEqualTo != null && from == null && to == null',
+      'You cannot use isEqualTo and from/to at the same time.')
   ElasticQuery filter(
     String field, {
     Object? isEqualTo,
     List<Object?>? whereIn,
+    Object? from,
+    Object? to,
     /*Object? isNotEqualTo,
     List<Object?>? whereNotIn,
     Object? isMaybeEqualTo,
     List<Object?>? whereMaybeIn,*/
   }) {
+    dynamic value;
+    if (whereIn != null) {
+      value = whereIn;
+    } else if (isEqualTo != null) {
+      value = [isEqualTo.toString()];
+    } else if (from != null && to != null) {
+      value = _ElasticSearchRangeFilter(from: from, to: to);
+    }
     return copyWith(
       filters: [
         ...?filters,
         _ElasticSearchFilter(
           name: field,
-          value: whereIn ?? [isEqualTo.toString()],
+          value: value,
         ),
       ],
     );
@@ -318,10 +330,28 @@ class _ElasticSearchFiltersConverter
 
     var values = [];
     for (final searchFilter in searchFilters) {
-      values.add({searchFilter.name: searchFilter.value});
+      final encodedValue = (searchFilter.value is _ElasticSearchRangeFilter
+          ? (searchFilter.value as _ElasticSearchRangeFilter).toJson()
+          : searchFilter.value);
+      values.add({searchFilter.name: encodedValue});
     }
     return {"all": values};
   }
+}
+
+@freezed
+class _ElasticSearchRangeFilter with _$_ElasticSearchFilter {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  @Assert(
+      '(from is DateTime && to is DateTime) || (from is double && to is double) || (from is int && to is int)',
+      'from and to must be of the same type, and this type must be a DateTime, a double or an int.')
+  const factory _ElasticSearchRangeFilter({
+    dynamic from,
+    dynamic to,
+  }) = __ElasticSearchRangeFilter;
+
+  factory _ElasticSearchRangeFilter.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticSearchRangeFilterFromJson(json);
 }
 
 /// Object which restricts a query to search only specific fields.

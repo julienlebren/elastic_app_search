@@ -1426,6 +1426,185 @@ abstract class __ElasticSearchFilter implements _ElasticSearchFilter {
       throw _privateConstructorUsedError;
 }
 
+_ElasticSearchRangeFilter _$_ElasticSearchRangeFilterFromJson(
+    Map<String, dynamic> json) {
+  return __ElasticSearchRangeFilter.fromJson(json);
+}
+
+/// @nodoc
+class _$_ElasticSearchRangeFilterTearOff {
+  const _$_ElasticSearchRangeFilterTearOff();
+
+  __ElasticSearchRangeFilter call({dynamic from, dynamic to}) {
+    return __ElasticSearchRangeFilter(
+      from: from,
+      to: to,
+    );
+  }
+
+  _ElasticSearchRangeFilter fromJson(Map<String, Object?> json) {
+    return _ElasticSearchRangeFilter.fromJson(json);
+  }
+}
+
+/// @nodoc
+const _$ElasticSearchRangeFilter = _$_ElasticSearchRangeFilterTearOff();
+
+/// @nodoc
+mixin _$_ElasticSearchRangeFilter {
+  dynamic get from => throw _privateConstructorUsedError;
+  dynamic get to => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$ElasticSearchRangeFilterCopyWith<_ElasticSearchRangeFilter> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$ElasticSearchRangeFilterCopyWith<$Res> {
+  factory _$ElasticSearchRangeFilterCopyWith(_ElasticSearchRangeFilter value,
+          $Res Function(_ElasticSearchRangeFilter) then) =
+      __$ElasticSearchRangeFilterCopyWithImpl<$Res>;
+  $Res call({dynamic from, dynamic to});
+}
+
+/// @nodoc
+class __$ElasticSearchRangeFilterCopyWithImpl<$Res>
+    implements _$ElasticSearchRangeFilterCopyWith<$Res> {
+  __$ElasticSearchRangeFilterCopyWithImpl(this._value, this._then);
+
+  final _ElasticSearchRangeFilter _value;
+  // ignore: unused_field
+  final $Res Function(_ElasticSearchRangeFilter) _then;
+
+  @override
+  $Res call({
+    Object? from = freezed,
+    Object? to = freezed,
+  }) {
+    return _then(_value.copyWith(
+      from: from == freezed
+          ? _value.from
+          : from // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      to: to == freezed
+          ? _value.to
+          : to // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$_ElasticSearchRangeFilterCopyWith<$Res>
+    implements _$ElasticSearchRangeFilterCopyWith<$Res> {
+  factory _$_ElasticSearchRangeFilterCopyWith(__ElasticSearchRangeFilter value,
+          $Res Function(__ElasticSearchRangeFilter) then) =
+      __$_ElasticSearchRangeFilterCopyWithImpl<$Res>;
+  @override
+  $Res call({dynamic from, dynamic to});
+}
+
+/// @nodoc
+class __$_ElasticSearchRangeFilterCopyWithImpl<$Res>
+    extends __$ElasticSearchRangeFilterCopyWithImpl<$Res>
+    implements _$_ElasticSearchRangeFilterCopyWith<$Res> {
+  __$_ElasticSearchRangeFilterCopyWithImpl(__ElasticSearchRangeFilter _value,
+      $Res Function(__ElasticSearchRangeFilter) _then)
+      : super(_value, (v) => _then(v as __ElasticSearchRangeFilter));
+
+  @override
+  __ElasticSearchRangeFilter get _value =>
+      super._value as __ElasticSearchRangeFilter;
+
+  @override
+  $Res call({
+    Object? from = freezed,
+    Object? to = freezed,
+  }) {
+    return _then(__ElasticSearchRangeFilter(
+      from: from == freezed
+          ? _value.from
+          : from // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+      to: to == freezed
+          ? _value.to
+          : to // ignore: cast_nullable_to_non_nullable
+              as dynamic,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _$__ElasticSearchRangeFilter implements __ElasticSearchRangeFilter {
+  const _$__ElasticSearchRangeFilter({this.from, this.to})
+      : assert(
+            (from is DateTime && to is DateTime) ||
+                (from is double && to is double) ||
+                (from is int && to is int),
+            'from and to must be of the same type, and this type must be a DateTime, a double or an int.');
+
+  factory _$__ElasticSearchRangeFilter.fromJson(Map<String, dynamic> json) =>
+      _$$__ElasticSearchRangeFilterFromJson(json);
+
+  @override
+  final dynamic from;
+  @override
+  final dynamic to;
+
+  @override
+  String toString() {
+    return '_ElasticSearchRangeFilter(from: $from, to: $to)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is __ElasticSearchRangeFilter &&
+            const DeepCollectionEquality().equals(other.from, from) &&
+            const DeepCollectionEquality().equals(other.to, to));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(from),
+      const DeepCollectionEquality().hash(to));
+
+  @JsonKey(ignore: true)
+  @override
+  _$_ElasticSearchRangeFilterCopyWith<__ElasticSearchRangeFilter>
+      get copyWith =>
+          __$_ElasticSearchRangeFilterCopyWithImpl<__ElasticSearchRangeFilter>(
+              this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$__ElasticSearchRangeFilterToJson(this);
+  }
+}
+
+abstract class __ElasticSearchRangeFilter implements _ElasticSearchRangeFilter {
+  const factory __ElasticSearchRangeFilter({dynamic from, dynamic to}) =
+      _$__ElasticSearchRangeFilter;
+
+  factory __ElasticSearchRangeFilter.fromJson(Map<String, dynamic> json) =
+      _$__ElasticSearchRangeFilter.fromJson;
+
+  @override
+  dynamic get from;
+  @override
+  dynamic get to;
+  @override
+  @JsonKey(ignore: true)
+  _$_ElasticSearchRangeFilterCopyWith<__ElasticSearchRangeFilter>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
 _ElasticSearchField _$_ElasticSearchFieldFromJson(Map<String, dynamic> json) {
   return __ElasticSearchField.fromJson(json);
 }
