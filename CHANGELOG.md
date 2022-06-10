@@ -1,6 +1,8 @@
 ## 0.2.2
 
 * Added [ElasticSort] to sort document by a field rather than by score
+* Added [ElasticRangeFilter] to filter results by range on a date or number field
+* Added facets (experimental state at the moment)
 * `score` in [ElasticResultMeta] is now optional because of new feature above
 
 ## 0.2.1

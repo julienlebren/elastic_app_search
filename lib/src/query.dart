@@ -96,29 +96,9 @@ class ElasticQuery with _$ElasticQuery {
       value = isEqualTo.toString();
     } else if (from != null || to != null) {
       if (from is DateTime || to is DateTime) {
-        final _from = from as DateTime?;
-        final _to = to as DateTime?;
         value = _ElasticRange(
-          from: from != null
-              ? DateTime.utc(
-                  _from!.year,
-                  _from.month,
-                  _from.day,
-                  _from.hour,
-                  _from.minute,
-                  _from.second,
-                ).toString().replaceAll(' ', 'T')
-              : null,
-          to: to != null
-              ? DateTime.utc(
-                  _to!.year,
-                  _to.month,
-                  _to.day,
-                  _to.hour,
-                  _to.minute,
-                  _to.second,
-                ).toString().replaceAll(' ', 'T')
-              : null,
+          from: (from as DateTime?)?.toUTCString(),
+          to: (to as DateTime?)?.toUTCString(),
         );
       } else if (from is double || to is double) {
         value = _ElasticRange(
@@ -216,11 +196,11 @@ class ElasticQuery with _$ElasticQuery {
       'You must provide at least `from` or `to` to create an date range facet.')
   @Assert('to != null && (to is double || to is Date)',
       '`from` must be a double or a Date')
-  ElasticQuery dateRangeFacet(
+  ElasticQuery rangeFacet(
     String field, {
     String? name,
-    DateTime? from,
-    DateTime? to,
+    Object? from,
+    Object? to,
   }) {
     var _facets = facets ?? {};
     _facets[field] = _ElasticFacet(
@@ -228,8 +208,8 @@ class ElasticQuery with _$ElasticQuery {
       name: name,
       ranges: [
         _ElasticRange(
-          from: from?.toUTCString(),
-          to: to?.toUTCString(),
+          from: from is DateTime ? from.toUTCString() : from.toString(),
+          to: to is DateTime ? to.toUTCString() : to.toString(),
         ),
       ],
     );
