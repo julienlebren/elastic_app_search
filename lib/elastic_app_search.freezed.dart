@@ -1424,57 +1424,56 @@ abstract class __ElasticSearchFilter implements _ElasticSearchFilter {
       throw _privateConstructorUsedError;
 }
 
-_ElasticDateRangeFilter _$_ElasticDateRangeFilterFromJson(
-    Map<String, dynamic> json) {
-  return __ElasticDateRangeFilter.fromJson(json);
+_ElasticRangeFilter _$_ElasticRangeFilterFromJson(Map<String, dynamic> json) {
+  return __ElasticRangeFilter.fromJson(json);
 }
 
 /// @nodoc
-class _$_ElasticDateRangeFilterTearOff {
-  const _$_ElasticDateRangeFilterTearOff();
+class _$_ElasticRangeFilterTearOff {
+  const _$_ElasticRangeFilterTearOff();
 
-  __ElasticDateRangeFilter call({DateTime? from, DateTime? to}) {
-    return __ElasticDateRangeFilter(
+  __ElasticRangeFilter call({String? from, String? to}) {
+    return __ElasticRangeFilter(
       from: from,
       to: to,
     );
   }
 
-  _ElasticDateRangeFilter fromJson(Map<String, Object?> json) {
-    return _ElasticDateRangeFilter.fromJson(json);
+  _ElasticRangeFilter fromJson(Map<String, Object?> json) {
+    return _ElasticRangeFilter.fromJson(json);
   }
 }
 
 /// @nodoc
-const _$ElasticDateRangeFilter = _$_ElasticDateRangeFilterTearOff();
+const _$ElasticRangeFilter = _$_ElasticRangeFilterTearOff();
 
 /// @nodoc
-mixin _$_ElasticDateRangeFilter {
-  DateTime? get from => throw _privateConstructorUsedError;
-  DateTime? get to => throw _privateConstructorUsedError;
+mixin _$_ElasticRangeFilter {
+  String? get from => throw _privateConstructorUsedError;
+  String? get to => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  _$ElasticDateRangeFilterCopyWith<_ElasticDateRangeFilter> get copyWith =>
+  _$ElasticRangeFilterCopyWith<_ElasticRangeFilter> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$ElasticDateRangeFilterCopyWith<$Res> {
-  factory _$ElasticDateRangeFilterCopyWith(_ElasticDateRangeFilter value,
-          $Res Function(_ElasticDateRangeFilter) then) =
-      __$ElasticDateRangeFilterCopyWithImpl<$Res>;
-  $Res call({DateTime? from, DateTime? to});
+abstract class _$ElasticRangeFilterCopyWith<$Res> {
+  factory _$ElasticRangeFilterCopyWith(
+          _ElasticRangeFilter value, $Res Function(_ElasticRangeFilter) then) =
+      __$ElasticRangeFilterCopyWithImpl<$Res>;
+  $Res call({String? from, String? to});
 }
 
 /// @nodoc
-class __$ElasticDateRangeFilterCopyWithImpl<$Res>
-    implements _$ElasticDateRangeFilterCopyWith<$Res> {
-  __$ElasticDateRangeFilterCopyWithImpl(this._value, this._then);
+class __$ElasticRangeFilterCopyWithImpl<$Res>
+    implements _$ElasticRangeFilterCopyWith<$Res> {
+  __$ElasticRangeFilterCopyWithImpl(this._value, this._then);
 
-  final _ElasticDateRangeFilter _value;
+  final _ElasticRangeFilter _value;
   // ignore: unused_field
-  final $Res Function(_ElasticDateRangeFilter) _then;
+  final $Res Function(_ElasticRangeFilter) _then;
 
   @override
   $Res call({
@@ -1485,51 +1484,50 @@ class __$ElasticDateRangeFilterCopyWithImpl<$Res>
       from: from == freezed
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as String?,
       to: to == freezed
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as String?,
     ));
   }
 }
 
 /// @nodoc
-abstract class _$_ElasticDateRangeFilterCopyWith<$Res>
-    implements _$ElasticDateRangeFilterCopyWith<$Res> {
-  factory _$_ElasticDateRangeFilterCopyWith(__ElasticDateRangeFilter value,
-          $Res Function(__ElasticDateRangeFilter) then) =
-      __$_ElasticDateRangeFilterCopyWithImpl<$Res>;
+abstract class _$_ElasticRangeFilterCopyWith<$Res>
+    implements _$ElasticRangeFilterCopyWith<$Res> {
+  factory _$_ElasticRangeFilterCopyWith(__ElasticRangeFilter value,
+          $Res Function(__ElasticRangeFilter) then) =
+      __$_ElasticRangeFilterCopyWithImpl<$Res>;
   @override
-  $Res call({DateTime? from, DateTime? to});
+  $Res call({String? from, String? to});
 }
 
 /// @nodoc
-class __$_ElasticDateRangeFilterCopyWithImpl<$Res>
-    extends __$ElasticDateRangeFilterCopyWithImpl<$Res>
-    implements _$_ElasticDateRangeFilterCopyWith<$Res> {
-  __$_ElasticDateRangeFilterCopyWithImpl(__ElasticDateRangeFilter _value,
-      $Res Function(__ElasticDateRangeFilter) _then)
-      : super(_value, (v) => _then(v as __ElasticDateRangeFilter));
+class __$_ElasticRangeFilterCopyWithImpl<$Res>
+    extends __$ElasticRangeFilterCopyWithImpl<$Res>
+    implements _$_ElasticRangeFilterCopyWith<$Res> {
+  __$_ElasticRangeFilterCopyWithImpl(
+      __ElasticRangeFilter _value, $Res Function(__ElasticRangeFilter) _then)
+      : super(_value, (v) => _then(v as __ElasticRangeFilter));
 
   @override
-  __ElasticDateRangeFilter get _value =>
-      super._value as __ElasticDateRangeFilter;
+  __ElasticRangeFilter get _value => super._value as __ElasticRangeFilter;
 
   @override
   $Res call({
     Object? from = freezed,
     Object? to = freezed,
   }) {
-    return _then(__ElasticDateRangeFilter(
+    return _then(__ElasticRangeFilter(
       from: from == freezed
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as String?,
       to: to == freezed
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as String?,
     ));
   }
 }
@@ -1537,27 +1535,27 @@ class __$_ElasticDateRangeFilterCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$__ElasticDateRangeFilter implements __ElasticDateRangeFilter {
-  const _$__ElasticDateRangeFilter({this.from, this.to});
+class _$__ElasticRangeFilter implements __ElasticRangeFilter {
+  const _$__ElasticRangeFilter({this.from, this.to});
 
-  factory _$__ElasticDateRangeFilter.fromJson(Map<String, dynamic> json) =>
-      _$$__ElasticDateRangeFilterFromJson(json);
+  factory _$__ElasticRangeFilter.fromJson(Map<String, dynamic> json) =>
+      _$$__ElasticRangeFilterFromJson(json);
 
   @override
-  final DateTime? from;
+  final String? from;
   @override
-  final DateTime? to;
+  final String? to;
 
   @override
   String toString() {
-    return '_ElasticDateRangeFilter(from: $from, to: $to)';
+    return '_ElasticRangeFilter(from: $from, to: $to)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is __ElasticDateRangeFilter &&
+            other is __ElasticRangeFilter &&
             const DeepCollectionEquality().equals(other.from, from) &&
             const DeepCollectionEquality().equals(other.to, to));
   }
@@ -1570,205 +1568,31 @@ class _$__ElasticDateRangeFilter implements __ElasticDateRangeFilter {
 
   @JsonKey(ignore: true)
   @override
-  _$_ElasticDateRangeFilterCopyWith<__ElasticDateRangeFilter> get copyWith =>
-      __$_ElasticDateRangeFilterCopyWithImpl<__ElasticDateRangeFilter>(
+  _$_ElasticRangeFilterCopyWith<__ElasticRangeFilter> get copyWith =>
+      __$_ElasticRangeFilterCopyWithImpl<__ElasticRangeFilter>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$__ElasticDateRangeFilterToJson(this);
+    return _$$__ElasticRangeFilterToJson(this);
   }
 }
 
-abstract class __ElasticDateRangeFilter implements _ElasticDateRangeFilter {
-  const factory __ElasticDateRangeFilter({DateTime? from, DateTime? to}) =
-      _$__ElasticDateRangeFilter;
+abstract class __ElasticRangeFilter implements _ElasticRangeFilter {
+  const factory __ElasticRangeFilter({String? from, String? to}) =
+      _$__ElasticRangeFilter;
 
-  factory __ElasticDateRangeFilter.fromJson(Map<String, dynamic> json) =
-      _$__ElasticDateRangeFilter.fromJson;
+  factory __ElasticRangeFilter.fromJson(Map<String, dynamic> json) =
+      _$__ElasticRangeFilter.fromJson;
 
   @override
-  DateTime? get from;
+  String? get from;
   @override
-  DateTime? get to;
+  String? get to;
   @override
   @JsonKey(ignore: true)
-  _$_ElasticDateRangeFilterCopyWith<__ElasticDateRangeFilter> get copyWith =>
+  _$_ElasticRangeFilterCopyWith<__ElasticRangeFilter> get copyWith =>
       throw _privateConstructorUsedError;
-}
-
-_ElasticNumberRangeFilter _$_ElasticNumberRangeFilterFromJson(
-    Map<String, dynamic> json) {
-  return __ElasticNumberRangeFilter.fromJson(json);
-}
-
-/// @nodoc
-class _$_ElasticNumberRangeFilterTearOff {
-  const _$_ElasticNumberRangeFilterTearOff();
-
-  __ElasticNumberRangeFilter call({double? from, double? to}) {
-    return __ElasticNumberRangeFilter(
-      from: from,
-      to: to,
-    );
-  }
-
-  _ElasticNumberRangeFilter fromJson(Map<String, Object?> json) {
-    return _ElasticNumberRangeFilter.fromJson(json);
-  }
-}
-
-/// @nodoc
-const _$ElasticNumberRangeFilter = _$_ElasticNumberRangeFilterTearOff();
-
-/// @nodoc
-mixin _$_ElasticNumberRangeFilter {
-  double? get from => throw _privateConstructorUsedError;
-  double? get to => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  _$ElasticNumberRangeFilterCopyWith<_ElasticNumberRangeFilter> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$ElasticNumberRangeFilterCopyWith<$Res> {
-  factory _$ElasticNumberRangeFilterCopyWith(_ElasticNumberRangeFilter value,
-          $Res Function(_ElasticNumberRangeFilter) then) =
-      __$ElasticNumberRangeFilterCopyWithImpl<$Res>;
-  $Res call({double? from, double? to});
-}
-
-/// @nodoc
-class __$ElasticNumberRangeFilterCopyWithImpl<$Res>
-    implements _$ElasticNumberRangeFilterCopyWith<$Res> {
-  __$ElasticNumberRangeFilterCopyWithImpl(this._value, this._then);
-
-  final _ElasticNumberRangeFilter _value;
-  // ignore: unused_field
-  final $Res Function(_ElasticNumberRangeFilter) _then;
-
-  @override
-  $Res call({
-    Object? from = freezed,
-    Object? to = freezed,
-  }) {
-    return _then(_value.copyWith(
-      from: from == freezed
-          ? _value.from
-          : from // ignore: cast_nullable_to_non_nullable
-              as double?,
-      to: to == freezed
-          ? _value.to
-          : to // ignore: cast_nullable_to_non_nullable
-              as double?,
-    ));
-  }
-}
-
-/// @nodoc
-abstract class _$_ElasticNumberRangeFilterCopyWith<$Res>
-    implements _$ElasticNumberRangeFilterCopyWith<$Res> {
-  factory _$_ElasticNumberRangeFilterCopyWith(__ElasticNumberRangeFilter value,
-          $Res Function(__ElasticNumberRangeFilter) then) =
-      __$_ElasticNumberRangeFilterCopyWithImpl<$Res>;
-  @override
-  $Res call({double? from, double? to});
-}
-
-/// @nodoc
-class __$_ElasticNumberRangeFilterCopyWithImpl<$Res>
-    extends __$ElasticNumberRangeFilterCopyWithImpl<$Res>
-    implements _$_ElasticNumberRangeFilterCopyWith<$Res> {
-  __$_ElasticNumberRangeFilterCopyWithImpl(__ElasticNumberRangeFilter _value,
-      $Res Function(__ElasticNumberRangeFilter) _then)
-      : super(_value, (v) => _then(v as __ElasticNumberRangeFilter));
-
-  @override
-  __ElasticNumberRangeFilter get _value =>
-      super._value as __ElasticNumberRangeFilter;
-
-  @override
-  $Res call({
-    Object? from = freezed,
-    Object? to = freezed,
-  }) {
-    return _then(__ElasticNumberRangeFilter(
-      from: from == freezed
-          ? _value.from
-          : from // ignore: cast_nullable_to_non_nullable
-              as double?,
-      to: to == freezed
-          ? _value.to
-          : to // ignore: cast_nullable_to_non_nullable
-              as double?,
-    ));
-  }
-}
-
-/// @nodoc
-
-@JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$__ElasticNumberRangeFilter implements __ElasticNumberRangeFilter {
-  const _$__ElasticNumberRangeFilter({this.from, this.to});
-
-  factory _$__ElasticNumberRangeFilter.fromJson(Map<String, dynamic> json) =>
-      _$$__ElasticNumberRangeFilterFromJson(json);
-
-  @override
-  final double? from;
-  @override
-  final double? to;
-
-  @override
-  String toString() {
-    return '_ElasticNumberRangeFilter(from: $from, to: $to)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is __ElasticNumberRangeFilter &&
-            const DeepCollectionEquality().equals(other.from, from) &&
-            const DeepCollectionEquality().equals(other.to, to));
-  }
-
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(from),
-      const DeepCollectionEquality().hash(to));
-
-  @JsonKey(ignore: true)
-  @override
-  _$_ElasticNumberRangeFilterCopyWith<__ElasticNumberRangeFilter>
-      get copyWith =>
-          __$_ElasticNumberRangeFilterCopyWithImpl<__ElasticNumberRangeFilter>(
-              this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$__ElasticNumberRangeFilterToJson(this);
-  }
-}
-
-abstract class __ElasticNumberRangeFilter implements _ElasticNumberRangeFilter {
-  const factory __ElasticNumberRangeFilter({double? from, double? to}) =
-      _$__ElasticNumberRangeFilter;
-
-  factory __ElasticNumberRangeFilter.fromJson(Map<String, dynamic> json) =
-      _$__ElasticNumberRangeFilter.fromJson;
-
-  @override
-  double? get from;
-  @override
-  double? get to;
-  @override
-  @JsonKey(ignore: true)
-  _$_ElasticNumberRangeFilterCopyWith<__ElasticNumberRangeFilter>
-      get copyWith => throw _privateConstructorUsedError;
 }
 
 _ElasticSearchField _$_ElasticSearchFieldFromJson(Map<String, dynamic> json) {

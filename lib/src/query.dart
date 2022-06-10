@@ -98,7 +98,7 @@ class ElasticQuery with _$ElasticQuery {
       if (from is DateTime || to is DateTime) {
         final _from = from as DateTime?;
         final _to = to as DateTime?;
-        value = _ElasticDateRangeFilter(
+        value = _ElasticRangeFilter(
           from: from != null
               ? DateTime.utc(
                   _from!.year,
@@ -107,7 +107,7 @@ class ElasticQuery with _$ElasticQuery {
                   _from.hour,
                   _from.minute,
                   _from.second,
-                )
+                ).toString()
               : null,
           to: to != null
               ? DateTime.utc(
@@ -117,13 +117,13 @@ class ElasticQuery with _$ElasticQuery {
                   _to.hour,
                   _to.minute,
                   _to.second,
-                )
+                ).toString()
               : null,
         );
       } else if (from is double || to is double) {
-        value = _ElasticNumberRangeFilter(
-          from: from as double,
-          to: to as double,
+        value = _ElasticRangeFilter(
+          from: from.toString(),
+          to: to.toString(),
         );
       }
     }
@@ -357,14 +357,13 @@ class _ElasticSearchFiltersConverter
 
     var values = [];
     for (final searchFilter in searchFilters) {
-      var encodedValue = searchFilter.value;
-      if (searchFilter.value is _ElasticDateRangeFilter) {
-        encodedValue = (searchFilter.value as _ElasticDateRangeFilter).toJson();
-      } else if (searchFilter.value is _ElasticNumberRangeFilter) {
-        encodedValue =
-            (searchFilter.value as _ElasticNumberRangeFilter).toJson();
+      if (searchFilter.value is _ElasticRangeFilter) {
+        final encodedValue =
+            (searchFilter.value as _ElasticRangeFilter).toJson();
+        values.add({searchFilter.name: encodedValue});
+      } else {
+        values.add({searchFilter.name: searchFilter.value});
       }
-      values.add({searchFilter.name: encodedValue});
     }
     if (values.length == 1) {
       return values.first;
@@ -374,27 +373,15 @@ class _ElasticSearchFiltersConverter
 }
 
 @freezed
-class _ElasticDateRangeFilter with _$_ElasticDateRangeFilter {
+class _ElasticRangeFilter with _$_ElasticRangeFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory _ElasticDateRangeFilter({
-    DateTime? from,
-    DateTime? to,
-  }) = __ElasticDateRangeFilter;
+  const factory _ElasticRangeFilter({
+    String? from,
+    String? to,
+  }) = __ElasticRangeFilter;
 
-  factory _ElasticDateRangeFilter.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticDateRangeFilterFromJson(json);
-}
-
-@freezed
-class _ElasticNumberRangeFilter with _$_ElasticNumberRangeFilter {
-  @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory _ElasticNumberRangeFilter({
-    double? from,
-    double? to,
-  }) = __ElasticNumberRangeFilter;
-
-  factory _ElasticNumberRangeFilter.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticNumberRangeFilterFromJson(json);
+  factory _ElasticRangeFilter.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticRangeFilterFromJson(json);
 }
 
 /// Object which restricts a query to search only specific fields.

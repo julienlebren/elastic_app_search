@@ -155,38 +155,15 @@ Map<String, dynamic> _$$__ElasticSearchFilterToJson(
   return val;
 }
 
-_$__ElasticDateRangeFilter _$$__ElasticDateRangeFilterFromJson(
+_$__ElasticRangeFilter _$$__ElasticRangeFilterFromJson(
         Map<String, dynamic> json) =>
-    _$__ElasticDateRangeFilter(
-      from:
-          json['from'] == null ? null : DateTime.parse(json['from'] as String),
-      to: json['to'] == null ? null : DateTime.parse(json['to'] as String),
+    _$__ElasticRangeFilter(
+      from: json['from'] as String?,
+      to: json['to'] as String?,
     );
 
-Map<String, dynamic> _$$__ElasticDateRangeFilterToJson(
-    _$__ElasticDateRangeFilter instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('from', instance.from?.toIso8601String());
-  writeNotNull('to', instance.to?.toIso8601String());
-  return val;
-}
-
-_$__ElasticNumberRangeFilter _$$__ElasticNumberRangeFilterFromJson(
-        Map<String, dynamic> json) =>
-    _$__ElasticNumberRangeFilter(
-      from: (json['from'] as num?)?.toDouble(),
-      to: (json['to'] as num?)?.toDouble(),
-    );
-
-Map<String, dynamic> _$$__ElasticNumberRangeFilterToJson(
-    _$__ElasticNumberRangeFilter instance) {
+Map<String, dynamic> _$$__ElasticRangeFilterToJson(
+    _$__ElasticRangeFilter instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
