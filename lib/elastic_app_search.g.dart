@@ -154,28 +154,6 @@ Map<String, dynamic> _$$__ElasticSearchFilterToJson(
   return val;
 }
 
-_$__ElasticRangeFilter _$$__ElasticRangeFilterFromJson(
-        Map<String, dynamic> json) =>
-    _$__ElasticRangeFilter(
-      from: json['from'] as String?,
-      to: json['to'] as String?,
-    );
-
-Map<String, dynamic> _$$__ElasticRangeFilterToJson(
-    _$__ElasticRangeFilter instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('from', instance.from);
-  writeNotNull('to', instance.to);
-  return val;
-}
-
 _$__ElasticSearchField _$$__ElasticSearchFieldFromJson(
         Map<String, dynamic> json) =>
     _$__ElasticSearchField(

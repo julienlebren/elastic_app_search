@@ -337,9 +337,8 @@ class _ElasticSearchFiltersConverter
 
     var values = [];
     for (final searchFilter in searchFilters) {
-      if (searchFilter.value is _ElasticRangeFilter) {
-        final encodedValue =
-            (searchFilter.value as _ElasticRangeFilter).toJson();
+      if (searchFilter.value is _ElasticRange) {
+        final encodedValue = (searchFilter.value as _ElasticRange).toJson();
         values.add({searchFilter.name: encodedValue});
       } else {
         values.add({searchFilter.name: searchFilter.value});
@@ -350,18 +349,6 @@ class _ElasticSearchFiltersConverter
     }
     return {"all": values};
   }
-}
-
-@freezed
-class _ElasticRangeFilter with _$_ElasticRangeFilter {
-  @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory _ElasticRangeFilter({
-    String? from,
-    String? to,
-  }) = __ElasticRangeFilter;
-
-  factory _ElasticRangeFilter.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticRangeFilterFromJson(json);
 }
 
 /// Object which restricts a query to search only specific fields.
