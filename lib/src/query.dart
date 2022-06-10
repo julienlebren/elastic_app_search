@@ -341,6 +341,7 @@ class _ElasticSearchFiltersConverter
     var values = [];
     for (final searchFilter in searchFilters) {
       var encodedValue = searchFilter.value;
+      print("encodedValue: $encodedValue");
       if (searchFilter.value is _ElasticDateRangeFilter) {
         print("is _ElasticDateRangeFilter");
         encodedValue = (searchFilter.value as _ElasticDateRangeFilter).toJson();
