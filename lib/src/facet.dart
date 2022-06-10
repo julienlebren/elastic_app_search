@@ -15,17 +15,3 @@ class _ElasticFacet with _$_ElasticFacet {
   factory _ElasticFacet.fromJson(Map<String, dynamic> json) =>
       _$_ElasticFacetFromJson(json);
 }
-
-@freezed
-class _ElasticRange with _$_ElasticRange {
-  @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory _ElasticRange({
-    String? name,
-    DateTime? from,
-    DateTime? to,
-    int? count,
-  }) = __ElasticRange;
-
-  factory _ElasticRange.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticRangeFromJson(json);
-}

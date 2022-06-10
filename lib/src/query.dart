@@ -98,7 +98,7 @@ class ElasticQuery with _$ElasticQuery {
       if (from is DateTime || to is DateTime) {
         final _from = from as DateTime?;
         final _to = to as DateTime?;
-        value = _ElasticRangeFilter(
+        value = _ElasticRange(
           from: from != null
               ? DateTime.utc(
                   _from!.year,
@@ -121,7 +121,7 @@ class ElasticQuery with _$ElasticQuery {
               : null,
         );
       } else if (from is double || to is double) {
-        value = _ElasticRangeFilter(
+        value = _ElasticRange(
           from: from.toString(),
           to: to.toString(),
         );
@@ -228,8 +228,8 @@ class ElasticQuery with _$ElasticQuery {
       name: name,
       ranges: [
         _ElasticRange(
-          from: from,
-          to: to,
+          from: from?.toUTCString(),
+          to: to?.toUTCString(),
         ),
       ],
     );

@@ -244,8 +244,7 @@ _ElasticRange _$_ElasticRangeFromJson(Map<String, dynamic> json) {
 class _$_ElasticRangeTearOff {
   const _$_ElasticRangeTearOff();
 
-  __ElasticRange call(
-      {String? name, DateTime? from, DateTime? to, int? count}) {
+  __ElasticRange call({String? name, String? from, String? to, int? count}) {
     return __ElasticRange(
       name: name,
       from: from,
@@ -265,8 +264,8 @@ const _$ElasticRange = _$_ElasticRangeTearOff();
 /// @nodoc
 mixin _$_ElasticRange {
   String? get name => throw _privateConstructorUsedError;
-  DateTime? get from => throw _privateConstructorUsedError;
-  DateTime? get to => throw _privateConstructorUsedError;
+  String? get from => throw _privateConstructorUsedError;
+  String? get to => throw _privateConstructorUsedError;
   int? get count => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -280,7 +279,7 @@ abstract class _$ElasticRangeCopyWith<$Res> {
   factory _$ElasticRangeCopyWith(
           _ElasticRange value, $Res Function(_ElasticRange) then) =
       __$ElasticRangeCopyWithImpl<$Res>;
-  $Res call({String? name, DateTime? from, DateTime? to, int? count});
+  $Res call({String? name, String? from, String? to, int? count});
 }
 
 /// @nodoc
@@ -307,11 +306,11 @@ class __$ElasticRangeCopyWithImpl<$Res>
       from: from == freezed
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as String?,
       to: to == freezed
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as String?,
       count: count == freezed
           ? _value.count
           : count // ignore: cast_nullable_to_non_nullable
@@ -327,7 +326,7 @@ abstract class _$_ElasticRangeCopyWith<$Res>
           __ElasticRange value, $Res Function(__ElasticRange) then) =
       __$_ElasticRangeCopyWithImpl<$Res>;
   @override
-  $Res call({String? name, DateTime? from, DateTime? to, int? count});
+  $Res call({String? name, String? from, String? to, int? count});
 }
 
 /// @nodoc
@@ -356,11 +355,11 @@ class __$_ElasticRangeCopyWithImpl<$Res>
       from: from == freezed
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as String?,
       to: to == freezed
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
+              as String?,
       count: count == freezed
           ? _value.count
           : count // ignore: cast_nullable_to_non_nullable
@@ -381,9 +380,9 @@ class _$__ElasticRange implements __ElasticRange {
   @override
   final String? name;
   @override
-  final DateTime? from;
+  final String? from;
   @override
-  final DateTime? to;
+  final String? to;
   @override
   final int? count;
 
@@ -424,10 +423,7 @@ class _$__ElasticRange implements __ElasticRange {
 
 abstract class __ElasticRange implements _ElasticRange {
   const factory __ElasticRange(
-      {String? name,
-      DateTime? from,
-      DateTime? to,
-      int? count}) = _$__ElasticRange;
+      {String? name, String? from, String? to, int? count}) = _$__ElasticRange;
 
   factory __ElasticRange.fromJson(Map<String, dynamic> json) =
       _$__ElasticRange.fromJson;
@@ -435,9 +431,9 @@ abstract class __ElasticRange implements _ElasticRange {
   @override
   String? get name;
   @override
-  DateTime? get from;
+  String? get from;
   @override
-  DateTime? get to;
+  String? get to;
   @override
   int? get count;
   @override
