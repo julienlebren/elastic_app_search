@@ -100,24 +100,10 @@ class ElasticQuery with _$ElasticQuery {
         final _to = to as DateTime?;
         value = _ElasticRangeFilter(
           from: from != null
-              ? DateTime.utc(
-                  _from!.year,
-                  _from.month,
-                  _from.day,
-                  _from.hour,
-                  _from.minute,
-                  _from.second,
-                ).toString()
+              ? "${_from!.year}-${_from.month}-${_from.day} ${_from.hour}:${_from.minute}:${_from.second}.000Z"
               : null,
           to: to != null
-              ? DateTime.utc(
-                  _to!.year,
-                  _to.month,
-                  _to.day,
-                  _to.hour,
-                  _to.minute,
-                  _to.second,
-                ).toString()
+              ? "${_to!.year}-${_to.month}-${_to.day} ${_to.hour}:${_to.minute}:${_to.second}.000Z"
               : null,
         );
       } else if (from is double || to is double) {
