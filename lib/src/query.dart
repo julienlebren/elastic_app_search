@@ -93,9 +93,19 @@ class ElasticQuery with _$ElasticQuery {
     if (whereIn != null) {
       value = whereIn;
     } else if (isEqualTo != null) {
-      value = [isEqualTo.toString()];
-    } else if (from != null && to != null) {
-      value = _ElasticSearchRangeFilter(from: from, to: to);
+      value = isEqualTo.toString();
+    } else if (from != null || to != null) {
+      if (from is DateTime || to is DateTime) {
+        value = _ElasticDateRangeFilter(
+          from: from as DateTime,
+          to: to as DateTime,
+        );
+      } else if (from is double || to is double) {
+        value = _ElasticNumberRangeFilter(
+          from: from as double,
+          to: to as double,
+        );
+      }
     }
     return copyWith(
       filters: [
@@ -307,7 +317,7 @@ class _ElasticSearchFilter with _$_ElasticSearchFilter {
 
     /// The value upon which to filter. The value must be an exact match,
     /// and can be a String, a boolean, a number, or an array of these types.
-    required List<dynamic> value,
+    required dynamic value,
   }) = __ElasticSearchFilter;
 
   factory _ElasticSearchFilter.fromJson(Map<String, dynamic> json) =>
@@ -330,9 +340,13 @@ class _ElasticSearchFiltersConverter
 
     var values = [];
     for (final searchFilter in searchFilters) {
-      final encodedValue = (searchFilter.value is _ElasticSearchRangeFilter
-          ? (searchFilter.value as _ElasticSearchRangeFilter).toJson()
-          : searchFilter.value);
+      var encodedValue = searchFilter.value;
+      if (searchFilter.value is _ElasticDateRangeFilter) {
+        encodedValue = (searchFilter.value as _ElasticDateRangeFilter).toJson();
+      } else if (searchFilter.value is _ElasticNumberRangeFilter) {
+        encodedValue =
+            (searchFilter.value as _ElasticNumberRangeFilter).toJson();
+      }
       values.add({searchFilter.name: encodedValue});
     }
     return {"all": values};
@@ -340,18 +354,27 @@ class _ElasticSearchFiltersConverter
 }
 
 @freezed
-class _ElasticSearchRangeFilter with _$_ElasticSearchFilter {
+class _ElasticDateRangeFilter with _$_ElasticDateRangeFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  @Assert(
-      '(from is DateTime && to is DateTime) || (from is double && to is double) || (from is int && to is int)',
-      'from and to must be of the same type, and this type must be a DateTime, a double or an int.')
-  const factory _ElasticSearchRangeFilter({
-    dynamic from,
-    dynamic to,
-  }) = __ElasticSearchRangeFilter;
+  const factory _ElasticDateRangeFilter({
+    DateTime? from,
+    DateTime? to,
+  }) = __ElasticDateRangeFilter;
 
-  factory _ElasticSearchRangeFilter.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticSearchRangeFilterFromJson(json);
+  factory _ElasticDateRangeFilter.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticDateRangeFilterFromJson(json);
+}
+
+@freezed
+class _ElasticNumberRangeFilter with _$_ElasticNumberRangeFilter {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  const factory _ElasticNumberRangeFilter({
+    double? from,
+    double? to,
+  }) = __ElasticNumberRangeFilter;
+
+  factory _ElasticNumberRangeFilter.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticNumberRangeFilterFromJson(json);
 }
 
 /// Object which restricts a query to search only specific fields.

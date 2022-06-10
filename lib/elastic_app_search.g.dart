@@ -136,25 +136,57 @@ _$__ElasticSearchFilter _$$__ElasticSearchFilterFromJson(
         Map<String, dynamic> json) =>
     _$__ElasticSearchFilter(
       name: json['name'] as String,
-      value: json['value'] as List<dynamic>,
+      value: json['value'],
     );
 
 Map<String, dynamic> _$$__ElasticSearchFilterToJson(
-        _$__ElasticSearchFilter instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'value': instance.value,
-    };
+    _$__ElasticSearchFilter instance) {
+  final val = <String, dynamic>{
+    'name': instance.name,
+  };
 
-_$__ElasticSearchRangeFilter _$$__ElasticSearchRangeFilterFromJson(
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('value', instance.value);
+  return val;
+}
+
+_$__ElasticDateRangeFilter _$$__ElasticDateRangeFilterFromJson(
         Map<String, dynamic> json) =>
-    _$__ElasticSearchRangeFilter(
-      from: json['from'],
-      to: json['to'],
+    _$__ElasticDateRangeFilter(
+      from:
+          json['from'] == null ? null : DateTime.parse(json['from'] as String),
+      to: json['to'] == null ? null : DateTime.parse(json['to'] as String),
     );
 
-Map<String, dynamic> _$$__ElasticSearchRangeFilterToJson(
-    _$__ElasticSearchRangeFilter instance) {
+Map<String, dynamic> _$$__ElasticDateRangeFilterToJson(
+    _$__ElasticDateRangeFilter instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('from', instance.from?.toIso8601String());
+  writeNotNull('to', instance.to?.toIso8601String());
+  return val;
+}
+
+_$__ElasticNumberRangeFilter _$$__ElasticNumberRangeFilterFromJson(
+        Map<String, dynamic> json) =>
+    _$__ElasticNumberRangeFilter(
+      from: (json['from'] as num?)?.toDouble(),
+      to: (json['to'] as num?)?.toDouble(),
+    );
+
+Map<String, dynamic> _$$__ElasticNumberRangeFilterToJson(
+    _$__ElasticNumberRangeFilter instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
