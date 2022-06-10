@@ -18,6 +18,13 @@ class _ElasticRange with _$_ElasticRange {
 
 extension DateTimeX on DateTime {
   String toUTCString() {
-    return toString().replaceAll(' ', 'T');
+    return DateTime.utc(
+      year,
+      month,
+      day,
+      hour,
+      minute,
+      second,
+    ).toString().replaceAll(' ', 'T');
   }
 }
