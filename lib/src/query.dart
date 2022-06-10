@@ -334,9 +334,6 @@ class _ElasticSearchFiltersConverter
   @override
   Map? toJson(List<_ElasticSearchFilter>? searchFilters) {
     if (searchFilters == null) return null;
-    if (searchFilters.length == 1) {
-      return {searchFilters.first.name: searchFilters.first.value};
-    }
 
     var values = [];
     for (final searchFilter in searchFilters) {
@@ -350,6 +347,9 @@ class _ElasticSearchFiltersConverter
             (searchFilter.value as _ElasticNumberRangeFilter).toJson();
       }
       values.add({searchFilter.name: encodedValue});
+    }
+    if (values.length == 1) {
+      return values.first;
     }
     return {"all": values};
   }
