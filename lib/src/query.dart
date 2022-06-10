@@ -96,9 +96,29 @@ class ElasticQuery with _$ElasticQuery {
       value = isEqualTo.toString();
     } else if (from != null || to != null) {
       if (from is DateTime || to is DateTime) {
+        final _from = from as DateTime?;
+        final _to = to as DateTime?;
         value = _ElasticDateRangeFilter(
-          from: from as DateTime,
-          to: to as DateTime,
+          from: from != null
+              ? DateTime.utc(
+                  _from!.year,
+                  _from.month,
+                  _from.day,
+                  _from.hour,
+                  _from.minute,
+                  _from.second,
+                )
+              : null,
+          to: to != null
+              ? DateTime.utc(
+                  _to!.year,
+                  _to.month,
+                  _to.day,
+                  _to.hour,
+                  _to.minute,
+                  _to.second,
+                )
+              : null,
         );
       } else if (from is double || to is double) {
         value = _ElasticNumberRangeFilter(
@@ -338,9 +358,7 @@ class _ElasticSearchFiltersConverter
     var values = [];
     for (final searchFilter in searchFilters) {
       var encodedValue = searchFilter.value;
-      print("encodedValue: $encodedValue");
       if (searchFilter.value is _ElasticDateRangeFilter) {
-        print("is _ElasticDateRangeFilter");
         encodedValue = (searchFilter.value as _ElasticDateRangeFilter).toJson();
       } else if (searchFilter.value is _ElasticNumberRangeFilter) {
         encodedValue =
