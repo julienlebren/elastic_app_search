@@ -87,8 +87,8 @@ class ElasticQuery with _$ElasticQuery {
     Object? isLessThan,
     Object? isNotEqualTo,
     List<Object?>? whereNotIn,
-    /*Object? isMaybeEqualTo,
-    List<Object?>? whereMaybeIn,*/
+    Object? isEqualToAny,
+    List<Object?>? whereInAny,
   }) {
     dynamic value;
 
@@ -96,10 +96,14 @@ class ElasticQuery with _$ElasticQuery {
       value = whereIn;
     } else if (whereNotIn != null) {
       value = whereNotIn;
+    } else if (whereInAny != null) {
+      value = whereInAny;
     } else if (isEqualTo != null) {
       value = isEqualTo.toString();
     } else if (isNotEqualTo != null) {
       value = isNotEqualTo.toString();
+    } else if (isEqualToAny != null) {
+      value = isEqualToAny.toString();
     } else if (isGreaterThanOrEqualTo != null || isLessThan != null) {
       if (isGreaterThanOrEqualTo is DateTime || isLessThan is DateTime) {
         value = _ElasticRangeFilter(
@@ -118,6 +122,8 @@ class ElasticQuery with _$ElasticQuery {
 
     if (isNotEqualTo != null || whereNotIn != null) {
       type = _ElasticFilterType.none;
+    } else if (isEqualToAny != null || whereInAny != null) {
+      type = _ElasticFilterType.any;
     }
 
     final List<_ElasticSearchFilter> newFilters = [
