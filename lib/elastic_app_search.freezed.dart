@@ -1243,8 +1243,12 @@ _ElasticSearchFilter _$_ElasticSearchFilterFromJson(Map<String, dynamic> json) {
 class _$_ElasticSearchFilterTearOff {
   const _$_ElasticSearchFilterTearOff();
 
-  __ElasticSearchFilter call({required String name, required dynamic value}) {
+  __ElasticSearchFilter call(
+      {_ElasticFilterType type = _ElasticFilterType.all,
+      required String name,
+      required dynamic value}) {
     return __ElasticSearchFilter(
+      type: type,
       name: name,
       value: value,
     );
@@ -1260,6 +1264,9 @@ const _$ElasticSearchFilter = _$_ElasticSearchFilterTearOff();
 
 /// @nodoc
 mixin _$_ElasticSearchFilter {
+  /// The type of the filter, which will determine if it's an 'OR', 'AND' or 'NOT' condition.
+  _ElasticFilterType get type => throw _privateConstructorUsedError;
+
   /// The field from your schema upon which to apply your filter.
   String get name => throw _privateConstructorUsedError;
 
@@ -1278,7 +1285,7 @@ abstract class _$ElasticSearchFilterCopyWith<$Res> {
   factory _$ElasticSearchFilterCopyWith(_ElasticSearchFilter value,
           $Res Function(_ElasticSearchFilter) then) =
       __$ElasticSearchFilterCopyWithImpl<$Res>;
-  $Res call({String name, dynamic value});
+  $Res call({_ElasticFilterType type, String name, dynamic value});
 }
 
 /// @nodoc
@@ -1292,10 +1299,15 @@ class __$ElasticSearchFilterCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? type = freezed,
     Object? name = freezed,
     Object? value = freezed,
   }) {
     return _then(_value.copyWith(
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as _ElasticFilterType,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -1315,7 +1327,7 @@ abstract class _$_ElasticSearchFilterCopyWith<$Res>
           $Res Function(__ElasticSearchFilter) then) =
       __$_ElasticSearchFilterCopyWithImpl<$Res>;
   @override
-  $Res call({String name, dynamic value});
+  $Res call({_ElasticFilterType type, String name, dynamic value});
 }
 
 /// @nodoc
@@ -1331,10 +1343,15 @@ class __$_ElasticSearchFilterCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? type = freezed,
     Object? name = freezed,
     Object? value = freezed,
   }) {
     return _then(__ElasticSearchFilter(
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as _ElasticFilterType,
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -1351,11 +1368,19 @@ class __$_ElasticSearchFilterCopyWithImpl<$Res>
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _$__ElasticSearchFilter implements __ElasticSearchFilter {
-  const _$__ElasticSearchFilter({required this.name, required this.value});
+  const _$__ElasticSearchFilter(
+      {this.type = _ElasticFilterType.all,
+      required this.name,
+      required this.value});
 
   factory _$__ElasticSearchFilter.fromJson(Map<String, dynamic> json) =>
       _$$__ElasticSearchFilterFromJson(json);
 
+  @JsonKey()
+  @override
+
+  /// The type of the filter, which will determine if it's an 'OR', 'AND' or 'NOT' condition.
+  final _ElasticFilterType type;
   @override
 
   /// The field from your schema upon which to apply your filter.
@@ -1368,7 +1393,7 @@ class _$__ElasticSearchFilter implements __ElasticSearchFilter {
 
   @override
   String toString() {
-    return '_ElasticSearchFilter(name: $name, value: $value)';
+    return '_ElasticSearchFilter(type: $type, name: $name, value: $value)';
   }
 
   @override
@@ -1376,6 +1401,7 @@ class _$__ElasticSearchFilter implements __ElasticSearchFilter {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is __ElasticSearchFilter &&
+            const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.value, value));
   }
@@ -1383,6 +1409,7 @@ class _$__ElasticSearchFilter implements __ElasticSearchFilter {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(type),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(value));
 
@@ -1400,11 +1427,17 @@ class _$__ElasticSearchFilter implements __ElasticSearchFilter {
 
 abstract class __ElasticSearchFilter implements _ElasticSearchFilter {
   const factory __ElasticSearchFilter(
-      {required String name, required dynamic value}) = _$__ElasticSearchFilter;
+      {_ElasticFilterType type,
+      required String name,
+      required dynamic value}) = _$__ElasticSearchFilter;
 
   factory __ElasticSearchFilter.fromJson(Map<String, dynamic> json) =
       _$__ElasticSearchFilter.fromJson;
 
+  @override
+
+  /// The type of the filter, which will determine if it's an 'OR', 'AND' or 'NOT' condition.
+  _ElasticFilterType get type;
   @override
 
   /// The field from your schema upon which to apply your filter.

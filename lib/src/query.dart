@@ -117,6 +117,7 @@ class ElasticQuery with _$ElasticQuery {
       ),
     ];
 
+    // TO DO
     // Once all filters have been set, we must now check them
     // to ensure the query is valid.
 
@@ -319,6 +320,9 @@ class _ElasticSearchPage with _$_ElasticSearchPage {
 class _ElasticSearchFilter with _$_ElasticSearchFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticSearchFilter({
+    /// The type of the filter, which will determine if it's an 'OR', 'AND' or 'NOT' condition.
+    @Default(_ElasticFilterType.all) _ElasticFilterType type,
+
     /// The field from your schema upon which to apply your filter.
     required String name,
 
@@ -341,21 +345,24 @@ class _ElasticSearchFiltersConverter
   @override
   Map? toJson(List<_ElasticSearchFilter>? searchFilters) {
     if (searchFilters == null) return null;
+    Map<String, List<Map>> filters = {};
 
-    var values = [];
-    for (final searchFilter in searchFilters) {
-      if (searchFilter.value is _ElasticRangeFilter) {
-        final encodedValue =
-            (searchFilter.value as _ElasticRangeFilter).toJson();
-        values.add({searchFilter.name: encodedValue});
-      } else {
-        values.add({searchFilter.name: searchFilter.value});
+    for (final type in _ElasticFilterType.values) {
+      var values = [];
+      for (final searchFilter
+          in searchFilters.where((filter) => filter.type == type)) {
+        if (searchFilter.value is _ElasticRangeFilter) {
+          final encodedValue =
+              (searchFilter.value as _ElasticRangeFilter).toJson();
+          values.add({searchFilter.name: encodedValue});
+        } else {
+          values.add({searchFilter.name: searchFilter.value});
+        }
       }
+
+      filters[type.toString()] = values.length == 1 ? values.first : values;
     }
-    if (values.length == 1) {
-      return values.first;
-    }
-    return {"all": values};
+    return filters;
   }
 }
 

@@ -2,6 +2,9 @@
 
 part of elastic_app_search;
 
+@protected
+enum _ElasticFilterType { all, none, any }
+
 @freezed
 class _ElasticRange with _$_ElasticRange {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)

@@ -134,6 +134,8 @@ Map<String, dynamic> _$$__ElasticSearchPageToJson(
 _$__ElasticSearchFilter _$$__ElasticSearchFilterFromJson(
         Map<String, dynamic> json) =>
     _$__ElasticSearchFilter(
+      type: $enumDecodeNullable(_$_ElasticFilterTypeEnumMap, json['type']) ??
+          _ElasticFilterType.all,
       name: json['name'] as String,
       value: json['value'],
     );
@@ -141,6 +143,7 @@ _$__ElasticSearchFilter _$$__ElasticSearchFilterFromJson(
 Map<String, dynamic> _$$__ElasticSearchFilterToJson(
     _$__ElasticSearchFilter instance) {
   final val = <String, dynamic>{
+    'type': _$_ElasticFilterTypeEnumMap[instance.type],
     'name': instance.name,
   };
 
@@ -153,6 +156,12 @@ Map<String, dynamic> _$$__ElasticSearchFilterToJson(
   writeNotNull('value', instance.value);
   return val;
 }
+
+const _$_ElasticFilterTypeEnumMap = {
+  _ElasticFilterType.all: 'all',
+  _ElasticFilterType.none: 'none',
+  _ElasticFilterType.any: 'any',
+};
 
 _$__ElasticRangeFilter _$$__ElasticRangeFilterFromJson(
         Map<String, dynamic> json) =>
