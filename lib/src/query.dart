@@ -362,6 +362,7 @@ class _ElasticSearchFiltersConverter
 
       filters[type.toString()] = values.length == 1 ? values.first : values;
     }
+    print(filters);
     return filters;
   }
 }
