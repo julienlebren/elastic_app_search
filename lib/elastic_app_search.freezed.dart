@@ -1420,6 +1420,427 @@ abstract class __ElasticSearchFilter implements _ElasticSearchFilter {
       throw _privateConstructorUsedError;
 }
 
+_ElasticRangeFilter _$_ElasticRangeFilterFromJson(Map<String, dynamic> json) {
+  return __ElasticRangeFilter.fromJson(json);
+}
+
+/// @nodoc
+class _$_ElasticRangeFilterTearOff {
+  const _$_ElasticRangeFilterTearOff();
+
+  __ElasticRangeFilter call({String? from, String? to}) {
+    return __ElasticRangeFilter(
+      from: from,
+      to: to,
+    );
+  }
+
+  _ElasticRangeFilter fromJson(Map<String, Object?> json) {
+    return _ElasticRangeFilter.fromJson(json);
+  }
+}
+
+/// @nodoc
+const _$ElasticRangeFilter = _$_ElasticRangeFilterTearOff();
+
+/// @nodoc
+mixin _$_ElasticRangeFilter {
+  String? get from => throw _privateConstructorUsedError;
+  String? get to => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$ElasticRangeFilterCopyWith<_ElasticRangeFilter> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$ElasticRangeFilterCopyWith<$Res> {
+  factory _$ElasticRangeFilterCopyWith(
+          _ElasticRangeFilter value, $Res Function(_ElasticRangeFilter) then) =
+      __$ElasticRangeFilterCopyWithImpl<$Res>;
+  $Res call({String? from, String? to});
+}
+
+/// @nodoc
+class __$ElasticRangeFilterCopyWithImpl<$Res>
+    implements _$ElasticRangeFilterCopyWith<$Res> {
+  __$ElasticRangeFilterCopyWithImpl(this._value, this._then);
+
+  final _ElasticRangeFilter _value;
+  // ignore: unused_field
+  final $Res Function(_ElasticRangeFilter) _then;
+
+  @override
+  $Res call({
+    Object? from = freezed,
+    Object? to = freezed,
+  }) {
+    return _then(_value.copyWith(
+      from: from == freezed
+          ? _value.from
+          : from // ignore: cast_nullable_to_non_nullable
+              as String?,
+      to: to == freezed
+          ? _value.to
+          : to // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$_ElasticRangeFilterCopyWith<$Res>
+    implements _$ElasticRangeFilterCopyWith<$Res> {
+  factory _$_ElasticRangeFilterCopyWith(__ElasticRangeFilter value,
+          $Res Function(__ElasticRangeFilter) then) =
+      __$_ElasticRangeFilterCopyWithImpl<$Res>;
+  @override
+  $Res call({String? from, String? to});
+}
+
+/// @nodoc
+class __$_ElasticRangeFilterCopyWithImpl<$Res>
+    extends __$ElasticRangeFilterCopyWithImpl<$Res>
+    implements _$_ElasticRangeFilterCopyWith<$Res> {
+  __$_ElasticRangeFilterCopyWithImpl(
+      __ElasticRangeFilter _value, $Res Function(__ElasticRangeFilter) _then)
+      : super(_value, (v) => _then(v as __ElasticRangeFilter));
+
+  @override
+  __ElasticRangeFilter get _value => super._value as __ElasticRangeFilter;
+
+  @override
+  $Res call({
+    Object? from = freezed,
+    Object? to = freezed,
+  }) {
+    return _then(__ElasticRangeFilter(
+      from: from == freezed
+          ? _value.from
+          : from // ignore: cast_nullable_to_non_nullable
+              as String?,
+      to: to == freezed
+          ? _value.to
+          : to // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _$__ElasticRangeFilter implements __ElasticRangeFilter {
+  const _$__ElasticRangeFilter({this.from, this.to});
+
+  factory _$__ElasticRangeFilter.fromJson(Map<String, dynamic> json) =>
+      _$$__ElasticRangeFilterFromJson(json);
+
+  @override
+  final String? from;
+  @override
+  final String? to;
+
+  @override
+  String toString() {
+    return '_ElasticRangeFilter(from: $from, to: $to)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is __ElasticRangeFilter &&
+            const DeepCollectionEquality().equals(other.from, from) &&
+            const DeepCollectionEquality().equals(other.to, to));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(from),
+      const DeepCollectionEquality().hash(to));
+
+  @JsonKey(ignore: true)
+  @override
+  _$_ElasticRangeFilterCopyWith<__ElasticRangeFilter> get copyWith =>
+      __$_ElasticRangeFilterCopyWithImpl<__ElasticRangeFilter>(
+          this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$__ElasticRangeFilterToJson(this);
+  }
+}
+
+abstract class __ElasticRangeFilter implements _ElasticRangeFilter {
+  const factory __ElasticRangeFilter({String? from, String? to}) =
+      _$__ElasticRangeFilter;
+
+  factory __ElasticRangeFilter.fromJson(Map<String, dynamic> json) =
+      _$__ElasticRangeFilter.fromJson;
+
+  @override
+  String? get from;
+  @override
+  String? get to;
+  @override
+  @JsonKey(ignore: true)
+  _$_ElasticRangeFilterCopyWith<__ElasticRangeFilter> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+_ElasticGeoFilter _$_ElasticGeoFilterFromJson(Map<String, dynamic> json) {
+  return __ElasticGeoFilter.fromJson(json);
+}
+
+/// @nodoc
+class _$_ElasticGeoFilterTearOff {
+  const _$_ElasticGeoFilterTearOff();
+
+  __ElasticGeoFilter call(
+      {required List<double> center,
+      double? distance,
+      required GeoUnit unit,
+      double? from,
+      double? to}) {
+    return __ElasticGeoFilter(
+      center: center,
+      distance: distance,
+      unit: unit,
+      from: from,
+      to: to,
+    );
+  }
+
+  _ElasticGeoFilter fromJson(Map<String, Object?> json) {
+    return _ElasticGeoFilter.fromJson(json);
+  }
+}
+
+/// @nodoc
+const _$ElasticGeoFilter = _$_ElasticGeoFilterTearOff();
+
+/// @nodoc
+mixin _$_ElasticGeoFilter {
+  List<double> get center => throw _privateConstructorUsedError;
+  double? get distance => throw _privateConstructorUsedError;
+  GeoUnit get unit => throw _privateConstructorUsedError;
+  double? get from => throw _privateConstructorUsedError;
+  double? get to => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$ElasticGeoFilterCopyWith<_ElasticGeoFilter> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$ElasticGeoFilterCopyWith<$Res> {
+  factory _$ElasticGeoFilterCopyWith(
+          _ElasticGeoFilter value, $Res Function(_ElasticGeoFilter) then) =
+      __$ElasticGeoFilterCopyWithImpl<$Res>;
+  $Res call(
+      {List<double> center,
+      double? distance,
+      GeoUnit unit,
+      double? from,
+      double? to});
+}
+
+/// @nodoc
+class __$ElasticGeoFilterCopyWithImpl<$Res>
+    implements _$ElasticGeoFilterCopyWith<$Res> {
+  __$ElasticGeoFilterCopyWithImpl(this._value, this._then);
+
+  final _ElasticGeoFilter _value;
+  // ignore: unused_field
+  final $Res Function(_ElasticGeoFilter) _then;
+
+  @override
+  $Res call({
+    Object? center = freezed,
+    Object? distance = freezed,
+    Object? unit = freezed,
+    Object? from = freezed,
+    Object? to = freezed,
+  }) {
+    return _then(_value.copyWith(
+      center: center == freezed
+          ? _value.center
+          : center // ignore: cast_nullable_to_non_nullable
+              as List<double>,
+      distance: distance == freezed
+          ? _value.distance
+          : distance // ignore: cast_nullable_to_non_nullable
+              as double?,
+      unit: unit == freezed
+          ? _value.unit
+          : unit // ignore: cast_nullable_to_non_nullable
+              as GeoUnit,
+      from: from == freezed
+          ? _value.from
+          : from // ignore: cast_nullable_to_non_nullable
+              as double?,
+      to: to == freezed
+          ? _value.to
+          : to // ignore: cast_nullable_to_non_nullable
+              as double?,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$_ElasticGeoFilterCopyWith<$Res>
+    implements _$ElasticGeoFilterCopyWith<$Res> {
+  factory _$_ElasticGeoFilterCopyWith(
+          __ElasticGeoFilter value, $Res Function(__ElasticGeoFilter) then) =
+      __$_ElasticGeoFilterCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {List<double> center,
+      double? distance,
+      GeoUnit unit,
+      double? from,
+      double? to});
+}
+
+/// @nodoc
+class __$_ElasticGeoFilterCopyWithImpl<$Res>
+    extends __$ElasticGeoFilterCopyWithImpl<$Res>
+    implements _$_ElasticGeoFilterCopyWith<$Res> {
+  __$_ElasticGeoFilterCopyWithImpl(
+      __ElasticGeoFilter _value, $Res Function(__ElasticGeoFilter) _then)
+      : super(_value, (v) => _then(v as __ElasticGeoFilter));
+
+  @override
+  __ElasticGeoFilter get _value => super._value as __ElasticGeoFilter;
+
+  @override
+  $Res call({
+    Object? center = freezed,
+    Object? distance = freezed,
+    Object? unit = freezed,
+    Object? from = freezed,
+    Object? to = freezed,
+  }) {
+    return _then(__ElasticGeoFilter(
+      center: center == freezed
+          ? _value.center
+          : center // ignore: cast_nullable_to_non_nullable
+              as List<double>,
+      distance: distance == freezed
+          ? _value.distance
+          : distance // ignore: cast_nullable_to_non_nullable
+              as double?,
+      unit: unit == freezed
+          ? _value.unit
+          : unit // ignore: cast_nullable_to_non_nullable
+              as GeoUnit,
+      from: from == freezed
+          ? _value.from
+          : from // ignore: cast_nullable_to_non_nullable
+              as double?,
+      to: to == freezed
+          ? _value.to
+          : to // ignore: cast_nullable_to_non_nullable
+              as double?,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _$__ElasticGeoFilter implements __ElasticGeoFilter {
+  const _$__ElasticGeoFilter(
+      {required this.center,
+      this.distance,
+      required this.unit,
+      this.from,
+      this.to})
+      : assert(
+            center.length != 2, 'center must be an array contaning 2 numbers');
+
+  factory _$__ElasticGeoFilter.fromJson(Map<String, dynamic> json) =>
+      _$$__ElasticGeoFilterFromJson(json);
+
+  @override
+  final List<double> center;
+  @override
+  final double? distance;
+  @override
+  final GeoUnit unit;
+  @override
+  final double? from;
+  @override
+  final double? to;
+
+  @override
+  String toString() {
+    return '_ElasticGeoFilter(center: $center, distance: $distance, unit: $unit, from: $from, to: $to)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is __ElasticGeoFilter &&
+            const DeepCollectionEquality().equals(other.center, center) &&
+            const DeepCollectionEquality().equals(other.distance, distance) &&
+            const DeepCollectionEquality().equals(other.unit, unit) &&
+            const DeepCollectionEquality().equals(other.from, from) &&
+            const DeepCollectionEquality().equals(other.to, to));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(center),
+      const DeepCollectionEquality().hash(distance),
+      const DeepCollectionEquality().hash(unit),
+      const DeepCollectionEquality().hash(from),
+      const DeepCollectionEquality().hash(to));
+
+  @JsonKey(ignore: true)
+  @override
+  _$_ElasticGeoFilterCopyWith<__ElasticGeoFilter> get copyWith =>
+      __$_ElasticGeoFilterCopyWithImpl<__ElasticGeoFilter>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$__ElasticGeoFilterToJson(this);
+  }
+}
+
+abstract class __ElasticGeoFilter implements _ElasticGeoFilter {
+  const factory __ElasticGeoFilter(
+      {required List<double> center,
+      double? distance,
+      required GeoUnit unit,
+      double? from,
+      double? to}) = _$__ElasticGeoFilter;
+
+  factory __ElasticGeoFilter.fromJson(Map<String, dynamic> json) =
+      _$__ElasticGeoFilter.fromJson;
+
+  @override
+  List<double> get center;
+  @override
+  double? get distance;
+  @override
+  GeoUnit get unit;
+  @override
+  double? get from;
+  @override
+  double? get to;
+  @override
+  @JsonKey(ignore: true)
+  _$_ElasticGeoFilterCopyWith<__ElasticGeoFilter> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 _ElasticSearchField _$_ElasticSearchFieldFromJson(Map<String, dynamic> json) {
   return __ElasticSearchField.fromJson(json);
 }

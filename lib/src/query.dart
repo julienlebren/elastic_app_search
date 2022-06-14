@@ -82,39 +82,46 @@ class ElasticQuery with _$ElasticQuery {
     String field, {
     Object? isEqualTo,
     List<Object?>? whereIn,
-    Object? from,
-    Object? to,
+    Object? isGreaterThanOrEqualTo,
+    Object? isLessThan,
     /*Object? isNotEqualTo,
     List<Object?>? whereNotIn,
     Object? isMaybeEqualTo,
     List<Object?>? whereMaybeIn,*/
   }) {
     dynamic value;
+
     if (whereIn != null) {
       value = whereIn;
     } else if (isEqualTo != null) {
       value = isEqualTo.toString();
-    } else if (from != null || to != null) {
-      if (from is DateTime || to is DateTime) {
-        value = _ElasticRange(
-          from: (from as DateTime?)?.toUTCString(),
-          to: (to as DateTime?)?.toUTCString(),
+    } else if (isGreaterThanOrEqualTo != null || isLessThan != null) {
+      if (isGreaterThanOrEqualTo is DateTime || isLessThan is DateTime) {
+        value = _ElasticRangeFilter(
+          from: (isGreaterThanOrEqualTo as DateTime?)?.toUTCString(),
+          to: (isLessThan as DateTime?)?.toUTCString(),
         );
-      } else if (from is double || to is double) {
-        value = _ElasticRange(
-          from: from.toString(),
-          to: to.toString(),
+      } else if (isGreaterThanOrEqualTo is double || isLessThan is double) {
+        value = _ElasticRangeFilter(
+          from: isGreaterThanOrEqualTo.toString(),
+          to: isLessThan.toString(),
         );
       }
     }
+
+    final List<_ElasticSearchFilter> newFilters = [
+      ...?filters,
+      _ElasticSearchFilter(
+        name: field,
+        value: value,
+      ),
+    ];
+
+    // Once all filters have been set, we must now check them
+    // to ensure the query is valid.
+
     return copyWith(
-      filters: [
-        ...?filters,
-        _ElasticSearchFilter(
-          name: field,
-          value: value,
-        ),
-      ],
+      filters: newFilters,
     );
   }
 
@@ -337,8 +344,9 @@ class _ElasticSearchFiltersConverter
 
     var values = [];
     for (final searchFilter in searchFilters) {
-      if (searchFilter.value is _ElasticRange) {
-        final encodedValue = (searchFilter.value as _ElasticRange).toJson();
+      if (searchFilter.value is _ElasticRangeFilter) {
+        final encodedValue =
+            (searchFilter.value as _ElasticRangeFilter).toJson();
         values.add({searchFilter.name: encodedValue});
       } else {
         values.add({searchFilter.name: searchFilter.value});
@@ -349,6 +357,34 @@ class _ElasticSearchFiltersConverter
     }
     return {"all": values};
   }
+}
+
+@freezed
+class _ElasticRangeFilter with _$_ElasticRangeFilter {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  const factory _ElasticRangeFilter({
+    String? from,
+    String? to,
+  }) = __ElasticRangeFilter;
+
+  factory _ElasticRangeFilter.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticRangeFilterFromJson(json);
+}
+
+@freezed
+class _ElasticGeoFilter with _$_ElasticGeoFilter {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  @Assert('center.length != 2', 'center must be an array contaning 2 numbers')
+  const factory _ElasticGeoFilter({
+    required List<double> center,
+    double? distance,
+    required GeoUnit unit,
+    double? from,
+    double? to,
+  }) = __ElasticGeoFilter;
+
+  factory _ElasticGeoFilter.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticGeoFilterFromJson(json);
 }
 
 /// Object which restricts a query to search only specific fields.

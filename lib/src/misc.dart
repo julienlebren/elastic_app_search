@@ -16,6 +16,40 @@ class _ElasticRange with _$_ElasticRange {
       _$_ElasticRangeFromJson(json);
 }
 
+enum GeoUnit {
+  millimeters,
+  centimeters,
+  meters,
+  kilometers,
+  inches,
+  feet,
+  yard,
+  miles,
+}
+
+extension GeoUnitX on GeoUnit {
+  String toJson() {
+    switch (this) {
+      case GeoUnit.millimeters:
+        return 'mm';
+      case GeoUnit.centimeters:
+        return 'cm';
+      case GeoUnit.meters:
+        return 'm';
+      case GeoUnit.kilometers:
+        return 'km';
+      case GeoUnit.inches:
+        return 'in';
+      case GeoUnit.feet:
+        return 'ft';
+      case GeoUnit.yard:
+        return 'yd';
+      case GeoUnit.miles:
+        return 'mi';
+    }
+  }
+}
+
 extension DateTimeX on DateTime {
   String toUTCString() {
     return DateTime.utc(
