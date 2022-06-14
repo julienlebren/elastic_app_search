@@ -357,7 +357,7 @@ class _ElasticSearchFiltersConverter
   @override
   Map? toJson(List<_ElasticSearchFilter>? searchFilters) {
     if (searchFilters == null) return null;
-    Map<String, List<dynamic>> filters = {};
+    Map<String, dynamic> filters = {};
 
     for (final type in _ElasticFilterType.values) {
       var values = [];
