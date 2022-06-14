@@ -60,6 +60,7 @@ We request the first page, limited to 50 documents.
   * [Search filters](#search-filters)
   * [Search fields](#search-fields)
   * [Result fields](#result-fields)
+  * [Facets](#facets)
 * [ElasticResponse](#ElasticResponse)
   * [ElasticResponseMeta](#ElasticResponseMeta)
     * [ElasticResponseMetaPage](#ElasticResponseMetaPage)
