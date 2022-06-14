@@ -5,6 +5,19 @@ part of elastic_app_search;
 @protected
 enum _ElasticFilterType { all, none, any }
 
+extension _ElasticFilterTypeX on _ElasticFilterType {
+  String get identifier {
+    switch (this) {
+      case _ElasticFilterType.all:
+        return "all";
+      case _ElasticFilterType.none:
+        return "none";
+      case _ElasticFilterType.any:
+        return "any";
+    }
+  }
+}
+
 @freezed
 class _ElasticRange with _$_ElasticRange {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
