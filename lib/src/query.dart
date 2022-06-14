@@ -51,7 +51,8 @@ class ElasticQuery with _$ElasticQuery {
     @JsonKey(name: "result_fields")
         List<_ElasticResultField>? resultFields,
 
-    /// Dev in progress - no doc
+    /// Facets are objects which provide the counts of each value or range of values for a field.
+    /// See [https://www.elastic.co/guide/en/app-search/current/facets.html]
     @protected Map<String, _ElasticFacet>? facets,
 
     /// Grouped results based on shared fields
@@ -68,10 +69,26 @@ class ElasticQuery with _$ElasticQuery {
   /// an object to filter documents that contain a specific field value.
   /// Available on text, number, and date fields.
   ///
+  /// Elastic filters can be of three types:
+  /// -> all: the filters will be handled as an 'AND' query, you can use it with:
+  /// * isEqualTo which will make a filter based on a value
+  /// * whereIn which will make a filter based on an array of values
+  /// -> any: the filters will be handled as an 'OR' query, you can use it with:
+  /// * isEqualToAny which will make a filter based on a value
+  /// * whereInAny which will make a filter based on an array of values
+  /// -> not: the filters will be handled as an 'NOT' query, you can use it with:
+  /// * isNotEqualTo which will make a filter which excludes a value
+  /// * whereNotIn which will make a filter which excludes an array of values
+  ///
+  /// You can also make a range filter by using `isGreaterThanOrEqualTo` and `isLessThan`.
+  /// This filter works with `DateTime` and `double` types.
+  ///
   /// Note: As for now, this object only handles "all" filters, which means that all
   /// the filters added to the query will be handled as a "AND" query.
   /// The other filters available, "or" and "not", will be added in a future release
   /// of the package.
+  ///
+  /// Note: Nested filters are not supported at the moment.
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
   @Assert(
@@ -214,31 +231,48 @@ class ElasticQuery with _$ElasticQuery {
     );
   }
 
-  /// Dev in progress - no doc
-  /// .rangeFacet(
-  ///   "location",
-  /// )
-  @Assert('from != null || to != null',
-      'You must provide at least `from` or `to` to create an date range facet.')
-  @Assert('to != null && (to is double || to is Date)',
-      '`from` must be a double or a Date')
-  ElasticQuery rangeFacet(
+  /// Creates and returns a new [ElasticQuery] with additional [ElasticFacet], an object
+  /// which rovides the counts of each value for a field, or counts of documents within the provided ranges
+  /// if `isMoreThanOrEqualTo` or `isLessThan` is provided.
+  ///
+  /// See [https://www.elastic.co/guide/en/app-search/current/facets.html]
+  @Assert(
+      'isMoreThanOrEqualTo != null && (isMoreThanOrEqualTo is double || isMoreThanOrEqualTo is Date)',
+      '`isMoreThanOrEqualTo` must be a double or a Date')
+  @Assert('isLessThan != null && (isLessThan is double || isLessThan is Date)',
+      '`isLessThan` must be a double or a Date')
+  ElasticQuery facet(
     String field, {
     String? name,
-    Object? from,
-    Object? to,
+    Object? isMoreThanOrEqualTo,
+    Object? isLessThan,
   }) {
     var _facets = facets ?? {};
-    _facets[field] = _ElasticFacet(
-      type: "range",
-      name: name,
-      ranges: [
-        _ElasticRange(
-          from: from is DateTime ? from.toUTCString() : from.toString(),
-          to: to is DateTime ? to.toUTCString() : to.toString(),
-        ),
-      ],
-    );
+    _ElasticFacet _facet;
+
+    if (isMoreThanOrEqualTo != null || isLessThan != null) {
+      _facet = _ElasticFacet(
+        type: "range",
+        name: name,
+        ranges: [
+          _ElasticRangeFacet(
+            from: isMoreThanOrEqualTo is DateTime
+                ? isMoreThanOrEqualTo.toUTCString()
+                : isMoreThanOrEqualTo.toString(),
+            to: isLessThan is DateTime
+                ? isLessThan.toUTCString()
+                : isLessThan.toString(),
+          ),
+        ],
+      );
+    } else {
+      _facet = _ElasticFacet(
+        type: "value",
+        name: name,
+      );
+    }
+
+    _facets[field] = _facet;
     return copyWith(facets: _facets);
   }
 
@@ -579,53 +613,3 @@ class _ElasticSortConverter
     return value;
   }
 }
-
-/// DEV in progress - no doc
-/*
-class _ElasticFacetConverter
-    implements JsonConverter<List<_ElasticFacet>?, Map?> {
-  const _ElasticFacetConverter();
-
-  @override
-  List<_ElasticFacet>? fromJson(Map? value) => null;
-
-  @override
-  Map? toJson(List<_ElasticFacet>? facets) {
-    if (facets == null || facets.isEmpty) return null;
-
-    var value = <String, List?>{};
-    for (final facet in facets) {
-      value[facet.field] = facet.facets.map((e) => e.toJson()).toList();
-    }
-    return value;
-  }
-}
-
-@freezed
-class _ElasticValueFacet with _$_ElasticValueFacet {
-  @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  @Assert('size == null || (size != null && size >= 1 && size <= 250)',
-      'The number of facets must be greater than or equal to 1 and less than or equal to 250.')
-  const factory _ElasticValueFacet({
-    @protected @Default("value") String type,
-    String? name,
-    double? size,
-  }) = __ElasticValueFacet;
-
-  factory _ElasticValueFacet.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticValueFacetFromJson(json);
-}
-
-@freezed
-class _ElasticRangeFacet with _$_ElasticRangeFacet {
-  @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory _ElasticRangeFacet({
-    @protected @Default("range") String type,
-    String? name,
-    required List<_ElasticRange> ranges,
-  }) = __ElasticRangeFacet;
-
-  factory _ElasticRangeFacet.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticRangeFacetFromJson(json);
-}
-*/

@@ -11,10 +11,10 @@ _$__ElasticFacet _$$__ElasticFacetFromJson(Map<String, dynamic> json) =>
       type: json['type'] as String,
       name: json['name'] as String?,
       ranges: (json['ranges'] as List<dynamic>?)
-          ?.map((e) => _ElasticRange.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => _ElasticRangeFacet.fromJson(e as Map<String, dynamic>))
           .toList(),
       data: (json['data'] as List<dynamic>?)
-          ?.map((e) => _ElasticRange.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => _ElasticRangeFacet.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
@@ -35,15 +35,17 @@ Map<String, dynamic> _$$__ElasticFacetToJson(_$__ElasticFacet instance) {
   return val;
 }
 
-_$__ElasticRange _$$__ElasticRangeFromJson(Map<String, dynamic> json) =>
-    _$__ElasticRange(
+_$__ElasticRangeFacet _$$__ElasticRangeFacetFromJson(
+        Map<String, dynamic> json) =>
+    _$__ElasticRangeFacet(
       name: json['name'] as String?,
       from: json['from'] as String?,
       to: json['to'] as String?,
       count: json['count'] as int?,
     );
 
-Map<String, dynamic> _$$__ElasticRangeToJson(_$__ElasticRange instance) {
+Map<String, dynamic> _$$__ElasticRangeFacetToJson(
+    _$__ElasticRangeFacet instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {

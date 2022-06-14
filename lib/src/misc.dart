@@ -18,20 +18,6 @@ extension _ElasticFilterTypeX on _ElasticFilterType {
   }
 }
 
-@freezed
-class _ElasticRange with _$_ElasticRange {
-  @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory _ElasticRange({
-    String? name,
-    String? from,
-    String? to,
-    int? count,
-  }) = __ElasticRange;
-
-  factory _ElasticRange.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticRangeFromJson(json);
-}
-
 enum GeoUnit {
   millimeters,
   centimeters,

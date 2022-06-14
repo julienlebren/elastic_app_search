@@ -8,10 +8,24 @@ class _ElasticFacet with _$_ElasticFacet {
   const factory _ElasticFacet({
     required String type,
     String? name,
-    List<_ElasticRange>? ranges,
-    List<_ElasticRange>? data,
+    List<_ElasticRangeFacet>? ranges,
+    List<_ElasticRangeFacet>? data,
   }) = __ElasticFacet;
 
   factory _ElasticFacet.fromJson(Map<String, dynamic> json) =>
       _$_ElasticFacetFromJson(json);
+}
+
+@freezed
+class _ElasticRangeFacet with _$_ElasticRangeFacet {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  const factory _ElasticRangeFacet({
+    String? name,
+    String? from,
+    String? to,
+    int? count,
+  }) = __ElasticRangeFacet;
+
+  factory _ElasticRangeFacet.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticRangeFacetFromJson(json);
 }
