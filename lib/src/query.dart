@@ -74,7 +74,8 @@ class ElasticQuery with _$ElasticQuery {
   /// of the package.
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
-  @Assert('isEqualTo != null || whereIn != null',
+  @Assert(
+      'isEqualTo != null || whereIn != null || isNotEqualTo != null || whereNotIn != null',
       'You must provide at least one condition (isEqualTo, isNotEqualTo, whereIn, whereNotIn, isMaybeEqualTo, whereMaybeIn)')
   @Assert('isEqualTo != null && from == null && to == null',
       'You cannot use isEqualTo and from/to at the same time.')
@@ -84,17 +85,21 @@ class ElasticQuery with _$ElasticQuery {
     List<Object?>? whereIn,
     Object? isGreaterThanOrEqualTo,
     Object? isLessThan,
-    /*Object? isNotEqualTo,
+    Object? isNotEqualTo,
     List<Object?>? whereNotIn,
-    Object? isMaybeEqualTo,
+    /*Object? isMaybeEqualTo,
     List<Object?>? whereMaybeIn,*/
   }) {
     dynamic value;
 
     if (whereIn != null) {
       value = whereIn;
+    } else if (whereNotIn != null) {
+      value = whereNotIn;
     } else if (isEqualTo != null) {
       value = isEqualTo.toString();
+    } else if (isNotEqualTo != null) {
+      value = isNotEqualTo.toString();
     } else if (isGreaterThanOrEqualTo != null || isLessThan != null) {
       if (isGreaterThanOrEqualTo is DateTime || isLessThan is DateTime) {
         value = _ElasticRangeFilter(
@@ -109,9 +114,16 @@ class ElasticQuery with _$ElasticQuery {
       }
     }
 
+    _ElasticFilterType type = _ElasticFilterType.all;
+
+    if (isNotEqualTo != null || whereNotIn != null) {
+      type = _ElasticFilterType.none;
+    }
+
     final List<_ElasticSearchFilter> newFilters = [
       ...?filters,
       _ElasticSearchFilter(
+        type: type,
         name: field,
         value: value,
       ),
@@ -345,7 +357,7 @@ class _ElasticSearchFiltersConverter
   @override
   Map? toJson(List<_ElasticSearchFilter>? searchFilters) {
     if (searchFilters == null) return null;
-    Map<String, List<Map>> filters = {};
+    Map<String, List<dynamic>> filters = {};
 
     for (final type in _ElasticFilterType.values) {
       var values = [];
