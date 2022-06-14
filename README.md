@@ -134,16 +134,24 @@ This setting is available through the query modifier `.filter`
 This feature intends to filter documents that contain a specific field value.
 It's only available on text, number, and date fields.
 
-🔍 See https://www.elastic.co/guide/en/app-search/current/filters.html
+There are three types of filters:
+* all: All of the filters must match. This functions as an AND condition. To add a filter to "all" filters, use `isEqualTo` or `whereIn`.
+* any: At least one of the filters must match. This functions as an OR condition. To add a filter to "any" filters, use `isEqualToAny` or `whereInAny`.
+* none: All of the filters must not match. This functions as a NOT condition. To add a filter to "none" filters, use `isEqualNotTo` or `whereNotIn`.
 
-**Important**: As for now, this object only handles "all" filters, which means that all the filters added to the query will be handled as a "AND" query.
-The other filters available, "or" and "not", will be added in a future release of the package.
+🔍 See https://www.elastic.co/guide/en/app-search/current/filters.html
 
 Param | Type | Description
 ----- | ---- | -------------
 *(unnamed)* | String | The field name
-isEqualTo | dynamic| The value that the field must match
+isEqualTo | dynamic | The value that the field must match
+isEqualNotTo | dynamic | A value to exclude from the results
+isEqualToAny | dynamic | Similar to isEqualTo, but handled as a "OR" condition
 whereIn | List\<dynamic\> | The field must match one of these values 
+whereNotIn | List\<dynamic\> | An array of values to exclude from the results
+whereInAny | List\<dynamic\> | Similar to whereIn, but handled as a "OR" condition
+isGreaterThanOrEqualTo | DateTime or double | Inclusive lower bound of the range
+isLessThan | DateTime or double | Exclusive upper bound of the range
 
 **Warning:** You cannot use `isEqualTo` and `whereIn` on the same field at the same time, otherwise it will raise an exception.
 
@@ -155,6 +163,9 @@ final query = query.filter("field", isEqualTo: true);
 ```
 ```dart
 final query = query.filter("field", whereIn: ["value1", "value2"]);
+```
+```dart
+final query = query.filter("field", isGreaterThanOrEqualTo: 50, isLessThan: 100);
 ```
 
 ### Search fields
@@ -203,6 +214,29 @@ final query = query
   .resultField("field1", rawSize: 80)
   .resultField("field2", snippetSize: 80)
   .resultField("field3", rawSize: 80, snippetSize: 80, fallback: true);
+```
+
+### Facets
+
+This setting is available through the query modifier `.facet`
+
+Provides the counts of each value (or each range of value if you provide a range) for a field.
+
+🔍 See https://www.elastic.co/guide/en/app-search/current/facets.html
+
+Param | Type | Description
+----- | ---- | -------------
+*(unnamed)* | String | The field name
+name | String *(optionnal)* | Name given to facet.
+isMoreThanOrEqualTo | DateTime or double *(optionnal)* | Inclusive lower bound of the range. 
+isLessThan | DateTime or double *(optionnal)* | Exclusive upper bound of the range.
+
+```dart
+final query = query
+  .facet("dateField",
+    isMoreThanOrEqualTo: DateTime.utc(1984),
+    isLessThan: DateTime.utc(2014),
+  );
 ```
 
 ## ElasticResponse

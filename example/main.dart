@@ -102,9 +102,7 @@ class _AppState extends State<App> {
         results = _results;
         isLoading = false;
       });
-    } catch (e, stack) {
-      print(e.toString());
-      print(stack);
+    } catch (e, _) {
       setState(() {
         isLoading = false;
       });

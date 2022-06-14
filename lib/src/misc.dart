@@ -52,6 +52,7 @@ extension GeoUnitX on GeoUnit {
   }
 }
 
+@protected
 extension DateTimeX on DateTime {
   String toUTCString() {
     return DateTime.utc(
