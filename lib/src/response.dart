@@ -12,12 +12,22 @@ class ElasticResponse with _$ElasticResponse {
     /// Array of results matching the search.
     required List<ElasticResult> results,
 
-    /// Map of facets passed to the query, returning a count.
-    Map<String, List<ElasticFacet>>? facets,
+    /// Map of facets passed to the query
+    @JsonKey(name: "facets") Map<String, List<ElasticFacet>>? rawFacets,
   }) = _ElasticResponse;
 
   factory ElasticResponse.fromJson(Map<String, dynamic> json) =>
       _$ElasticResponseFromJson(json);
+
+  /// Easier way to retrieve a list of facets rather than use the raw map
+  List<ElasticFacet>? facets(String field) => rawFacets?[field];
+
+  /// Easier way to retrieve a single facet
+  ElasticFacet? facet(String field) {
+    final facets = rawFacets?[field];
+    if (facets != null && facets.length == 1) return facets.first;
+    return null;
+  }
 }
 
 /// Object delimiting the results meta data.

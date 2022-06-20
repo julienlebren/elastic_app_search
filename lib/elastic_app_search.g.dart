@@ -54,9 +54,6 @@ _$__ElasticQueryFacet _$$__ElasticQueryFacetFromJson(
       ranges: (json['ranges'] as List<dynamic>?)
           ?.map((e) => _ElasticRangeFacet.fromJson(e as Map<String, dynamic>))
           .toList(),
-      data: (json['data'] as List<dynamic>?)
-          ?.map((e) => _ElasticRangeFacet.fromJson(e as Map<String, dynamic>))
-          .toList(),
     );
 
 Map<String, dynamic> _$$__ElasticQueryFacetToJson(
@@ -73,7 +70,6 @@ Map<String, dynamic> _$$__ElasticQueryFacetToJson(
 
   writeNotNull('name', instance.name);
   writeNotNull('ranges', instance.ranges?.map((e) => e.toJson()).toList());
-  writeNotNull('data', instance.data?.map((e) => e.toJson()).toList());
   return val;
 }
 
@@ -415,7 +411,7 @@ _$_ElasticResponse _$$_ElasticResponseFromJson(Map<String, dynamic> json) =>
       results: (json['results'] as List<dynamic>)
           .map((e) => ElasticResult.fromJson(e as Map<String, dynamic>))
           .toList(),
-      facets: (json['facets'] as Map<String, dynamic>?)?.map(
+      rawFacets: (json['facets'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(
             k,
             (e as List<dynamic>)
@@ -428,7 +424,7 @@ Map<String, dynamic> _$$_ElasticResponseToJson(_$_ElasticResponse instance) =>
     <String, dynamic>{
       'meta': instance.meta,
       'results': instance.results,
-      'facets': instance.facets,
+      'facets': instance.rawFacets,
     };
 
 _$_ElasticResponseMeta _$$_ElasticResponseMetaFromJson(
