@@ -41,6 +41,11 @@ class ElasticFacet with _$ElasticFacet {
 
   factory ElasticFacet.fromJson(Map<String, dynamic> json) =>
       _$ElasticFacetFromJson(json);
+
+  int? get count {
+    if (data != null && data!.length == 1) return data!.first.count;
+    return null;
+  }
 }
 
 @freezed
