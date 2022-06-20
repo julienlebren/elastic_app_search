@@ -795,8 +795,8 @@ class __$ElasticFacetCopyWithImpl<$Res> extends _$ElasticFacetCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$_ElasticFacet extends _ElasticFacet {
-  const _$_ElasticFacet({required this.type, this.name, this.data}) : super._();
+class _$_ElasticFacet implements _ElasticFacet {
+  const _$_ElasticFacet({required this.type, this.name, this.data});
 
   factory _$_ElasticFacet.fromJson(Map<String, dynamic> json) =>
       _$$_ElasticFacetFromJson(json);
@@ -841,12 +841,11 @@ class _$_ElasticFacet extends _ElasticFacet {
   }
 }
 
-abstract class _ElasticFacet extends ElasticFacet {
+abstract class _ElasticFacet implements ElasticFacet {
   const factory _ElasticFacet(
       {required ElasticFacetType type,
       String? name,
       List<ElasticFacetData>? data}) = _$_ElasticFacet;
-  const _ElasticFacet._() : super._();
 
   factory _ElasticFacet.fromJson(Map<String, dynamic> json) =
       _$_ElasticFacet.fromJson;

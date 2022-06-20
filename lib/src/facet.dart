@@ -32,8 +32,6 @@ class _ElasticRangeFacet with _$_ElasticRangeFacet {
 // DEV
 @freezed
 class ElasticFacet with _$ElasticFacet {
-  ElasticFacet._();
-
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory ElasticFacet({
     required ElasticFacetType type,
@@ -43,7 +41,9 @@ class ElasticFacet with _$ElasticFacet {
 
   factory ElasticFacet.fromJson(Map<String, dynamic> json) =>
       _$ElasticFacetFromJson(json);
+}
 
+extension ElasticFacetHelpers on ElasticFacet {
   int? get count {
     if (data != null && data!.length == 1) return data!.first.count;
     return null;
