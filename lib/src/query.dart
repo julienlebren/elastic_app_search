@@ -259,15 +259,14 @@ class ElasticQuery with _$ElasticQuery {
             ? isLessThan.toUTCString()
             : isLessThan?.toString(),
       );
-      _facet = facets?[field] ??
-          _ElasticQueryFacet(
-            type: "range",
-            name: name,
-            ranges: [
-              ...?facets?[field]?.ranges,
-              newRange,
-            ],
-          );
+      _facet = _ElasticQueryFacet(
+        type: "range",
+        name: name,
+        ranges: [
+          ...?facets?[field]?.ranges,
+          newRange,
+        ],
+      );
     } else {
       _facet = _ElasticQueryFacet(
         type: "value",
