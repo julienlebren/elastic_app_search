@@ -31,7 +31,7 @@ class _ElasticRangeFacet with _$_ElasticRangeFacet {
 
 // DEV
 @freezed
-class ElasticFacet with _$ElasticFacet {
+abstract class ElasticFacet with _$ElasticFacet {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory ElasticFacet({
     required ElasticFacetType type,

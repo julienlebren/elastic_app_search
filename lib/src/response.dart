@@ -4,7 +4,7 @@ part of elastic_app_search;
 ///
 /// See [https://www.elastic.co/guide/en/app-search/current/search.html]
 @freezed
-class ElasticResponse with _$ElasticResponse {
+abstract class ElasticResponse with _$ElasticResponse {
   factory ElasticResponse({
     /// Object delimiting the results meta data.
     required ElasticResponseMeta meta,
