@@ -268,20 +268,20 @@ abstract class __ElasticBoost implements _ElasticBoost {
       throw _privateConstructorUsedError;
 }
 
-_ElasticFacet _$_ElasticFacetFromJson(Map<String, dynamic> json) {
-  return __ElasticFacet.fromJson(json);
+_ElasticQueryFacet _$_ElasticQueryFacetFromJson(Map<String, dynamic> json) {
+  return __ElasticQueryFacet.fromJson(json);
 }
 
 /// @nodoc
-class _$_ElasticFacetTearOff {
-  const _$_ElasticFacetTearOff();
+class _$_ElasticQueryFacetTearOff {
+  const _$_ElasticQueryFacetTearOff();
 
-  __ElasticFacet call(
+  __ElasticQueryFacet call(
       {required String type,
       String? name,
       List<_ElasticRangeFacet>? ranges,
       List<_ElasticRangeFacet>? data}) {
-    return __ElasticFacet(
+    return __ElasticQueryFacet(
       type: type,
       name: name,
       ranges: ranges,
@@ -289,16 +289,16 @@ class _$_ElasticFacetTearOff {
     );
   }
 
-  _ElasticFacet fromJson(Map<String, Object?> json) {
-    return _ElasticFacet.fromJson(json);
+  _ElasticQueryFacet fromJson(Map<String, Object?> json) {
+    return _ElasticQueryFacet.fromJson(json);
   }
 }
 
 /// @nodoc
-const _$ElasticFacet = _$_ElasticFacetTearOff();
+const _$ElasticQueryFacet = _$_ElasticQueryFacetTearOff();
 
 /// @nodoc
-mixin _$_ElasticFacet {
+mixin _$_ElasticQueryFacet {
   String get type => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   List<_ElasticRangeFacet>? get ranges => throw _privateConstructorUsedError;
@@ -306,15 +306,15 @@ mixin _$_ElasticFacet {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  _$ElasticFacetCopyWith<_ElasticFacet> get copyWith =>
+  _$ElasticQueryFacetCopyWith<_ElasticQueryFacet> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$ElasticFacetCopyWith<$Res> {
-  factory _$ElasticFacetCopyWith(
-          _ElasticFacet value, $Res Function(_ElasticFacet) then) =
-      __$ElasticFacetCopyWithImpl<$Res>;
+abstract class _$ElasticQueryFacetCopyWith<$Res> {
+  factory _$ElasticQueryFacetCopyWith(
+          _ElasticQueryFacet value, $Res Function(_ElasticQueryFacet) then) =
+      __$ElasticQueryFacetCopyWithImpl<$Res>;
   $Res call(
       {String type,
       String? name,
@@ -323,13 +323,13 @@ abstract class _$ElasticFacetCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$ElasticFacetCopyWithImpl<$Res>
-    implements _$ElasticFacetCopyWith<$Res> {
-  __$ElasticFacetCopyWithImpl(this._value, this._then);
+class __$ElasticQueryFacetCopyWithImpl<$Res>
+    implements _$ElasticQueryFacetCopyWith<$Res> {
+  __$ElasticQueryFacetCopyWithImpl(this._value, this._then);
 
-  final _ElasticFacet _value;
+  final _ElasticQueryFacet _value;
   // ignore: unused_field
-  final $Res Function(_ElasticFacet) _then;
+  final $Res Function(_ElasticQueryFacet) _then;
 
   @override
   $Res call({
@@ -360,11 +360,11 @@ class __$ElasticFacetCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$_ElasticFacetCopyWith<$Res>
-    implements _$ElasticFacetCopyWith<$Res> {
-  factory _$_ElasticFacetCopyWith(
-          __ElasticFacet value, $Res Function(__ElasticFacet) then) =
-      __$_ElasticFacetCopyWithImpl<$Res>;
+abstract class _$_ElasticQueryFacetCopyWith<$Res>
+    implements _$ElasticQueryFacetCopyWith<$Res> {
+  factory _$_ElasticQueryFacetCopyWith(
+          __ElasticQueryFacet value, $Res Function(__ElasticQueryFacet) then) =
+      __$_ElasticQueryFacetCopyWithImpl<$Res>;
   @override
   $Res call(
       {String type,
@@ -374,15 +374,15 @@ abstract class _$_ElasticFacetCopyWith<$Res>
 }
 
 /// @nodoc
-class __$_ElasticFacetCopyWithImpl<$Res>
-    extends __$ElasticFacetCopyWithImpl<$Res>
-    implements _$_ElasticFacetCopyWith<$Res> {
-  __$_ElasticFacetCopyWithImpl(
-      __ElasticFacet _value, $Res Function(__ElasticFacet) _then)
-      : super(_value, (v) => _then(v as __ElasticFacet));
+class __$_ElasticQueryFacetCopyWithImpl<$Res>
+    extends __$ElasticQueryFacetCopyWithImpl<$Res>
+    implements _$_ElasticQueryFacetCopyWith<$Res> {
+  __$_ElasticQueryFacetCopyWithImpl(
+      __ElasticQueryFacet _value, $Res Function(__ElasticQueryFacet) _then)
+      : super(_value, (v) => _then(v as __ElasticQueryFacet));
 
   @override
-  __ElasticFacet get _value => super._value as __ElasticFacet;
+  __ElasticQueryFacet get _value => super._value as __ElasticQueryFacet;
 
   @override
   $Res call({
@@ -391,7 +391,7 @@ class __$_ElasticFacetCopyWithImpl<$Res>
     Object? ranges = freezed,
     Object? data = freezed,
   }) {
-    return _then(__ElasticFacet(
+    return _then(__ElasticQueryFacet(
       type: type == freezed
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -415,12 +415,12 @@ class __$_ElasticFacetCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$__ElasticFacet implements __ElasticFacet {
-  const _$__ElasticFacet(
+class _$__ElasticQueryFacet implements __ElasticQueryFacet {
+  const _$__ElasticQueryFacet(
       {required this.type, this.name, this.ranges, this.data});
 
-  factory _$__ElasticFacet.fromJson(Map<String, dynamic> json) =>
-      _$$__ElasticFacetFromJson(json);
+  factory _$__ElasticQueryFacet.fromJson(Map<String, dynamic> json) =>
+      _$$__ElasticQueryFacetFromJson(json);
 
   @override
   final String type;
@@ -433,14 +433,14 @@ class _$__ElasticFacet implements __ElasticFacet {
 
   @override
   String toString() {
-    return '_ElasticFacet(type: $type, name: $name, ranges: $ranges, data: $data)';
+    return '_ElasticQueryFacet(type: $type, name: $name, ranges: $ranges, data: $data)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is __ElasticFacet &&
+            other is __ElasticQueryFacet &&
             const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.ranges, ranges) &&
@@ -457,24 +457,24 @@ class _$__ElasticFacet implements __ElasticFacet {
 
   @JsonKey(ignore: true)
   @override
-  _$_ElasticFacetCopyWith<__ElasticFacet> get copyWith =>
-      __$_ElasticFacetCopyWithImpl<__ElasticFacet>(this, _$identity);
+  _$_ElasticQueryFacetCopyWith<__ElasticQueryFacet> get copyWith =>
+      __$_ElasticQueryFacetCopyWithImpl<__ElasticQueryFacet>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$__ElasticFacetToJson(this);
+    return _$$__ElasticQueryFacetToJson(this);
   }
 }
 
-abstract class __ElasticFacet implements _ElasticFacet {
-  const factory __ElasticFacet(
+abstract class __ElasticQueryFacet implements _ElasticQueryFacet {
+  const factory __ElasticQueryFacet(
       {required String type,
       String? name,
       List<_ElasticRangeFacet>? ranges,
-      List<_ElasticRangeFacet>? data}) = _$__ElasticFacet;
+      List<_ElasticRangeFacet>? data}) = _$__ElasticQueryFacet;
 
-  factory __ElasticFacet.fromJson(Map<String, dynamic> json) =
-      _$__ElasticFacet.fromJson;
+  factory __ElasticQueryFacet.fromJson(Map<String, dynamic> json) =
+      _$__ElasticQueryFacet.fromJson;
 
   @override
   String get type;
@@ -486,7 +486,7 @@ abstract class __ElasticFacet implements _ElasticFacet {
   List<_ElasticRangeFacet>? get data;
   @override
   @JsonKey(ignore: true)
-  _$_ElasticFacetCopyWith<__ElasticFacet> get copyWith =>
+  _$_ElasticQueryFacetCopyWith<__ElasticQueryFacet> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -700,6 +700,433 @@ abstract class __ElasticRangeFacet implements _ElasticRangeFacet {
       throw _privateConstructorUsedError;
 }
 
+ElasticFacet _$ElasticFacetFromJson(Map<String, dynamic> json) {
+  return _ElasticFacet.fromJson(json);
+}
+
+/// @nodoc
+class _$ElasticFacetTearOff {
+  const _$ElasticFacetTearOff();
+
+  _ElasticFacet call(
+      {required ElasticFacetType type,
+      String? name,
+      List<ElasticFacetData>? data}) {
+    return _ElasticFacet(
+      type: type,
+      name: name,
+      data: data,
+    );
+  }
+
+  ElasticFacet fromJson(Map<String, Object?> json) {
+    return ElasticFacet.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $ElasticFacet = _$ElasticFacetTearOff();
+
+/// @nodoc
+mixin _$ElasticFacet {
+  ElasticFacetType get type => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  List<ElasticFacetData>? get data => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ElasticFacetCopyWith<ElasticFacet> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ElasticFacetCopyWith<$Res> {
+  factory $ElasticFacetCopyWith(
+          ElasticFacet value, $Res Function(ElasticFacet) then) =
+      _$ElasticFacetCopyWithImpl<$Res>;
+  $Res call(
+      {ElasticFacetType type, String? name, List<ElasticFacetData>? data});
+}
+
+/// @nodoc
+class _$ElasticFacetCopyWithImpl<$Res> implements $ElasticFacetCopyWith<$Res> {
+  _$ElasticFacetCopyWithImpl(this._value, this._then);
+
+  final ElasticFacet _value;
+  // ignore: unused_field
+  final $Res Function(ElasticFacet) _then;
+
+  @override
+  $Res call({
+    Object? type = freezed,
+    Object? name = freezed,
+    Object? data = freezed,
+  }) {
+    return _then(_value.copyWith(
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as ElasticFacetType,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      data: data == freezed
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as List<ElasticFacetData>?,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$ElasticFacetCopyWith<$Res>
+    implements $ElasticFacetCopyWith<$Res> {
+  factory _$ElasticFacetCopyWith(
+          _ElasticFacet value, $Res Function(_ElasticFacet) then) =
+      __$ElasticFacetCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {ElasticFacetType type, String? name, List<ElasticFacetData>? data});
+}
+
+/// @nodoc
+class __$ElasticFacetCopyWithImpl<$Res> extends _$ElasticFacetCopyWithImpl<$Res>
+    implements _$ElasticFacetCopyWith<$Res> {
+  __$ElasticFacetCopyWithImpl(
+      _ElasticFacet _value, $Res Function(_ElasticFacet) _then)
+      : super(_value, (v) => _then(v as _ElasticFacet));
+
+  @override
+  _ElasticFacet get _value => super._value as _ElasticFacet;
+
+  @override
+  $Res call({
+    Object? type = freezed,
+    Object? name = freezed,
+    Object? data = freezed,
+  }) {
+    return _then(_ElasticFacet(
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as ElasticFacetType,
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      data: data == freezed
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
+              as List<ElasticFacetData>?,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _$_ElasticFacet implements _ElasticFacet {
+  const _$_ElasticFacet({required this.type, this.name, this.data});
+
+  factory _$_ElasticFacet.fromJson(Map<String, dynamic> json) =>
+      _$$_ElasticFacetFromJson(json);
+
+  @override
+  final ElasticFacetType type;
+  @override
+  final String? name;
+  @override
+  final List<ElasticFacetData>? data;
+
+  @override
+  String toString() {
+    return 'ElasticFacet(type: $type, name: $name, data: $data)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _ElasticFacet &&
+            const DeepCollectionEquality().equals(other.type, type) &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.data, data));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(type),
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(data));
+
+  @JsonKey(ignore: true)
+  @override
+  _$ElasticFacetCopyWith<_ElasticFacet> get copyWith =>
+      __$ElasticFacetCopyWithImpl<_ElasticFacet>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_ElasticFacetToJson(this);
+  }
+}
+
+abstract class _ElasticFacet implements ElasticFacet {
+  const factory _ElasticFacet(
+      {required ElasticFacetType type,
+      String? name,
+      List<ElasticFacetData>? data}) = _$_ElasticFacet;
+
+  factory _ElasticFacet.fromJson(Map<String, dynamic> json) =
+      _$_ElasticFacet.fromJson;
+
+  @override
+  ElasticFacetType get type;
+  @override
+  String? get name;
+  @override
+  List<ElasticFacetData>? get data;
+  @override
+  @JsonKey(ignore: true)
+  _$ElasticFacetCopyWith<_ElasticFacet> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+ElasticFacetData _$ElasticFacetDataFromJson(Map<String, dynamic> json) {
+  return _ElasticFacetData.fromJson(json);
+}
+
+/// @nodoc
+class _$ElasticFacetDataTearOff {
+  const _$ElasticFacetDataTearOff();
+
+  _ElasticFacetData call(
+      {String? name,
+      String? value,
+      String? from,
+      String? to,
+      required int count}) {
+    return _ElasticFacetData(
+      name: name,
+      value: value,
+      from: from,
+      to: to,
+      count: count,
+    );
+  }
+
+  ElasticFacetData fromJson(Map<String, Object?> json) {
+    return ElasticFacetData.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $ElasticFacetData = _$ElasticFacetDataTearOff();
+
+/// @nodoc
+mixin _$ElasticFacetData {
+  String? get name => throw _privateConstructorUsedError;
+  String? get value => throw _privateConstructorUsedError;
+  String? get from => throw _privateConstructorUsedError;
+  String? get to => throw _privateConstructorUsedError;
+  int get count => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ElasticFacetDataCopyWith<ElasticFacetData> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ElasticFacetDataCopyWith<$Res> {
+  factory $ElasticFacetDataCopyWith(
+          ElasticFacetData value, $Res Function(ElasticFacetData) then) =
+      _$ElasticFacetDataCopyWithImpl<$Res>;
+  $Res call({String? name, String? value, String? from, String? to, int count});
+}
+
+/// @nodoc
+class _$ElasticFacetDataCopyWithImpl<$Res>
+    implements $ElasticFacetDataCopyWith<$Res> {
+  _$ElasticFacetDataCopyWithImpl(this._value, this._then);
+
+  final ElasticFacetData _value;
+  // ignore: unused_field
+  final $Res Function(ElasticFacetData) _then;
+
+  @override
+  $Res call({
+    Object? name = freezed,
+    Object? value = freezed,
+    Object? from = freezed,
+    Object? to = freezed,
+    Object? count = freezed,
+  }) {
+    return _then(_value.copyWith(
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      value: value == freezed
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String?,
+      from: from == freezed
+          ? _value.from
+          : from // ignore: cast_nullable_to_non_nullable
+              as String?,
+      to: to == freezed
+          ? _value.to
+          : to // ignore: cast_nullable_to_non_nullable
+              as String?,
+      count: count == freezed
+          ? _value.count
+          : count // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$ElasticFacetDataCopyWith<$Res>
+    implements $ElasticFacetDataCopyWith<$Res> {
+  factory _$ElasticFacetDataCopyWith(
+          _ElasticFacetData value, $Res Function(_ElasticFacetData) then) =
+      __$ElasticFacetDataCopyWithImpl<$Res>;
+  @override
+  $Res call({String? name, String? value, String? from, String? to, int count});
+}
+
+/// @nodoc
+class __$ElasticFacetDataCopyWithImpl<$Res>
+    extends _$ElasticFacetDataCopyWithImpl<$Res>
+    implements _$ElasticFacetDataCopyWith<$Res> {
+  __$ElasticFacetDataCopyWithImpl(
+      _ElasticFacetData _value, $Res Function(_ElasticFacetData) _then)
+      : super(_value, (v) => _then(v as _ElasticFacetData));
+
+  @override
+  _ElasticFacetData get _value => super._value as _ElasticFacetData;
+
+  @override
+  $Res call({
+    Object? name = freezed,
+    Object? value = freezed,
+    Object? from = freezed,
+    Object? to = freezed,
+    Object? count = freezed,
+  }) {
+    return _then(_ElasticFacetData(
+      name: name == freezed
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      value: value == freezed
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as String?,
+      from: from == freezed
+          ? _value.from
+          : from // ignore: cast_nullable_to_non_nullable
+              as String?,
+      to: to == freezed
+          ? _value.to
+          : to // ignore: cast_nullable_to_non_nullable
+              as String?,
+      count: count == freezed
+          ? _value.count
+          : count // ignore: cast_nullable_to_non_nullable
+              as int,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _$_ElasticFacetData implements _ElasticFacetData {
+  const _$_ElasticFacetData(
+      {this.name, this.value, this.from, this.to, required this.count});
+
+  factory _$_ElasticFacetData.fromJson(Map<String, dynamic> json) =>
+      _$$_ElasticFacetDataFromJson(json);
+
+  @override
+  final String? name;
+  @override
+  final String? value;
+  @override
+  final String? from;
+  @override
+  final String? to;
+  @override
+  final int count;
+
+  @override
+  String toString() {
+    return 'ElasticFacetData(name: $name, value: $value, from: $from, to: $to, count: $count)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _ElasticFacetData &&
+            const DeepCollectionEquality().equals(other.name, name) &&
+            const DeepCollectionEquality().equals(other.value, value) &&
+            const DeepCollectionEquality().equals(other.from, from) &&
+            const DeepCollectionEquality().equals(other.to, to) &&
+            const DeepCollectionEquality().equals(other.count, count));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(name),
+      const DeepCollectionEquality().hash(value),
+      const DeepCollectionEquality().hash(from),
+      const DeepCollectionEquality().hash(to),
+      const DeepCollectionEquality().hash(count));
+
+  @JsonKey(ignore: true)
+  @override
+  _$ElasticFacetDataCopyWith<_ElasticFacetData> get copyWith =>
+      __$ElasticFacetDataCopyWithImpl<_ElasticFacetData>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_ElasticFacetDataToJson(this);
+  }
+}
+
+abstract class _ElasticFacetData implements ElasticFacetData {
+  const factory _ElasticFacetData(
+      {String? name,
+      String? value,
+      String? from,
+      String? to,
+      required int count}) = _$_ElasticFacetData;
+
+  factory _ElasticFacetData.fromJson(Map<String, dynamic> json) =
+      _$_ElasticFacetData.fromJson;
+
+  @override
+  String? get name;
+  @override
+  String? get value;
+  @override
+  String? get from;
+  @override
+  String? get to;
+  @override
+  int get count;
+  @override
+  @JsonKey(ignore: true)
+  _$ElasticFacetDataCopyWith<_ElasticFacetData> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 ElasticQuery _$ElasticQueryFromJson(Map<String, dynamic> json) {
   return _ElasticQuery.fromJson(json);
 }
@@ -726,7 +1153,7 @@ class _$ElasticQueryTearOff {
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields,
       @protected
-          Map<String, _ElasticFacet>? facets,
+          Map<String, _ElasticQueryFacet>? facets,
       @protected
       @JsonKey(name: "group")
           _ElasticGroup? groupBy,
@@ -799,7 +1226,8 @@ mixin _$ElasticQuery {
   /// Facets are objects which provide the counts of each value or range of values for a field.
   /// See [https://www.elastic.co/guide/en/app-search/current/facets.html]
   @protected
-  Map<String, _ElasticFacet>? get facets => throw _privateConstructorUsedError;
+  Map<String, _ElasticQueryFacet>? get facets =>
+      throw _privateConstructorUsedError;
 
   /// Grouped results based on shared fields
   @protected
@@ -840,7 +1268,7 @@ abstract class $ElasticQueryCopyWith<$Res> {
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields,
       @protected
-          Map<String, _ElasticFacet>? facets,
+          Map<String, _ElasticQueryFacet>? facets,
       @protected
       @JsonKey(name: "group")
           _ElasticGroup? groupBy,
@@ -905,7 +1333,7 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
       facets: facets == freezed
           ? _value.facets
           : facets // ignore: cast_nullable_to_non_nullable
-              as Map<String, _ElasticFacet>?,
+              as Map<String, _ElasticQueryFacet>?,
       groupBy: groupBy == freezed
           ? _value.groupBy
           : groupBy // ignore: cast_nullable_to_non_nullable
@@ -965,7 +1393,7 @@ abstract class _$ElasticQueryCopyWith<$Res>
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields,
       @protected
-          Map<String, _ElasticFacet>? facets,
+          Map<String, _ElasticQueryFacet>? facets,
       @protected
       @JsonKey(name: "group")
           _ElasticGroup? groupBy,
@@ -1034,7 +1462,7 @@ class __$ElasticQueryCopyWithImpl<$Res> extends _$ElasticQueryCopyWithImpl<$Res>
       facets: facets == freezed
           ? _value.facets
           : facets // ignore: cast_nullable_to_non_nullable
-              as Map<String, _ElasticFacet>?,
+              as Map<String, _ElasticQueryFacet>?,
       groupBy: groupBy == freezed
           ? _value.groupBy
           : groupBy // ignore: cast_nullable_to_non_nullable
@@ -1131,7 +1559,7 @@ class _$_ElasticQuery extends _ElasticQuery {
   /// Facets are objects which provide the counts of each value or range of values for a field.
   /// See [https://www.elastic.co/guide/en/app-search/current/facets.html]
   @protected
-  final Map<String, _ElasticFacet>? facets;
+  final Map<String, _ElasticQueryFacet>? facets;
   @override
 
   /// Grouped results based on shared fields
@@ -1215,7 +1643,7 @@ abstract class _ElasticQuery extends ElasticQuery {
       @JsonKey(name: "result_fields")
           List<_ElasticResultField>? resultFields,
       @protected
-          Map<String, _ElasticFacet>? facets,
+          Map<String, _ElasticQueryFacet>? facets,
       @protected
       @JsonKey(name: "group")
           _ElasticGroup? groupBy,
@@ -1276,7 +1704,7 @@ abstract class _ElasticQuery extends ElasticQuery {
   /// Facets are objects which provide the counts of each value or range of values for a field.
   /// See [https://www.elastic.co/guide/en/app-search/current/facets.html]
   @protected
-  Map<String, _ElasticFacet>? get facets;
+  Map<String, _ElasticQueryFacet>? get facets;
   @override
 
   /// Grouped results based on shared fields
@@ -2942,7 +3370,7 @@ class _$ElasticResponseTearOff {
   _ElasticResponse call(
       {required ElasticResponseMeta meta,
       required List<ElasticResult> results,
-      Map<String, dynamic>? facets}) {
+      Map<String, List<ElasticFacet>>? facets}) {
     return _ElasticResponse(
       meta: meta,
       results: results,
@@ -2966,8 +3394,9 @@ mixin _$ElasticResponse {
   /// Array of results matching the search.
   List<ElasticResult> get results => throw _privateConstructorUsedError;
 
-  /// Map of facets passed to the query, returned a count
-  Map<String, dynamic>? get facets => throw _privateConstructorUsedError;
+  /// Map of facets passed to the query, returning a count.
+  Map<String, List<ElasticFacet>>? get facets =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -2983,7 +3412,7 @@ abstract class $ElasticResponseCopyWith<$Res> {
   $Res call(
       {ElasticResponseMeta meta,
       List<ElasticResult> results,
-      Map<String, dynamic>? facets});
+      Map<String, List<ElasticFacet>>? facets});
 
   $ElasticResponseMetaCopyWith<$Res> get meta;
 }
@@ -3015,7 +3444,7 @@ class _$ElasticResponseCopyWithImpl<$Res>
       facets: facets == freezed
           ? _value.facets
           : facets // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>?,
+              as Map<String, List<ElasticFacet>>?,
     ));
   }
 
@@ -3037,7 +3466,7 @@ abstract class _$ElasticResponseCopyWith<$Res>
   $Res call(
       {ElasticResponseMeta meta,
       List<ElasticResult> results,
-      Map<String, dynamic>? facets});
+      Map<String, List<ElasticFacet>>? facets});
 
   @override
   $ElasticResponseMetaCopyWith<$Res> get meta;
@@ -3072,7 +3501,7 @@ class __$ElasticResponseCopyWithImpl<$Res>
       facets: facets == freezed
           ? _value.facets
           : facets // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>?,
+              as Map<String, List<ElasticFacet>>?,
     ));
   }
 }
@@ -3095,8 +3524,8 @@ class _$_ElasticResponse implements _ElasticResponse {
   final List<ElasticResult> results;
   @override
 
-  /// Map of facets passed to the query, returned a count
-  final Map<String, dynamic>? facets;
+  /// Map of facets passed to the query, returning a count.
+  final Map<String, List<ElasticFacet>>? facets;
 
   @override
   String toString() {
@@ -3135,7 +3564,7 @@ abstract class _ElasticResponse implements ElasticResponse {
   factory _ElasticResponse(
       {required ElasticResponseMeta meta,
       required List<ElasticResult> results,
-      Map<String, dynamic>? facets}) = _$_ElasticResponse;
+      Map<String, List<ElasticFacet>>? facets}) = _$_ElasticResponse;
 
   factory _ElasticResponse.fromJson(Map<String, dynamic> json) =
       _$_ElasticResponse.fromJson;
@@ -3150,8 +3579,8 @@ abstract class _ElasticResponse implements ElasticResponse {
   List<ElasticResult> get results;
   @override
 
-  /// Map of facets passed to the query, returned a count
-  Map<String, dynamic>? get facets;
+  /// Map of facets passed to the query, returning a count.
+  Map<String, List<ElasticFacet>>? get facets;
   @override
   @JsonKey(ignore: true)
   _$ElasticResponseCopyWith<_ElasticResponse> get copyWith =>

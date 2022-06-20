@@ -12,8 +12,8 @@ class ElasticResponse with _$ElasticResponse {
     /// Array of results matching the search.
     required List<ElasticResult> results,
 
-    /// Map of facets passed to the query, returned a count
-    Map<String, dynamic>? facets,
+    /// Map of facets passed to the query, returning a count.
+    Map<String, List<ElasticFacet>>? facets,
   }) = _ElasticResponse;
 
   factory ElasticResponse.fromJson(Map<String, dynamic> json) =>

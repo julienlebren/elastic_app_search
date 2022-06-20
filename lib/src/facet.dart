@@ -3,17 +3,16 @@
 part of elastic_app_search;
 
 @freezed
-class _ElasticFacet with _$_ElasticFacet {
+class _ElasticQueryFacet with _$_ElasticQueryFacet {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory _ElasticFacet({
+  const factory _ElasticQueryFacet({
     required String type,
     String? name,
     List<_ElasticRangeFacet>? ranges,
-    List<_ElasticRangeFacet>? data,
-  }) = __ElasticFacet;
+  }) = __ElasticQueryFacet;
 
-  factory _ElasticFacet.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticFacetFromJson(json);
+  factory _ElasticQueryFacet.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticQueryFacetFromJson(json);
 }
 
 @freezed
@@ -28,4 +27,33 @@ class _ElasticRangeFacet with _$_ElasticRangeFacet {
 
   factory _ElasticRangeFacet.fromJson(Map<String, dynamic> json) =>
       _$_ElasticRangeFacetFromJson(json);
+}
+
+// DEV
+@freezed
+class ElasticFacet with _$ElasticFacet {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  const factory ElasticFacet({
+    required ElasticFacetType type,
+    String? name,
+    List<ElasticFacetData>? data,
+  }) = _ElasticFacet;
+
+  factory ElasticFacet.fromJson(Map<String, dynamic> json) =>
+      _$ElasticFacetFromJson(json);
+}
+
+@freezed
+class ElasticFacetData with _$ElasticFacetData {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  const factory ElasticFacetData({
+    String? name,
+    String? value,
+    String? from,
+    String? to,
+    required int count,
+  }) = _ElasticFacetData;
+
+  factory ElasticFacetData.fromJson(Map<String, dynamic> json) =>
+      _$ElasticFacetDataFromJson(json);
 }

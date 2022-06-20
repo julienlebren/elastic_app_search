@@ -53,7 +53,7 @@ class ElasticQuery with _$ElasticQuery {
 
     /// Facets are objects which provide the counts of each value or range of values for a field.
     /// See [https://www.elastic.co/guide/en/app-search/current/facets.html]
-    @protected Map<String, _ElasticFacet>? facets,
+    @protected Map<String, _ElasticQueryFacet>? facets,
 
     /// Grouped results based on shared fields
     @protected @JsonKey(name: "group") _ElasticGroup? groupBy,
@@ -248,7 +248,7 @@ class ElasticQuery with _$ElasticQuery {
     Object? isLessThan,
   }) {
     var _facets = facets ?? {};
-    _ElasticFacet _facet;
+    _ElasticQueryFacet _facet;
 
     if (isMoreThanOrEqualTo != null || isLessThan != null) {
       final newRange = _ElasticRangeFacet(
@@ -260,7 +260,7 @@ class ElasticQuery with _$ElasticQuery {
             : isLessThan?.toString(),
       );
       _facet = facets?[field] ??
-          _ElasticFacet(
+          _ElasticQueryFacet(
             type: "range",
             name: name,
             ranges: [
@@ -269,7 +269,7 @@ class ElasticQuery with _$ElasticQuery {
             ],
           );
     } else {
-      _facet = _ElasticFacet(
+      _facet = _ElasticQueryFacet(
         type: "value",
         name: name,
       );

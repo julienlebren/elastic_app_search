@@ -17,6 +17,18 @@ extension _ElasticFilterTypeX on _ElasticFilterType {
   }
 }
 
+enum ElasticFacetType { value, range }
+extension _ElasticFacetTypeX on ElasticFacetType {
+  String get identifier {
+    switch (this) {
+      case ElasticFacetType.value:
+        return "value";
+      case ElasticFacetType.range:
+        return "range";
+    }
+  }
+}
+
 enum GeoUnit {
   millimeters,
   centimeters,
