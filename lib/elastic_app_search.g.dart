@@ -104,7 +104,8 @@ _$_ElasticFacet _$$_ElasticFacetFromJson(Map<String, dynamic> json) =>
       type: $enumDecode(_$ElasticFacetTypeEnumMap, json['type']),
       name: json['name'] as String?,
       data: (json['data'] as List<dynamic>?)
-          ?.map((e) => ElasticFacetData.fromJson(e as Map<String, dynamic>))
+          ?.map((e) =>
+              ElasticFacetData<dynamic>.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
@@ -129,16 +130,18 @@ const _$ElasticFacetTypeEnumMap = {
   ElasticFacetType.range: 'range',
 };
 
-_$_ElasticFacetData _$$_ElasticFacetDataFromJson(Map<String, dynamic> json) =>
-    _$_ElasticFacetData(
+_$_ElasticFacetData<T> _$$_ElasticFacetDataFromJson<T>(
+        Map<String, dynamic> json) =>
+    _$_ElasticFacetData<T>(
       name: json['name'] as String?,
-      value: json['value'] as String?,
-      from: json['from'] as String?,
-      to: json['to'] as String?,
+      value: json['value'],
+      from: json['from'],
+      to: json['to'],
       count: json['count'] as int,
     );
 
-Map<String, dynamic> _$$_ElasticFacetDataToJson(_$_ElasticFacetData instance) {
+Map<String, dynamic> _$$_ElasticFacetDataToJson<T>(
+    _$_ElasticFacetData<T> instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {

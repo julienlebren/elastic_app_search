@@ -71,13 +71,13 @@ extension ElasticFacetHelpers on ElasticFacet {
 }
 
 @freezed
-class ElasticFacetData with _$ElasticFacetData {
+class ElasticFacetData<T> with _$ElasticFacetData {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory ElasticFacetData({
     String? name,
-    String? value,
-    String? from,
-    String? to,
+    Object? value,
+    Object? from,
+    Object? to,
     required int count,
   }) = _ElasticFacetData;
 
