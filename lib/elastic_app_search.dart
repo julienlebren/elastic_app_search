@@ -9,6 +9,7 @@ export 'package:dio/dio.dart' show CancelToken;
 part 'elastic_app_search.freezed.dart';
 part 'elastic_app_search.g.dart';
 
+part 'src/boost.dart';
 part 'src/engine.dart';
 part 'src/facet.dart';
 part 'src/misc.dart';

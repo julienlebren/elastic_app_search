@@ -6,6 +6,46 @@ part of elastic_app_search;
 // JsonSerializableGenerator
 // **************************************************************************
 
+_$__ElasticBoost _$$__ElasticBoostFromJson(Map<String, dynamic> json) =>
+    _$__ElasticBoost(
+      type: $enumDecode(_$_ElasticBoostTypeEnumMap, json['type']),
+      value:
+          (json['value'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      operation: $enumDecodeNullable(
+          _$_ElasticBoostOperationEnumMap, json['operation']),
+      factor: (json['factor'] as num?)?.toDouble(),
+    );
+
+Map<String, dynamic> _$$__ElasticBoostToJson(_$__ElasticBoost instance) {
+  final val = <String, dynamic>{
+    'type': _$_ElasticBoostTypeEnumMap[instance.type],
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('value', instance.value);
+  writeNotNull(
+      'operation', _$_ElasticBoostOperationEnumMap[instance.operation]);
+  writeNotNull('factor', instance.factor);
+  return val;
+}
+
+const _$_ElasticBoostTypeEnumMap = {
+  _ElasticBoostType.value: 'value',
+  _ElasticBoostType.functional: 'functional',
+  _ElasticBoostType.proximity: 'proximity',
+  _ElasticBoostType.recency: 'recency',
+};
+
+const _$_ElasticBoostOperationEnumMap = {
+  _ElasticBoostOperation.add: 'add',
+  _ElasticBoostOperation.multiply: 'multiply',
+};
+
 _$__ElasticFacet _$$__ElasticFacetFromJson(Map<String, dynamic> json) =>
     _$__ElasticFacet(
       type: json['type'] as String,

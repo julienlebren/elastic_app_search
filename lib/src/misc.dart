@@ -2,7 +2,6 @@
 
 part of elastic_app_search;
 
-@protected
 enum _ElasticFilterType { all, none, any }
 
 extension _ElasticFilterTypeX on _ElasticFilterType {
@@ -29,7 +28,7 @@ enum GeoUnit {
   miles,
 }
 
-extension GeoUnitX on GeoUnit {
+extension _GeoUnitX on GeoUnit {
   String toJson() {
     switch (this) {
       case GeoUnit.millimeters:
@@ -52,8 +51,7 @@ extension GeoUnitX on GeoUnit {
   }
 }
 
-@protected
-extension DateTimeX on DateTime {
+extension _DateTimeX on DateTime {
   String toUTCString() {
     return DateTime.utc(
       year,

@@ -3,6 +3,10 @@ part of elastic_app_search;
 const _highlightStart = '<em>';
 const _highlightEnd = '</em>';
 
+typedef FromElastic<T> = T Function(
+  Map<String, dynamic> result,
+);
+
 /// An object containing information about a given result
 @freezed
 class ElasticResultMeta with _$ElasticResultMeta {

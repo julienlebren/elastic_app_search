@@ -251,20 +251,23 @@ class ElasticQuery with _$ElasticQuery {
     _ElasticFacet _facet;
 
     if (isMoreThanOrEqualTo != null || isLessThan != null) {
-      _facet = _ElasticFacet(
-        type: "range",
-        name: name,
-        ranges: [
-          _ElasticRangeFacet(
-            from: isMoreThanOrEqualTo is DateTime
-                ? isMoreThanOrEqualTo.toUTCString()
-                : isMoreThanOrEqualTo.toString(),
-            to: isLessThan is DateTime
-                ? isLessThan.toUTCString()
-                : isLessThan.toString(),
-          ),
-        ],
+      final newRange = _ElasticRangeFacet(
+        from: isMoreThanOrEqualTo is DateTime
+            ? isMoreThanOrEqualTo.toUTCString()
+            : isMoreThanOrEqualTo?.toString(),
+        to: isLessThan is DateTime
+            ? isLessThan.toUTCString()
+            : isLessThan?.toString(),
       );
+      _facet = facets?[field] ??
+          _ElasticFacet(
+            type: "range",
+            name: name,
+            ranges: [
+              ...?facets?[field]?.ranges,
+              newRange,
+            ],
+          );
     } else {
       _facet = _ElasticFacet(
         type: "value",

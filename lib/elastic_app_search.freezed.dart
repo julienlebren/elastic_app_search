@@ -14,6 +14,260 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+_ElasticBoost _$_ElasticBoostFromJson(Map<String, dynamic> json) {
+  return __ElasticBoost.fromJson(json);
+}
+
+/// @nodoc
+class _$_ElasticBoostTearOff {
+  const _$_ElasticBoostTearOff();
+
+  __ElasticBoost call(
+      {required _ElasticBoostType type,
+      List<String>? value,
+      _ElasticBoostOperation? operation,
+      double? factor}) {
+    return __ElasticBoost(
+      type: type,
+      value: value,
+      operation: operation,
+      factor: factor,
+    );
+  }
+
+  _ElasticBoost fromJson(Map<String, Object?> json) {
+    return _ElasticBoost.fromJson(json);
+  }
+}
+
+/// @nodoc
+const _$ElasticBoost = _$_ElasticBoostTearOff();
+
+/// @nodoc
+mixin _$_ElasticBoost {
+  /// Type of boost
+  _ElasticBoostType get type => throw _privateConstructorUsedError;
+
+  /// The value to exact match on. Use an array to match on multiple values.
+  List<String>? get value => throw _privateConstructorUsedError;
+
+  /// The arithmetic operation used to combine the original document score with your boost value.
+  /// Can be add or multiply. Defaults to add.
+  _ElasticBoostOperation? get operation => throw _privateConstructorUsedError;
+
+  /// Factor to alter the impact of a boost on the score of a document.
+  /// Must be between 0 and 10. Defaults to 1.0.
+  /// A negative factor or fractional factor will not deboost a result.
+  double? get factor => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$ElasticBoostCopyWith<_ElasticBoost> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$ElasticBoostCopyWith<$Res> {
+  factory _$ElasticBoostCopyWith(
+          _ElasticBoost value, $Res Function(_ElasticBoost) then) =
+      __$ElasticBoostCopyWithImpl<$Res>;
+  $Res call(
+      {_ElasticBoostType type,
+      List<String>? value,
+      _ElasticBoostOperation? operation,
+      double? factor});
+}
+
+/// @nodoc
+class __$ElasticBoostCopyWithImpl<$Res>
+    implements _$ElasticBoostCopyWith<$Res> {
+  __$ElasticBoostCopyWithImpl(this._value, this._then);
+
+  final _ElasticBoost _value;
+  // ignore: unused_field
+  final $Res Function(_ElasticBoost) _then;
+
+  @override
+  $Res call({
+    Object? type = freezed,
+    Object? value = freezed,
+    Object? operation = freezed,
+    Object? factor = freezed,
+  }) {
+    return _then(_value.copyWith(
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as _ElasticBoostType,
+      value: value == freezed
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      operation: operation == freezed
+          ? _value.operation
+          : operation // ignore: cast_nullable_to_non_nullable
+              as _ElasticBoostOperation?,
+      factor: factor == freezed
+          ? _value.factor
+          : factor // ignore: cast_nullable_to_non_nullable
+              as double?,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$_ElasticBoostCopyWith<$Res>
+    implements _$ElasticBoostCopyWith<$Res> {
+  factory _$_ElasticBoostCopyWith(
+          __ElasticBoost value, $Res Function(__ElasticBoost) then) =
+      __$_ElasticBoostCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {_ElasticBoostType type,
+      List<String>? value,
+      _ElasticBoostOperation? operation,
+      double? factor});
+}
+
+/// @nodoc
+class __$_ElasticBoostCopyWithImpl<$Res>
+    extends __$ElasticBoostCopyWithImpl<$Res>
+    implements _$_ElasticBoostCopyWith<$Res> {
+  __$_ElasticBoostCopyWithImpl(
+      __ElasticBoost _value, $Res Function(__ElasticBoost) _then)
+      : super(_value, (v) => _then(v as __ElasticBoost));
+
+  @override
+  __ElasticBoost get _value => super._value as __ElasticBoost;
+
+  @override
+  $Res call({
+    Object? type = freezed,
+    Object? value = freezed,
+    Object? operation = freezed,
+    Object? factor = freezed,
+  }) {
+    return _then(__ElasticBoost(
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as _ElasticBoostType,
+      value: value == freezed
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      operation: operation == freezed
+          ? _value.operation
+          : operation // ignore: cast_nullable_to_non_nullable
+              as _ElasticBoostOperation?,
+      factor: factor == freezed
+          ? _value.factor
+          : factor // ignore: cast_nullable_to_non_nullable
+              as double?,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _$__ElasticBoost implements __ElasticBoost {
+  const _$__ElasticBoost(
+      {required this.type, this.value, this.operation, this.factor});
+
+  factory _$__ElasticBoost.fromJson(Map<String, dynamic> json) =>
+      _$$__ElasticBoostFromJson(json);
+
+  @override
+
+  /// Type of boost
+  final _ElasticBoostType type;
+  @override
+
+  /// The value to exact match on. Use an array to match on multiple values.
+  final List<String>? value;
+  @override
+
+  /// The arithmetic operation used to combine the original document score with your boost value.
+  /// Can be add or multiply. Defaults to add.
+  final _ElasticBoostOperation? operation;
+  @override
+
+  /// Factor to alter the impact of a boost on the score of a document.
+  /// Must be between 0 and 10. Defaults to 1.0.
+  /// A negative factor or fractional factor will not deboost a result.
+  final double? factor;
+
+  @override
+  String toString() {
+    return '_ElasticBoost(type: $type, value: $value, operation: $operation, factor: $factor)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is __ElasticBoost &&
+            const DeepCollectionEquality().equals(other.type, type) &&
+            const DeepCollectionEquality().equals(other.value, value) &&
+            const DeepCollectionEquality().equals(other.operation, operation) &&
+            const DeepCollectionEquality().equals(other.factor, factor));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(type),
+      const DeepCollectionEquality().hash(value),
+      const DeepCollectionEquality().hash(operation),
+      const DeepCollectionEquality().hash(factor));
+
+  @JsonKey(ignore: true)
+  @override
+  _$_ElasticBoostCopyWith<__ElasticBoost> get copyWith =>
+      __$_ElasticBoostCopyWithImpl<__ElasticBoost>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$__ElasticBoostToJson(this);
+  }
+}
+
+abstract class __ElasticBoost implements _ElasticBoost {
+  const factory __ElasticBoost(
+      {required _ElasticBoostType type,
+      List<String>? value,
+      _ElasticBoostOperation? operation,
+      double? factor}) = _$__ElasticBoost;
+
+  factory __ElasticBoost.fromJson(Map<String, dynamic> json) =
+      _$__ElasticBoost.fromJson;
+
+  @override
+
+  /// Type of boost
+  _ElasticBoostType get type;
+  @override
+
+  /// The value to exact match on. Use an array to match on multiple values.
+  List<String>? get value;
+  @override
+
+  /// The arithmetic operation used to combine the original document score with your boost value.
+  /// Can be add or multiply. Defaults to add.
+  _ElasticBoostOperation? get operation;
+  @override
+
+  /// Factor to alter the impact of a boost on the score of a document.
+  /// Must be between 0 and 10. Defaults to 1.0.
+  /// A negative factor or fractional factor will not deboost a result.
+  double? get factor;
+  @override
+  @JsonKey(ignore: true)
+  _$_ElasticBoostCopyWith<__ElasticBoost> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 _ElasticFacet _$_ElasticFacetFromJson(Map<String, dynamic> json) {
   return __ElasticFacet.fromJson(json);
 }
