@@ -862,21 +862,21 @@ abstract class _ElasticFacet implements ElasticFacet {
       throw _privateConstructorUsedError;
 }
 
-ElasticFacetData<T> _$ElasticFacetDataFromJson<T>(Map<String, dynamic> json) {
-  return _ElasticFacetData<T>.fromJson(json);
+ElasticFacetData _$ElasticFacetDataFromJson(Map<String, dynamic> json) {
+  return _ElasticFacetData.fromJson(json);
 }
 
 /// @nodoc
 class _$ElasticFacetDataTearOff {
   const _$ElasticFacetDataTearOff();
 
-  _ElasticFacetData<T> call<T>(
+  _ElasticFacetData call(
       {String? name,
       Object? value,
       Object? from,
       Object? to,
       required int count}) {
-    return _ElasticFacetData<T>(
+    return _ElasticFacetData(
       name: name,
       value: value,
       from: from,
@@ -885,8 +885,8 @@ class _$ElasticFacetDataTearOff {
     );
   }
 
-  ElasticFacetData<T> fromJson<T>(Map<String, Object?> json) {
-    return ElasticFacetData<T>.fromJson(json);
+  ElasticFacetData fromJson(Map<String, Object?> json) {
+    return ElasticFacetData.fromJson(json);
   }
 }
 
@@ -894,7 +894,7 @@ class _$ElasticFacetDataTearOff {
 const $ElasticFacetData = _$ElasticFacetDataTearOff();
 
 /// @nodoc
-mixin _$ElasticFacetData<T> {
+mixin _$ElasticFacetData {
   String? get name => throw _privateConstructorUsedError;
   Object? get value => throw _privateConstructorUsedError;
   Object? get from => throw _privateConstructorUsedError;
@@ -903,26 +903,26 @@ mixin _$ElasticFacetData<T> {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ElasticFacetDataCopyWith<T, ElasticFacetData<T>> get copyWith =>
+  $ElasticFacetDataCopyWith<ElasticFacetData> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ElasticFacetDataCopyWith<T, $Res> {
+abstract class $ElasticFacetDataCopyWith<$Res> {
   factory $ElasticFacetDataCopyWith(
-          ElasticFacetData<T> value, $Res Function(ElasticFacetData<T>) then) =
-      _$ElasticFacetDataCopyWithImpl<T, $Res>;
+          ElasticFacetData value, $Res Function(ElasticFacetData) then) =
+      _$ElasticFacetDataCopyWithImpl<$Res>;
   $Res call({String? name, Object? value, Object? from, Object? to, int count});
 }
 
 /// @nodoc
-class _$ElasticFacetDataCopyWithImpl<T, $Res>
-    implements $ElasticFacetDataCopyWith<T, $Res> {
+class _$ElasticFacetDataCopyWithImpl<$Res>
+    implements $ElasticFacetDataCopyWith<$Res> {
   _$ElasticFacetDataCopyWithImpl(this._value, this._then);
 
-  final ElasticFacetData<T> _value;
+  final ElasticFacetData _value;
   // ignore: unused_field
-  final $Res Function(ElasticFacetData<T>) _then;
+  final $Res Function(ElasticFacetData) _then;
 
   @override
   $Res call({
@@ -949,25 +949,25 @@ class _$ElasticFacetDataCopyWithImpl<T, $Res>
 }
 
 /// @nodoc
-abstract class _$ElasticFacetDataCopyWith<T, $Res>
-    implements $ElasticFacetDataCopyWith<T, $Res> {
-  factory _$ElasticFacetDataCopyWith(_ElasticFacetData<T> value,
-          $Res Function(_ElasticFacetData<T>) then) =
-      __$ElasticFacetDataCopyWithImpl<T, $Res>;
+abstract class _$ElasticFacetDataCopyWith<$Res>
+    implements $ElasticFacetDataCopyWith<$Res> {
+  factory _$ElasticFacetDataCopyWith(
+          _ElasticFacetData value, $Res Function(_ElasticFacetData) then) =
+      __$ElasticFacetDataCopyWithImpl<$Res>;
   @override
   $Res call({String? name, Object? value, Object? from, Object? to, int count});
 }
 
 /// @nodoc
-class __$ElasticFacetDataCopyWithImpl<T, $Res>
-    extends _$ElasticFacetDataCopyWithImpl<T, $Res>
-    implements _$ElasticFacetDataCopyWith<T, $Res> {
+class __$ElasticFacetDataCopyWithImpl<$Res>
+    extends _$ElasticFacetDataCopyWithImpl<$Res>
+    implements _$ElasticFacetDataCopyWith<$Res> {
   __$ElasticFacetDataCopyWithImpl(
-      _ElasticFacetData<T> _value, $Res Function(_ElasticFacetData<T>) _then)
-      : super(_value, (v) => _then(v as _ElasticFacetData<T>));
+      _ElasticFacetData _value, $Res Function(_ElasticFacetData) _then)
+      : super(_value, (v) => _then(v as _ElasticFacetData));
 
   @override
-  _ElasticFacetData<T> get _value => super._value as _ElasticFacetData<T>;
+  _ElasticFacetData get _value => super._value as _ElasticFacetData;
 
   @override
   $Res call({
@@ -977,7 +977,7 @@ class __$ElasticFacetDataCopyWithImpl<T, $Res>
     Object? to = freezed,
     Object? count = freezed,
   }) {
-    return _then(_ElasticFacetData<T>(
+    return _then(_ElasticFacetData(
       name: name == freezed
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -996,7 +996,7 @@ class __$ElasticFacetDataCopyWithImpl<T, $Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$_ElasticFacetData<T> implements _ElasticFacetData<T> {
+class _$_ElasticFacetData implements _ElasticFacetData {
   const _$_ElasticFacetData(
       {this.name, this.value, this.from, this.to, required this.count});
 
@@ -1016,14 +1016,14 @@ class _$_ElasticFacetData<T> implements _ElasticFacetData<T> {
 
   @override
   String toString() {
-    return 'ElasticFacetData<$T>(name: $name, value: $value, from: $from, to: $to, count: $count)';
+    return 'ElasticFacetData(name: $name, value: $value, from: $from, to: $to, count: $count)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _ElasticFacetData<T> &&
+            other is _ElasticFacetData &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.value, value) &&
             const DeepCollectionEquality().equals(other.from, from) &&
@@ -1042,9 +1042,8 @@ class _$_ElasticFacetData<T> implements _ElasticFacetData<T> {
 
   @JsonKey(ignore: true)
   @override
-  _$ElasticFacetDataCopyWith<T, _ElasticFacetData<T>> get copyWith =>
-      __$ElasticFacetDataCopyWithImpl<T, _ElasticFacetData<T>>(
-          this, _$identity);
+  _$ElasticFacetDataCopyWith<_ElasticFacetData> get copyWith =>
+      __$ElasticFacetDataCopyWithImpl<_ElasticFacetData>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
@@ -1052,16 +1051,16 @@ class _$_ElasticFacetData<T> implements _ElasticFacetData<T> {
   }
 }
 
-abstract class _ElasticFacetData<T> implements ElasticFacetData<T> {
+abstract class _ElasticFacetData implements ElasticFacetData {
   const factory _ElasticFacetData(
       {String? name,
       Object? value,
       Object? from,
       Object? to,
-      required int count}) = _$_ElasticFacetData<T>;
+      required int count}) = _$_ElasticFacetData;
 
   factory _ElasticFacetData.fromJson(Map<String, dynamic> json) =
-      _$_ElasticFacetData<T>.fromJson;
+      _$_ElasticFacetData.fromJson;
 
   @override
   String? get name;
@@ -1075,7 +1074,7 @@ abstract class _ElasticFacetData<T> implements ElasticFacetData<T> {
   int get count;
   @override
   @JsonKey(ignore: true)
-  _$ElasticFacetDataCopyWith<T, _ElasticFacetData<T>> get copyWith =>
+  _$ElasticFacetDataCopyWith<_ElasticFacetData> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
