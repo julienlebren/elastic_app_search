@@ -13,7 +13,7 @@ class ElasticResponse with _$ElasticResponse {
     required List<ElasticResult> results,
 
     /// Map of facets passed to the query, returned a count
-    Map<String, List<_ElasticFacet>>? facets,
+    Map<String, dynamic>? facets,
   }) = _ElasticResponse;
 
   factory ElasticResponse.fromJson(Map<String, dynamic> json) =>

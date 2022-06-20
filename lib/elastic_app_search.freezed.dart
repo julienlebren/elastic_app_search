@@ -2942,7 +2942,7 @@ class _$ElasticResponseTearOff {
   _ElasticResponse call(
       {required ElasticResponseMeta meta,
       required List<ElasticResult> results,
-      Map<String, List<_ElasticFacet>>? facets}) {
+      Map<String, dynamic>? facets}) {
     return _ElasticResponse(
       meta: meta,
       results: results,
@@ -2967,8 +2967,7 @@ mixin _$ElasticResponse {
   List<ElasticResult> get results => throw _privateConstructorUsedError;
 
   /// Map of facets passed to the query, returned a count
-  Map<String, List<_ElasticFacet>>? get facets =>
-      throw _privateConstructorUsedError;
+  Map<String, dynamic>? get facets => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -2984,7 +2983,7 @@ abstract class $ElasticResponseCopyWith<$Res> {
   $Res call(
       {ElasticResponseMeta meta,
       List<ElasticResult> results,
-      Map<String, List<_ElasticFacet>>? facets});
+      Map<String, dynamic>? facets});
 
   $ElasticResponseMetaCopyWith<$Res> get meta;
 }
@@ -3016,7 +3015,7 @@ class _$ElasticResponseCopyWithImpl<$Res>
       facets: facets == freezed
           ? _value.facets
           : facets // ignore: cast_nullable_to_non_nullable
-              as Map<String, List<_ElasticFacet>>?,
+              as Map<String, dynamic>?,
     ));
   }
 
@@ -3038,7 +3037,7 @@ abstract class _$ElasticResponseCopyWith<$Res>
   $Res call(
       {ElasticResponseMeta meta,
       List<ElasticResult> results,
-      Map<String, List<_ElasticFacet>>? facets});
+      Map<String, dynamic>? facets});
 
   @override
   $ElasticResponseMetaCopyWith<$Res> get meta;
@@ -3073,7 +3072,7 @@ class __$ElasticResponseCopyWithImpl<$Res>
       facets: facets == freezed
           ? _value.facets
           : facets // ignore: cast_nullable_to_non_nullable
-              as Map<String, List<_ElasticFacet>>?,
+              as Map<String, dynamic>?,
     ));
   }
 }
@@ -3097,7 +3096,7 @@ class _$_ElasticResponse implements _ElasticResponse {
   @override
 
   /// Map of facets passed to the query, returned a count
-  final Map<String, List<_ElasticFacet>>? facets;
+  final Map<String, dynamic>? facets;
 
   @override
   String toString() {
@@ -3136,7 +3135,7 @@ abstract class _ElasticResponse implements ElasticResponse {
   factory _ElasticResponse(
       {required ElasticResponseMeta meta,
       required List<ElasticResult> results,
-      Map<String, List<_ElasticFacet>>? facets}) = _$_ElasticResponse;
+      Map<String, dynamic>? facets}) = _$_ElasticResponse;
 
   factory _ElasticResponse.fromJson(Map<String, dynamic> json) =
       _$_ElasticResponse.fromJson;
@@ -3152,7 +3151,7 @@ abstract class _ElasticResponse implements ElasticResponse {
   @override
 
   /// Map of facets passed to the query, returned a count
-  Map<String, List<_ElasticFacet>>? get facets;
+  Map<String, dynamic>? get facets;
   @override
   @JsonKey(ignore: true)
   _$ElasticResponseCopyWith<_ElasticResponse> get copyWith =>

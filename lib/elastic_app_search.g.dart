@@ -357,13 +357,7 @@ _$_ElasticResponse _$$_ElasticResponseFromJson(Map<String, dynamic> json) =>
       results: (json['results'] as List<dynamic>)
           .map((e) => ElasticResult.fromJson(e as Map<String, dynamic>))
           .toList(),
-      facets: (json['facets'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(
-            k,
-            (e as List<dynamic>)
-                .map((e) => _ElasticFacet.fromJson(e as Map<String, dynamic>))
-                .toList()),
-      ),
+      facets: json['facets'] as Map<String, dynamic>?,
     );
 
 Map<String, dynamic> _$$_ElasticResponseToJson(_$_ElasticResponse instance) =>
