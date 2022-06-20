@@ -795,8 +795,8 @@ class __$ElasticFacetCopyWithImpl<$Res> extends _$ElasticFacetCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$_ElasticFacet implements _ElasticFacet {
-  const _$_ElasticFacet({required this.type, this.name, this.data});
+class _$_ElasticFacet extends _ElasticFacet {
+  const _$_ElasticFacet({required this.type, this.name, this.data}) : super._();
 
   factory _$_ElasticFacet.fromJson(Map<String, dynamic> json) =>
       _$$_ElasticFacetFromJson(json);
@@ -841,11 +841,12 @@ class _$_ElasticFacet implements _ElasticFacet {
   }
 }
 
-abstract class _ElasticFacet implements ElasticFacet {
+abstract class _ElasticFacet extends ElasticFacet {
   const factory _ElasticFacet(
       {required ElasticFacetType type,
       String? name,
       List<ElasticFacetData>? data}) = _$_ElasticFacet;
+  const _ElasticFacet._() : super._();
 
   factory _ElasticFacet.fromJson(Map<String, dynamic> json) =
       _$_ElasticFacet.fromJson;
@@ -3363,7 +3364,7 @@ mixin _$ElasticResponse {
   /// Array of results matching the search.
   List<ElasticResult> get results => throw _privateConstructorUsedError;
 
-  /// Map of facets passed to the query, returning a count.
+  /// Map of facets passed to the query
   @JsonKey(name: "facets")
   Map<String, List<ElasticFacet>>? get rawFacets =>
       throw _privateConstructorUsedError;
@@ -3478,11 +3479,12 @@ class __$ElasticResponseCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ElasticResponse implements _ElasticResponse {
+class _$_ElasticResponse extends _ElasticResponse {
   _$_ElasticResponse(
       {required this.meta,
       required this.results,
-      @JsonKey(name: "facets") this.rawFacets});
+      @JsonKey(name: "facets") this.rawFacets})
+      : super._();
 
   factory _$_ElasticResponse.fromJson(Map<String, dynamic> json) =>
       _$$_ElasticResponseFromJson(json);
@@ -3497,7 +3499,7 @@ class _$_ElasticResponse implements _ElasticResponse {
   final List<ElasticResult> results;
   @override
 
-  /// Map of facets passed to the query, returning a count.
+  /// Map of facets passed to the query
   @JsonKey(name: "facets")
   final Map<String, List<ElasticFacet>>? rawFacets;
 
@@ -3534,12 +3536,13 @@ class _$_ElasticResponse implements _ElasticResponse {
   }
 }
 
-abstract class _ElasticResponse implements ElasticResponse {
+abstract class _ElasticResponse extends ElasticResponse {
   factory _ElasticResponse(
       {required ElasticResponseMeta meta,
       required List<ElasticResult> results,
       @JsonKey(name: "facets")
           Map<String, List<ElasticFacet>>? rawFacets}) = _$_ElasticResponse;
+  _ElasticResponse._() : super._();
 
   factory _ElasticResponse.fromJson(Map<String, dynamic> json) =
       _$_ElasticResponse.fromJson;
@@ -3554,7 +3557,7 @@ abstract class _ElasticResponse implements ElasticResponse {
   List<ElasticResult> get results;
   @override
 
-  /// Map of facets passed to the query, returning a count.
+  /// Map of facets passed to the query
   @JsonKey(name: "facets")
   Map<String, List<ElasticFacet>>? get rawFacets;
   @override
