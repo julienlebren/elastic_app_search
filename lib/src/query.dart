@@ -360,6 +360,7 @@ class ElasticQuery with _$ElasticQuery {
 
     return copyWith(
       filters: disjunctiveFilters,
+      resultFields: null,
     );
   }
 }
