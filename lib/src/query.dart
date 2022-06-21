@@ -408,7 +408,7 @@ class ElasticQuery with _$ElasticQuery {
 @freezed
 class _ElasticSearchPage with _$_ElasticSearchPage {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  @Assert('size == null || (size != null && size > 1 && size <= 1000)',
+  @Assert('size == null || (size != null && size >= 0 && size <= 1000)',
       'The number of results per page must be greater than or equal to 1 and less than or equal to 1000.')
   @Assert(
       'current == null || (current != null && current >= 1 && current <= 100)',
