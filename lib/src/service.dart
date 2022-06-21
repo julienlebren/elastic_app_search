@@ -48,12 +48,6 @@ class ElasticAppSearch {
     print("====== Query ======");
     print(query.toJson());
 
-    final disjunctiveQuery = query._disjunctive;
-    if (disjunctiveQuery != null) {
-      print("====== Disjunctive query ======");
-      print(disjunctiveQuery.toJson());
-    }
-
     final response = await _dio.post<Map>(
       _apiUrl(query.engine!.name),
       options: Options(
@@ -65,7 +59,29 @@ class ElasticAppSearch {
       data: query.toJson(),
       cancelToken: cancelToken,
     );
+
+    print("====== Response ======");
     print(response);
+
+    final disjunctiveQuery = query._disjunctive;
+    if (disjunctiveQuery != null) {
+      print("====== Disjunctive query ======");
+      print(disjunctiveQuery.toJson());
+
+      final disjunctiveResponse = await _dio.post<Map>(
+        _apiUrl(disjunctiveQuery.engine!.name),
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $_searchKey",
+          },
+        ),
+        data: disjunctiveQuery.toJson(),
+        cancelToken: cancelToken,
+      );
+      print("====== Disjunctive Response ======");
+      print(disjunctiveResponse);
+    }
 
     if (response.statusCode == 200 && response.data != null) {
       return ElasticResponse.fromJson(response.data as Map<String, dynamic>);
