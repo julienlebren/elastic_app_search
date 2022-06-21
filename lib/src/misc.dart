@@ -18,6 +18,7 @@ extension _ElasticFilterTypeX on _ElasticFilterType {
 }
 
 enum ElasticFacetType { value, range }
+
 extension _ElasticFacetTypeX on ElasticFacetType {
   String get identifier {
     switch (this) {
@@ -74,4 +75,13 @@ extension _DateTimeX on DateTime {
       second,
     ).toString().replaceAll(' ', 'T');
   }
+}
+
+@freezed
+class ElasticRange with _$ElasticRange {
+  const factory ElasticRange({
+    String? name,
+    String? from,
+    String? to,
+  }) = _ElasticRange;
 }
