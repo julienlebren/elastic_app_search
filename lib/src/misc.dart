@@ -82,10 +82,11 @@ class ElasticRange with _$ElasticRange {
   @Assert(
       'from != null || to != null', 'You must provide at least `from` or `to`.')
   @Assert(
-      'from == null || (from != null && (from is double || from is DateTime))',
-      '`from` must be a double or a DateTime')
-  @Assert('to == null || (to != null && (to is double || to is DateTime))',
-      '`to` must be a double or a DateTime')
+      'from == null || (from != null && (from is int || from is double || from is DateTime))',
+      '`from` must be an int, a double or a DateTime')
+  @Assert(
+      'to == null || (to != null && (to is int || to is double || to is DateTime))',
+      '`to` must be an int, a double or a DateTime')
   const factory ElasticRange({
     String? name,
     Object? from,
