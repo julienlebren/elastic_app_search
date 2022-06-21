@@ -381,6 +381,7 @@ class ElasticQuery with _$ElasticQuery {
         _disjunctives.add(_disjunctiveQuery);
       }
     }
+    return _disjunctives;
   }
 
   ElasticQuery? _disjunctive(String field) {
