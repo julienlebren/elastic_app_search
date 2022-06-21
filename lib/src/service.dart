@@ -63,8 +63,13 @@ class ElasticAppSearch {
     print("====== Response ======");
     print(response);
 
-    final disjunctiveQuery = query._disjunctive;
-    if (disjunctiveQuery != null) {
+    if (response.statusCode == 200 && response.data != null) {
+      final _response =
+          ElasticResponse.fromJson(response.data as Map<String, dynamic>);
+
+      final disjunctiveQuery = query._disjunctive;
+      if (disjunctiveQuery == null) return _response;
+
       print("====== Disjunctive query ======");
       print(disjunctiveQuery.toJson());
 
@@ -81,10 +86,24 @@ class ElasticAppSearch {
       );
       print("====== Disjunctive Response ======");
       print(disjunctiveResponse);
-    }
 
-    if (response.statusCode == 200 && response.data != null) {
-      return ElasticResponse.fromJson(response.data as Map<String, dynamic>);
+      if (disjunctiveResponse.statusCode == 200 &&
+          disjunctiveResponse.data != null) {
+        final _disjunctiveResponse = ElasticResponse.fromJson(
+            disjunctiveResponse.data as Map<String, dynamic>);
+
+        Map<String, List<ElasticFacet>>? rawFacets = _response.rawFacets;
+        for (String facet in query.disjunctiveFacets ?? []) {
+          final replacedFacets = _disjunctiveResponse.rawFacets?[facet];
+          if (replacedFacets != null) {
+            rawFacets?[facet] = replacedFacets;
+          }
+        }
+
+        return _response.copyWith(rawFacets: rawFacets);
+      } else {
+        throw _errorMessage;
+      }
     } else {
       throw _errorMessage;
     }

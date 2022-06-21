@@ -20,9 +20,7 @@ class ElasticResponse with _$ElasticResponse {
 
   factory ElasticResponse.fromJson(Map<String, dynamic> json) =>
       _$ElasticResponseFromJson(json);
-}
 
-extension ElasticResponseHelpers on ElasticResponse {
   /// Easier way to retrieve a list of facets rather than use the raw map
   List<ElasticFacet>? facets(String field) => rawFacets?[field];
 
