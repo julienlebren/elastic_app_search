@@ -1107,7 +1107,7 @@ abstract class _ElasticFacetData implements ElasticFacetData {
 class _$ElasticRangeTearOff {
   const _$ElasticRangeTearOff();
 
-  _ElasticRange call({String? name, String? from, String? to}) {
+  _ElasticRange call({String? name, double? from, double? to}) {
     return _ElasticRange(
       name: name,
       from: from,
@@ -1122,8 +1122,8 @@ const $ElasticRange = _$ElasticRangeTearOff();
 /// @nodoc
 mixin _$ElasticRange {
   String? get name => throw _privateConstructorUsedError;
-  String? get from => throw _privateConstructorUsedError;
-  String? get to => throw _privateConstructorUsedError;
+  double? get from => throw _privateConstructorUsedError;
+  double? get to => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ElasticRangeCopyWith<ElasticRange> get copyWith =>
@@ -1135,7 +1135,7 @@ abstract class $ElasticRangeCopyWith<$Res> {
   factory $ElasticRangeCopyWith(
           ElasticRange value, $Res Function(ElasticRange) then) =
       _$ElasticRangeCopyWithImpl<$Res>;
-  $Res call({String? name, String? from, String? to});
+  $Res call({String? name, double? from, double? to});
 }
 
 /// @nodoc
@@ -1160,11 +1160,11 @@ class _$ElasticRangeCopyWithImpl<$Res> implements $ElasticRangeCopyWith<$Res> {
       from: from == freezed
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       to: to == freezed
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
     ));
   }
 }
@@ -1176,7 +1176,7 @@ abstract class _$ElasticRangeCopyWith<$Res>
           _ElasticRange value, $Res Function(_ElasticRange) then) =
       __$ElasticRangeCopyWithImpl<$Res>;
   @override
-  $Res call({String? name, String? from, String? to});
+  $Res call({String? name, double? from, double? to});
 }
 
 /// @nodoc
@@ -1203,11 +1203,11 @@ class __$ElasticRangeCopyWithImpl<$Res> extends _$ElasticRangeCopyWithImpl<$Res>
       from: from == freezed
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
       to: to == freezed
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as double?,
     ));
   }
 }
@@ -1220,9 +1220,9 @@ class _$_ElasticRange implements _ElasticRange {
   @override
   final String? name;
   @override
-  final String? from;
+  final double? from;
   @override
-  final String? to;
+  final double? to;
 
   @override
   String toString() {
@@ -1253,15 +1253,15 @@ class _$_ElasticRange implements _ElasticRange {
 }
 
 abstract class _ElasticRange implements ElasticRange {
-  const factory _ElasticRange({String? name, String? from, String? to}) =
+  const factory _ElasticRange({String? name, double? from, double? to}) =
       _$_ElasticRange;
 
   @override
   String? get name;
   @override
-  String? get from;
+  double? get from;
   @override
-  String? get to;
+  double? get to;
   @override
   @JsonKey(ignore: true)
   _$ElasticRangeCopyWith<_ElasticRange> get copyWith =>

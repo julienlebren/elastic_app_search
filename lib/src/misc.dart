@@ -81,7 +81,7 @@ extension _DateTimeX on DateTime {
 class ElasticRange with _$ElasticRange {
   const factory ElasticRange({
     String? name,
-    String? from,
-    String? to,
+    double? from,
+    double? to,
   }) = _ElasticRange;
 }
