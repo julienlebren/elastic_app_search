@@ -352,10 +352,14 @@ class ElasticQuery with _$ElasticQuery {
   ElasticQuery? get _disjunctive {
     if (disjunctiveFacets == null || disjunctiveFacets!.isEmpty) return null;
 
+    final disjunctiveFilters = filters
+        ?.where((filter) => !disjunctiveFacets!.contains(filter.name))
+        .toList();
+
+    if (filters?.length == disjunctiveFilters?.length) return null;
+
     return copyWith(
-      filters: filters
-          ?.where((filter) => !disjunctiveFacets!.contains(filter.name))
-          .toList(),
+      filters: disjunctiveFilters,
     );
   }
 }
