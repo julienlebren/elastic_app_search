@@ -240,16 +240,18 @@ class ElasticQuery with _$ElasticQuery {
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/facets.html]
   @Assert(
-      'isMoreThanOrEqualTo != null && (isMoreThanOrEqualTo is double || isMoreThanOrEqualTo is Date)',
-      '`isMoreThanOrEqualTo` must be a double or a Date')
-  @Assert('isLessThan != null && (isLessThan is double || isLessThan is Date)',
-      '`isLessThan` must be a double or a Date')
+      'isMoreThanOrEqualTo != null && (isMoreThanOrEqualTo is double || isMoreThanOrEqualTo is DateTime)',
+      '`isMoreThanOrEqualTo` must be a double or a DateTime')
+  @Assert(
+      'isLessThan != null && (isLessThan is double || isLessThan is DateTime)',
+      '`isLessThan` must be a double or a DateTime')
   ElasticQuery facet(
     String field, {
     String? name,
     Object? isMoreThanOrEqualTo,
     Object? isLessThan,
     int? size,
+    List<ElasticRange>? ranges,
   }) {
     var _facets = facets ?? {};
     _ElasticQueryFacet _facet;

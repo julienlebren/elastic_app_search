@@ -79,9 +79,15 @@ extension _DateTimeX on DateTime {
 
 @freezed
 class ElasticRange with _$ElasticRange {
+  @Assert('from != null || to != null',
+      'You miust provide at least `from` or `to`.')
+  @Assert('from != null && (from is double || from is DateTime)',
+      '`from` must be a double or a DateTime')
+  @Assert('to != null && (to is double || to is DateTime)',
+      '`to` must be a double or a DateTime')
   const factory ElasticRange({
     String? name,
-    double? from,
-    double? to,
+    Object? from,
+    Object? to,
   }) = _ElasticRange;
 }
