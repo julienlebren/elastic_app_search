@@ -277,11 +277,15 @@ class _$_ElasticQueryFacetTearOff {
   const _$_ElasticQueryFacetTearOff();
 
   __ElasticQueryFacet call(
-      {required String type, String? name, List<_ElasticRangeFacet>? ranges}) {
+      {required String type,
+      String? name,
+      List<_ElasticRangeFacet>? ranges,
+      int? size}) {
     return __ElasticQueryFacet(
       type: type,
       name: name,
       ranges: ranges,
+      size: size,
     );
   }
 
@@ -298,6 +302,7 @@ mixin _$_ElasticQueryFacet {
   String get type => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   List<_ElasticRangeFacet>? get ranges => throw _privateConstructorUsedError;
+  int? get size => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -310,7 +315,8 @@ abstract class _$ElasticQueryFacetCopyWith<$Res> {
   factory _$ElasticQueryFacetCopyWith(
           _ElasticQueryFacet value, $Res Function(_ElasticQueryFacet) then) =
       __$ElasticQueryFacetCopyWithImpl<$Res>;
-  $Res call({String type, String? name, List<_ElasticRangeFacet>? ranges});
+  $Res call(
+      {String type, String? name, List<_ElasticRangeFacet>? ranges, int? size});
 }
 
 /// @nodoc
@@ -327,6 +333,7 @@ class __$ElasticQueryFacetCopyWithImpl<$Res>
     Object? type = freezed,
     Object? name = freezed,
     Object? ranges = freezed,
+    Object? size = freezed,
   }) {
     return _then(_value.copyWith(
       type: type == freezed
@@ -341,6 +348,10 @@ class __$ElasticQueryFacetCopyWithImpl<$Res>
           ? _value.ranges
           : ranges // ignore: cast_nullable_to_non_nullable
               as List<_ElasticRangeFacet>?,
+      size: size == freezed
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -352,7 +363,8 @@ abstract class _$_ElasticQueryFacetCopyWith<$Res>
           __ElasticQueryFacet value, $Res Function(__ElasticQueryFacet) then) =
       __$_ElasticQueryFacetCopyWithImpl<$Res>;
   @override
-  $Res call({String type, String? name, List<_ElasticRangeFacet>? ranges});
+  $Res call(
+      {String type, String? name, List<_ElasticRangeFacet>? ranges, int? size});
 }
 
 /// @nodoc
@@ -371,6 +383,7 @@ class __$_ElasticQueryFacetCopyWithImpl<$Res>
     Object? type = freezed,
     Object? name = freezed,
     Object? ranges = freezed,
+    Object? size = freezed,
   }) {
     return _then(__ElasticQueryFacet(
       type: type == freezed
@@ -385,6 +398,10 @@ class __$_ElasticQueryFacetCopyWithImpl<$Res>
           ? _value.ranges
           : ranges // ignore: cast_nullable_to_non_nullable
               as List<_ElasticRangeFacet>?,
+      size: size == freezed
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -393,7 +410,8 @@ class __$_ElasticQueryFacetCopyWithImpl<$Res>
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _$__ElasticQueryFacet implements __ElasticQueryFacet {
-  const _$__ElasticQueryFacet({required this.type, this.name, this.ranges});
+  const _$__ElasticQueryFacet(
+      {required this.type, this.name, this.ranges, this.size});
 
   factory _$__ElasticQueryFacet.fromJson(Map<String, dynamic> json) =>
       _$$__ElasticQueryFacetFromJson(json);
@@ -404,10 +422,12 @@ class _$__ElasticQueryFacet implements __ElasticQueryFacet {
   final String? name;
   @override
   final List<_ElasticRangeFacet>? ranges;
+  @override
+  final int? size;
 
   @override
   String toString() {
-    return '_ElasticQueryFacet(type: $type, name: $name, ranges: $ranges)';
+    return '_ElasticQueryFacet(type: $type, name: $name, ranges: $ranges, size: $size)';
   }
 
   @override
@@ -417,7 +437,8 @@ class _$__ElasticQueryFacet implements __ElasticQueryFacet {
             other is __ElasticQueryFacet &&
             const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality().equals(other.ranges, ranges));
+            const DeepCollectionEquality().equals(other.ranges, ranges) &&
+            const DeepCollectionEquality().equals(other.size, size));
   }
 
   @override
@@ -425,7 +446,8 @@ class _$__ElasticQueryFacet implements __ElasticQueryFacet {
       runtimeType,
       const DeepCollectionEquality().hash(type),
       const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(ranges));
+      const DeepCollectionEquality().hash(ranges),
+      const DeepCollectionEquality().hash(size));
 
   @JsonKey(ignore: true)
   @override
@@ -442,7 +464,8 @@ abstract class __ElasticQueryFacet implements _ElasticQueryFacet {
   const factory __ElasticQueryFacet(
       {required String type,
       String? name,
-      List<_ElasticRangeFacet>? ranges}) = _$__ElasticQueryFacet;
+      List<_ElasticRangeFacet>? ranges,
+      int? size}) = _$__ElasticQueryFacet;
 
   factory __ElasticQueryFacet.fromJson(Map<String, dynamic> json) =
       _$__ElasticQueryFacet.fromJson;
@@ -453,6 +476,8 @@ abstract class __ElasticQueryFacet implements _ElasticQueryFacet {
   String? get name;
   @override
   List<_ElasticRangeFacet>? get ranges;
+  @override
+  int? get size;
   @override
   @JsonKey(ignore: true)
   _$_ElasticQueryFacetCopyWith<__ElasticQueryFacet> get copyWith =>
@@ -1105,6 +1130,8 @@ class _$ElasticQueryTearOff {
           List<_ElasticResultField>? resultFields,
       @protected
           Map<String, _ElasticQueryFacet>? facets,
+      @JsonKey(ignore: true)
+          List<String>? disjunctiveFacets,
       @protected
       @JsonKey(name: "group")
           _ElasticGroup? groupBy,
@@ -1120,6 +1147,7 @@ class _$ElasticQueryTearOff {
       searchFields: searchFields,
       resultFields: resultFields,
       facets: facets,
+      disjunctiveFacets: disjunctiveFacets,
       groupBy: groupBy,
       sortBy: sortBy,
     );
@@ -1180,6 +1208,10 @@ mixin _$ElasticQuery {
   Map<String, _ElasticQueryFacet>? get facets =>
       throw _privateConstructorUsedError;
 
+  ///
+  @JsonKey(ignore: true)
+  List<String>? get disjunctiveFacets => throw _privateConstructorUsedError;
+
   /// Grouped results based on shared fields
   @protected
   @JsonKey(name: "group")
@@ -1220,6 +1252,8 @@ abstract class $ElasticQueryCopyWith<$Res> {
           List<_ElasticResultField>? resultFields,
       @protected
           Map<String, _ElasticQueryFacet>? facets,
+      @JsonKey(ignore: true)
+          List<String>? disjunctiveFacets,
       @protected
       @JsonKey(name: "group")
           _ElasticGroup? groupBy,
@@ -1249,6 +1283,7 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
     Object? searchFields = freezed,
     Object? resultFields = freezed,
     Object? facets = freezed,
+    Object? disjunctiveFacets = freezed,
     Object? groupBy = freezed,
     Object? sortBy = freezed,
   }) {
@@ -1285,6 +1320,10 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
           ? _value.facets
           : facets // ignore: cast_nullable_to_non_nullable
               as Map<String, _ElasticQueryFacet>?,
+      disjunctiveFacets: disjunctiveFacets == freezed
+          ? _value.disjunctiveFacets
+          : disjunctiveFacets // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
       groupBy: groupBy == freezed
           ? _value.groupBy
           : groupBy // ignore: cast_nullable_to_non_nullable
@@ -1345,6 +1384,8 @@ abstract class _$ElasticQueryCopyWith<$Res>
           List<_ElasticResultField>? resultFields,
       @protected
           Map<String, _ElasticQueryFacet>? facets,
+      @JsonKey(ignore: true)
+          List<String>? disjunctiveFacets,
       @protected
       @JsonKey(name: "group")
           _ElasticGroup? groupBy,
@@ -1378,6 +1419,7 @@ class __$ElasticQueryCopyWithImpl<$Res> extends _$ElasticQueryCopyWithImpl<$Res>
     Object? searchFields = freezed,
     Object? resultFields = freezed,
     Object? facets = freezed,
+    Object? disjunctiveFacets = freezed,
     Object? groupBy = freezed,
     Object? sortBy = freezed,
   }) {
@@ -1414,6 +1456,10 @@ class __$ElasticQueryCopyWithImpl<$Res> extends _$ElasticQueryCopyWithImpl<$Res>
           ? _value.facets
           : facets // ignore: cast_nullable_to_non_nullable
               as Map<String, _ElasticQueryFacet>?,
+      disjunctiveFacets: disjunctiveFacets == freezed
+          ? _value.disjunctiveFacets
+          : disjunctiveFacets // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
       groupBy: groupBy == freezed
           ? _value.groupBy
           : groupBy // ignore: cast_nullable_to_non_nullable
@@ -1449,6 +1495,8 @@ class _$_ElasticQuery extends _ElasticQuery {
           this.resultFields,
       @protected
           this.facets,
+      @JsonKey(ignore: true)
+          this.disjunctiveFacets,
       @protected
       @JsonKey(name: "group")
           this.groupBy,
@@ -1513,6 +1561,11 @@ class _$_ElasticQuery extends _ElasticQuery {
   final Map<String, _ElasticQueryFacet>? facets;
   @override
 
+  ///
+  @JsonKey(ignore: true)
+  final List<String>? disjunctiveFacets;
+  @override
+
   /// Grouped results based on shared fields
   @protected
   @JsonKey(name: "group")
@@ -1526,7 +1579,7 @@ class _$_ElasticQuery extends _ElasticQuery {
 
   @override
   String toString() {
-    return 'ElasticQuery(engine: $engine, query: $query, precisionTuning: $precisionTuning, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, facets: $facets, groupBy: $groupBy, sortBy: $sortBy)';
+    return 'ElasticQuery(engine: $engine, query: $query, precisionTuning: $precisionTuning, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, facets: $facets, disjunctiveFacets: $disjunctiveFacets, groupBy: $groupBy, sortBy: $sortBy)';
   }
 
   @override
@@ -1546,6 +1599,8 @@ class _$_ElasticQuery extends _ElasticQuery {
             const DeepCollectionEquality()
                 .equals(other.resultFields, resultFields) &&
             const DeepCollectionEquality().equals(other.facets, facets) &&
+            const DeepCollectionEquality()
+                .equals(other.disjunctiveFacets, disjunctiveFacets) &&
             const DeepCollectionEquality().equals(other.groupBy, groupBy) &&
             const DeepCollectionEquality().equals(other.sortBy, sortBy));
   }
@@ -1561,6 +1616,7 @@ class _$_ElasticQuery extends _ElasticQuery {
       const DeepCollectionEquality().hash(searchFields),
       const DeepCollectionEquality().hash(resultFields),
       const DeepCollectionEquality().hash(facets),
+      const DeepCollectionEquality().hash(disjunctiveFacets),
       const DeepCollectionEquality().hash(groupBy),
       const DeepCollectionEquality().hash(sortBy));
 
@@ -1595,6 +1651,8 @@ abstract class _ElasticQuery extends ElasticQuery {
           List<_ElasticResultField>? resultFields,
       @protected
           Map<String, _ElasticQueryFacet>? facets,
+      @JsonKey(ignore: true)
+          List<String>? disjunctiveFacets,
       @protected
       @JsonKey(name: "group")
           _ElasticGroup? groupBy,
@@ -1656,6 +1714,11 @@ abstract class _ElasticQuery extends ElasticQuery {
   /// See [https://www.elastic.co/guide/en/app-search/current/facets.html]
   @protected
   Map<String, _ElasticQueryFacet>? get facets;
+  @override
+
+  ///
+  @JsonKey(ignore: true)
+  List<String>? get disjunctiveFacets;
   @override
 
   /// Grouped results based on shared fields

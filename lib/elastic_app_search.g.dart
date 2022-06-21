@@ -54,6 +54,7 @@ _$__ElasticQueryFacet _$$__ElasticQueryFacetFromJson(
       ranges: (json['ranges'] as List<dynamic>?)
           ?.map((e) => _ElasticRangeFacet.fromJson(e as Map<String, dynamic>))
           .toList(),
+      size: json['size'] as int?,
     );
 
 Map<String, dynamic> _$$__ElasticQueryFacetToJson(
@@ -70,6 +71,7 @@ Map<String, dynamic> _$$__ElasticQueryFacetToJson(
 
   writeNotNull('name', instance.name);
   writeNotNull('ranges', instance.ranges?.map((e) => e.toJson()).toList());
+  writeNotNull('size', instance.size);
   return val;
 }
 

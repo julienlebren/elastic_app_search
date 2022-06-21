@@ -9,6 +9,7 @@ class _ElasticQueryFacet with _$_ElasticQueryFacet {
     required String type,
     String? name,
     List<_ElasticRangeFacet>? ranges,
+    int? size,
   }) = __ElasticQueryFacet;
 
   factory _ElasticQueryFacet.fromJson(Map<String, dynamic> json) =>

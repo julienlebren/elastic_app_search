@@ -55,6 +55,9 @@ class ElasticQuery with _$ElasticQuery {
     /// See [https://www.elastic.co/guide/en/app-search/current/facets.html]
     @protected Map<String, _ElasticQueryFacet>? facets,
 
+    ///
+    @JsonKey(ignore: true) List<String>? disjunctiveFacets,
+
     /// Grouped results based on shared fields
     @protected @JsonKey(name: "group") _ElasticGroup? groupBy,
 
@@ -246,6 +249,7 @@ class ElasticQuery with _$ElasticQuery {
     String? name,
     Object? isMoreThanOrEqualTo,
     Object? isLessThan,
+    int? size,
   }) {
     var _facets = facets ?? {};
     _ElasticQueryFacet _facet;
@@ -266,16 +270,27 @@ class ElasticQuery with _$ElasticQuery {
           ...?facets?[field]?.ranges,
           newRange,
         ],
+        size: size,
       );
     } else {
       _facet = _ElasticQueryFacet(
         type: "value",
         name: name,
+        size: size,
       );
     }
 
     _facets[field] = _facet;
     return copyWith(facets: _facets);
+  }
+
+  ElasticQuery disjunctiveFacet(String field) {
+    return copyWith(
+      disjunctiveFacets: [
+        ...?disjunctiveFacets,
+        field,
+      ],
+    );
   }
 
   /// Takes a field with an optionnal `size`, creates and returns a new [ElasticQuery]
