@@ -347,6 +347,17 @@ class ElasticQuery with _$ElasticQuery {
   Future<ElasticResponse> get([CancelToken? cancelToken]) {
     return engine!.get(this, cancelToken);
   }
+
+  /// DEV
+  ElasticQuery? get _disjunctive {
+    if (disjunctiveFacets == null || disjunctiveFacets!.isEmpty) return null;
+
+    return copyWith(
+      filters: filters
+          ?.where((filter) => !disjunctiveFacets!.contains(filter.name))
+          .toList(),
+    );
+  }
 }
 
 /// Object to delimit the pagination parameters.

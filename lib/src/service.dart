@@ -45,7 +45,15 @@ class ElasticAppSearch {
     ElasticQuery query, [
     CancelToken? cancelToken,
   ]) async {
+    print("====== Query ======");
     print(query.toJson());
+
+    final disjunctiveQuery = query._disjunctive;
+    if (disjunctiveQuery != null) {
+      print("====== Disjunctive query ======");
+      print(disjunctiveQuery.toJson());
+    }
+
     final response = await _dio.post<Map>(
       _apiUrl(query.engine!.name),
       options: Options(
