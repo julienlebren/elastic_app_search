@@ -371,20 +371,33 @@ class ElasticQuery with _$ElasticQuery {
   }
 
   /// DEV
-  ElasticQuery? get _disjunctive {
+  List<ElasticQuery>? get _disjunctives {
     if (disjunctiveFacets == null || disjunctiveFacets!.isEmpty) return null;
+    List<ElasticQuery> _disjunctives = [];
 
-    final disjunctiveFilters = filters
-        ?.where((filter) => !disjunctiveFacets!.contains(filter.name))
-        .toList();
+    for (String field in disjunctiveFacets ?? []) {
+      final _disjunctiveQuery = _disjunctive(field);
+      if (_disjunctiveQuery != null) {
+        _disjunctives.add(_disjunctiveQuery);
+      }
+    }
+  }
+
+  ElasticQuery? _disjunctive(String field) {
+    final disjunctiveFilters =
+        filters?.where((filter) => filter.name != field).toList();
 
     if (filters?.length == disjunctiveFilters?.length) return null;
 
     return copyWith(
+      searchPage: _ElasticSearchPage(
+        current: 1,
+        size: 0,
+      ),
       filters: disjunctiveFilters,
-      resultFields: disjunctiveFilters!
-          .map((filter) => _ElasticResultField(name: filter.name))
-          .toList(),
+      resultFields: [
+        _ElasticResultField(name: field),
+      ],
     );
   }
 }

@@ -64,49 +64,52 @@ class ElasticAppSearch {
     print(response);
 
     if (response.statusCode == 200 && response.data != null) {
-      final _response =
+      ElasticResponse _response =
           ElasticResponse.fromJson(response.data as Map<String, dynamic>);
 
-      final disjunctiveQuery = query._disjunctive;
-      if (disjunctiveQuery == null) return _response;
+      final disjunctiveQueries = query._disjunctives;
+      if (disjunctiveQueries == null) return _response;
 
-      print("====== Disjunctive query ======");
-      print(disjunctiveQuery.toJson());
+      for (final disjunctiveQuery in disjunctiveQueries) {
+        print("====== Disjunctive query ======");
+        print(disjunctiveQuery.toJson());
 
-      final disjunctiveResponse = await _dio.post<Map>(
-        _apiUrl(disjunctiveQuery.engine!.name),
-        options: Options(
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer $_searchKey",
-          },
-        ),
-        data: disjunctiveQuery.toJson(),
-        cancelToken: cancelToken,
-      );
-      print("====== Disjunctive Response ======");
-      print(disjunctiveResponse);
+        final disjunctiveResponse = await _dio.post<Map>(
+          _apiUrl(disjunctiveQuery.engine!.name),
+          options: Options(
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer $_searchKey",
+            },
+          ),
+          data: disjunctiveQuery.toJson(),
+          cancelToken: cancelToken,
+        );
+        print("====== Disjunctive Response ======");
+        print(disjunctiveResponse);
 
-      if (disjunctiveResponse.statusCode == 200 &&
-          disjunctiveResponse.data != null) {
-        final _disjunctiveResponse = ElasticResponse.fromJson(
-            disjunctiveResponse.data as Map<String, dynamic>);
+        if (disjunctiveResponse.statusCode == 200 &&
+            disjunctiveResponse.data != null) {
+          final _disjunctiveResponse = ElasticResponse.fromJson(
+              disjunctiveResponse.data as Map<String, dynamic>);
 
-        Map<String, List<ElasticFacet>>? rawFacets = _response.rawFacets;
-        for (String field in query.disjunctiveFacets ?? []) {
-          final filters = query.filters?.where((e) => e.name == field).toList();
-          if (filters != null && filters.isNotEmpty) {
-            final replacedFacets = _disjunctiveResponse.rawFacets?[field];
-            if (replacedFacets != null) {
-              rawFacets?[field] = replacedFacets;
+          Map<String, List<ElasticFacet>>? rawFacets = _response.rawFacets;
+          for (String field in query.disjunctiveFacets ?? []) {
+            final filters =
+                query.filters?.where((e) => e.name == field).toList();
+            if (filters != null && filters.isNotEmpty) {
+              final replacedFacets = _disjunctiveResponse.rawFacets?[field];
+              if (replacedFacets != null) {
+                rawFacets?[field] = replacedFacets;
+              }
             }
           }
+          _response = _response.copyWith(rawFacets: rawFacets);
+        } else {
+          throw _errorMessage;
         }
-
-        return _response.copyWith(rawFacets: rawFacets);
-      } else {
-        throw _errorMessage;
       }
+      return _response;
     } else {
       throw _errorMessage;
     }
