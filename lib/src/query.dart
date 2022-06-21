@@ -360,7 +360,9 @@ class ElasticQuery with _$ElasticQuery {
 
     return copyWith(
       filters: disjunctiveFilters,
-      resultFields: null,
+      resultFields: resultFields
+          ?.where((field) => disjunctiveFacets!.contains(field.name))
+          .toList(),
     );
   }
 }
