@@ -1205,10 +1205,10 @@ class __$ElasticRangeCopyWithImpl<$Res> extends _$ElasticRangeCopyWithImpl<$Res>
 class _$_ElasticRange implements _ElasticRange {
   const _$_ElasticRange({this.name, this.from, this.to})
       : assert(from != null || to != null,
-            'You miust provide at least `from` or `to`.'),
-        assert(from != null && (from is double || from is DateTime),
+            'You must provide at least `from` or `to`.'),
+        assert(from != null && (from == double || from == DateTime),
             '`from` must be a double or a DateTime'),
-        assert(to != null && (to is double || to is DateTime),
+        assert(to != null && (to == double || to == DateTime),
             '`to` must be a double or a DateTime');
 
   @override
