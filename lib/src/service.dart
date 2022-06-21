@@ -93,10 +93,13 @@ class ElasticAppSearch {
             disjunctiveResponse.data as Map<String, dynamic>);
 
         Map<String, List<ElasticFacet>>? rawFacets = _response.rawFacets;
-        for (String facet in query.disjunctiveFacets ?? []) {
-          final replacedFacets = _disjunctiveResponse.rawFacets?[facet];
-          if (replacedFacets != null) {
-            rawFacets?[facet] = replacedFacets;
+        for (String field in query.disjunctiveFacets ?? []) {
+          final filters = query.filters?.where((e) => e.name == field).toList();
+          if (filters != null && filters.isNotEmpty) {
+            final replacedFacets = _disjunctiveResponse.rawFacets?[field];
+            if (replacedFacets != null) {
+              rawFacets?[field] = replacedFacets;
+            }
           }
         }
 
