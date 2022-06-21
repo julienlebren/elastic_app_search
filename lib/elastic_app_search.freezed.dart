@@ -2021,7 +2021,7 @@ class __$_ElasticSearchPageCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _$__ElasticSearchPage implements __ElasticSearchPage {
   const _$__ElasticSearchPage({this.size = 10, this.current = 1})
-      : assert(size == null || (size != null && size >= 1 && size <= 1000),
+      : assert(size == null || (size != null && size > 1 && size <= 1000),
             'The number of results per page must be greater than or equal to 1 and less than or equal to 1000.'),
         assert(
             current == null ||
