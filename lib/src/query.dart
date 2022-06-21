@@ -256,6 +256,7 @@ class ElasticQuery with _$ElasticQuery {
 
     if (isMoreThanOrEqualTo != null || isLessThan != null) {
       final newRange = _ElasticRangeFacet(
+        name: name,
         from: isMoreThanOrEqualTo is DateTime
             ? isMoreThanOrEqualTo.toUTCString()
             : isMoreThanOrEqualTo?.toString(),
@@ -265,7 +266,6 @@ class ElasticQuery with _$ElasticQuery {
       );
       _facet = _ElasticQueryFacet(
         type: "range",
-        name: name,
         ranges: [
           ...?facets?[field]?.ranges,
           newRange,
@@ -275,7 +275,6 @@ class ElasticQuery with _$ElasticQuery {
     } else {
       _facet = _ElasticQueryFacet(
         type: "value",
-        name: name,
         size: size,
       );
     }
