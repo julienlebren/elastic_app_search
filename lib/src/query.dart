@@ -570,7 +570,6 @@ class _ElasticNumberRangeFilter with _$_ElasticNumberRangeFilter {
 @freezed
 class _ElasticGeoFilter with _$_ElasticGeoFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  @Assert('center.length != 2', 'center must be an array contaning 2 numbers')
   const factory _ElasticGeoFilter({
     @_LatLongConverter() required LatLong center,
     double? distance,

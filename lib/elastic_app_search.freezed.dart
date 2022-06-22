@@ -3199,9 +3199,7 @@ class _$__ElasticGeoFilter implements __ElasticGeoFilter {
       this.distance,
       required this.unit,
       this.from,
-      this.to})
-      : assert(
-            center.length != 2, 'center must be an array contaning 2 numbers');
+      this.to});
 
   factory _$__ElasticGeoFilter.fromJson(Map<String, dynamic> json) =>
       _$$__ElasticGeoFilterFromJson(json);
