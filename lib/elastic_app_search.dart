@@ -6,6 +6,7 @@ import 'package:html_unescape/html_unescape.dart';
 import 'package:latlong2/latlong.dart';
 
 export 'package:dio/dio.dart' show CancelToken;
+export 'package:latlong2/latlong.dart' show LatLng;
 
 part 'elastic_app_search.freezed.dart';
 part 'elastic_app_search.g.dart';
