@@ -14,6 +14,165 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+_ElasticAnalytics _$_ElasticAnalyticsFromJson(Map<String, dynamic> json) {
+  return __ElasticAnalytics.fromJson(json);
+}
+
+/// @nodoc
+class _$_ElasticAnalyticsTearOff {
+  const _$_ElasticAnalyticsTearOff();
+
+  __ElasticAnalytics call({required List<String> tags}) {
+    return __ElasticAnalytics(
+      tags: tags,
+    );
+  }
+
+  _ElasticAnalytics fromJson(Map<String, Object?> json) {
+    return _ElasticAnalytics.fromJson(json);
+  }
+}
+
+/// @nodoc
+const _$ElasticAnalytics = _$_ElasticAnalyticsTearOff();
+
+/// @nodoc
+mixin _$_ElasticAnalytics {
+  /// Array of strings representing the tags you’d like to apply to the query.
+  /// You may submit up to 16 tags, and each may be up to 64 characters in length.
+  List<String> get tags => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  _$ElasticAnalyticsCopyWith<_ElasticAnalytics> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$ElasticAnalyticsCopyWith<$Res> {
+  factory _$ElasticAnalyticsCopyWith(
+          _ElasticAnalytics value, $Res Function(_ElasticAnalytics) then) =
+      __$ElasticAnalyticsCopyWithImpl<$Res>;
+  $Res call({List<String> tags});
+}
+
+/// @nodoc
+class __$ElasticAnalyticsCopyWithImpl<$Res>
+    implements _$ElasticAnalyticsCopyWith<$Res> {
+  __$ElasticAnalyticsCopyWithImpl(this._value, this._then);
+
+  final _ElasticAnalytics _value;
+  // ignore: unused_field
+  final $Res Function(_ElasticAnalytics) _then;
+
+  @override
+  $Res call({
+    Object? tags = freezed,
+  }) {
+    return _then(_value.copyWith(
+      tags: tags == freezed
+          ? _value.tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$_ElasticAnalyticsCopyWith<$Res>
+    implements _$ElasticAnalyticsCopyWith<$Res> {
+  factory _$_ElasticAnalyticsCopyWith(
+          __ElasticAnalytics value, $Res Function(__ElasticAnalytics) then) =
+      __$_ElasticAnalyticsCopyWithImpl<$Res>;
+  @override
+  $Res call({List<String> tags});
+}
+
+/// @nodoc
+class __$_ElasticAnalyticsCopyWithImpl<$Res>
+    extends __$ElasticAnalyticsCopyWithImpl<$Res>
+    implements _$_ElasticAnalyticsCopyWith<$Res> {
+  __$_ElasticAnalyticsCopyWithImpl(
+      __ElasticAnalytics _value, $Res Function(__ElasticAnalytics) _then)
+      : super(_value, (v) => _then(v as __ElasticAnalytics));
+
+  @override
+  __ElasticAnalytics get _value => super._value as __ElasticAnalytics;
+
+  @override
+  $Res call({
+    Object? tags = freezed,
+  }) {
+    return _then(__ElasticAnalytics(
+      tags: tags == freezed
+          ? _value.tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _$__ElasticAnalytics implements __ElasticAnalytics {
+  const _$__ElasticAnalytics({required this.tags});
+
+  factory _$__ElasticAnalytics.fromJson(Map<String, dynamic> json) =>
+      _$$__ElasticAnalyticsFromJson(json);
+
+  @override
+
+  /// Array of strings representing the tags you’d like to apply to the query.
+  /// You may submit up to 16 tags, and each may be up to 64 characters in length.
+  final List<String> tags;
+
+  @override
+  String toString() {
+    return '_ElasticAnalytics(tags: $tags)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is __ElasticAnalytics &&
+            const DeepCollectionEquality().equals(other.tags, tags));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(tags));
+
+  @JsonKey(ignore: true)
+  @override
+  _$_ElasticAnalyticsCopyWith<__ElasticAnalytics> get copyWith =>
+      __$_ElasticAnalyticsCopyWithImpl<__ElasticAnalytics>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$__ElasticAnalyticsToJson(this);
+  }
+}
+
+abstract class __ElasticAnalytics implements _ElasticAnalytics {
+  const factory __ElasticAnalytics({required List<String> tags}) =
+      _$__ElasticAnalytics;
+
+  factory __ElasticAnalytics.fromJson(Map<String, dynamic> json) =
+      _$__ElasticAnalytics.fromJson;
+
+  @override
+
+  /// Array of strings representing the tags you’d like to apply to the query.
+  /// You may submit up to 16 tags, and each may be up to 64 characters in length.
+  List<String> get tags;
+  @override
+  @JsonKey(ignore: true)
+  _$_ElasticAnalyticsCopyWith<__ElasticAnalytics> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 _ElasticBoost _$_ElasticBoostFromJson(Map<String, dynamic> json) {
   return __ElasticBoost.fromJson(json);
 }
@@ -1296,6 +1455,7 @@ class _$ElasticQueryTearOff {
           Map<String, _ElasticQueryFacet>? facets,
       @JsonKey(ignore: true)
           List<String>? disjunctiveFacets,
+      _ElasticAnalytics? analytics,
       @protected
       @JsonKey(name: "group")
           _ElasticGroup? groupBy,
@@ -1312,6 +1472,7 @@ class _$ElasticQueryTearOff {
       resultFields: resultFields,
       facets: facets,
       disjunctiveFacets: disjunctiveFacets,
+      analytics: analytics,
       groupBy: groupBy,
       sortBy: sortBy,
     );
@@ -1372,9 +1533,13 @@ mixin _$ElasticQuery {
   Map<String, _ElasticQueryFacet>? get facets =>
       throw _privateConstructorUsedError;
 
-  ///
+  /// DEV
   @JsonKey(ignore: true)
   List<String>? get disjunctiveFacets => throw _privateConstructorUsedError;
+
+  /// Tags can be used to enrich each query with unique information.
+  /// See [https://www.elastic.co/guide/en/app-search/current/tags.html]
+  _ElasticAnalytics? get analytics => throw _privateConstructorUsedError;
 
   /// Grouped results based on shared fields
   @protected
@@ -1418,6 +1583,7 @@ abstract class $ElasticQueryCopyWith<$Res> {
           Map<String, _ElasticQueryFacet>? facets,
       @JsonKey(ignore: true)
           List<String>? disjunctiveFacets,
+      _ElasticAnalytics? analytics,
       @protected
       @JsonKey(name: "group")
           _ElasticGroup? groupBy,
@@ -1426,6 +1592,7 @@ abstract class $ElasticQueryCopyWith<$Res> {
           List<_ElasticSort>? sortBy});
 
   _$ElasticSearchPageCopyWith<$Res>? get searchPage;
+  _$ElasticAnalyticsCopyWith<$Res>? get analytics;
   _$ElasticGroupCopyWith<$Res>? get groupBy;
 }
 
@@ -1448,6 +1615,7 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
     Object? resultFields = freezed,
     Object? facets = freezed,
     Object? disjunctiveFacets = freezed,
+    Object? analytics = freezed,
     Object? groupBy = freezed,
     Object? sortBy = freezed,
   }) {
@@ -1488,6 +1656,10 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
           ? _value.disjunctiveFacets
           : disjunctiveFacets // ignore: cast_nullable_to_non_nullable
               as List<String>?,
+      analytics: analytics == freezed
+          ? _value.analytics
+          : analytics // ignore: cast_nullable_to_non_nullable
+              as _ElasticAnalytics?,
       groupBy: groupBy == freezed
           ? _value.groupBy
           : groupBy // ignore: cast_nullable_to_non_nullable
@@ -1507,6 +1679,17 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
 
     return _$ElasticSearchPageCopyWith<$Res>(_value.searchPage!, (value) {
       return _then(_value.copyWith(searchPage: value));
+    });
+  }
+
+  @override
+  _$ElasticAnalyticsCopyWith<$Res>? get analytics {
+    if (_value.analytics == null) {
+      return null;
+    }
+
+    return _$ElasticAnalyticsCopyWith<$Res>(_value.analytics!, (value) {
+      return _then(_value.copyWith(analytics: value));
     });
   }
 
@@ -1550,6 +1733,7 @@ abstract class _$ElasticQueryCopyWith<$Res>
           Map<String, _ElasticQueryFacet>? facets,
       @JsonKey(ignore: true)
           List<String>? disjunctiveFacets,
+      _ElasticAnalytics? analytics,
       @protected
       @JsonKey(name: "group")
           _ElasticGroup? groupBy,
@@ -1559,6 +1743,8 @@ abstract class _$ElasticQueryCopyWith<$Res>
 
   @override
   _$ElasticSearchPageCopyWith<$Res>? get searchPage;
+  @override
+  _$ElasticAnalyticsCopyWith<$Res>? get analytics;
   @override
   _$ElasticGroupCopyWith<$Res>? get groupBy;
 }
@@ -1584,6 +1770,7 @@ class __$ElasticQueryCopyWithImpl<$Res> extends _$ElasticQueryCopyWithImpl<$Res>
     Object? resultFields = freezed,
     Object? facets = freezed,
     Object? disjunctiveFacets = freezed,
+    Object? analytics = freezed,
     Object? groupBy = freezed,
     Object? sortBy = freezed,
   }) {
@@ -1624,6 +1811,10 @@ class __$ElasticQueryCopyWithImpl<$Res> extends _$ElasticQueryCopyWithImpl<$Res>
           ? _value.disjunctiveFacets
           : disjunctiveFacets // ignore: cast_nullable_to_non_nullable
               as List<String>?,
+      analytics: analytics == freezed
+          ? _value.analytics
+          : analytics // ignore: cast_nullable_to_non_nullable
+              as _ElasticAnalytics?,
       groupBy: groupBy == freezed
           ? _value.groupBy
           : groupBy // ignore: cast_nullable_to_non_nullable
@@ -1661,6 +1852,7 @@ class _$_ElasticQuery extends _ElasticQuery {
           this.facets,
       @JsonKey(ignore: true)
           this.disjunctiveFacets,
+      this.analytics,
       @protected
       @JsonKey(name: "group")
           this.groupBy,
@@ -1725,9 +1917,14 @@ class _$_ElasticQuery extends _ElasticQuery {
   final Map<String, _ElasticQueryFacet>? facets;
   @override
 
-  ///
+  /// DEV
   @JsonKey(ignore: true)
   final List<String>? disjunctiveFacets;
+  @override
+
+  /// Tags can be used to enrich each query with unique information.
+  /// See [https://www.elastic.co/guide/en/app-search/current/tags.html]
+  final _ElasticAnalytics? analytics;
   @override
 
   /// Grouped results based on shared fields
@@ -1743,7 +1940,7 @@ class _$_ElasticQuery extends _ElasticQuery {
 
   @override
   String toString() {
-    return 'ElasticQuery(engine: $engine, query: $query, precisionTuning: $precisionTuning, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, facets: $facets, disjunctiveFacets: $disjunctiveFacets, groupBy: $groupBy, sortBy: $sortBy)';
+    return 'ElasticQuery(engine: $engine, query: $query, precisionTuning: $precisionTuning, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, facets: $facets, disjunctiveFacets: $disjunctiveFacets, analytics: $analytics, groupBy: $groupBy, sortBy: $sortBy)';
   }
 
   @override
@@ -1765,6 +1962,7 @@ class _$_ElasticQuery extends _ElasticQuery {
             const DeepCollectionEquality().equals(other.facets, facets) &&
             const DeepCollectionEquality()
                 .equals(other.disjunctiveFacets, disjunctiveFacets) &&
+            const DeepCollectionEquality().equals(other.analytics, analytics) &&
             const DeepCollectionEquality().equals(other.groupBy, groupBy) &&
             const DeepCollectionEquality().equals(other.sortBy, sortBy));
   }
@@ -1781,6 +1979,7 @@ class _$_ElasticQuery extends _ElasticQuery {
       const DeepCollectionEquality().hash(resultFields),
       const DeepCollectionEquality().hash(facets),
       const DeepCollectionEquality().hash(disjunctiveFacets),
+      const DeepCollectionEquality().hash(analytics),
       const DeepCollectionEquality().hash(groupBy),
       const DeepCollectionEquality().hash(sortBy));
 
@@ -1817,6 +2016,7 @@ abstract class _ElasticQuery extends ElasticQuery {
           Map<String, _ElasticQueryFacet>? facets,
       @JsonKey(ignore: true)
           List<String>? disjunctiveFacets,
+      _ElasticAnalytics? analytics,
       @protected
       @JsonKey(name: "group")
           _ElasticGroup? groupBy,
@@ -1880,9 +2080,14 @@ abstract class _ElasticQuery extends ElasticQuery {
   Map<String, _ElasticQueryFacet>? get facets;
   @override
 
-  ///
+  /// DEV
   @JsonKey(ignore: true)
   List<String>? get disjunctiveFacets;
+  @override
+
+  /// Tags can be used to enrich each query with unique information.
+  /// See [https://www.elastic.co/guide/en/app-search/current/tags.html]
+  _ElasticAnalytics? get analytics;
   @override
 
   /// Grouped results based on shared fields

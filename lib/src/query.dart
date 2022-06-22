@@ -55,8 +55,12 @@ class ElasticQuery with _$ElasticQuery {
     /// See [https://www.elastic.co/guide/en/app-search/current/facets.html]
     @protected Map<String, _ElasticQueryFacet>? facets,
 
-    ///
+    /// DEV
     @JsonKey(ignore: true) List<String>? disjunctiveFacets,
+
+    /// Tags can be used to enrich each query with unique information.
+    /// See [https://www.elastic.co/guide/en/app-search/current/tags.html]
+    _ElasticAnalytics? analytics,
 
     /// Grouped results based on shared fields
     @protected @JsonKey(name: "group") _ElasticGroup? groupBy,
@@ -306,12 +310,25 @@ class ElasticQuery with _$ElasticQuery {
     return copyWith(facets: _facets);
   }
 
+  /// DEV
   ElasticQuery disjunctiveFacet(String field) {
     return copyWith(
       disjunctiveFacets: [
         ...?disjunctiveFacets,
         field,
       ],
+    );
+  }
+
+  /// DEV
+  ElasticQuery tag(String tag) {
+    return copyWith(
+      analytics: _ElasticAnalytics(
+        tags: [
+          ...?analytics?.tags,
+          tag,
+        ],
+      ),
     );
   }
 
@@ -387,6 +404,7 @@ class ElasticQuery with _$ElasticQuery {
   ElasticQuery? _disjunctive(String field) {
     final disjunctiveFilters =
         filters?.where((filter) => filter.name != field).toList();
+    final disjunctiveFacets = facets?[field];
 
     if (filters?.length == disjunctiveFilters?.length) return null;
 
@@ -396,6 +414,7 @@ class ElasticQuery with _$ElasticQuery {
         size: 0,
       ),
       filters: disjunctiveFilters,
+      facets: disjunctiveFacets != null ? {field: disjunctiveFacets} : null,
       resultFields: [
         _ElasticResultField(name: field),
       ],
@@ -485,7 +504,6 @@ class _ElasticSearchFiltersConverter
 
       filters[type.identifier] = values.length == 1 ? values.first : values;
     }
-    print(filters);
     return filters;
   }
 }

@@ -6,6 +6,17 @@ part of elastic_app_search;
 // JsonSerializableGenerator
 // **************************************************************************
 
+_$__ElasticAnalytics _$$__ElasticAnalyticsFromJson(Map<String, dynamic> json) =>
+    _$__ElasticAnalytics(
+      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
+    );
+
+Map<String, dynamic> _$$__ElasticAnalyticsToJson(
+        _$__ElasticAnalytics instance) =>
+    <String, dynamic>{
+      'tags': instance.tags,
+    };
+
 _$__ElasticBoost _$$__ElasticBoostFromJson(Map<String, dynamic> json) =>
     _$__ElasticBoost(
       type: $enumDecode(_$_ElasticBoostTypeEnumMap, json['type']),
@@ -174,6 +185,10 @@ _$_ElasticQuery _$$_ElasticQueryFromJson(Map<String, dynamic> json) =>
         (k, e) =>
             MapEntry(k, _ElasticQueryFacet.fromJson(e as Map<String, dynamic>)),
       ),
+      analytics: json['analytics'] == null
+          ? null
+          : _ElasticAnalytics.fromJson(
+              json['analytics'] as Map<String, dynamic>),
       groupBy: json['group'] == null
           ? null
           : _ElasticGroup.fromJson(json['group'] as Map<String, dynamic>),
@@ -202,6 +217,7 @@ Map<String, dynamic> _$$_ElasticQueryToJson(_$_ElasticQuery instance) {
       const _ElasticResultFieldsConverter().toJson(instance.resultFields));
   writeNotNull(
       'facets', instance.facets?.map((k, e) => MapEntry(k, e.toJson())));
+  writeNotNull('analytics', instance.analytics?.toJson());
   writeNotNull('group', instance.groupBy?.toJson());
   writeNotNull('sort', const _ElasticSortConverter().toJson(instance.sortBy));
   return val;
