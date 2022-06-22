@@ -149,10 +149,7 @@ class ElasticQuery with _$ElasticQuery {
 
     if (isNotEqualTo != null || whereNotIn != null) {
       type = _ElasticFilterType.none;
-    } else if (isEqualToAny != null ||
-        whereInAny != null ||
-        isGreaterThanOrEqualTo != null ||
-        isLessThan != null) {
+    } else if (isEqualToAny != null || whereInAny != null) {
       type = _ElasticFilterType.any;
     }
 
