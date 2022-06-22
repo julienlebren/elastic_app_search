@@ -134,7 +134,10 @@ class ElasticQuery with _$ElasticQuery {
           from: (isGreaterThanOrEqualTo as DateTime?)?.toUTCString(),
           to: (isLessThan as DateTime?)?.toUTCString(),
         );
-      } else if (isGreaterThanOrEqualTo is double || isLessThan is double) {
+      } else if (isGreaterThanOrEqualTo is double ||
+          isLessThan is double ||
+          isGreaterThanOrEqualTo is int ||
+          isLessThan is int) {
         value = _ElasticRangeFilter(
           from: isGreaterThanOrEqualTo.toString(),
           to: isLessThan.toString(),
@@ -387,7 +390,9 @@ class ElasticQuery with _$ElasticQuery {
     return engine!.get(this, cancelToken);
   }
 
-  /// DEV
+  /// Private method - not intended to be used
+  /// Builds the list of the disjunctive queries that will be passed
+  /// at the same time of the main query, when disjunctive facets are set.
   List<ElasticQuery>? get _disjunctives {
     if (disjunctiveFacets == null || disjunctiveFacets!.isEmpty) return null;
     List<ElasticQuery> _disjunctives = [];
@@ -401,6 +406,8 @@ class ElasticQuery with _$ElasticQuery {
     return _disjunctives;
   }
 
+  /// Private method - not intended to be used
+  /// Build a disjunctive query when disjunctive facets are set.
   ElasticQuery? _disjunctive(String field) {
     final disjunctiveFilters =
         filters?.where((filter) => filter.name != field).toList();
@@ -409,16 +416,9 @@ class ElasticQuery with _$ElasticQuery {
     if (filters?.length == disjunctiveFilters?.length) return null;
 
     return copyWith(
-      searchPage: _ElasticSearchPage(
-        current: 1,
-        size: 0,
-      ),
       filters: disjunctiveFilters,
       facets: disjunctiveFacets != null ? {field: disjunctiveFacets} : null,
-      resultFields: [
-        _ElasticResultField(name: field),
-      ],
-    );
+    ).page(1, size: 0).resultField(field).tag("Facet-Only");
   }
 }
 
