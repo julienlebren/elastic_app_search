@@ -177,7 +177,7 @@ class ElasticQuery with _$ElasticQuery {
   /// DEV
   ElasticQuery geoFilter(
     String field, {
-    required LatLng center,
+    required LatLong center,
     @Default(GeoUnit.meters) GeoUnit? unit,
     double? distance,
     double? from,
@@ -572,7 +572,7 @@ class _ElasticGeoFilter with _$_ElasticGeoFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   @Assert('center.length != 2', 'center must be an array contaning 2 numbers')
   const factory _ElasticGeoFilter({
-    required LatLng center,
+    @_LatLongConverter() required LatLong center,
     double? distance,
     required GeoUnit unit,
     double? from,

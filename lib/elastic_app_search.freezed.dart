@@ -1426,6 +1426,152 @@ abstract class _ElasticRange implements ElasticRange {
       throw _privateConstructorUsedError;
 }
 
+/// @nodoc
+class _$LatLongTearOff {
+  const _$LatLongTearOff();
+
+  _LatLong call({required double latitude, required double longitude}) {
+    return _LatLong(
+      latitude: latitude,
+      longitude: longitude,
+    );
+  }
+}
+
+/// @nodoc
+const $LatLong = _$LatLongTearOff();
+
+/// @nodoc
+mixin _$LatLong {
+  double get latitude => throw _privateConstructorUsedError;
+  double get longitude => throw _privateConstructorUsedError;
+
+  @JsonKey(ignore: true)
+  $LatLongCopyWith<LatLong> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $LatLongCopyWith<$Res> {
+  factory $LatLongCopyWith(LatLong value, $Res Function(LatLong) then) =
+      _$LatLongCopyWithImpl<$Res>;
+  $Res call({double latitude, double longitude});
+}
+
+/// @nodoc
+class _$LatLongCopyWithImpl<$Res> implements $LatLongCopyWith<$Res> {
+  _$LatLongCopyWithImpl(this._value, this._then);
+
+  final LatLong _value;
+  // ignore: unused_field
+  final $Res Function(LatLong) _then;
+
+  @override
+  $Res call({
+    Object? latitude = freezed,
+    Object? longitude = freezed,
+  }) {
+    return _then(_value.copyWith(
+      latitude: latitude == freezed
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      longitude: longitude == freezed
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$LatLongCopyWith<$Res> implements $LatLongCopyWith<$Res> {
+  factory _$LatLongCopyWith(_LatLong value, $Res Function(_LatLong) then) =
+      __$LatLongCopyWithImpl<$Res>;
+  @override
+  $Res call({double latitude, double longitude});
+}
+
+/// @nodoc
+class __$LatLongCopyWithImpl<$Res> extends _$LatLongCopyWithImpl<$Res>
+    implements _$LatLongCopyWith<$Res> {
+  __$LatLongCopyWithImpl(_LatLong _value, $Res Function(_LatLong) _then)
+      : super(_value, (v) => _then(v as _LatLong));
+
+  @override
+  _LatLong get _value => super._value as _LatLong;
+
+  @override
+  $Res call({
+    Object? latitude = freezed,
+    Object? longitude = freezed,
+  }) {
+    return _then(_LatLong(
+      latitude: latitude == freezed
+          ? _value.latitude
+          : latitude // ignore: cast_nullable_to_non_nullable
+              as double,
+      longitude: longitude == freezed
+          ? _value.longitude
+          : longitude // ignore: cast_nullable_to_non_nullable
+              as double,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_LatLong implements _LatLong {
+  const _$_LatLong({required this.latitude, required this.longitude})
+      : assert(latitude >= -90 && latitude <= 90,
+            'Latitude must be between -90 and 90 degrees.'),
+        assert(longitude >= -180 && latitude <= 180,
+            'Longitude must be between -90 and 90 degrees.');
+
+  @override
+  final double latitude;
+  @override
+  final double longitude;
+
+  @override
+  String toString() {
+    return 'LatLong(latitude: $latitude, longitude: $longitude)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _LatLong &&
+            const DeepCollectionEquality().equals(other.latitude, latitude) &&
+            const DeepCollectionEquality().equals(other.longitude, longitude));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(latitude),
+      const DeepCollectionEquality().hash(longitude));
+
+  @JsonKey(ignore: true)
+  @override
+  _$LatLongCopyWith<_LatLong> get copyWith =>
+      __$LatLongCopyWithImpl<_LatLong>(this, _$identity);
+}
+
+abstract class _LatLong implements LatLong {
+  const factory _LatLong(
+      {required double latitude, required double longitude}) = _$_LatLong;
+
+  @override
+  double get latitude;
+  @override
+  double get longitude;
+  @override
+  @JsonKey(ignore: true)
+  _$LatLongCopyWith<_LatLong> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 ElasticQuery _$ElasticQueryFromJson(Map<String, dynamic> json) {
   return _ElasticQuery.fromJson(json);
 }
@@ -2881,7 +3027,7 @@ class _$_ElasticGeoFilterTearOff {
   const _$_ElasticGeoFilterTearOff();
 
   __ElasticGeoFilter call(
-      {required LatLng center,
+      {@_LatLongConverter() required LatLong center,
       double? distance,
       required GeoUnit unit,
       double? from,
@@ -2905,7 +3051,8 @@ const _$ElasticGeoFilter = _$_ElasticGeoFilterTearOff();
 
 /// @nodoc
 mixin _$_ElasticGeoFilter {
-  LatLng get center => throw _privateConstructorUsedError;
+  @_LatLongConverter()
+  LatLong get center => throw _privateConstructorUsedError;
   double? get distance => throw _privateConstructorUsedError;
   GeoUnit get unit => throw _privateConstructorUsedError;
   double? get from => throw _privateConstructorUsedError;
@@ -2923,11 +3070,13 @@ abstract class _$ElasticGeoFilterCopyWith<$Res> {
           _ElasticGeoFilter value, $Res Function(_ElasticGeoFilter) then) =
       __$ElasticGeoFilterCopyWithImpl<$Res>;
   $Res call(
-      {LatLng center,
+      {@_LatLongConverter() LatLong center,
       double? distance,
       GeoUnit unit,
       double? from,
       double? to});
+
+  $LatLongCopyWith<$Res> get center;
 }
 
 /// @nodoc
@@ -2951,7 +3100,7 @@ class __$ElasticGeoFilterCopyWithImpl<$Res>
       center: center == freezed
           ? _value.center
           : center // ignore: cast_nullable_to_non_nullable
-              as LatLng,
+              as LatLong,
       distance: distance == freezed
           ? _value.distance
           : distance // ignore: cast_nullable_to_non_nullable
@@ -2970,6 +3119,13 @@ class __$ElasticGeoFilterCopyWithImpl<$Res>
               as double?,
     ));
   }
+
+  @override
+  $LatLongCopyWith<$Res> get center {
+    return $LatLongCopyWith<$Res>(_value.center, (value) {
+      return _then(_value.copyWith(center: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -2980,11 +3136,14 @@ abstract class _$_ElasticGeoFilterCopyWith<$Res>
       __$_ElasticGeoFilterCopyWithImpl<$Res>;
   @override
   $Res call(
-      {LatLng center,
+      {@_LatLongConverter() LatLong center,
       double? distance,
       GeoUnit unit,
       double? from,
       double? to});
+
+  @override
+  $LatLongCopyWith<$Res> get center;
 }
 
 /// @nodoc
@@ -3010,7 +3169,7 @@ class __$_ElasticGeoFilterCopyWithImpl<$Res>
       center: center == freezed
           ? _value.center
           : center // ignore: cast_nullable_to_non_nullable
-              as LatLng,
+              as LatLong,
       distance: distance == freezed
           ? _value.distance
           : distance // ignore: cast_nullable_to_non_nullable
@@ -3036,7 +3195,7 @@ class __$_ElasticGeoFilterCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _$__ElasticGeoFilter implements __ElasticGeoFilter {
   const _$__ElasticGeoFilter(
-      {required this.center,
+      {@_LatLongConverter() required this.center,
       this.distance,
       required this.unit,
       this.from,
@@ -3048,7 +3207,8 @@ class _$__ElasticGeoFilter implements __ElasticGeoFilter {
       _$$__ElasticGeoFilterFromJson(json);
 
   @override
-  final LatLng center;
+  @_LatLongConverter()
+  final LatLong center;
   @override
   final double? distance;
   @override
@@ -3097,7 +3257,7 @@ class _$__ElasticGeoFilter implements __ElasticGeoFilter {
 
 abstract class __ElasticGeoFilter implements _ElasticGeoFilter {
   const factory __ElasticGeoFilter(
-      {required LatLng center,
+      {@_LatLongConverter() required LatLong center,
       double? distance,
       required GeoUnit unit,
       double? from,
@@ -3107,7 +3267,8 @@ abstract class __ElasticGeoFilter implements _ElasticGeoFilter {
       _$__ElasticGeoFilter.fromJson;
 
   @override
-  LatLng get center;
+  @_LatLongConverter()
+  LatLong get center;
   @override
   double? get distance;
   @override

@@ -323,7 +323,7 @@ Map<String, dynamic> _$$__ElasticNumberRangeFilterToJson(
 
 _$__ElasticGeoFilter _$$__ElasticGeoFilterFromJson(Map<String, dynamic> json) =>
     _$__ElasticGeoFilter(
-      center: json['center'],
+      center: const _LatLongConverter().fromJson(json['center'] as String),
       distance: (json['distance'] as num?)?.toDouble(),
       unit: $enumDecode(_$GeoUnitEnumMap, json['unit']),
       from: (json['from'] as num?)?.toDouble(),
@@ -340,7 +340,7 @@ Map<String, dynamic> _$$__ElasticGeoFilterToJson(
     }
   }
 
-  writeNotNull('center', instance.center);
+  writeNotNull('center', const _LatLongConverter().toJson(instance.center));
   writeNotNull('distance', instance.distance);
   val['unit'] = _$GeoUnitEnumMap[instance.unit];
   writeNotNull('from', instance.from);

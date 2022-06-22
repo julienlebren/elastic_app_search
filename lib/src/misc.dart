@@ -66,3 +66,31 @@ class ElasticRange with _$ElasticRange {
     Object? to,
   }) = _ElasticRange;
 }
+
+@freezed
+class LatLong with _$LatLong {
+  @Assert('latitude >= -90 && latitude <= 90',
+      'Latitude must be between -90 and 90 degrees.')
+  @Assert('longitude >= -180 && latitude <= 180',
+      'Longitude must be between -90 and 90 degrees.')
+  const factory LatLong({
+    required double latitude,
+    required double longitude,
+  }) = _LatLong;
+}
+
+class _LatLongConverter implements JsonConverter<LatLong, String> {
+  const _LatLongConverter();
+
+  @override
+  LatLong fromJson(String value) {
+    final values = value.split(',');
+    return LatLong(
+      latitude: double.parse(values[0]),
+      longitude: double.parse(values[1]),
+    );
+  }
+
+  @override
+  String toJson(LatLong value) => "${value.longitude}, ${value.latitude}";
+}
