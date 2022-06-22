@@ -92,5 +92,5 @@ class _LatLongConverter implements JsonConverter<LatLong, String> {
   }
 
   @override
-  String toJson(LatLong value) => "${value.longitude}, ${value.latitude}";
+  String toJson(LatLong value) => "${value.latitude}, ${value.longitude}";
 }
