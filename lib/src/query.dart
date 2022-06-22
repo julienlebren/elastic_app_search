@@ -139,8 +139,8 @@ class ElasticQuery with _$ElasticQuery {
           isGreaterThanOrEqualTo is int ||
           isLessThan is int) {
         value = _ElasticRangeFilter(
-          from: isGreaterThanOrEqualTo.toString(),
-          to: isLessThan.toString(),
+          from: isGreaterThanOrEqualTo?.toString(),
+          to: isLessThan?.toString(),
         );
       }
     }
