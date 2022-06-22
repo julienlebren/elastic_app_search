@@ -174,6 +174,33 @@ class ElasticQuery with _$ElasticQuery {
     );
   }
 
+  /// DEV
+  ElasticQuery geoFilter(
+    String field, {
+    required LatLng center,
+    @Default(GeoUnit.meters) GeoUnit? unit,
+    double? distance,
+    double? from,
+    double? to,
+  }) {
+    return copyWith(
+      filters: [
+        ...?filters,
+        _ElasticSearchFilter(
+          type: _ElasticFilterType.all,
+          name: field,
+          value: _ElasticGeoFilter(
+            center: center,
+            unit: unit!,
+            distance: distance,
+            from: from,
+            to: to,
+          ),
+        ),
+      ],
+    );
+  }
+
   /// Takes a precision [int], creates and returns a new [ElasticQuery]
   /// See [https://www.elastic.co/guide/en/app-search/current/search-api-precision.html]
   //
@@ -501,12 +528,16 @@ class _ElasticSearchFiltersConverter
           final encodedValue =
               (searchFilter.value as _ElasticNumberRangeFilter).toJson();
           values.add({searchFilter.name: encodedValue});
+        } else if (searchFilter.value is _ElasticGeoFilter) {
+          final encodedValue =
+              (searchFilter.value as _ElasticGeoFilter).toJson();
+          values.add({searchFilter.name: encodedValue});
         } else {
           values.add({searchFilter.name: searchFilter.value});
         }
       }
 
-      filters[type.identifier] = values.length == 1 ? values.first : values;
+      filters[type.name] = values.length == 1 ? values.first : values;
     }
     return filters;
   }
@@ -541,7 +572,7 @@ class _ElasticGeoFilter with _$_ElasticGeoFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   @Assert('center.length != 2', 'center must be an array contaning 2 numbers')
   const factory _ElasticGeoFilter({
-    required List<double> center,
+    required LatLng center,
     double? distance,
     required GeoUnit unit,
     double? from,

@@ -2881,7 +2881,7 @@ class _$_ElasticGeoFilterTearOff {
   const _$_ElasticGeoFilterTearOff();
 
   __ElasticGeoFilter call(
-      {required List<double> center,
+      {required LatLng center,
       double? distance,
       required GeoUnit unit,
       double? from,
@@ -2905,7 +2905,7 @@ const _$ElasticGeoFilter = _$_ElasticGeoFilterTearOff();
 
 /// @nodoc
 mixin _$_ElasticGeoFilter {
-  List<double> get center => throw _privateConstructorUsedError;
+  LatLng get center => throw _privateConstructorUsedError;
   double? get distance => throw _privateConstructorUsedError;
   GeoUnit get unit => throw _privateConstructorUsedError;
   double? get from => throw _privateConstructorUsedError;
@@ -2923,7 +2923,7 @@ abstract class _$ElasticGeoFilterCopyWith<$Res> {
           _ElasticGeoFilter value, $Res Function(_ElasticGeoFilter) then) =
       __$ElasticGeoFilterCopyWithImpl<$Res>;
   $Res call(
-      {List<double> center,
+      {LatLng center,
       double? distance,
       GeoUnit unit,
       double? from,
@@ -2951,7 +2951,7 @@ class __$ElasticGeoFilterCopyWithImpl<$Res>
       center: center == freezed
           ? _value.center
           : center // ignore: cast_nullable_to_non_nullable
-              as List<double>,
+              as LatLng,
       distance: distance == freezed
           ? _value.distance
           : distance // ignore: cast_nullable_to_non_nullable
@@ -2980,7 +2980,7 @@ abstract class _$_ElasticGeoFilterCopyWith<$Res>
       __$_ElasticGeoFilterCopyWithImpl<$Res>;
   @override
   $Res call(
-      {List<double> center,
+      {LatLng center,
       double? distance,
       GeoUnit unit,
       double? from,
@@ -3010,7 +3010,7 @@ class __$_ElasticGeoFilterCopyWithImpl<$Res>
       center: center == freezed
           ? _value.center
           : center // ignore: cast_nullable_to_non_nullable
-              as List<double>,
+              as LatLng,
       distance: distance == freezed
           ? _value.distance
           : distance // ignore: cast_nullable_to_non_nullable
@@ -3048,7 +3048,7 @@ class _$__ElasticGeoFilter implements __ElasticGeoFilter {
       _$$__ElasticGeoFilterFromJson(json);
 
   @override
-  final List<double> center;
+  final LatLng center;
   @override
   final double? distance;
   @override
@@ -3097,7 +3097,7 @@ class _$__ElasticGeoFilter implements __ElasticGeoFilter {
 
 abstract class __ElasticGeoFilter implements _ElasticGeoFilter {
   const factory __ElasticGeoFilter(
-      {required List<double> center,
+      {required LatLng center,
       double? distance,
       required GeoUnit unit,
       double? from,
@@ -3107,7 +3107,7 @@ abstract class __ElasticGeoFilter implements _ElasticGeoFilter {
       _$__ElasticGeoFilter.fromJson;
 
   @override
-  List<double> get center;
+  LatLng get center;
   @override
   double? get distance;
   @override

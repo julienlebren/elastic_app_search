@@ -323,9 +323,7 @@ Map<String, dynamic> _$$__ElasticNumberRangeFilterToJson(
 
 _$__ElasticGeoFilter _$$__ElasticGeoFilterFromJson(Map<String, dynamic> json) =>
     _$__ElasticGeoFilter(
-      center: (json['center'] as List<dynamic>)
-          .map((e) => (e as num).toDouble())
-          .toList(),
+      center: json['center'],
       distance: (json['distance'] as num?)?.toDouble(),
       unit: $enumDecode(_$GeoUnitEnumMap, json['unit']),
       from: (json['from'] as num?)?.toDouble(),
@@ -334,9 +332,7 @@ _$__ElasticGeoFilter _$$__ElasticGeoFilterFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$__ElasticGeoFilterToJson(
     _$__ElasticGeoFilter instance) {
-  final val = <String, dynamic>{
-    'center': instance.center,
-  };
+  final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -344,6 +340,7 @@ Map<String, dynamic> _$$__ElasticGeoFilterToJson(
     }
   }
 
+  writeNotNull('center', instance.center);
   writeNotNull('distance', instance.distance);
   val['unit'] = _$GeoUnitEnumMap[instance.unit];
   writeNotNull('from', instance.from);
@@ -352,14 +349,14 @@ Map<String, dynamic> _$$__ElasticGeoFilterToJson(
 }
 
 const _$GeoUnitEnumMap = {
-  GeoUnit.millimeters: 'millimeters',
-  GeoUnit.centimeters: 'centimeters',
-  GeoUnit.meters: 'meters',
-  GeoUnit.kilometers: 'kilometers',
-  GeoUnit.inches: 'inches',
-  GeoUnit.feet: 'feet',
-  GeoUnit.yard: 'yard',
-  GeoUnit.miles: 'miles',
+  GeoUnit.millimeters: 'mm',
+  GeoUnit.centimeters: 'cm',
+  GeoUnit.meters: 'm',
+  GeoUnit.kilometers: 'km',
+  GeoUnit.inches: 'in',
+  GeoUnit.feet: 'ft',
+  GeoUnit.yard: 'yd',
+  GeoUnit.miles: 'mi',
 };
 
 _$__ElasticSearchField _$$__ElasticSearchFieldFromJson(

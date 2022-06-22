@@ -3,6 +3,7 @@ library elastic_app_search;
 import 'package:dio/dio.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:latlong2/latlong.dart';
 
 export 'package:dio/dio.dart' show CancelToken;
 
