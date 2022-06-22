@@ -130,7 +130,7 @@ class ElasticQuery with _$ElasticQuery {
       value = isEqualToAny.toString();
     } else if (isGreaterThanOrEqualTo != null || isLessThan != null) {
       if (isGreaterThanOrEqualTo is DateTime || isLessThan is DateTime) {
-        value = _ElasticRangeFilter(
+        value = _ElasticDateRangeFilter(
           from: (isGreaterThanOrEqualTo as DateTime?)?.toUTCString(),
           to: (isLessThan as DateTime?)?.toUTCString(),
         );
@@ -138,9 +138,9 @@ class ElasticQuery with _$ElasticQuery {
           isLessThan is double ||
           isGreaterThanOrEqualTo is int ||
           isLessThan is int) {
-        value = _ElasticRangeFilter(
-          from: isGreaterThanOrEqualTo?.toString(),
-          to: isLessThan?.toString(),
+        value = _ElasticNumberRangeFilter(
+          from: (isGreaterThanOrEqualTo as num?)?.toDouble(),
+          to: (isLessThan as num?)?.toDouble(),
         );
       }
     }
@@ -149,7 +149,10 @@ class ElasticQuery with _$ElasticQuery {
 
     if (isNotEqualTo != null || whereNotIn != null) {
       type = _ElasticFilterType.none;
-    } else if (isEqualToAny != null || whereInAny != null) {
+    } else if (isEqualToAny != null ||
+        whereInAny != null ||
+        isGreaterThanOrEqualTo != null ||
+        isLessThan != null) {
       type = _ElasticFilterType.any;
     }
 
@@ -490,9 +493,13 @@ class _ElasticSearchFiltersConverter
       var values = [];
       for (final searchFilter
           in searchFilters.where((filter) => filter.type == type)) {
-        if (searchFilter.value is _ElasticRangeFilter) {
+        if (searchFilter.value is _ElasticDateRangeFilter) {
           final encodedValue =
-              (searchFilter.value as _ElasticRangeFilter).toJson();
+              (searchFilter.value as _ElasticDateRangeFilter).toJson();
+          values.add({searchFilter.name: encodedValue});
+        } else if (searchFilter.value is _ElasticNumberRangeFilter) {
+          final encodedValue =
+              (searchFilter.value as _ElasticNumberRangeFilter).toJson();
           values.add({searchFilter.name: encodedValue});
         } else {
           values.add({searchFilter.name: searchFilter.value});
@@ -506,15 +513,27 @@ class _ElasticSearchFiltersConverter
 }
 
 @freezed
-class _ElasticRangeFilter with _$_ElasticRangeFilter {
+class _ElasticDateRangeFilter with _$_ElasticDateRangeFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory _ElasticRangeFilter({
+  const factory _ElasticDateRangeFilter({
     String? from,
     String? to,
-  }) = __ElasticRangeFilter;
+  }) = __ElasticDateRangeFilter;
 
-  factory _ElasticRangeFilter.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticRangeFilterFromJson(json);
+  factory _ElasticDateRangeFilter.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticDateRangeFilterFromJson(json);
+}
+
+@freezed
+class _ElasticNumberRangeFilter with _$_ElasticNumberRangeFilter {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  const factory _ElasticNumberRangeFilter({
+    double? from,
+    double? to,
+  }) = __ElasticNumberRangeFilter;
+
+  factory _ElasticNumberRangeFilter.fromJson(Map<String, dynamic> json) =>
+      _$_ElasticNumberRangeFilterFromJson(json);
 }
 
 @freezed

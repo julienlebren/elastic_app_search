@@ -277,15 +277,37 @@ const _$_ElasticFilterTypeEnumMap = {
   _ElasticFilterType.any: 'any',
 };
 
-_$__ElasticRangeFilter _$$__ElasticRangeFilterFromJson(
+_$__ElasticDateRangeFilter _$$__ElasticDateRangeFilterFromJson(
         Map<String, dynamic> json) =>
-    _$__ElasticRangeFilter(
+    _$__ElasticDateRangeFilter(
       from: json['from'] as String?,
       to: json['to'] as String?,
     );
 
-Map<String, dynamic> _$$__ElasticRangeFilterToJson(
-    _$__ElasticRangeFilter instance) {
+Map<String, dynamic> _$$__ElasticDateRangeFilterToJson(
+    _$__ElasticDateRangeFilter instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('from', instance.from);
+  writeNotNull('to', instance.to);
+  return val;
+}
+
+_$__ElasticNumberRangeFilter _$$__ElasticNumberRangeFilterFromJson(
+        Map<String, dynamic> json) =>
+    _$__ElasticNumberRangeFilter(
+      from: (json['from'] as num?)?.toDouble(),
+      to: (json['to'] as num?)?.toDouble(),
+    );
+
+Map<String, dynamic> _$$__ElasticNumberRangeFilterToJson(
+    _$__ElasticNumberRangeFilter instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
