@@ -11,7 +11,7 @@ class _ElasticQueryFacet with _$_ElasticQueryFacet {
     List<_ElasticRangeFacet>? ranges,
     int? size,
     @_LatLongConverter() LatLong? center,
-    @Default(GeoUnit.meters) GeoUnit? unit,
+    GeoUnit? unit,
   }) = __ElasticQueryFacet;
 
   factory _ElasticQueryFacet.fromJson(Map<String, dynamic> json) =>

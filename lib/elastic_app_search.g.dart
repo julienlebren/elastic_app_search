@@ -67,8 +67,7 @@ _$__ElasticQueryFacet _$$__ElasticQueryFacetFromJson(
           .toList(),
       size: json['size'] as int?,
       center: const _LatLongConverter().fromJson(json['center'] as String?),
-      unit:
-          $enumDecodeNullable(_$GeoUnitEnumMap, json['unit']) ?? GeoUnit.meters,
+      unit: $enumDecodeNullable(_$GeoUnitEnumMap, json['unit']),
     );
 
 Map<String, dynamic> _$$__ElasticQueryFacetToJson(

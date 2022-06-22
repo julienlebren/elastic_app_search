@@ -441,7 +441,7 @@ class _$_ElasticQueryFacetTearOff {
       List<_ElasticRangeFacet>? ranges,
       int? size,
       @_LatLongConverter() LatLong? center,
-      GeoUnit? unit = GeoUnit.meters}) {
+      GeoUnit? unit}) {
     return __ElasticQueryFacet(
       type: type,
       name: name,
@@ -628,7 +628,7 @@ class _$__ElasticQueryFacet implements __ElasticQueryFacet {
       this.ranges,
       this.size,
       @_LatLongConverter() this.center,
-      this.unit = GeoUnit.meters});
+      this.unit});
 
   factory _$__ElasticQueryFacet.fromJson(Map<String, dynamic> json) =>
       _$$__ElasticQueryFacetFromJson(json);
@@ -644,7 +644,6 @@ class _$__ElasticQueryFacet implements __ElasticQueryFacet {
   @override
   @_LatLongConverter()
   final LatLong? center;
-  @JsonKey()
   @override
   final GeoUnit? unit;
 
