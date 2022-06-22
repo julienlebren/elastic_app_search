@@ -79,11 +79,12 @@ class LatLong with _$LatLong {
   }) = _LatLong;
 }
 
-class _LatLongConverter implements JsonConverter<LatLong, String> {
+class _LatLongConverter implements JsonConverter<LatLong?, String?> {
   const _LatLongConverter();
 
   @override
-  LatLong fromJson(String value) {
+  LatLong? fromJson(String? value) {
+    if (value == null) return null;
     final values = value.split(',');
     return LatLong(
       latitude: double.parse(values[0]),
@@ -92,5 +93,8 @@ class _LatLongConverter implements JsonConverter<LatLong, String> {
   }
 
   @override
-  String toJson(LatLong value) => "${value.latitude}, ${value.longitude}";
+  String? toJson(LatLong? value) {
+    if (value == null) return null;
+    return "${value.latitude}, ${value.longitude}";
+  }
 }

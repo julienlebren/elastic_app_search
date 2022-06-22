@@ -289,6 +289,8 @@ class ElasticQuery with _$ElasticQuery {
     Object? isLessThan,
     int? size,
     List<ElasticRange>? ranges,
+    @_LatLongConverter() LatLong? center,
+    @Default(GeoUnit.meters) GeoUnit? unit,
   }) {
     var _facets = facets ?? {};
     _ElasticQueryFacet _facet;
@@ -309,6 +311,8 @@ class ElasticQuery with _$ElasticQuery {
               ),
             )
             .toList(),
+        center: center,
+        unit: unit,
       );
     }
     /*if (isMoreThanOrEqualTo != null || isLessThan != null) 
@@ -570,8 +574,9 @@ class _ElasticNumberRangeFilter with _$_ElasticNumberRangeFilter {
 @freezed
 class _ElasticGeoFilter with _$_ElasticGeoFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  @Assert('center != null', 'center is required.')
   const factory _ElasticGeoFilter({
-    @_LatLongConverter() required LatLong center,
+    @_LatLongConverter() LatLong? center,
     double? distance,
     required GeoUnit unit,
     double? from,

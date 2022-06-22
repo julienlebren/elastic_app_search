@@ -439,12 +439,16 @@ class _$_ElasticQueryFacetTearOff {
       {required String type,
       String? name,
       List<_ElasticRangeFacet>? ranges,
-      int? size}) {
+      int? size,
+      @_LatLongConverter() LatLong? center,
+      GeoUnit? unit = GeoUnit.meters}) {
     return __ElasticQueryFacet(
       type: type,
       name: name,
       ranges: ranges,
       size: size,
+      center: center,
+      unit: unit,
     );
   }
 
@@ -462,6 +466,9 @@ mixin _$_ElasticQueryFacet {
   String? get name => throw _privateConstructorUsedError;
   List<_ElasticRangeFacet>? get ranges => throw _privateConstructorUsedError;
   int? get size => throw _privateConstructorUsedError;
+  @_LatLongConverter()
+  LatLong? get center => throw _privateConstructorUsedError;
+  GeoUnit? get unit => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -475,7 +482,14 @@ abstract class _$ElasticQueryFacetCopyWith<$Res> {
           _ElasticQueryFacet value, $Res Function(_ElasticQueryFacet) then) =
       __$ElasticQueryFacetCopyWithImpl<$Res>;
   $Res call(
-      {String type, String? name, List<_ElasticRangeFacet>? ranges, int? size});
+      {String type,
+      String? name,
+      List<_ElasticRangeFacet>? ranges,
+      int? size,
+      @_LatLongConverter() LatLong? center,
+      GeoUnit? unit});
+
+  $LatLongCopyWith<$Res>? get center;
 }
 
 /// @nodoc
@@ -493,6 +507,8 @@ class __$ElasticQueryFacetCopyWithImpl<$Res>
     Object? name = freezed,
     Object? ranges = freezed,
     Object? size = freezed,
+    Object? center = freezed,
+    Object? unit = freezed,
   }) {
     return _then(_value.copyWith(
       type: type == freezed
@@ -511,7 +527,26 @@ class __$ElasticQueryFacetCopyWithImpl<$Res>
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as int?,
+      center: center == freezed
+          ? _value.center
+          : center // ignore: cast_nullable_to_non_nullable
+              as LatLong?,
+      unit: unit == freezed
+          ? _value.unit
+          : unit // ignore: cast_nullable_to_non_nullable
+              as GeoUnit?,
     ));
+  }
+
+  @override
+  $LatLongCopyWith<$Res>? get center {
+    if (_value.center == null) {
+      return null;
+    }
+
+    return $LatLongCopyWith<$Res>(_value.center!, (value) {
+      return _then(_value.copyWith(center: value));
+    });
   }
 }
 
@@ -523,7 +558,15 @@ abstract class _$_ElasticQueryFacetCopyWith<$Res>
       __$_ElasticQueryFacetCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String type, String? name, List<_ElasticRangeFacet>? ranges, int? size});
+      {String type,
+      String? name,
+      List<_ElasticRangeFacet>? ranges,
+      int? size,
+      @_LatLongConverter() LatLong? center,
+      GeoUnit? unit});
+
+  @override
+  $LatLongCopyWith<$Res>? get center;
 }
 
 /// @nodoc
@@ -543,6 +586,8 @@ class __$_ElasticQueryFacetCopyWithImpl<$Res>
     Object? name = freezed,
     Object? ranges = freezed,
     Object? size = freezed,
+    Object? center = freezed,
+    Object? unit = freezed,
   }) {
     return _then(__ElasticQueryFacet(
       type: type == freezed
@@ -561,6 +606,14 @@ class __$_ElasticQueryFacetCopyWithImpl<$Res>
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as int?,
+      center: center == freezed
+          ? _value.center
+          : center // ignore: cast_nullable_to_non_nullable
+              as LatLong?,
+      unit: unit == freezed
+          ? _value.unit
+          : unit // ignore: cast_nullable_to_non_nullable
+              as GeoUnit?,
     ));
   }
 }
@@ -570,7 +623,12 @@ class __$_ElasticQueryFacetCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _$__ElasticQueryFacet implements __ElasticQueryFacet {
   const _$__ElasticQueryFacet(
-      {required this.type, this.name, this.ranges, this.size});
+      {required this.type,
+      this.name,
+      this.ranges,
+      this.size,
+      @_LatLongConverter() this.center,
+      this.unit = GeoUnit.meters});
 
   factory _$__ElasticQueryFacet.fromJson(Map<String, dynamic> json) =>
       _$$__ElasticQueryFacetFromJson(json);
@@ -583,10 +641,16 @@ class _$__ElasticQueryFacet implements __ElasticQueryFacet {
   final List<_ElasticRangeFacet>? ranges;
   @override
   final int? size;
+  @override
+  @_LatLongConverter()
+  final LatLong? center;
+  @JsonKey()
+  @override
+  final GeoUnit? unit;
 
   @override
   String toString() {
-    return '_ElasticQueryFacet(type: $type, name: $name, ranges: $ranges, size: $size)';
+    return '_ElasticQueryFacet(type: $type, name: $name, ranges: $ranges, size: $size, center: $center, unit: $unit)';
   }
 
   @override
@@ -597,7 +661,9 @@ class _$__ElasticQueryFacet implements __ElasticQueryFacet {
             const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality().equals(other.name, name) &&
             const DeepCollectionEquality().equals(other.ranges, ranges) &&
-            const DeepCollectionEquality().equals(other.size, size));
+            const DeepCollectionEquality().equals(other.size, size) &&
+            const DeepCollectionEquality().equals(other.center, center) &&
+            const DeepCollectionEquality().equals(other.unit, unit));
   }
 
   @override
@@ -606,7 +672,9 @@ class _$__ElasticQueryFacet implements __ElasticQueryFacet {
       const DeepCollectionEquality().hash(type),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(ranges),
-      const DeepCollectionEquality().hash(size));
+      const DeepCollectionEquality().hash(size),
+      const DeepCollectionEquality().hash(center),
+      const DeepCollectionEquality().hash(unit));
 
   @JsonKey(ignore: true)
   @override
@@ -624,7 +692,9 @@ abstract class __ElasticQueryFacet implements _ElasticQueryFacet {
       {required String type,
       String? name,
       List<_ElasticRangeFacet>? ranges,
-      int? size}) = _$__ElasticQueryFacet;
+      int? size,
+      @_LatLongConverter() LatLong? center,
+      GeoUnit? unit}) = _$__ElasticQueryFacet;
 
   factory __ElasticQueryFacet.fromJson(Map<String, dynamic> json) =
       _$__ElasticQueryFacet.fromJson;
@@ -637,6 +707,11 @@ abstract class __ElasticQueryFacet implements _ElasticQueryFacet {
   List<_ElasticRangeFacet>? get ranges;
   @override
   int? get size;
+  @override
+  @_LatLongConverter()
+  LatLong? get center;
+  @override
+  GeoUnit? get unit;
   @override
   @JsonKey(ignore: true)
   _$_ElasticQueryFacetCopyWith<__ElasticQueryFacet> get copyWith =>
@@ -3027,7 +3102,7 @@ class _$_ElasticGeoFilterTearOff {
   const _$_ElasticGeoFilterTearOff();
 
   __ElasticGeoFilter call(
-      {@_LatLongConverter() required LatLong center,
+      {@_LatLongConverter() LatLong? center,
       double? distance,
       required GeoUnit unit,
       double? from,
@@ -3052,7 +3127,7 @@ const _$ElasticGeoFilter = _$_ElasticGeoFilterTearOff();
 /// @nodoc
 mixin _$_ElasticGeoFilter {
   @_LatLongConverter()
-  LatLong get center => throw _privateConstructorUsedError;
+  LatLong? get center => throw _privateConstructorUsedError;
   double? get distance => throw _privateConstructorUsedError;
   GeoUnit get unit => throw _privateConstructorUsedError;
   double? get from => throw _privateConstructorUsedError;
@@ -3070,13 +3145,13 @@ abstract class _$ElasticGeoFilterCopyWith<$Res> {
           _ElasticGeoFilter value, $Res Function(_ElasticGeoFilter) then) =
       __$ElasticGeoFilterCopyWithImpl<$Res>;
   $Res call(
-      {@_LatLongConverter() LatLong center,
+      {@_LatLongConverter() LatLong? center,
       double? distance,
       GeoUnit unit,
       double? from,
       double? to});
 
-  $LatLongCopyWith<$Res> get center;
+  $LatLongCopyWith<$Res>? get center;
 }
 
 /// @nodoc
@@ -3100,7 +3175,7 @@ class __$ElasticGeoFilterCopyWithImpl<$Res>
       center: center == freezed
           ? _value.center
           : center // ignore: cast_nullable_to_non_nullable
-              as LatLong,
+              as LatLong?,
       distance: distance == freezed
           ? _value.distance
           : distance // ignore: cast_nullable_to_non_nullable
@@ -3121,8 +3196,12 @@ class __$ElasticGeoFilterCopyWithImpl<$Res>
   }
 
   @override
-  $LatLongCopyWith<$Res> get center {
-    return $LatLongCopyWith<$Res>(_value.center, (value) {
+  $LatLongCopyWith<$Res>? get center {
+    if (_value.center == null) {
+      return null;
+    }
+
+    return $LatLongCopyWith<$Res>(_value.center!, (value) {
       return _then(_value.copyWith(center: value));
     });
   }
@@ -3136,14 +3215,14 @@ abstract class _$_ElasticGeoFilterCopyWith<$Res>
       __$_ElasticGeoFilterCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@_LatLongConverter() LatLong center,
+      {@_LatLongConverter() LatLong? center,
       double? distance,
       GeoUnit unit,
       double? from,
       double? to});
 
   @override
-  $LatLongCopyWith<$Res> get center;
+  $LatLongCopyWith<$Res>? get center;
 }
 
 /// @nodoc
@@ -3169,7 +3248,7 @@ class __$_ElasticGeoFilterCopyWithImpl<$Res>
       center: center == freezed
           ? _value.center
           : center // ignore: cast_nullable_to_non_nullable
-              as LatLong,
+              as LatLong?,
       distance: distance == freezed
           ? _value.distance
           : distance // ignore: cast_nullable_to_non_nullable
@@ -3195,18 +3274,19 @@ class __$_ElasticGeoFilterCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _$__ElasticGeoFilter implements __ElasticGeoFilter {
   const _$__ElasticGeoFilter(
-      {@_LatLongConverter() required this.center,
+      {@_LatLongConverter() this.center,
       this.distance,
       required this.unit,
       this.from,
-      this.to});
+      this.to})
+      : assert(center != null, 'center is required.');
 
   factory _$__ElasticGeoFilter.fromJson(Map<String, dynamic> json) =>
       _$$__ElasticGeoFilterFromJson(json);
 
   @override
   @_LatLongConverter()
-  final LatLong center;
+  final LatLong? center;
   @override
   final double? distance;
   @override
@@ -3255,7 +3335,7 @@ class _$__ElasticGeoFilter implements __ElasticGeoFilter {
 
 abstract class __ElasticGeoFilter implements _ElasticGeoFilter {
   const factory __ElasticGeoFilter(
-      {@_LatLongConverter() required LatLong center,
+      {@_LatLongConverter() LatLong? center,
       double? distance,
       required GeoUnit unit,
       double? from,
@@ -3266,7 +3346,7 @@ abstract class __ElasticGeoFilter implements _ElasticGeoFilter {
 
   @override
   @_LatLongConverter()
-  LatLong get center;
+  LatLong? get center;
   @override
   double? get distance;
   @override

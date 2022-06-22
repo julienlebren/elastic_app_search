@@ -66,6 +66,9 @@ _$__ElasticQueryFacet _$$__ElasticQueryFacetFromJson(
           ?.map((e) => _ElasticRangeFacet.fromJson(e as Map<String, dynamic>))
           .toList(),
       size: json['size'] as int?,
+      center: const _LatLongConverter().fromJson(json['center'] as String?),
+      unit:
+          $enumDecodeNullable(_$GeoUnitEnumMap, json['unit']) ?? GeoUnit.meters,
     );
 
 Map<String, dynamic> _$$__ElasticQueryFacetToJson(
@@ -83,8 +86,21 @@ Map<String, dynamic> _$$__ElasticQueryFacetToJson(
   writeNotNull('name', instance.name);
   writeNotNull('ranges', instance.ranges?.map((e) => e.toJson()).toList());
   writeNotNull('size', instance.size);
+  writeNotNull('center', const _LatLongConverter().toJson(instance.center));
+  writeNotNull('unit', _$GeoUnitEnumMap[instance.unit]);
   return val;
 }
+
+const _$GeoUnitEnumMap = {
+  GeoUnit.millimeters: 'mm',
+  GeoUnit.centimeters: 'cm',
+  GeoUnit.meters: 'm',
+  GeoUnit.kilometers: 'km',
+  GeoUnit.inches: 'in',
+  GeoUnit.feet: 'ft',
+  GeoUnit.yard: 'yd',
+  GeoUnit.miles: 'mi',
+};
 
 _$__ElasticRangeFacet _$$__ElasticRangeFacetFromJson(
         Map<String, dynamic> json) =>
@@ -323,7 +339,7 @@ Map<String, dynamic> _$$__ElasticNumberRangeFilterToJson(
 
 _$__ElasticGeoFilter _$$__ElasticGeoFilterFromJson(Map<String, dynamic> json) =>
     _$__ElasticGeoFilter(
-      center: const _LatLongConverter().fromJson(json['center'] as String),
+      center: const _LatLongConverter().fromJson(json['center'] as String?),
       distance: (json['distance'] as num?)?.toDouble(),
       unit: $enumDecode(_$GeoUnitEnumMap, json['unit']),
       from: (json['from'] as num?)?.toDouble(),
@@ -347,17 +363,6 @@ Map<String, dynamic> _$$__ElasticGeoFilterToJson(
   writeNotNull('to', instance.to);
   return val;
 }
-
-const _$GeoUnitEnumMap = {
-  GeoUnit.millimeters: 'mm',
-  GeoUnit.centimeters: 'cm',
-  GeoUnit.meters: 'm',
-  GeoUnit.kilometers: 'km',
-  GeoUnit.inches: 'in',
-  GeoUnit.feet: 'ft',
-  GeoUnit.yard: 'yd',
-  GeoUnit.miles: 'mi',
-};
 
 _$__ElasticSearchField _$$__ElasticSearchFieldFromJson(
         Map<String, dynamic> json) =>
