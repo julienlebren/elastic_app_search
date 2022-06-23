@@ -70,6 +70,7 @@ class ElasticAppSearch {
       final disjunctiveQueries = query._disjunctives;
       if (disjunctiveQueries == null) return _response;
 
+      print("disjunctiveFacets: ${query.disjunctiveFacets}");
       for (final disjunctiveQuery in disjunctiveQueries) {
         print("====== Disjunctive query ======");
         print(disjunctiveQuery.toJson());
