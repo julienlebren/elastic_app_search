@@ -328,7 +328,7 @@ This app uses some external librairies:
 
 This package was originally created for my personnal needs but feel free to use it, it does not covers all the features available in Elastic App Search, but I will try to cover all the features over time.
 
-I am not related to Elastic in any way, I am just a developer who needed to use this API and created this library to do so.
+I am not related to Elastic in any way, I am just a developer who needed to use Elastic through a library, so I created this library to do so.
 
 If you have questions, feel free to ask on [Twitter](https://twitter.com/hikeland).
 

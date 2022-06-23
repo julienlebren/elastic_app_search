@@ -4,7 +4,7 @@ const _highlightStart = '<em>';
 const _highlightEnd = '</em>';
 
 typedef FromElastic<T> = T Function(
-  Map<String, dynamic> result,
+  Map<String, dynamic> data,
 );
 
 /// An object containing information about a given result
