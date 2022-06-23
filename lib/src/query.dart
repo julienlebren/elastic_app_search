@@ -345,6 +345,8 @@ class ElasticQuery with _$ElasticQuery {
   }
 
   /// DEV
+  @Assert('facets[field] != null',
+      'No facet currently exists for this field. Please create your facet before call `disjunctiveFacet`.')
   ElasticQuery disjunctiveFacet(String field) {
     return copyWith(
       disjunctiveFacets: [

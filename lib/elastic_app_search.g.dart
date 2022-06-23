@@ -19,17 +19,17 @@ Map<String, dynamic> _$$__ElasticAnalyticsToJson(
 
 _$__ElasticBoost _$$__ElasticBoostFromJson(Map<String, dynamic> json) =>
     _$__ElasticBoost(
-      type: $enumDecode(_$_ElasticBoostTypeEnumMap, json['type']),
+      type: $enumDecode(_$BoostTypeEnumMap, json['type']),
       value:
           (json['value'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      operation: $enumDecodeNullable(
-          _$_ElasticBoostOperationEnumMap, json['operation']),
+      operation:
+          $enumDecodeNullable(_$BoostOperationEnumMap, json['operation']),
       factor: (json['factor'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$$__ElasticBoostToJson(_$__ElasticBoost instance) {
   final val = <String, dynamic>{
-    'type': _$_ElasticBoostTypeEnumMap[instance.type],
+    'type': _$BoostTypeEnumMap[instance.type],
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -39,22 +39,21 @@ Map<String, dynamic> _$$__ElasticBoostToJson(_$__ElasticBoost instance) {
   }
 
   writeNotNull('value', instance.value);
-  writeNotNull(
-      'operation', _$_ElasticBoostOperationEnumMap[instance.operation]);
+  writeNotNull('operation', _$BoostOperationEnumMap[instance.operation]);
   writeNotNull('factor', instance.factor);
   return val;
 }
 
-const _$_ElasticBoostTypeEnumMap = {
-  _ElasticBoostType.value: 'value',
-  _ElasticBoostType.functional: 'functional',
-  _ElasticBoostType.proximity: 'proximity',
-  _ElasticBoostType.recency: 'recency',
+const _$BoostTypeEnumMap = {
+  BoostType.value: 'value',
+  BoostType.functional: 'functional',
+  BoostType.proximity: 'proximity',
+  BoostType.recency: 'recency',
 };
 
-const _$_ElasticBoostOperationEnumMap = {
-  _ElasticBoostOperation.add: 'add',
-  _ElasticBoostOperation.multiply: 'multiply',
+const _$BoostOperationEnumMap = {
+  BoostOperation.add: 'add',
+  BoostOperation.multiply: 'multiply',
 };
 
 _$__ElasticQueryFacet _$$__ElasticQueryFacetFromJson(

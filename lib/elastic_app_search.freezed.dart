@@ -182,9 +182,9 @@ class _$_ElasticBoostTearOff {
   const _$_ElasticBoostTearOff();
 
   __ElasticBoost call(
-      {required _ElasticBoostType type,
+      {required BoostType type,
       List<String>? value,
-      _ElasticBoostOperation? operation,
+      BoostOperation? operation,
       double? factor}) {
     return __ElasticBoost(
       type: type,
@@ -205,14 +205,14 @@ const _$ElasticBoost = _$_ElasticBoostTearOff();
 /// @nodoc
 mixin _$_ElasticBoost {
   /// Type of boost
-  _ElasticBoostType get type => throw _privateConstructorUsedError;
+  BoostType get type => throw _privateConstructorUsedError;
 
   /// The value to exact match on. Use an array to match on multiple values.
   List<String>? get value => throw _privateConstructorUsedError;
 
   /// The arithmetic operation used to combine the original document score with your boost value.
   /// Can be add or multiply. Defaults to add.
-  _ElasticBoostOperation? get operation => throw _privateConstructorUsedError;
+  BoostOperation? get operation => throw _privateConstructorUsedError;
 
   /// Factor to alter the impact of a boost on the score of a document.
   /// Must be between 0 and 10. Defaults to 1.0.
@@ -231,9 +231,9 @@ abstract class _$ElasticBoostCopyWith<$Res> {
           _ElasticBoost value, $Res Function(_ElasticBoost) then) =
       __$ElasticBoostCopyWithImpl<$Res>;
   $Res call(
-      {_ElasticBoostType type,
+      {BoostType type,
       List<String>? value,
-      _ElasticBoostOperation? operation,
+      BoostOperation? operation,
       double? factor});
 }
 
@@ -257,7 +257,7 @@ class __$ElasticBoostCopyWithImpl<$Res>
       type: type == freezed
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as _ElasticBoostType,
+              as BoostType,
       value: value == freezed
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
@@ -265,7 +265,7 @@ class __$ElasticBoostCopyWithImpl<$Res>
       operation: operation == freezed
           ? _value.operation
           : operation // ignore: cast_nullable_to_non_nullable
-              as _ElasticBoostOperation?,
+              as BoostOperation?,
       factor: factor == freezed
           ? _value.factor
           : factor // ignore: cast_nullable_to_non_nullable
@@ -282,9 +282,9 @@ abstract class _$_ElasticBoostCopyWith<$Res>
       __$_ElasticBoostCopyWithImpl<$Res>;
   @override
   $Res call(
-      {_ElasticBoostType type,
+      {BoostType type,
       List<String>? value,
-      _ElasticBoostOperation? operation,
+      BoostOperation? operation,
       double? factor});
 }
 
@@ -310,7 +310,7 @@ class __$_ElasticBoostCopyWithImpl<$Res>
       type: type == freezed
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as _ElasticBoostType,
+              as BoostType,
       value: value == freezed
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
@@ -318,7 +318,7 @@ class __$_ElasticBoostCopyWithImpl<$Res>
       operation: operation == freezed
           ? _value.operation
           : operation // ignore: cast_nullable_to_non_nullable
-              as _ElasticBoostOperation?,
+              as BoostOperation?,
       factor: factor == freezed
           ? _value.factor
           : factor // ignore: cast_nullable_to_non_nullable
@@ -340,7 +340,7 @@ class _$__ElasticBoost implements __ElasticBoost {
   @override
 
   /// Type of boost
-  final _ElasticBoostType type;
+  final BoostType type;
   @override
 
   /// The value to exact match on. Use an array to match on multiple values.
@@ -349,7 +349,7 @@ class _$__ElasticBoost implements __ElasticBoost {
 
   /// The arithmetic operation used to combine the original document score with your boost value.
   /// Can be add or multiply. Defaults to add.
-  final _ElasticBoostOperation? operation;
+  final BoostOperation? operation;
   @override
 
   /// Factor to alter the impact of a boost on the score of a document.
@@ -394,9 +394,9 @@ class _$__ElasticBoost implements __ElasticBoost {
 
 abstract class __ElasticBoost implements _ElasticBoost {
   const factory __ElasticBoost(
-      {required _ElasticBoostType type,
+      {required BoostType type,
       List<String>? value,
-      _ElasticBoostOperation? operation,
+      BoostOperation? operation,
       double? factor}) = _$__ElasticBoost;
 
   factory __ElasticBoost.fromJson(Map<String, dynamic> json) =
@@ -405,7 +405,7 @@ abstract class __ElasticBoost implements _ElasticBoost {
   @override
 
   /// Type of boost
-  _ElasticBoostType get type;
+  BoostType get type;
   @override
 
   /// The value to exact match on. Use an array to match on multiple values.
@@ -414,7 +414,7 @@ abstract class __ElasticBoost implements _ElasticBoost {
 
   /// The arithmetic operation used to combine the original document score with your boost value.
   /// Can be add or multiply. Defaults to add.
-  _ElasticBoostOperation? get operation;
+  BoostOperation? get operation;
   @override
 
   /// Factor to alter the impact of a boost on the score of a document.
@@ -1053,8 +1053,8 @@ class __$ElasticFacetCopyWithImpl<$Res> extends _$ElasticFacetCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$_ElasticFacet implements _ElasticFacet {
-  const _$_ElasticFacet({required this.type, this.name, this.data});
+class _$_ElasticFacet extends _ElasticFacet {
+  const _$_ElasticFacet({required this.type, this.name, this.data}) : super._();
 
   factory _$_ElasticFacet.fromJson(Map<String, dynamic> json) =>
       _$$_ElasticFacetFromJson(json);
@@ -1099,11 +1099,12 @@ class _$_ElasticFacet implements _ElasticFacet {
   }
 }
 
-abstract class _ElasticFacet implements ElasticFacet {
+abstract class _ElasticFacet extends ElasticFacet {
   const factory _ElasticFacet(
       {required ElasticFacetType type,
       String? name,
       List<ElasticFacetData>? data}) = _$_ElasticFacet;
+  const _ElasticFacet._() : super._();
 
   factory _ElasticFacet.fromJson(Map<String, dynamic> json) =
       _$_ElasticFacet.fromJson;
@@ -1504,10 +1505,10 @@ abstract class _ElasticRange implements ElasticRange {
 class _$LatLongTearOff {
   const _$LatLongTearOff();
 
-  _LatLong call({required double latitude, required double longitude}) {
+  _LatLong call(double latitude, double longitude) {
     return _LatLong(
-      latitude: latitude,
-      longitude: longitude,
+      latitude,
+      longitude,
     );
   }
 }
@@ -1580,11 +1581,11 @@ class __$LatLongCopyWithImpl<$Res> extends _$LatLongCopyWithImpl<$Res>
     Object? longitude = freezed,
   }) {
     return _then(_LatLong(
-      latitude: latitude == freezed
+      latitude == freezed
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
               as double,
-      longitude: longitude == freezed
+      longitude == freezed
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
@@ -1595,7 +1596,7 @@ class __$LatLongCopyWithImpl<$Res> extends _$LatLongCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_LatLong implements _LatLong {
-  const _$_LatLong({required this.latitude, required this.longitude})
+  const _$_LatLong(this.latitude, this.longitude)
       : assert(latitude >= -90 && latitude <= 90,
             'Latitude must be between -90 and 90 degrees.'),
         assert(longitude >= -180 && latitude <= 180,
@@ -1633,8 +1634,7 @@ class _$_LatLong implements _LatLong {
 }
 
 abstract class _LatLong implements LatLong {
-  const factory _LatLong(
-      {required double latitude, required double longitude}) = _$_LatLong;
+  const factory _LatLong(double latitude, double longitude) = _$_LatLong;
 
   @override
   double get latitude;

@@ -73,10 +73,10 @@ class LatLong with _$LatLong {
       'Latitude must be between -90 and 90 degrees.')
   @Assert('longitude >= -180 && latitude <= 180',
       'Longitude must be between -90 and 90 degrees.')
-  const factory LatLong({
-    required double latitude,
-    required double longitude,
-  }) = _LatLong;
+  const factory LatLong(
+    double latitude,
+    double longitude,
+  ) = _LatLong;
 }
 
 class _LatLongConverter implements JsonConverter<LatLong?, String?> {
@@ -87,8 +87,8 @@ class _LatLongConverter implements JsonConverter<LatLong?, String?> {
     if (value == null) return null;
     final values = value.split(',');
     return LatLong(
-      latitude: double.parse(values[0]),
-      longitude: double.parse(values[1]),
+      double.parse(values[0]),
+      double.parse(values[1]),
     );
   }
 

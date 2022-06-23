@@ -316,6 +316,13 @@ This app uses some external librairies:
 - [x] [dio](https://pub.dev/packages/dio) for http requests
 - [x] [html_unescape](https://pub.dev/packages/html_unescape) to strip html tags from results
 
+## Roadmap for upcoming versions
+
+- [x] Support facets
+- [x] Support geo filters
+- [] Support boosts
+- [] Support nested filters
+
 ## Credits
 
 This package was originally created for my personnal needs but feel free to use it, it does not covers all the features available in Elastic App Search, but I will try to cover all the features over time.
