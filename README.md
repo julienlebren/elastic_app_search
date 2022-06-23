@@ -320,8 +320,9 @@ This app uses some external librairies:
 
 - [x] Support facets
 - [x] Support geo filters
-- [] Support boosts
-- [] Support nested filters
+- [ ] Support boosts
+- [ ] Support nested filters
+- [ ] Pass a converter to query to build response with your own objects from json response
 
 ## Credits
 
