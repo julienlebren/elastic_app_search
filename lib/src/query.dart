@@ -18,6 +18,9 @@ class ElasticQuery with _$ElasticQuery {
     includeIfNull: false,
   )
   @Assert('engine != null', 'An engine is required to build a query.')
+  @Assert(
+      'precisionTuning == null || (precisionTuning != null && precisionTuning >= 1 && precisionTuning <= 11)',
+      'The value of the precision parameter must be an integer between 1 and 11, inclusive.')
   const factory ElasticQuery({
     /// An object representing an Elastic engine
     @JsonKey(ignore: true) ElasticEngine? engine,
@@ -207,8 +210,6 @@ class ElasticQuery with _$ElasticQuery {
   /// The value of the precision parameter must be an integer between 1 and 11, inclusive.
   /// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
   /// Lower values favor recall, while higher values favor precision.
-  @Assert('value >= 1 && value <= 11',
-      'The value of the precision parameter must be an integer between 1 and 11, inclusive.')
   ElasticQuery precision(int value) => copyWith(precisionTuning: value);
 
   /// Takes a field with an optionnal `weight`, creates and returns a new [ElasticQuery]
