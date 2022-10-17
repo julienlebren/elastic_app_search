@@ -99,7 +99,7 @@ class __$$__ElasticAnalyticsCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _$__ElasticAnalytics implements __ElasticAnalytics {
   const _$__ElasticAnalytics({required final List<String> tags})
-      : assert(tags.length > 16, 'You cannot submit more than 16 tags.'),
+      : assert(tags.length <= 16, 'You cannot submit more than 16 tags.'),
         _tags = tags;
 
   factory _$__ElasticAnalytics.fromJson(Map<String, dynamic> json) =>
