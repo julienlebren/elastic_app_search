@@ -29,7 +29,7 @@ _$__ElasticBoost _$$__ElasticBoostFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$__ElasticBoostToJson(_$__ElasticBoost instance) {
   final val = <String, dynamic>{
-    'type': _$BoostTypeEnumMap[instance.type],
+    'type': _$BoostTypeEnumMap[instance.type]!,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -137,7 +137,7 @@ _$_ElasticFacet _$$_ElasticFacetFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$_ElasticFacetToJson(_$_ElasticFacet instance) {
   final val = <String, dynamic>{
-    'type': _$ElasticFacetTypeEnumMap[instance.type],
+    'type': _$ElasticFacetTypeEnumMap[instance.type]!,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -271,7 +271,7 @@ _$__ElasticSearchFilter _$$__ElasticSearchFilterFromJson(
 Map<String, dynamic> _$$__ElasticSearchFilterToJson(
     _$__ElasticSearchFilter instance) {
   final val = <String, dynamic>{
-    'type': _$_ElasticFilterTypeEnumMap[instance.type],
+    'type': _$_ElasticFilterTypeEnumMap[instance.type]!,
     'name': instance.name,
   };
 
@@ -356,7 +356,7 @@ Map<String, dynamic> _$$__ElasticGeoFilterToJson(
 
   writeNotNull('center', const _LatLongConverter().toJson(instance.center));
   writeNotNull('distance', instance.distance);
-  val['unit'] = _$GeoUnitEnumMap[instance.unit];
+  val['unit'] = _$GeoUnitEnumMap[instance.unit]!;
   writeNotNull('from', instance.from);
   writeNotNull('to', instance.to);
   return val;

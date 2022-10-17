@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 part of elastic_app_search;
 
 /// The main instance object for handling queries to Elastic App Search
@@ -12,17 +14,22 @@ class ElasticAppSearch {
   ElasticAppSearch({
     required String endPoint,
     required String searchKey,
+    bool debug = false,
   })  : _endPoint = endPoint,
-        _searchKey = searchKey;
+        _searchKey = searchKey,
+        _debug = debug;
 
   ElasticAppSearch._({
     required String endPoint,
     required String searchKey,
+    bool debug = false,
   })  : _endPoint = endPoint,
-        _searchKey = searchKey;
+        _searchKey = searchKey,
+        _debug = debug;
 
   final String _endPoint;
   final String _searchKey;
+  final bool _debug;
   final _dio = Dio();
 
   static const String _errorMessage = "Unable to get response from API server";
@@ -45,8 +52,10 @@ class ElasticAppSearch {
     ElasticQuery query, [
     CancelToken? cancelToken,
   ]) async {
-    print("====== Query ======");
-    print(query.toJson());
+    if (_debug) {
+      print("====== Query ======");
+      print(query.toJson());
+    }
 
     final response = await _dio.post<Map>(
       _apiUrl(query.engine!.name),
@@ -60,19 +69,23 @@ class ElasticAppSearch {
       cancelToken: cancelToken,
     );
 
-    print("====== Response ======");
-    print(response);
+    if (_debug) {
+      print("====== Response ======");
+      print(response);
+    }
 
     if (response.statusCode == 200 && response.data != null) {
-      ElasticResponse _response =
+      ElasticResponse finalReponse =
           ElasticResponse.fromJson(response.data as Map<String, dynamic>);
 
       final disjunctiveQueries = query._disjunctives;
-      if (disjunctiveQueries == null) return _response;
+      if (disjunctiveQueries == null) return finalReponse;
 
       for (final disjunctiveQuery in disjunctiveQueries) {
-        print("====== Disjunctive query ======");
-        print(disjunctiveQuery.toJson());
+        if (_debug) {
+          print("====== Disjunctive query ======");
+          print(disjunctiveQuery.toJson());
+        }
 
         final disjunctiveResponse = await _dio.post<Map>(
           _apiUrl(disjunctiveQuery.engine!.name),
@@ -85,15 +98,18 @@ class ElasticAppSearch {
           data: disjunctiveQuery.toJson(),
           cancelToken: cancelToken,
         );
-        print("====== Disjunctive Response ======");
-        print(disjunctiveResponse);
+
+        if (_debug) {
+          print("====== Disjunctive Response ======");
+          print(disjunctiveResponse);
+        }
 
         if (disjunctiveResponse.statusCode == 200 &&
             disjunctiveResponse.data != null) {
           final _disjunctiveResponse = ElasticResponse.fromJson(
               disjunctiveResponse.data as Map<String, dynamic>);
 
-          Map<String, List<ElasticFacet>>? rawFacets = _response.rawFacets;
+          Map<String, List<ElasticFacet>>? rawFacets = finalReponse.rawFacets;
           for (String field in query.disjunctiveFacets ?? []) {
             final filters =
                 query.filters?.where((e) => e.name == field).toList();
@@ -104,12 +120,18 @@ class ElasticAppSearch {
               }
             }
           }
-          _response = _response.copyWith(rawFacets: rawFacets);
+          finalReponse = finalReponse.copyWith(rawFacets: rawFacets);
         } else {
           throw _errorMessage;
         }
       }
-      return _response;
+
+      if (_debug) {
+        print("====== Final Response ======");
+        print(finalReponse);
+      }
+
+      return finalReponse;
     } else {
       throw _errorMessage;
     }

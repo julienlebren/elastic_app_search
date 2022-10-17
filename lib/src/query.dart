@@ -1,4 +1,4 @@
-// ignore_for_file: unused_element
+// ignore_for_file: unused_element, library_private_types_in_public_api, no_leading_underscores_for_local_identifiers
 
 part of elastic_app_search;
 
@@ -58,7 +58,11 @@ class ElasticQuery with _$ElasticQuery {
     /// See [https://www.elastic.co/guide/en/app-search/current/facets.html]
     @protected Map<String, _ElasticQueryFacet>? facets,
 
-    /// DEV
+    /// Disjunctive facets are useful when you have many filters in your form, and especially
+    /// when you filter your query with a value that corresponds to a facet: if a disjunctive facet is set,
+    /// it will return all the available facets as if that filter was not applied.
+    /// This is not a native part of Elastic App Search, this is a workaround. In fact, multiple queries are
+    /// passed to Elastic and the package concatenates all responses in one response.
     @JsonKey(ignore: true) List<String>? disjunctiveFacets,
 
     /// Tags can be used to enrich each query with unique information.
@@ -70,67 +74,88 @@ class ElasticQuery with _$ElasticQuery {
 
     /// Object to sort your results in an order other than document score.
     @_ElasticSortConverter() @JsonKey(name: "sort") List<_ElasticSort>? sortBy,
+    @JsonKey(ignore: true)
+    @Default(_ElasticFilterType.all)
+        _ElasticFilterType? filterType,
   }) = _ElasticQuery;
 
   factory ElasticQuery.fromJson(Map<String, dynamic> json) =>
       _$ElasticQueryFromJson(json);
+
+  /// Creates and returns a new [ElasticQuery] which will define the way the upcoming filters
+  /// will be processed (all, any of none). If not specified, filters are "all".
+  ///
+  /// Note: Nested filters are not supported at the moment.
+  ///
+  /// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
+  ElasticQuery filterAll() => copyWith(filterType: _ElasticFilterType.all);
+  ElasticQuery filterAny() => copyWith(filterType: _ElasticFilterType.any);
+  ElasticQuery filterNone() => copyWith(filterType: _ElasticFilterType.none);
 
   /// Creates and returns a new [ElasticQuery] with additional [ElasticSearchFilter],
   /// an object to filter documents that contain a specific field value.
   /// Available on text, number, and date fields.
   ///
   /// Elastic filters can be of three types:
-  /// -> all: the filters will be handled as an 'AND' query, you can use it with:
-  /// * isEqualTo which will make a filter based on a value
-  /// * whereIn which will make a filter based on an array of values
-  /// -> any: the filters will be handled as an 'OR' query, you can use it with:
-  /// * isEqualToAny which will make a filter based on a value
-  /// * whereInAny which will make a filter based on an array of values
-  /// -> not: the filters will be handled as an 'NOT' query, you can use it with:
-  /// * isNotEqualTo which will make a filter which excludes a value
-  /// * whereNotIn which will make a filter which excludes an array of values
+  /// * Value filters:
+  /// - isEqualTo which will make a filter based on a value
+  /// - whereIn which will make a filter based on an array of values
   ///
-  /// You can also make a range filter by using `isGreaterThanOrEqualTo` and `isLessThan`.
-  /// This filter works with `DateTime` and `double` types.
+  /// * Range filters (works with `DateTime` and `double` types):
+  /// - isGreaterThanOrEqualTo which is the inclusive lower bound of the range
+  /// - isLessThan which is the exclusive upper bound of the range
   ///
-  /// Note: As for now, this object only handles "all" filters, which means that all
-  /// the filters added to the query will be handled as a "AND" query.
-  /// The other filters available, "or" and "not", will be added in a future release
-  /// of the package.
+  /// * Geo filters:
+  /// - isFurtherThanOrAt which is the inclusive lower bound of the range
+  /// - isLessFarThan which is the exclusive upper bound of the range
+  /// By specifying one of the two parameters above, you need to specify the center point
+  /// from where the range will be applied (from parameter which is a [LatLong]).
+  /// The distance unit can also be specified [GeoUnit]
   ///
   /// Note: Nested filters are not supported at the moment.
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
   @Assert(
-      'isEqualTo != null || whereIn != null || isNotEqualTo != null || whereNotIn != null',
-      'You must provide at least one condition (isEqualTo, isNotEqualTo, whereIn, whereNotIn, isMaybeEqualTo, whereMaybeIn)')
-  @Assert('isEqualTo != null && from == null && to == null',
-      'You cannot use isEqualTo and from/to at the same time.')
+      'isEqualTo != null || whereIn != null || isGreaterThanOrEqualTo != null || isLessThan != null || isFurtherThanOrAt != null || isLessFarThan != null',
+      'You must provide at least one condition (isEqualTo, whereIn, isGreaterThanOrEqualTo, isLessThan, isFurtherThanOrAt, isLessFarThan)')
+  @Assert('isEqualTo != null && whereIn != null',
+      'You cannot use isEqualTo and whereIn at the same time.')
+  @Assert(
+      'isEqualTo != null && (isGreaterThanOrEqualTo != null || isLessThan != null)',
+      'You cannot use isEqualTo and isGreaterThanOrEqualTo/isLessThan at the same time.')
+  @Assert(
+      'isEqualTo != null && (isFurtherThanOrAt != null || isLessFarThan != null)',
+      'You cannot use isEqualTo and isFurtherThanOrAt/isLessFarThan at the same time.')
+  @Assert(
+      '(isFurtherThanOrAt != null || isLessFarThan != null) && from == null',
+      'You must provide from (which is the center point of your query) when using isFurtherThanOrAt/isLessFarThan.')
+  @Assert(
+      '(isFurtherThanOrAt != null || isLessFarThan != null) && (isGreaterThanOrEqualTo != null || isLessThan != null)',
+      'You cannot use isFurtherThanOrAt/isLessFarThan and isGreaterThanOrEqualTo/isLessThan at the same time.')
   ElasticQuery filter(
     String field, {
     Object? isEqualTo,
     List<Object?>? whereIn,
     Object? isGreaterThanOrEqualTo,
     Object? isLessThan,
-    Object? isNotEqualTo,
-    List<Object?>? whereNotIn,
-    Object? isEqualToAny,
-    List<Object?>? whereInAny,
+    double? isFurtherThanOrAt,
+    double? isLessFarThan,
+    LatLong? from,
+    @Default(GeoUnit.meters) GeoUnit? unit,
   }) {
     dynamic value;
 
     if (whereIn != null) {
       value = whereIn;
-    } else if (whereNotIn != null) {
-      value = whereNotIn;
-    } else if (whereInAny != null) {
-      value = whereInAny;
     } else if (isEqualTo != null) {
       value = isEqualTo.toString();
-    } else if (isNotEqualTo != null) {
-      value = isNotEqualTo.toString();
-    } else if (isEqualToAny != null) {
-      value = isEqualToAny.toString();
+    } else if (from != null) {
+      value = _ElasticGeoFilter(
+        center: from,
+        unit: unit!,
+        from: isFurtherThanOrAt,
+        to: isLessFarThan,
+      );
     } else if (isGreaterThanOrEqualTo != null || isLessThan != null) {
       if (isGreaterThanOrEqualTo is DateTime || isLessThan is DateTime) {
         value = _ElasticDateRangeFilter(
@@ -148,21 +173,10 @@ class ElasticQuery with _$ElasticQuery {
       }
     }
 
-    _ElasticFilterType type = _ElasticFilterType.all;
-
-    if (isNotEqualTo != null || whereNotIn != null) {
-      type = _ElasticFilterType.none;
-    } else if (isEqualToAny != null ||
-        whereInAny != null ||
-        isGreaterThanOrEqualTo != null ||
-        isLessThan != null) {
-      type = _ElasticFilterType.any;
-    }
-
     final List<_ElasticSearchFilter> newFilters = [
       ...?filters,
       _ElasticSearchFilter(
-        type: type,
+        type: filterType!,
         name: field,
         value: value,
       ),
@@ -174,33 +188,6 @@ class ElasticQuery with _$ElasticQuery {
 
     return copyWith(
       filters: newFilters,
-    );
-  }
-
-  /// DEV
-  ElasticQuery geoFilter(
-    String field, {
-    required LatLong center,
-    @Default(GeoUnit.meters) GeoUnit? unit,
-    double? distance,
-    double? from,
-    double? to,
-  }) {
-    return copyWith(
-      filters: [
-        ...?filters,
-        _ElasticSearchFilter(
-          type: _ElasticFilterType.all,
-          name: field,
-          value: _ElasticGeoFilter(
-            center: center,
-            unit: unit!,
-            distance: distance,
-            from: from,
-            to: to,
-          ),
-        ),
-      ],
     );
   }
 
@@ -286,18 +273,19 @@ class ElasticQuery with _$ElasticQuery {
   ElasticQuery facet(
     String field, {
     String? name,
-    Object? isMoreThanOrEqualTo,
-    Object? isLessThan,
+    //Object? isMoreThanOrEqualTo,
+    //Object? isLessThan,
     int? size,
     List<ElasticRange>? ranges,
     @_LatLongConverter() LatLong? center,
     @Default(GeoUnit.meters) GeoUnit? unit,
   }) {
-    var _facets = facets ?? {};
-    _ElasticQueryFacet _facet;
+    Map<String, _ElasticQueryFacet> _facets =
+        facets != null ? {...facets!} : {};
+    _ElasticQueryFacet facet;
 
     if (ranges != null) {
-      _facet = _ElasticQueryFacet(
+      facet = _ElasticQueryFacet(
         type: "range",
         ranges: ranges
             .map(
@@ -335,17 +323,20 @@ class ElasticQuery with _$ElasticQuery {
       );
     }*/
     else {
-      _facet = _ElasticQueryFacet(
+      facet = _ElasticQueryFacet(
         type: "value",
         size: size,
       );
     }
 
-    _facets[field] = _facet;
+    _facets[field] = facet;
     return copyWith(facets: _facets);
   }
 
-  /// DEV
+  /// Creates and returns a new [ElasticQuery] with additional disjunctive facet.
+  /// Disjunctive facets are useful when you have many filters in your form, and especially
+  /// when you filter your query with a value that corresponds to a facet: if a disjunctive facet is set,
+  /// it will return all the available facets as if that filter was not applied.
   @Assert('facets[field] != null',
       'No facet currently exists for this field. Please create your facet before call `disjunctiveFacet`.')
   ElasticQuery disjunctiveFacet(String field) {
@@ -357,7 +348,10 @@ class ElasticQuery with _$ElasticQuery {
     );
   }
 
-  /// DEV
+  /// Creates and returns a new [ElasticQuery] with additional analytics tag.
+  ///
+  /// See [https://www.elastic.co/guide/en/app-search/current/tags.html]
+  @Assert('tag.length > 64', 'A tag is limited to 64 characters.')
   ElasticQuery tag(String tag) {
     return copyWith(
       analytics: _ElasticAnalytics(

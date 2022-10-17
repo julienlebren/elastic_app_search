@@ -53,9 +53,9 @@ class ElasticFacet with _$ElasticFacet {
   }
 
   int countForValue(String value) {
-    final _data = data?.where((element) => element.value == value);
-    if (_data != null && _data.isNotEmpty) {
-      return _data.first.count;
+    final valueData = data?.where((element) => element.value == value);
+    if (valueData != null && valueData.isNotEmpty) {
+      return valueData.first.count;
     }
     return 0;
   }
@@ -64,10 +64,10 @@ class ElasticFacet with _$ElasticFacet {
     double? from,
     double? to,
   }) {
-    final _data = data?.where((element) =>
+    final rangeData = data?.where((element) =>
         element.from == from?.toString() && element.to == to?.toString());
-    if (_data != null && _data.isNotEmpty) {
-      return _data.first.count;
+    if (rangeData != null && rangeData.isNotEmpty) {
+      return rangeData.first.count;
     }
     return 0;
   }

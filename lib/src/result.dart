@@ -53,19 +53,18 @@ class ElasticResult with _$ElasticResult {
 
   factory ElasticResult._fromJsonWithData(Map<String, dynamic> json) {
     var unescape = HtmlUnescape();
-    var _data = <String, dynamic>{};
-    var _snippets = <String, ElasticResultSnippet>{};
+    var data = <String, dynamic>{};
+    var snippets = <String, ElasticResultSnippet>{};
     for (var key in json.keys) {
       if (!key.startsWith('_')) {
         if (json[key]["raw"] != null) {
-          _data[key] = json[key]["raw"];
+          data[key] = json[key]["raw"];
         }
         if (json[key]["snippet"] != null) {
           final text = unescape
               .convert(json[key]["snippet"])
               .replaceAll("\n", "")
               .trim();
-          print(text);
 
           final highlightExp = RegExp(r'<em>([^<]*)</em>');
 
@@ -75,7 +74,7 @@ class ElasticResult with _$ElasticResult {
               .where((element) => element != null)
               .toList();
 
-          _snippets[key] = ElasticResultSnippet(
+          snippets[key] = ElasticResultSnippet(
             fullText: text
                 .replaceAll(_highlightStart, "")
                 .replaceAll(_highlightEnd, ""),
@@ -92,8 +91,8 @@ class ElasticResult with _$ElasticResult {
       }
     }
     return _$ElasticResultFromJson(json).copyWith(
-      data: _data,
-      snippets: _snippets,
+      data: data,
+      snippets: snippets,
     );
   }
 

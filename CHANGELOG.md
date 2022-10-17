@@ -1,8 +1,9 @@
 ## 0.4.0
 
 * Added `ElasticGeoFilter` to filter results by range based on a geo point
-* Added disjunctive facets to handle more advanced facets when a lot of facets are used to filter results
 * Added `ElasticAnalytics` to handle analytics tags
+* Changed the way to combine filters, with new modifiers: `.filterAny`, `.filterAll` and `.filterNone`.
+* Added disjunctive facets to handle more advanced facets when a lot of facets are used to filter results
 
 ## 0.3.0
 
