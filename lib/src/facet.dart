@@ -32,7 +32,6 @@ class _ElasticRangeFacet with _$_ElasticRangeFacet {
       _$_ElasticRangeFacetFromJson(json);
 }
 
-// DEV
 @freezed
 class ElasticFacet with _$ElasticFacet {
   const ElasticFacet._();
