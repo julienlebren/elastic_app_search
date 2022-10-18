@@ -61,6 +61,7 @@ We request the first page, limited to 50 documents.
   * [Search fields](#search-fields)
   * [Result fields](#result-fields)
   * [Facets](#facets)
+  * [Disjunctive facets](#disjunctive-facets)
 * [ElasticResponse](#ElasticResponse)
   * [ElasticResponseMeta](#ElasticResponseMeta)
     * [ElasticResponseMetaPage](#ElasticResponseMetaPage)
@@ -136,25 +137,23 @@ This feature intends to filter documents that contain a specific field value.
 It's only available on text, number, and date fields.
 
 There are three types of filters:
-* all: All of the filters must match. This functions as an AND condition. To add a filter to "all" filters, use `isEqualTo` or `whereIn`.
-* any: At least one of the filters must match. This functions as an OR condition. To add a filter to "any" filters, use `isEqualToAny` or `whereInAny`.
-* none: All of the filters must not match. This functions as a NOT condition. To add a filter to "none" filters, use `isEqualNotTo` or `whereNotIn`.
+* all: All of the filters must match. This functions as an AND condition. To add a filter to "all" filters, `.filter`.
+* any: At least one of the filters must match. This functions as an OR condition. To add a filter to "any" filters, use `.filterAny`.
+* none: All of the filters must not match. This functions as a NOT condition. To add a filter to "none" filters, use `.filterNone`.
 
 🔍 See https://www.elastic.co/guide/en/app-search/current/filters.html
 
 Param | Type | Description
 ----- | ---- | -------------
 *(unnamed)* | String | The field name
-isEqualTo | dynamic | The value that the field must match
-isEqualNotTo | dynamic | A value to exclude from the results
-isEqualToAny | dynamic | Similar to isEqualTo, but handled as a "OR" condition
-whereIn | List\<dynamic\> | The field must match one of these values 
-whereNotIn | List\<dynamic\> | An array of values to exclude from the results
-whereInAny | List\<dynamic\> | Similar to whereIn, but handled as a "OR" condition
-isGreaterThanOrEqualTo | DateTime or double | Inclusive lower bound of the range
-isLessThan | DateTime or double | Exclusive upper bound of the range
-
-**Warning:** You cannot use `isEqualTo` and `whereIn` on the same field at the same time, otherwise it will raise an exception.
+isEqualTo | dynamic *(optionnal)*  | The value that the field must match
+whereIn | List\<dynamic\> *(optionnal)*  | The field must match one of these values 
+isGreaterThanOrEqualTo | DateTime or double *(optionnal)*  | Inclusive lower bound of the range
+isLessThan | DateTime or double *(optionnal)*  | Exclusive upper bound of the range
+isFurtherThanOrAt | double *(optionnal)*  | Inclusive lower bound of the range
+isLessFarThan | double *(optionnal)*  | Exclusive upper bound of the range
+from | LatLong *(optionnal)*  | The base point from which distance params will be applied 
+unit | GeoUnit *(optionnal)*  | The base unit of measurement
 
 ```dart
 final query = query.filter("field", isEqualTo: "value");
@@ -167,6 +166,9 @@ final query = query.filter("field", whereIn: ["value1", "value2"]);
 ```
 ```dart
 final query = query.filter("field", isGreaterThanOrEqualTo: 50, isLessThan: 100);
+```
+```dart
+final query = query.filter("field", isFurtherThanOrAt: 50, unit: GeoUnit.miles, from: LatLong(37.7749, -122.4194));
 ```
 
 ### Search fields
@@ -231,14 +233,36 @@ Param | Type | Description
 name | String *(optionnal)* | Name given to facet.
 isMoreThanOrEqualTo | DateTime or double *(optionnal)* | Inclusive lower bound of the range. 
 isLessThan | DateTime or double *(optionnal)* | Exclusive upper bound of the range.
+isFurtherThanOrAt | double *(optionnal)*  | Inclusive lower bound of the range
+isLessFarThan | double *(optionnal)*  | Exclusive upper bound of the range
+from | LatLong *(optionnal)*  | The base point from which distance params will be applied 
+unit | GeoUnit *(optionnal)*  | The base unit of measurement
 
 ```dart
 final query = query
   .facet("dateField",
+    isLessThan: DateTime.utc(1984),
+    name: "Before 1984",
+  )
+  .facet("dateField",
     isMoreThanOrEqualTo: DateTime.utc(1984),
     isLessThan: DateTime.utc(2014),
+    name: "From 1984 to 2014",
+  )
+  .facet("dateField",
+    isMoreThanOrEqualTo: DateTime.utc(2014),
+    name: "Since 2014",
   );
 ```
+
+### Disjunctive facets
+
+Disjunctive facets are useful when you have many filters in your form, and especially when you filter your query with a value that corresponds to a facet: if a disjunctive facet is set, it will return all the available facets as if that filter was not applied.
+
+```dart
+final query = query.disjunctiveFacet("field");
+```
+
 
 ## ElasticResponse
 
