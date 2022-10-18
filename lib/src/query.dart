@@ -476,6 +476,7 @@ class ElasticQuery with _$ElasticQuery {
   }
 
   /// Creates and returns a new [ElasticQuery] with additional disjunctive facet.
+  ///
   /// Disjunctive facets are useful when you have many filters in your form, and especially
   /// when you filter your query with a value that corresponds to a facet: if a disjunctive facet is set,
   /// it will return all the available facets as if that filter was not applied.
