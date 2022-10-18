@@ -168,7 +168,11 @@ final query = query.filter("field", whereIn: ["value1", "value2"]);
 final query = query.filter("field", isGreaterThanOrEqualTo: 50, isLessThan: 100);
 ```
 ```dart
-final query = query.filter("field", isFurtherThanOrAt: 50, unit: GeoUnit.miles, from: LatLong(37.7749, -122.4194));
+final query = query.filter("field", 
+  isFurtherThanOrAt: 50, 
+  unit: GeoUnit.miles, 
+  from: LatLong(37.7749, -122.4194)
+);
 ```
 
 ### Search fields
