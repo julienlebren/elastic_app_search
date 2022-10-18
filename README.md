@@ -49,7 +49,7 @@ We request the first page, limited to 50 documents.
 * The search bar makes dynamic queries to Elastic
 * The popup menu allows you to filter parks if they are World Heritage or not
 
-![App preview](https://raw.githubusercontent.com/julienlebren/elastic_app_search/main/assets/screenshot.jpg)
+![App preview](https://raw.githubusercontent.com/julienlebren/elastic_app_search/main/assets/screenshots.png)
 
 ## Table of contents
 
