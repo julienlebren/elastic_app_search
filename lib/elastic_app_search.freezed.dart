@@ -1606,8 +1606,6 @@ mixin _$ElasticQuery {
   @_ElasticSortConverter()
   @JsonKey(name: "sort")
   List<_ElasticSort>? get sortBy => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  _ElasticFilterType? get filterType => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -1647,9 +1645,7 @@ abstract class $ElasticQueryCopyWith<$Res> {
           _ElasticGroup? groupBy,
       @_ElasticSortConverter()
       @JsonKey(name: "sort")
-          List<_ElasticSort>? sortBy,
-      @JsonKey(ignore: true)
-          _ElasticFilterType? filterType});
+          List<_ElasticSort>? sortBy});
 
   _$ElasticSearchPageCopyWith<$Res>? get searchPage;
   _$ElasticAnalyticsCopyWith<$Res>? get analytics;
@@ -1678,7 +1674,6 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
     Object? analytics = freezed,
     Object? groupBy = freezed,
     Object? sortBy = freezed,
-    Object? filterType = freezed,
   }) {
     return _then(_value.copyWith(
       engine: engine == freezed
@@ -1729,10 +1724,6 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
           ? _value.sortBy
           : sortBy // ignore: cast_nullable_to_non_nullable
               as List<_ElasticSort>?,
-      filterType: filterType == freezed
-          ? _value.filterType
-          : filterType // ignore: cast_nullable_to_non_nullable
-              as _ElasticFilterType?,
     ));
   }
 
@@ -1804,9 +1795,7 @@ abstract class _$$_ElasticQueryCopyWith<$Res>
           _ElasticGroup? groupBy,
       @_ElasticSortConverter()
       @JsonKey(name: "sort")
-          List<_ElasticSort>? sortBy,
-      @JsonKey(ignore: true)
-          _ElasticFilterType? filterType});
+          List<_ElasticSort>? sortBy});
 
   @override
   _$ElasticSearchPageCopyWith<$Res>? get searchPage;
@@ -1841,7 +1830,6 @@ class __$$_ElasticQueryCopyWithImpl<$Res>
     Object? analytics = freezed,
     Object? groupBy = freezed,
     Object? sortBy = freezed,
-    Object? filterType = freezed,
   }) {
     return _then(_$_ElasticQuery(
       engine: engine == freezed
@@ -1892,10 +1880,6 @@ class __$$_ElasticQueryCopyWithImpl<$Res>
           ? _value._sortBy
           : sortBy // ignore: cast_nullable_to_non_nullable
               as List<_ElasticSort>?,
-      filterType: filterType == freezed
-          ? _value.filterType
-          : filterType // ignore: cast_nullable_to_non_nullable
-              as _ElasticFilterType?,
     ));
   }
 }
@@ -1931,9 +1915,7 @@ class _$_ElasticQuery extends _ElasticQuery {
           this.groupBy,
       @_ElasticSortConverter()
       @JsonKey(name: "sort")
-          final List<_ElasticSort>? sortBy,
-      @JsonKey(ignore: true)
-          this.filterType = _ElasticFilterType.all})
+          final List<_ElasticSort>? sortBy})
       : assert(engine != null, 'An engine is required to build a query.'),
         assert(
             precisionTuning == null ||
@@ -2083,12 +2065,8 @@ class _$_ElasticQuery extends _ElasticQuery {
   }
 
   @override
-  @JsonKey(ignore: true)
-  final _ElasticFilterType? filterType;
-
-  @override
   String toString() {
-    return 'ElasticQuery(engine: $engine, query: $query, precisionTuning: $precisionTuning, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, facets: $facets, disjunctiveFacets: $disjunctiveFacets, analytics: $analytics, groupBy: $groupBy, sortBy: $sortBy, filterType: $filterType)';
+    return 'ElasticQuery(engine: $engine, query: $query, precisionTuning: $precisionTuning, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, facets: $facets, disjunctiveFacets: $disjunctiveFacets, analytics: $analytics, groupBy: $groupBy, sortBy: $sortBy)';
   }
 
   @override
@@ -2112,9 +2090,7 @@ class _$_ElasticQuery extends _ElasticQuery {
                 .equals(other._disjunctiveFacets, _disjunctiveFacets) &&
             const DeepCollectionEquality().equals(other.analytics, analytics) &&
             const DeepCollectionEquality().equals(other.groupBy, groupBy) &&
-            const DeepCollectionEquality().equals(other._sortBy, _sortBy) &&
-            const DeepCollectionEquality()
-                .equals(other.filterType, filterType));
+            const DeepCollectionEquality().equals(other._sortBy, _sortBy));
   }
 
   @JsonKey(ignore: true)
@@ -2132,8 +2108,7 @@ class _$_ElasticQuery extends _ElasticQuery {
       const DeepCollectionEquality().hash(_disjunctiveFacets),
       const DeepCollectionEquality().hash(analytics),
       const DeepCollectionEquality().hash(groupBy),
-      const DeepCollectionEquality().hash(_sortBy),
-      const DeepCollectionEquality().hash(filterType));
+      const DeepCollectionEquality().hash(_sortBy));
 
   @JsonKey(ignore: true)
   @override
@@ -2176,9 +2151,7 @@ abstract class _ElasticQuery extends ElasticQuery {
           final _ElasticGroup? groupBy,
       @_ElasticSortConverter()
       @JsonKey(name: "sort")
-          final List<_ElasticSort>? sortBy,
-      @JsonKey(ignore: true)
-          final _ElasticFilterType? filterType}) = _$_ElasticQuery;
+          final List<_ElasticSort>? sortBy}) = _$_ElasticQuery;
   const _ElasticQuery._() : super._();
 
   factory _ElasticQuery.fromJson(Map<String, dynamic> json) =
@@ -2260,9 +2233,6 @@ abstract class _ElasticQuery extends ElasticQuery {
   @_ElasticSortConverter()
   @JsonKey(name: "sort")
   List<_ElasticSort>? get sortBy;
-  @override
-  @JsonKey(ignore: true)
-  _ElasticFilterType? get filterType;
   @override
   @JsonKey(ignore: true)
   _$$_ElasticQueryCopyWith<_$_ElasticQuery> get copyWith =>

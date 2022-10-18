@@ -74,23 +74,10 @@ class ElasticQuery with _$ElasticQuery {
 
     /// Object to sort your results in an order other than document score.
     @_ElasticSortConverter() @JsonKey(name: "sort") List<_ElasticSort>? sortBy,
-    @JsonKey(ignore: true)
-    @Default(_ElasticFilterType.all)
-        _ElasticFilterType? filterType,
   }) = _ElasticQuery;
 
   factory ElasticQuery.fromJson(Map<String, dynamic> json) =>
       _$ElasticQueryFromJson(json);
-
-  /// Creates and returns a new [ElasticQuery] which will define the way the upcoming filters
-  /// will be processed (all, any of none). If not specified, filters are "all".
-  ///
-  /// Note: Nested filters are not supported at the moment.
-  ///
-  /// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
-  ElasticQuery filterAll() => copyWith(filterType: _ElasticFilterType.all);
-  ElasticQuery filterAny() => copyWith(filterType: _ElasticFilterType.any);
-  ElasticQuery filterNone() => copyWith(filterType: _ElasticFilterType.none);
 
   /// Creates and returns a new [ElasticQuery] with additional [ElasticSearchFilter],
   /// an object to filter documents that contain a specific field value.
@@ -112,26 +99,12 @@ class ElasticQuery with _$ElasticQuery {
   /// from where the range will be applied (from parameter which is a [LatLong]).
   /// The distance unit can also be specified [GeoUnit]
   ///
+  /// Filters created with this modifier will be handled as "all" filters, which means
+  /// that all conditions must match.
+  ///
   /// Note: Nested filters are not supported at the moment.
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
-  @Assert(
-      'isEqualTo != null || whereIn != null || isGreaterThanOrEqualTo != null || isLessThan != null || isFurtherThanOrAt != null || isLessFarThan != null',
-      'You must provide at least one condition (isEqualTo, whereIn, isGreaterThanOrEqualTo, isLessThan, isFurtherThanOrAt, isLessFarThan)')
-  @Assert('isEqualTo != null && whereIn != null',
-      'You cannot use isEqualTo and whereIn at the same time.')
-  @Assert(
-      'isEqualTo != null && (isGreaterThanOrEqualTo != null || isLessThan != null)',
-      'You cannot use isEqualTo and isGreaterThanOrEqualTo/isLessThan at the same time.')
-  @Assert(
-      'isEqualTo != null && (isFurtherThanOrAt != null || isLessFarThan != null)',
-      'You cannot use isEqualTo and isFurtherThanOrAt/isLessFarThan at the same time.')
-  @Assert(
-      '(isFurtherThanOrAt != null || isLessFarThan != null) && from == null',
-      'You must provide from (which is the center point of your query) when using isFurtherThanOrAt/isLessFarThan.')
-  @Assert(
-      '(isFurtherThanOrAt != null || isLessFarThan != null) && (isGreaterThanOrEqualTo != null || isLessThan != null)',
-      'You cannot use isFurtherThanOrAt/isLessFarThan and isGreaterThanOrEqualTo/isLessThan at the same time.')
   ElasticQuery filter(
     String field, {
     Object? isEqualTo,
@@ -141,7 +114,151 @@ class ElasticQuery with _$ElasticQuery {
     double? isFurtherThanOrAt,
     double? isLessFarThan,
     LatLong? from,
+    GeoUnit? unit,
+  }) =>
+      _filter(
+        field,
+        isEqualTo: isEqualTo,
+        whereIn: whereIn,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isLessThan: isLessThan,
+        isFurtherThanOrAt: isFurtherThanOrAt,
+        isLessFarThan: isLessFarThan,
+        from: from,
+        unit: unit,
+        type: _ElasticFilterType.all,
+      );
+
+  /// Creates and returns a new [ElasticQuery] with additional [ElasticSearchFilter],
+  /// an object to filter documents that contain a specific field value.
+  /// Available on text, number, and date fields.
+  ///
+  /// Elastic filters can be of three types:
+  /// * Value filters:
+  /// - isEqualTo which will make a filter based on a value
+  /// - whereIn which will make a filter based on an array of values
+  ///
+  /// * Range filters (works with `DateTime` and `double` types):
+  /// - isGreaterThanOrEqualTo which is the inclusive lower bound of the range
+  /// - isLessThan which is the exclusive upper bound of the range
+  ///
+  /// * Geo filters:
+  /// - isFurtherThanOrAt which is the inclusive lower bound of the range
+  /// - isLessFarThan which is the exclusive upper bound of the range
+  /// By specifying one of the two parameters above, you need to specify the center point
+  /// from where the range will be applied (from parameter which is a [LatLong]).
+  /// The distance unit can also be specified [GeoUnit]
+  ///
+  /// Filters created with this modifier will be handled as "any" filters, which means
+  /// that only one condition must match.
+  ///
+  /// Note: Nested filters are not supported at the moment.
+  ///
+  /// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
+  ElasticQuery filterAny(
+    String field, {
+    Object? isEqualTo,
+    List<Object?>? whereIn,
+    Object? isGreaterThanOrEqualTo,
+    Object? isLessThan,
+    double? isFurtherThanOrAt,
+    double? isLessFarThan,
+    LatLong? from,
+    GeoUnit? unit,
+  }) =>
+      _filter(
+        field,
+        isEqualTo: isEqualTo,
+        whereIn: whereIn,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isLessThan: isLessThan,
+        isFurtherThanOrAt: isFurtherThanOrAt,
+        isLessFarThan: isLessFarThan,
+        from: from,
+        unit: unit,
+        type: _ElasticFilterType.any,
+      );
+
+  /// Creates and returns a new [ElasticQuery] with additional [ElasticSearchFilter],
+  /// an object to filter documents that contain a specific field value.
+  /// Available on text, number, and date fields.
+  ///
+  /// Elastic filters can be of three types:
+  /// * Value filters:
+  /// - isEqualTo which will make a filter based on a value
+  /// - whereIn which will make a filter based on an array of values
+  ///
+  /// * Range filters (works with `DateTime` and `double` types):
+  /// - isGreaterThanOrEqualTo which is the inclusive lower bound of the range
+  /// - isLessThan which is the exclusive upper bound of the range
+  ///
+  /// * Geo filters:
+  /// - isFurtherThanOrAt which is the inclusive lower bound of the range
+  /// - isLessFarThan which is the exclusive upper bound of the range
+  /// By specifying one of the two parameters above, you need to specify the center point
+  /// from where the range will be applied (from parameter which is a [LatLong]).
+  /// The distance unit can also be specified [GeoUnit]
+  ///
+  /// Filters created with this modifier will be handled as "none" filters, which means
+  /// that documents matching these filters will be excluded from results.
+  ///
+  /// Note: Nested filters are not supported at the moment.
+  ///
+  /// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
+  ElasticQuery filterNone(
+    String field, {
+    Object? isEqualTo,
+    List<Object?>? whereIn,
+    Object? isGreaterThanOrEqualTo,
+    Object? isLessThan,
+    double? isFurtherThanOrAt,
+    double? isLessFarThan,
+    LatLong? from,
+    GeoUnit? unit,
+  }) =>
+      _filter(
+        field,
+        isEqualTo: isEqualTo,
+        whereIn: whereIn,
+        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+        isLessThan: isLessThan,
+        isFurtherThanOrAt: isFurtherThanOrAt,
+        isLessFarThan: isLessFarThan,
+        from: from,
+        unit: unit,
+        type: _ElasticFilterType.none,
+      );
+
+  /// Private method which handles filters.
+  @Assert(
+      'isEqualTo != null || whereIn != null || isGreaterThanOrEqualTo != null || isLessThan != null || isFurtherThanOrAt != null || isLessFarThan != null',
+      'You must provide at least one condition (isEqualTo, whereIn, isGreaterThanOrEqualTo, isLessThan, isFurtherThanOrAt, isLessFarThan)')
+  @Assert(
+      '(isEqualTo != null && whereIn == null) || (isEqualTo == null && whereIn != null) || (isEqualTo == null && whereIn == null)',
+      'You cannot use isEqualTo and whereIn at the same time.')
+  @Assert(
+      '(isEqualTo != null && isGreaterThanOrEqualTo == null && isLessThan == null) || (isEqualTo == null && (isGreaterThanOrEqualTo != null || isLessThan != null)) || (isEqualTo == null && isGreaterThanOrEqualTo == null && isLessThan == null)',
+      'You cannot use isEqualTo and isGreaterThanOrEqualTo/isLessThan at the same time.')
+  @Assert(
+      '(isEqualTo != null && isFurtherThanOrAt == null && isLessFarThan == null) || (isEqualTo == null && (isFurtherThanOrAt != null || isLessFarThan != null)) || (isEqualTo == null && isFurtherThanOrAt == null && isLessFarThan == null)',
+      'You cannot use isEqualTo and isFurtherThanOrAt/isLessFarThan at the same time.')
+  @Assert(
+      '((isFurtherThanOrAt != null || isLessFarThan != null) && isGreaterThanOrEqualTo == null && isLessThan == null) || ((isGreaterThanOrEqualTo != null || isLessThan != null) && isFurtherThanOrAt == null && isLessFarThan == null) || (isGreaterThanOrEqualTo == null && isLessThan == null && isFurtherThanOrAt == null && isLessFarThan == null)',
+      'You cannot use isFurtherThanOrAt/isLessFarThan and isGreaterThanOrEqualTo/isLessThan at the same time.')
+  @Assert(
+      '((isFurtherThanOrAt != null || isLessFarThan != null) && from == null) || (isFurtherThanOrAt == null && isLessFarThan == null && from == null)',
+      'You must provide from (which is the center point of your query) when using isFurtherThanOrAt/isLessFarThan.')
+  ElasticQuery _filter(
+    String field, {
+    Object? isEqualTo,
+    List<Object?>? whereIn,
+    Object? isGreaterThanOrEqualTo,
+    Object? isLessThan,
+    double? isFurtherThanOrAt,
+    double? isLessFarThan,
+    LatLong? from,
     @Default(GeoUnit.meters) GeoUnit? unit,
+    required _ElasticFilterType type,
   }) {
     dynamic value;
 
@@ -176,7 +293,7 @@ class ElasticQuery with _$ElasticQuery {
     final List<_ElasticSearchFilter> newFilters = [
       ...?filters,
       _ElasticSearchFilter(
-        type: filterType!,
+        type: type,
         name: field,
         value: value,
       ),
@@ -265,26 +382,37 @@ class ElasticQuery with _$ElasticQuery {
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/facets.html]
   @Assert(
-      'isMoreThanOrEqualTo != null && (isMoreThanOrEqualTo is double || isMoreThanOrEqualTo is DateTime)',
+      'isGreaterThanOrEqualTo == null || (isGreaterThanOrEqualTo != null && (isGreaterThanOrEqualTo is double || isGreaterThanOrEqualTo is DateTime))',
       '`isMoreThanOrEqualTo` must be a double or a DateTime')
   @Assert(
-      'isLessThan != null && (isLessThan is double || isLessThan is DateTime)',
+      'isLessThan == null || (isLessThan != null && (isLessThan is double || isLessThan is DateTime))',
       '`isLessThan` must be a double or a DateTime')
+  @Assert(
+      '(isEqualTo != null && isFurtherThanOrAt == null && isLessFarThan == null) || (isEqualTo == null && (isFurtherThanOrAt != null || isLessFarThan != null)) || (isEqualTo == null && isFurtherThanOrAt == null && isLessFarThan == null)',
+      'You cannot use isEqualTo and isFurtherThanOrAt/isLessFarThan at the same time.')
+  @Assert(
+      '((isFurtherThanOrAt != null || isLessFarThan != null) && isGreaterThanOrEqualTo == null && isLessThan == null) || ((isGreaterThanOrEqualTo != null || isLessThan != null) && isFurtherThanOrAt == null && isLessFarThan == null) || (isGreaterThanOrEqualTo == null && isLessThan == null && isFurtherThanOrAt == null && isLessFarThan == null)',
+      'You cannot use isFurtherThanOrAt/isLessFarThan and isGreaterThanOrEqualTo/isLessThan at the same time.')
+  @Assert(
+      '((isFurtherThanOrAt != null || isLessFarThan != null) && from == null) || (isFurtherThanOrAt == null && isLessFarThan == null && from == null)',
+      'You must provide from (which is the center point of your query) when using isFurtherThanOrAt/isLessFarThan.')
   ElasticQuery facet(
     String field, {
     String? name,
-    //Object? isMoreThanOrEqualTo,
-    //Object? isLessThan,
-    int? size,
-    List<ElasticRange>? ranges,
-    @_LatLongConverter() LatLong? center,
+    Object? isGreaterThanOrEqualTo,
+    Object? isLessThan,
+    Object? isFurtherThanOrAt,
+    Object? isLessFarThan,
+    LatLong? from,
     @Default(GeoUnit.meters) GeoUnit? unit,
+    int? size,
+    //List<ElasticRange>? ranges,
   }) {
     Map<String, _ElasticQueryFacet> _facets =
         facets != null ? {...facets!} : {};
     _ElasticQueryFacet facet;
 
-    if (ranges != null) {
+    /*if (ranges != null) {
       facet = _ElasticQueryFacet(
         type: "range",
         ranges: ranges
@@ -303,26 +431,40 @@ class ElasticQuery with _$ElasticQuery {
         center: center,
         unit: unit,
       );
-    }
-    /*if (isMoreThanOrEqualTo != null || isLessThan != null) 
+    }*/
+    if (from != null) {
       final newRange = _ElasticRangeFacet(
         name: name,
-        from: isMoreThanOrEqualTo is DateTime
-            ? isMoreThanOrEqualTo.toUTCString()
-            : isMoreThanOrEqualTo?.toString(),
+        from: isFurtherThanOrAt?.toString(),
+        to: isLessFarThan?.toString(),
+      );
+      facet = _ElasticQueryFacet(
+        type: "range",
+        ranges: [
+          ...?facets?[field]?.ranges,
+          newRange,
+        ],
+        center: from,
+        unit: unit,
+      );
+    } else if (isGreaterThanOrEqualTo != null || isLessThan != null) {
+      final newRange = _ElasticRangeFacet(
+        name: name,
+        from: isGreaterThanOrEqualTo is DateTime
+            ? isGreaterThanOrEqualTo.toUTCString()
+            : isGreaterThanOrEqualTo?.toString(),
         to: isLessThan is DateTime
             ? isLessThan.toUTCString()
             : isLessThan?.toString(),
       );
-      _facet = _ElasticQueryFacet(
+      facet = _ElasticQueryFacet(
         type: "range",
         ranges: [
           ...?facets?[field]?.ranges,
           newRange,
         ],
       );
-    }*/
-    else {
+    } else {
       facet = _ElasticQueryFacet(
         type: "value",
         size: size,

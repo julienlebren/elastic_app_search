@@ -130,6 +130,7 @@ class _AppState extends State<App> {
       final service = ElasticAppSearch(
         endPoint: "https://host-2376rb.api.swiftype.com",
         searchKey: "search-371auk61r2bwqtdzocdgutmg",
+        debug: true,
       );
 
       ElasticEngine engine = service.engine("search-ui-examples");
@@ -142,15 +143,35 @@ class _AppState extends State<App> {
           .resultField("visitors")
           .resultField("description")
           .facet("world_heritage_site")
-          .facet("states", size: 30)
-          .facet(
-            "location",
-            ranges: distanceRanges,
-            center: elasticOfficePoint,
-            unit: GeoUnit.miles,
-          )
-          .facet("date_established", ranges: datesRanges)
-          .facet("acres", ranges: sizesRanges)
+          .facet("states", size: 30);
+
+      for (final range in distanceRanges) {
+        query = query.facet(
+          "location",
+          isFurtherThanOrAt: range.from,
+          isLessFarThan: range.to,
+          from: elasticOfficePoint,
+          unit: GeoUnit.miles,
+        );
+      }
+      for (final range in datesRanges) {
+        query = query.facet(
+          "date_established",
+          isGreaterThanOrEqualTo: range.from,
+          isLessThan: range.to,
+          name: range.name,
+        );
+      }
+      for (final range in sizesRanges) {
+        query = query.facet(
+          "acres",
+          isGreaterThanOrEqualTo: range.from,
+          isLessThan: range.to,
+          name: range.name,
+        );
+      }
+
+      query = query
           .disjunctiveFacet("states")
           .disjunctiveFacet("date_established")
           .disjunctiveFacet("acres")
