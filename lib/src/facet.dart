@@ -59,6 +59,14 @@ class ElasticFacet with _$ElasticFacet {
     return 0;
   }
 
+  int countForValues(List<String> values) {
+    final valueData = data?.where((element) => values.contains(element.value));
+    if (valueData != null && valueData.isNotEmpty) {
+      return valueData.fold(0, (sum, item) => sum + item.count);
+    }
+    return 0;
+  }
+
   int countForRange({
     double? from,
     double? to,
