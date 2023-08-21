@@ -1,3 +1,15 @@
+## 0.4.3
+
+* Updated the dependecies to maintain compatibility
+
+## 0.4.2
+
+* Updated the dependecies to maintain compatibility
+
+## 0.4.1
+
+* Updated the dependecies to maintain compatibility
+
 ## 0.4.0
 
 * Added `ElasticGeoFilter` to filter results by range based on a geo point
