@@ -23,7 +23,8 @@ class ElasticQuery with _$ElasticQuery {
       'The value of the precision parameter must be an integer between 1 and 11, inclusive.')
   const factory ElasticQuery({
     /// An object representing an Elastic engine
-    @JsonKey(ignore: true) ElasticEngine? engine,
+    @JsonKey(includeToJson: false)
+        ElasticEngine? engine,
 
     /// String or number to match.
     required String query,
@@ -35,14 +36,18 @@ class ElasticQuery with _$ElasticQuery {
     /// The value of the precision parameter must be an integer between 1 and 11, inclusive.
     /// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
     /// Lower values favor recall, while higher values favor precision.
-    @protected @JsonKey(name: "precision") int? precisionTuning,
+    @protected
+    @JsonKey(name: "precision")
+        int? precisionTuning,
 
     /// Object to delimit the pagination parameters.
-    @JsonKey(name: "page") _ElasticSearchPage? searchPage,
+    @JsonKey(name: "page")
+        _ElasticSearchPage? searchPage,
 
     /// Object to filter documents that contain a specific field value.
     /// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
-    @_ElasticSearchFiltersConverter() List<_ElasticSearchFilter>? filters,
+    @_ElasticSearchFiltersConverter()
+        List<_ElasticSearchFilter>? filters,
 
     /// Object which restricts a query to search only specific fields.
     @_ElasticSearchFieldsConverter()
@@ -56,24 +61,30 @@ class ElasticQuery with _$ElasticQuery {
 
     /// Facets are objects which provide the counts of each value or range of values for a field.
     /// See [https://www.elastic.co/guide/en/app-search/current/facets.html]
-    @protected Map<String, _ElasticQueryFacet>? facets,
+    @protected
+        Map<String, _ElasticQueryFacet>? facets,
 
     /// Disjunctive facets are useful when you have many filters in your form, and especially
     /// when you filter your query with a value that corresponds to a facet: if a disjunctive facet is set,
     /// it will return all the available facets as if that filter was not applied.
     /// This is not a native part of Elastic App Search, this is a workaround. In fact, multiple queries are
     /// passed to Elastic and the package concatenates all responses in one response.
-    @JsonKey(ignore: true) List<String>? disjunctiveFacets,
+    @JsonKey(includeToJson: false)
+        List<String>? disjunctiveFacets,
 
     /// Tags can be used to enrich each query with unique information.
     /// See [https://www.elastic.co/guide/en/app-search/current/tags.html]
     _ElasticAnalytics? analytics,
 
     /// Grouped results based on shared fields
-    @protected @JsonKey(name: "group") _ElasticGroup? groupBy,
+    @protected
+    @JsonKey(name: "group")
+        _ElasticGroup? groupBy,
 
     /// Object to sort your results in an order other than document score.
-    @_ElasticSortConverter() @JsonKey(name: "sort") List<_ElasticSort>? sortBy,
+    @_ElasticSortConverter()
+    @JsonKey(name: "sort")
+        List<_ElasticSort>? sortBy,
   }) = _ElasticQuery;
 
   factory ElasticQuery.fromJson(Map<String, dynamic> json) =>
