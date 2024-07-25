@@ -44,7 +44,7 @@ The results will be filtering the parks based in *California*, with the flag *wo
 Only the **title** and a snippet of 140 chars of the **description** of the park will be returned by the query.
 We request the first page, limited to 50 documents.
 
-### A full use case is available in `example/main.dart`, with the following rendering: 
+### A full use case is available in the example folder, with the following rendering: 
 
 * The search bar makes dynamic queries to Elastic
 * The popup menu allows you to filter parks if they are World Heritage or not
@@ -62,6 +62,7 @@ We request the first page, limited to 50 documents.
   * [Result fields](#result-fields)
   * [Facets](#facets)
   * [Disjunctive facets](#disjunctive-facets)
+* [ElasticSuggestionQuery](#ElasticSuggestionQuery)
 * [ElasticResponse](#ElasticResponse)
   * [ElasticResponseMeta](#ElasticResponseMeta)
     * [ElasticResponseMetaPage](#ElasticResponseMetaPage)
@@ -267,6 +268,25 @@ Disjunctive facets are useful when you have many filters in your form, and espec
 final query = query.disjunctiveFacet("field");
 ```
 
+## ElasticSuggestionQuery
+
+The only parameter required to instantiate a query suggestion is a string that is the word for which you want to get query suggestions.
+
+🔍 See https://www.elastic.co/guide/en/app-search/current/query-suggestions-guide.html
+
+Type | Description
+------------ | -------------
+String | The keyword
+
+```dart
+final suggestionQuery = engine.suggestionQuery("query");
+```
+
+Configuration | Type                  | Description
+----- |-----------------------| -------------
+size | int                   | Limits the number of results
+searchFields | List\<ElasticSearchField\> | See [Search fields](#search-fields)
+sortBy | List\<ElasticSort\> | Allows you to add one or more sorts on specific fields.  See https://www.elastic.co/guide/en/elasticsearch/reference/current/sort-search-results.html
 
 ## ElasticResponse
 
