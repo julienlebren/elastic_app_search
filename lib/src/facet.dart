@@ -3,7 +3,7 @@
 part of elastic_app_search;
 
 @freezed
-class _ElasticQueryFacet with _$_ElasticQueryFacet {
+class _ElasticQueryFacet with _$ElasticQueryFacet {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticQueryFacet({
     required String type,
@@ -15,11 +15,11 @@ class _ElasticQueryFacet with _$_ElasticQueryFacet {
   }) = __ElasticQueryFacet;
 
   factory _ElasticQueryFacet.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticQueryFacetFromJson(json);
+      _$ElasticQueryFacetFromJson(json);
 }
 
 @freezed
-class _ElasticRangeFacet with _$_ElasticRangeFacet {
+class _ElasticRangeFacet with _$ElasticRangeFacet {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticRangeFacet({
     String? name,
@@ -29,7 +29,7 @@ class _ElasticRangeFacet with _$_ElasticRangeFacet {
   }) = __ElasticRangeFacet;
 
   factory _ElasticRangeFacet.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticRangeFacetFromJson(json);
+      _$ElasticRangeFacetFromJson(json);
 }
 
 @freezed

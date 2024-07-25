@@ -16,7 +16,23 @@ class ElasticEngine {
   /// Creates a [ElasticQuery] object related to this engine
   ElasticQuery query(String query) => ElasticQuery(engine: this, query: query);
 
+  /// Creates a [ElasticSuggestionsQuery] object related to this engine
+  ElasticSuggestionsQuery suggestionQuery(String query) =>
+      ElasticSuggestionsQuery(
+        engine: this,
+        query: query,
+      );
+
   /// Executes the given query on this engine
-  Future<ElasticResponse> get(ElasticQuery query, [CancelToken? cancelToken]) =>
-      service.post(query, cancelToken);
+  Future<ElasticResponse> get(
+    ElasticQuery query, [
+    CancelToken? cancelToken,
+  ]) =>
+      service.postSearchOperation(query, cancelToken);
+
+  Future<ElasticQuerySuggestionResponse> getQuerySuggestion(
+    ElasticSuggestionsQuery query, [
+    CancelToken? cancelToken,
+  ]) =>
+      service.postSuggestionOperation(query, cancelToken);
 }

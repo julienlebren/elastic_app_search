@@ -2,12 +2,12 @@
 
 part of elastic_app_search;
 
-/// An object contaning all the settings to execute a query
+/// An object containing all the settings to execute a query
 ///
 /// See https://www.elastic.co/guide/en/app-search/current/search.html
-/// to get more information abouit all the parameters.
+/// to get more information about all the parameters.
 ///
-/// Note: All the paramaters of Elastic App Search are not currently
+/// Note: All the parameters of Elastic App Search are not currently
 /// available in this package.
 @freezed
 class ElasticQuery with _$ElasticQuery {
@@ -23,8 +23,8 @@ class ElasticQuery with _$ElasticQuery {
       'The value of the precision parameter must be an integer between 1 and 11, inclusive.')
   const factory ElasticQuery({
     /// An object representing an Elastic engine
-    @JsonKey(includeToJson: false)
-        ElasticEngine? engine,
+    @JsonKey(includeToJson: false, includeFromJson: false)
+    ElasticEngine? engine,
 
     /// String or number to match.
     required String query,
@@ -36,55 +36,45 @@ class ElasticQuery with _$ElasticQuery {
     /// The value of the precision parameter must be an integer between 1 and 11, inclusive.
     /// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
     /// Lower values favor recall, while higher values favor precision.
-    @protected
-    @JsonKey(name: "precision")
-        int? precisionTuning,
+    @protected @JsonKey(name: "precision") int? precisionTuning,
 
     /// Object to delimit the pagination parameters.
-    @JsonKey(name: "page")
-        _ElasticSearchPage? searchPage,
+    @JsonKey(name: "page") _ElasticSearchPage? searchPage,
 
     /// Object to filter documents that contain a specific field value.
     /// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
-    @_ElasticSearchFiltersConverter()
-        List<_ElasticSearchFilter>? filters,
+    @_ElasticSearchFiltersConverter() List<_ElasticSearchFilter>? filters,
 
     /// Object which restricts a query to search only specific fields.
     @_ElasticSearchFieldsConverter()
     @JsonKey(name: "search_fields")
-        List<_ElasticSearchField>? searchFields,
+    List<_ElasticSearchField>? searchFields,
 
     /// Object to define the fields which appear in search results and how their values are rendered.
     @_ElasticResultFieldsConverter()
     @JsonKey(name: "result_fields")
-        List<_ElasticResultField>? resultFields,
+    List<_ElasticResultField>? resultFields,
 
     /// Facets are objects which provide the counts of each value or range of values for a field.
     /// See [https://www.elastic.co/guide/en/app-search/current/facets.html]
-    @protected
-        Map<String, _ElasticQueryFacet>? facets,
+    @protected Map<String, _ElasticQueryFacet>? facets,
 
     /// Disjunctive facets are useful when you have many filters in your form, and especially
     /// when you filter your query with a value that corresponds to a facet: if a disjunctive facet is set,
     /// it will return all the available facets as if that filter was not applied.
     /// This is not a native part of Elastic App Search, this is a workaround. In fact, multiple queries are
     /// passed to Elastic and the package concatenates all responses in one response.
-    @JsonKey(includeToJson: false)
-        List<String>? disjunctiveFacets,
+    @JsonKey(includeToJson: false) List<String>? disjunctiveFacets,
 
     /// Tags can be used to enrich each query with unique information.
     /// See [https://www.elastic.co/guide/en/app-search/current/tags.html]
     _ElasticAnalytics? analytics,
 
     /// Grouped results based on shared fields
-    @protected
-    @JsonKey(name: "group")
-        _ElasticGroup? groupBy,
+    @protected @JsonKey(name: "group") _ElasticGroup? groupBy,
 
     /// Object to sort your results in an order other than document score.
-    @_ElasticSortConverter()
-    @JsonKey(name: "sort")
-        List<_ElasticSort>? sortBy,
+    @_ElasticSortConverter() @JsonKey(name: "sort") List<_ElasticSort>? sortBy,
   }) = _ElasticQuery;
 
   factory ElasticQuery.fromJson(Map<String, dynamic> json) =>
@@ -608,7 +598,7 @@ class ElasticQuery with _$ElasticQuery {
 ///
 /// See [https://www.elastic.co/guide/en/app-search/current/search-guide.html#search-guide-paginate]
 @freezed
-class _ElasticSearchPage with _$_ElasticSearchPage {
+class _ElasticSearchPage with _$ElasticSearchPage {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   @Assert('size == null || (size != null && size >= 0 && size <= 1000)',
       'The number of results per page must be greater than or equal to 1 and less than or equal to 1000.')
@@ -628,7 +618,7 @@ class _ElasticSearchPage with _$_ElasticSearchPage {
   }) = __ElasticSearchPage;
 
   factory _ElasticSearchPage.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticSearchPageFromJson(json);
+      _$ElasticSearchPageFromJson(json);
 }
 
 /// Object to filter documents that contain a specific field value.
@@ -641,7 +631,7 @@ class _ElasticSearchPage with _$_ElasticSearchPage {
 ///
 /// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
 @freezed
-class _ElasticSearchFilter with _$_ElasticSearchFilter {
+class _ElasticSearchFilter with _$ElasticSearchFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticSearchFilter({
     /// The type of the filter, which will determine if it's an 'OR', 'AND' or 'NOT' condition.
@@ -656,7 +646,7 @@ class _ElasticSearchFilter with _$_ElasticSearchFilter {
   }) = __ElasticSearchFilter;
 
   factory _ElasticSearchFilter.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticSearchFilterFromJson(json);
+      _$ElasticSearchFilterFromJson(json);
 }
 
 class _ElasticSearchFiltersConverter
@@ -699,7 +689,7 @@ class _ElasticSearchFiltersConverter
 }
 
 @freezed
-class _ElasticDateRangeFilter with _$_ElasticDateRangeFilter {
+class _ElasticDateRangeFilter with _$ElasticDateRangeFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticDateRangeFilter({
     String? from,
@@ -707,11 +697,11 @@ class _ElasticDateRangeFilter with _$_ElasticDateRangeFilter {
   }) = __ElasticDateRangeFilter;
 
   factory _ElasticDateRangeFilter.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticDateRangeFilterFromJson(json);
+      _$ElasticDateRangeFilterFromJson(json);
 }
 
 @freezed
-class _ElasticNumberRangeFilter with _$_ElasticNumberRangeFilter {
+class _ElasticNumberRangeFilter with _$ElasticNumberRangeFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticNumberRangeFilter({
     double? from,
@@ -719,11 +709,11 @@ class _ElasticNumberRangeFilter with _$_ElasticNumberRangeFilter {
   }) = __ElasticNumberRangeFilter;
 
   factory _ElasticNumberRangeFilter.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticNumberRangeFilterFromJson(json);
+      _$ElasticNumberRangeFilterFromJson(json);
 }
 
 @freezed
-class _ElasticGeoFilter with _$_ElasticGeoFilter {
+class _ElasticGeoFilter with _$ElasticGeoFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   @Assert('center != null', 'center is required.')
   const factory _ElasticGeoFilter({
@@ -735,7 +725,7 @@ class _ElasticGeoFilter with _$_ElasticGeoFilter {
   }) = __ElasticGeoFilter;
 
   factory _ElasticGeoFilter.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticGeoFilterFromJson(json);
+      _$ElasticGeoFilterFromJson(json);
 }
 
 /// Object which restricts a query to search only specific fields.
@@ -745,7 +735,7 @@ class _ElasticGeoFilter with _$_ElasticGeoFilter {
 ///
 /// See [https://www.elastic.co/guide/en/app-search/current/search-fields-weights.html]
 @freezed
-class _ElasticSearchField with _$_ElasticSearchField {
+class _ElasticSearchField with _$ElasticSearchField {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticSearchField({
     /// The name of the field. It must exist within your Engine schema and be of type text.
@@ -757,7 +747,7 @@ class _ElasticSearchField with _$_ElasticSearchField {
   }) = __ElasticSearchField;
 
   factory _ElasticSearchField.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticSearchFieldFromJson(json);
+      _$ElasticSearchFieldFromJson(json);
 }
 
 class _ElasticSearchFieldsConverter
@@ -795,7 +785,7 @@ class _ElasticSearchFieldsConverter
 ///
 /// More information on [https://www.elastic.co/guide/en/app-search/current/result-fields-highlights.html]
 @freezed
-class _ElasticResultField with _$_ElasticResultField {
+class _ElasticResultField with _$ElasticResultField {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticResultField({
     /// The name of the field. It must exist within your Engine schema and be of type text.
@@ -815,7 +805,7 @@ class _ElasticResultField with _$_ElasticResultField {
   }) = __ElasticResultField;
 
   factory _ElasticResultField.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticResultFieldFromJson(json);
+      _$ElasticResultFieldFromJson(json);
 }
 
 class _ElasticResultFieldsConverter
@@ -853,7 +843,7 @@ class _ElasticResultFieldsConverter
 ///
 /// See [https://www.elastic.co/guide/en/app-search/current/grouping.html]
 @freezed
-class _ElasticGroup with _$_ElasticGroup {
+class _ElasticGroup with _$ElasticGroup {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticGroup({
     /// Field name to group results on.
@@ -865,7 +855,7 @@ class _ElasticGroup with _$_ElasticGroup {
   }) = __ElasticGroup;
 
   factory _ElasticGroup.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticGroupFromJson(json);
+      _$ElasticGroupFromJson(json);
 }
 
 /// Object which sorts results based on shared fields.
@@ -875,7 +865,7 @@ class _ElasticGroup with _$_ElasticGroup {
 ///
 /// See [https://www.elastic.co/guide/en/app-search/current/sort.html]
 @freezed
-class _ElasticSort with _$_ElasticSort {
+class _ElasticSort with _$ElasticSort {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticSort({
     /// Field name to sort results
@@ -884,7 +874,7 @@ class _ElasticSort with _$_ElasticSort {
   }) = __ElasticSort;
 
   factory _ElasticSort.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticSortFromJson(json);
+      _$ElasticSortFromJson(json);
 }
 
 class _ElasticSortConverter
@@ -902,5 +892,97 @@ class _ElasticSortConverter
       value.add({sortBy.field: sortBy.descending ? "desc" : "asc"});
     }
     return value;
+  }
+}
+
+@freezed
+class ElasticSuggestionsQuery with _$ElasticSuggestionsQuery {
+  const ElasticSuggestionsQuery._();
+
+  @JsonSerializable(
+    explicitToJson: true,
+    includeIfNull: false,
+  )
+  @Assert('engine != null', 'An engine is required to build a query.')
+  const factory ElasticSuggestionsQuery({
+    /// An object representing an Elastic engine
+    @JsonKey(includeToJson: false, includeFromJson: false)
+    ElasticEngine? engine,
+
+    /// String or number to match.
+    required String query,
+
+    /// Number of query suggestions.
+    /// Must be greater than or equal to 1 and less than or equal to 1000.
+    /// Defaults to 10.
+    @JsonKey(name: "size") @Default(10) int? sizeField,
+
+    /// Object which restricts a query to search only specific fields.
+    @_ElasticSearchFieldsConverter()
+    @JsonKey(name: "search_fields")
+    List<_ElasticSearchField>? searchFields,
+
+    /// Object to sort your results in an order other than document score.
+    @_ElasticSortConverter() @JsonKey(name: "sort") List<_ElasticSort>? sortBy,
+  }) = _ElasticSuggestionsQuery;
+
+  factory ElasticSuggestionsQuery.fromJson(Map<String, dynamic> json) =>
+      _$ElasticSuggestionsQueryFromJson(json);
+
+  /// Takes a field with an optional `weight`, creates and returns a new [ElasticSuggestionsQuery]
+  ///
+  /// It will restrict a query to search only specific fields.
+  ///
+  /// Weight is given between 10 (most relevant) to 1 (least relevant).
+  ///
+  /// Restricting fields will result in faster queries, especially for schemas with many text fields
+  /// Only available within text fields.
+  ///
+  /// See [https://www.elastic.co/guide/en/app-search/current/search-fields-weights.html]
+  @Assert('weight != null && (weight < 1 || weight > 10)',
+      'The value of the weight parameter must be an integer between 1 and 10.')
+  ElasticSuggestionsQuery searchField(
+    String field, {
+    int? weight,
+  }) {
+    return copyWith(
+      searchFields: [
+        ...?searchFields,
+        _ElasticSearchField(
+          name: field,
+          weight: weight,
+        ),
+      ],
+    );
+  }
+
+  /// Takes a field with an optionnal `descending`, creates and returns a new [ElasticSuggestionsQuery]
+  /// which will sort your results in an order other than document score.
+  ///
+  /// See [https://www.elastic.co/guide/en/app-search/current/sort.html]
+  @Assert('field != null', 'Field name to sort results must not be null')
+  ElasticSuggestionsQuery sort(
+    String field, {
+    bool descending = false,
+  }) {
+    final newSortBy = _ElasticSort(
+      field: field,
+      descending: descending,
+    );
+    return copyWith(sortBy: sortBy ?? <_ElasticSort>[] + [newSortBy]);
+  }
+
+  /// Creates and returns a new [ElasticSuggestionsQuery] with new size parameters.
+  ElasticSuggestionsQuery size(
+    int size,
+  ) {
+    return copyWith(
+      sizeField: size,
+    );
+  }
+
+  /// Fetch the documents for this query.
+  Future<ElasticQuerySuggestionResponse> get([CancelToken? cancelToken]) {
+    return engine!.getQuerySuggestion(this, cancelToken);
   }
 }

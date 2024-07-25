@@ -1,24 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of elastic_app_search;
+part of 'elastic_app_search.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$__ElasticAnalytics _$$__ElasticAnalyticsFromJson(Map<String, dynamic> json) =>
-    _$__ElasticAnalytics(
+_$_ElasticAnalyticsImpl _$$_ElasticAnalyticsImplFromJson(
+        Map<String, dynamic> json) =>
+    _$_ElasticAnalyticsImpl(
       tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
-Map<String, dynamic> _$$__ElasticAnalyticsToJson(
-        _$__ElasticAnalytics instance) =>
+Map<String, dynamic> _$$_ElasticAnalyticsImplToJson(
+        _$_ElasticAnalyticsImpl instance) =>
     <String, dynamic>{
       'tags': instance.tags,
     };
 
-_$__ElasticBoost _$$__ElasticBoostFromJson(Map<String, dynamic> json) =>
-    _$__ElasticBoost(
+_$_ElasticBoostImpl _$$_ElasticBoostImplFromJson(Map<String, dynamic> json) =>
+    _$_ElasticBoostImpl(
       type: $enumDecode(_$BoostTypeEnumMap, json['type']),
       value:
           (json['value'] as List<dynamic>?)?.map((e) => e as String).toList(),
@@ -27,7 +28,7 @@ _$__ElasticBoost _$$__ElasticBoostFromJson(Map<String, dynamic> json) =>
       factor: (json['factor'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$$__ElasticBoostToJson(_$__ElasticBoost instance) {
+Map<String, dynamic> _$$_ElasticBoostImplToJson(_$_ElasticBoostImpl instance) {
   final val = <String, dynamic>{
     'type': _$BoostTypeEnumMap[instance.type]!,
   };
@@ -56,21 +57,21 @@ const _$BoostOperationEnumMap = {
   BoostOperation.multiply: 'multiply',
 };
 
-_$__ElasticQueryFacet _$$__ElasticQueryFacetFromJson(
+_$_ElasticQueryFacetImpl _$$_ElasticQueryFacetImplFromJson(
         Map<String, dynamic> json) =>
-    _$__ElasticQueryFacet(
+    _$_ElasticQueryFacetImpl(
       type: json['type'] as String,
       name: json['name'] as String?,
       ranges: (json['ranges'] as List<dynamic>?)
           ?.map((e) => _ElasticRangeFacet.fromJson(e as Map<String, dynamic>))
           .toList(),
-      size: json['size'] as int?,
+      size: (json['size'] as num?)?.toInt(),
       center: const _LatLongConverter().fromJson(json['center'] as String?),
       unit: $enumDecodeNullable(_$GeoUnitEnumMap, json['unit']),
     );
 
-Map<String, dynamic> _$$__ElasticQueryFacetToJson(
-    _$__ElasticQueryFacet instance) {
+Map<String, dynamic> _$$_ElasticQueryFacetImplToJson(
+    _$_ElasticQueryFacetImpl instance) {
   final val = <String, dynamic>{
     'type': instance.type,
   };
@@ -100,17 +101,17 @@ const _$GeoUnitEnumMap = {
   GeoUnit.miles: 'mi',
 };
 
-_$__ElasticRangeFacet _$$__ElasticRangeFacetFromJson(
+_$_ElasticRangeFacetImpl _$$_ElasticRangeFacetImplFromJson(
         Map<String, dynamic> json) =>
-    _$__ElasticRangeFacet(
+    _$_ElasticRangeFacetImpl(
       name: json['name'] as String?,
       from: json['from'] as String?,
       to: json['to'] as String?,
-      count: json['count'] as int?,
+      count: (json['count'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$$__ElasticRangeFacetToJson(
-    _$__ElasticRangeFacet instance) {
+Map<String, dynamic> _$$_ElasticRangeFacetImplToJson(
+    _$_ElasticRangeFacetImpl instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
@@ -126,8 +127,8 @@ Map<String, dynamic> _$$__ElasticRangeFacetToJson(
   return val;
 }
 
-_$_ElasticFacet _$$_ElasticFacetFromJson(Map<String, dynamic> json) =>
-    _$_ElasticFacet(
+_$ElasticFacetImpl _$$ElasticFacetImplFromJson(Map<String, dynamic> json) =>
+    _$ElasticFacetImpl(
       type: $enumDecode(_$ElasticFacetTypeEnumMap, json['type']),
       name: json['name'] as String?,
       data: (json['data'] as List<dynamic>?)
@@ -135,7 +136,7 @@ _$_ElasticFacet _$$_ElasticFacetFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$$_ElasticFacetToJson(_$_ElasticFacet instance) {
+Map<String, dynamic> _$$ElasticFacetImplToJson(_$ElasticFacetImpl instance) {
   final val = <String, dynamic>{
     'type': _$ElasticFacetTypeEnumMap[instance.type]!,
   };
@@ -156,16 +157,18 @@ const _$ElasticFacetTypeEnumMap = {
   ElasticFacetType.range: 'range',
 };
 
-_$_ElasticFacetData _$$_ElasticFacetDataFromJson(Map<String, dynamic> json) =>
-    _$_ElasticFacetData(
+_$ElasticFacetDataImpl _$$ElasticFacetDataImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ElasticFacetDataImpl(
       name: json['name'] as String?,
       value: json['value'],
       from: json['from'],
       to: json['to'],
-      count: json['count'] as int,
+      count: (json['count'] as num).toInt(),
     );
 
-Map<String, dynamic> _$$_ElasticFacetDataToJson(_$_ElasticFacetData instance) {
+Map<String, dynamic> _$$ElasticFacetDataImplToJson(
+    _$ElasticFacetDataImpl instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
@@ -182,10 +185,10 @@ Map<String, dynamic> _$$_ElasticFacetDataToJson(_$_ElasticFacetData instance) {
   return val;
 }
 
-_$_ElasticQuery _$$_ElasticQueryFromJson(Map<String, dynamic> json) =>
-    _$_ElasticQuery(
+_$ElasticQueryImpl _$$ElasticQueryImplFromJson(Map<String, dynamic> json) =>
+    _$ElasticQueryImpl(
       query: json['query'] as String,
-      precisionTuning: json['precision'] as int?,
+      precisionTuning: (json['precision'] as num?)?.toInt(),
       searchPage: json['page'] == null
           ? null
           : _ElasticSearchPage.fromJson(json['page'] as Map<String, dynamic>),
@@ -199,6 +202,9 @@ _$_ElasticQuery _$$_ElasticQueryFromJson(Map<String, dynamic> json) =>
         (k, e) =>
             MapEntry(k, _ElasticQueryFacet.fromJson(e as Map<String, dynamic>)),
       ),
+      disjunctiveFacets: (json['disjunctiveFacets'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
       analytics: json['analytics'] == null
           ? null
           : _ElasticAnalytics.fromJson(
@@ -210,7 +216,7 @@ _$_ElasticQuery _$$_ElasticQueryFromJson(Map<String, dynamic> json) =>
           .fromJson(json['sort'] as List<Map<dynamic, dynamic>>?),
     );
 
-Map<String, dynamic> _$$_ElasticQueryToJson(_$_ElasticQuery instance) {
+Map<String, dynamic> _$$ElasticQueryImplToJson(_$ElasticQueryImpl instance) {
   final val = <String, dynamic>{
     'query': instance.query,
   };
@@ -237,15 +243,15 @@ Map<String, dynamic> _$$_ElasticQueryToJson(_$_ElasticQuery instance) {
   return val;
 }
 
-_$__ElasticSearchPage _$$__ElasticSearchPageFromJson(
+_$_ElasticSearchPageImpl _$$_ElasticSearchPageImplFromJson(
         Map<String, dynamic> json) =>
-    _$__ElasticSearchPage(
-      size: json['size'] as int? ?? 10,
-      current: json['current'] as int? ?? 1,
+    _$_ElasticSearchPageImpl(
+      size: (json['size'] as num?)?.toInt() ?? 10,
+      current: (json['current'] as num?)?.toInt() ?? 1,
     );
 
-Map<String, dynamic> _$$__ElasticSearchPageToJson(
-    _$__ElasticSearchPage instance) {
+Map<String, dynamic> _$$_ElasticSearchPageImplToJson(
+    _$_ElasticSearchPageImpl instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
@@ -259,17 +265,17 @@ Map<String, dynamic> _$$__ElasticSearchPageToJson(
   return val;
 }
 
-_$__ElasticSearchFilter _$$__ElasticSearchFilterFromJson(
+_$_ElasticSearchFilterImpl _$$_ElasticSearchFilterImplFromJson(
         Map<String, dynamic> json) =>
-    _$__ElasticSearchFilter(
+    _$_ElasticSearchFilterImpl(
       type: $enumDecodeNullable(_$_ElasticFilterTypeEnumMap, json['type']) ??
           _ElasticFilterType.all,
       name: json['name'] as String,
       value: json['value'],
     );
 
-Map<String, dynamic> _$$__ElasticSearchFilterToJson(
-    _$__ElasticSearchFilter instance) {
+Map<String, dynamic> _$$_ElasticSearchFilterImplToJson(
+    _$_ElasticSearchFilterImpl instance) {
   final val = <String, dynamic>{
     'type': _$_ElasticFilterTypeEnumMap[instance.type]!,
     'name': instance.name,
@@ -291,15 +297,15 @@ const _$_ElasticFilterTypeEnumMap = {
   _ElasticFilterType.any: 'any',
 };
 
-_$__ElasticDateRangeFilter _$$__ElasticDateRangeFilterFromJson(
+_$_ElasticDateRangeFilterImpl _$$_ElasticDateRangeFilterImplFromJson(
         Map<String, dynamic> json) =>
-    _$__ElasticDateRangeFilter(
+    _$_ElasticDateRangeFilterImpl(
       from: json['from'] as String?,
       to: json['to'] as String?,
     );
 
-Map<String, dynamic> _$$__ElasticDateRangeFilterToJson(
-    _$__ElasticDateRangeFilter instance) {
+Map<String, dynamic> _$$_ElasticDateRangeFilterImplToJson(
+    _$_ElasticDateRangeFilterImpl instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
@@ -313,15 +319,15 @@ Map<String, dynamic> _$$__ElasticDateRangeFilterToJson(
   return val;
 }
 
-_$__ElasticNumberRangeFilter _$$__ElasticNumberRangeFilterFromJson(
+_$_ElasticNumberRangeFilterImpl _$$_ElasticNumberRangeFilterImplFromJson(
         Map<String, dynamic> json) =>
-    _$__ElasticNumberRangeFilter(
+    _$_ElasticNumberRangeFilterImpl(
       from: (json['from'] as num?)?.toDouble(),
       to: (json['to'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$$__ElasticNumberRangeFilterToJson(
-    _$__ElasticNumberRangeFilter instance) {
+Map<String, dynamic> _$$_ElasticNumberRangeFilterImplToJson(
+    _$_ElasticNumberRangeFilterImpl instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
@@ -335,8 +341,9 @@ Map<String, dynamic> _$$__ElasticNumberRangeFilterToJson(
   return val;
 }
 
-_$__ElasticGeoFilter _$$__ElasticGeoFilterFromJson(Map<String, dynamic> json) =>
-    _$__ElasticGeoFilter(
+_$_ElasticGeoFilterImpl _$$_ElasticGeoFilterImplFromJson(
+        Map<String, dynamic> json) =>
+    _$_ElasticGeoFilterImpl(
       center: const _LatLongConverter().fromJson(json['center'] as String?),
       distance: (json['distance'] as num?)?.toDouble(),
       unit: $enumDecode(_$GeoUnitEnumMap, json['unit']),
@@ -344,8 +351,8 @@ _$__ElasticGeoFilter _$$__ElasticGeoFilterFromJson(Map<String, dynamic> json) =>
       to: (json['to'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$$__ElasticGeoFilterToJson(
-    _$__ElasticGeoFilter instance) {
+Map<String, dynamic> _$$_ElasticGeoFilterImplToJson(
+    _$_ElasticGeoFilterImpl instance) {
   final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
@@ -362,15 +369,15 @@ Map<String, dynamic> _$$__ElasticGeoFilterToJson(
   return val;
 }
 
-_$__ElasticSearchField _$$__ElasticSearchFieldFromJson(
+_$_ElasticSearchFieldImpl _$$_ElasticSearchFieldImplFromJson(
         Map<String, dynamic> json) =>
-    _$__ElasticSearchField(
+    _$_ElasticSearchFieldImpl(
       name: json['name'] as String,
-      weight: json['weight'] as int?,
+      weight: (json['weight'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$$__ElasticSearchFieldToJson(
-    _$__ElasticSearchField instance) {
+Map<String, dynamic> _$$_ElasticSearchFieldImplToJson(
+    _$_ElasticSearchFieldImpl instance) {
   final val = <String, dynamic>{
     'name': instance.name,
   };
@@ -385,17 +392,17 @@ Map<String, dynamic> _$$__ElasticSearchFieldToJson(
   return val;
 }
 
-_$__ElasticResultField _$$__ElasticResultFieldFromJson(
+_$_ElasticResultFieldImpl _$$_ElasticResultFieldImplFromJson(
         Map<String, dynamic> json) =>
-    _$__ElasticResultField(
+    _$_ElasticResultFieldImpl(
       name: json['name'] as String,
-      rawSize: json['rawSize'] as int?,
-      snippetSize: json['snippetSize'] as int?,
+      rawSize: (json['rawSize'] as num?)?.toInt(),
+      snippetSize: (json['snippetSize'] as num?)?.toInt(),
       fallback: json['fallback'] as bool? ?? true,
     );
 
-Map<String, dynamic> _$$__ElasticResultFieldToJson(
-    _$__ElasticResultField instance) {
+Map<String, dynamic> _$$_ElasticResultFieldImplToJson(
+    _$_ElasticResultFieldImpl instance) {
   final val = <String, dynamic>{
     'name': instance.name,
   };
@@ -412,13 +419,13 @@ Map<String, dynamic> _$$__ElasticResultFieldToJson(
   return val;
 }
 
-_$__ElasticGroup _$$__ElasticGroupFromJson(Map<String, dynamic> json) =>
-    _$__ElasticGroup(
+_$_ElasticGroupImpl _$$_ElasticGroupImplFromJson(Map<String, dynamic> json) =>
+    _$_ElasticGroupImpl(
       field: json['field'] as String,
-      size: json['size'] as int?,
+      size: (json['size'] as num?)?.toInt(),
     );
 
-Map<String, dynamic> _$$__ElasticGroupToJson(_$__ElasticGroup instance) {
+Map<String, dynamic> _$$_ElasticGroupImplToJson(_$_ElasticGroupImpl instance) {
   final val = <String, dynamic>{
     'field': instance.field,
   };
@@ -433,20 +440,51 @@ Map<String, dynamic> _$$__ElasticGroupToJson(_$__ElasticGroup instance) {
   return val;
 }
 
-_$__ElasticSort _$$__ElasticSortFromJson(Map<String, dynamic> json) =>
-    _$__ElasticSort(
+_$_ElasticSortImpl _$$_ElasticSortImplFromJson(Map<String, dynamic> json) =>
+    _$_ElasticSortImpl(
       field: json['field'] as String,
       descending: json['descending'] as bool? ?? false,
     );
 
-Map<String, dynamic> _$$__ElasticSortToJson(_$__ElasticSort instance) =>
+Map<String, dynamic> _$$_ElasticSortImplToJson(_$_ElasticSortImpl instance) =>
     <String, dynamic>{
       'field': instance.field,
       'descending': instance.descending,
     };
 
-_$_ElasticResponse _$$_ElasticResponseFromJson(Map<String, dynamic> json) =>
-    _$_ElasticResponse(
+_$ElasticSuggestionsQueryImpl _$$ElasticSuggestionsQueryImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ElasticSuggestionsQueryImpl(
+      query: json['query'] as String,
+      sizeField: (json['size'] as num?)?.toInt() ?? 10,
+      searchFields: const _ElasticSearchFieldsConverter()
+          .fromJson(json['search_fields'] as Map?),
+      sortBy: const _ElasticSortConverter()
+          .fromJson(json['sort'] as List<Map<dynamic, dynamic>>?),
+    );
+
+Map<String, dynamic> _$$ElasticSuggestionsQueryImplToJson(
+    _$ElasticSuggestionsQueryImpl instance) {
+  final val = <String, dynamic>{
+    'query': instance.query,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('size', instance.sizeField);
+  writeNotNull('search_fields',
+      const _ElasticSearchFieldsConverter().toJson(instance.searchFields));
+  writeNotNull('sort', const _ElasticSortConverter().toJson(instance.sortBy));
+  return val;
+}
+
+_$ElasticResponseImpl _$$ElasticResponseImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ElasticResponseImpl(
       meta: ElasticResponseMeta.fromJson(json['meta'] as Map<String, dynamic>),
       results: (json['results'] as List<dynamic>)
           .map((e) => ElasticResult.fromJson(e as Map<String, dynamic>))
@@ -460,16 +498,17 @@ _$_ElasticResponse _$$_ElasticResponseFromJson(Map<String, dynamic> json) =>
       ),
     );
 
-Map<String, dynamic> _$$_ElasticResponseToJson(_$_ElasticResponse instance) =>
+Map<String, dynamic> _$$ElasticResponseImplToJson(
+        _$ElasticResponseImpl instance) =>
     <String, dynamic>{
       'meta': instance.meta,
       'results': instance.results,
       'facets': instance.rawFacets,
     };
 
-_$_ElasticResponseMeta _$$_ElasticResponseMetaFromJson(
+_$ElasticResponseMetaImpl _$$ElasticResponseMetaImplFromJson(
         Map<String, dynamic> json) =>
-    _$_ElasticResponseMeta(
+    _$ElasticResponseMetaImpl(
       requestId: json['request_id'] as String,
       warnings: json['warnings'] as List<dynamic>,
       alerts: json['alerts'] as List<dynamic>,
@@ -477,8 +516,8 @@ _$_ElasticResponseMeta _$$_ElasticResponseMetaFromJson(
           json['page'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$$_ElasticResponseMetaToJson(
-        _$_ElasticResponseMeta instance) =>
+Map<String, dynamic> _$$ElasticResponseMetaImplToJson(
+        _$ElasticResponseMetaImpl instance) =>
     <String, dynamic>{
       'request_id': instance.requestId,
       'warnings': instance.warnings,
@@ -486,17 +525,17 @@ Map<String, dynamic> _$$_ElasticResponseMetaToJson(
       'page': instance.page,
     };
 
-_$_ElasticResponseMetaPage _$$_ElasticResponseMetaPageFromJson(
+_$ElasticResponseMetaPageImpl _$$ElasticResponseMetaPageImplFromJson(
         Map<String, dynamic> json) =>
-    _$_ElasticResponseMetaPage(
-      current: json['current'] as int,
-      size: json['size'] as int,
-      totalPages: json['total_pages'] as int,
-      totalResults: json['total_results'] as int,
+    _$ElasticResponseMetaPageImpl(
+      current: (json['current'] as num).toInt(),
+      size: (json['size'] as num).toInt(),
+      totalPages: (json['total_pages'] as num).toInt(),
+      totalResults: (json['total_results'] as num).toInt(),
     );
 
-Map<String, dynamic> _$$_ElasticResponseMetaPageToJson(
-        _$_ElasticResponseMetaPage instance) =>
+Map<String, dynamic> _$$ElasticResponseMetaPageImplToJson(
+        _$ElasticResponseMetaPageImpl instance) =>
     <String, dynamic>{
       'current': instance.current,
       'size': instance.size,
@@ -504,19 +543,33 @@ Map<String, dynamic> _$$_ElasticResponseMetaPageToJson(
       'total_results': instance.totalResults,
     };
 
-_$_ElasticResultMeta _$$_ElasticResultMetaFromJson(Map<String, dynamic> json) =>
-    _$_ElasticResultMeta(
+_$ElasticQuerySuggestionResponseImpl
+    _$$ElasticQuerySuggestionResponseImplFromJson(Map<String, dynamic> json) =>
+        _$ElasticQuerySuggestionResponseImpl(
+          results: ElasticSuggestionResult.fromJson(
+              json['results'] as Map<String, dynamic>),
+        );
+
+Map<String, dynamic> _$$ElasticQuerySuggestionResponseImplToJson(
+        _$ElasticQuerySuggestionResponseImpl instance) =>
+    <String, dynamic>{
+      'results': instance.results,
+    };
+
+_$ElasticResultMetaImpl _$$ElasticResultMetaImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ElasticResultMetaImpl(
       score: (json['score'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$$_ElasticResultMetaToJson(
-        _$_ElasticResultMeta instance) =>
+Map<String, dynamic> _$$ElasticResultMetaImplToJson(
+        _$ElasticResultMetaImpl instance) =>
     <String, dynamic>{
       'score': instance.score,
     };
 
-_$_ElasticResult _$$_ElasticResultFromJson(Map<String, dynamic> json) =>
-    _$_ElasticResult(
+_$ElasticResultImpl _$$ElasticResultImplFromJson(Map<String, dynamic> json) =>
+    _$ElasticResultImpl(
       data: json['data'] as Map<String, dynamic>?,
       snippets: (json['snippets'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(
@@ -529,7 +582,7 @@ _$_ElasticResult _$$_ElasticResultFromJson(Map<String, dynamic> json) =>
       groupKey: json['_group_key'] as String?,
     );
 
-Map<String, dynamic> _$$_ElasticResultToJson(_$_ElasticResult instance) =>
+Map<String, dynamic> _$$ElasticResultImplToJson(_$ElasticResultImpl instance) =>
     <String, dynamic>{
       'data': instance.data,
       'snippets': instance.snippets,
@@ -538,9 +591,9 @@ Map<String, dynamic> _$$_ElasticResultToJson(_$_ElasticResult instance) =>
       '_group_key': instance.groupKey,
     };
 
-_$_ElasticResultSnippet _$$_ElasticResultSnippetFromJson(
+_$ElasticResultSnippetImpl _$$ElasticResultSnippetImplFromJson(
         Map<String, dynamic> json) =>
-    _$_ElasticResultSnippet(
+    _$ElasticResultSnippetImpl(
       fullText: json['fullText'] as String,
       textParts:
           (json['textParts'] as List<dynamic>).map((e) => e as String).toList(),
@@ -549,10 +602,37 @@ _$_ElasticResultSnippet _$$_ElasticResultSnippetFromJson(
           .toList(),
     );
 
-Map<String, dynamic> _$$_ElasticResultSnippetToJson(
-        _$_ElasticResultSnippet instance) =>
+Map<String, dynamic> _$$ElasticResultSnippetImplToJson(
+        _$ElasticResultSnippetImpl instance) =>
     <String, dynamic>{
       'fullText': instance.fullText,
       'textParts': instance.textParts,
       'highlights': instance.highlights,
+    };
+
+_$ElasticSuggestionResultImpl _$$ElasticSuggestionResultImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ElasticSuggestionResultImpl(
+      documents: (json['documents'] as List<dynamic>?)
+          ?.map((e) =>
+              ElasticSuggestionDocument.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$$ElasticSuggestionResultImplToJson(
+        _$ElasticSuggestionResultImpl instance) =>
+    <String, dynamic>{
+      'documents': instance.documents,
+    };
+
+_$ElasticSuggestionDocumentImpl _$$ElasticSuggestionDocumentImplFromJson(
+        Map<String, dynamic> json) =>
+    _$ElasticSuggestionDocumentImpl(
+      suggestion: json['suggestion'] as String,
+    );
+
+Map<String, dynamic> _$$ElasticSuggestionDocumentImplToJson(
+        _$ElasticSuggestionDocumentImpl instance) =>
+    <String, dynamic>{
+      'suggestion': instance.suggestion,
     };

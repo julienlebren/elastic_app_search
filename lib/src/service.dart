@@ -40,25 +40,31 @@ class ElasticAppSearch {
         searchKey: _searchKey,
       );
 
-  String _apiUrl(String engine) =>
-      '$_endPoint/api/as/v1/engines/$engine/search';
+  String _apiUrl(String engine, Operation operation) =>
+      '$_endPoint/api/as/v1/engines/$engine/${operation.value}';
 
   /// Executes a request on Elastic App Search and returns a [ElasticResponse] object
   /// An [ElasticQuery] must be provided with the parameters of the query.
   ///
   /// The [CancelToken] is optionnal and can be provided to cancel requests if needed.
   /// A use case is available in the example.
-  Future<ElasticResponse> post(
+  Future<ElasticResponse> postSearchOperation(
     ElasticQuery query, [
     CancelToken? cancelToken,
   ]) async {
+    final url = _apiUrl(
+      query.engine!.name,
+      Operation.search,
+    );
     if (_debug) {
       print("====== Query ======");
       print(query.toJson());
+      print("====== Url ======");
+      print(url);
     }
 
     final response = await _dio.post<Map>(
-      _apiUrl(query.engine!.name),
+      url,
       options: Options(
         headers: {
           "Content-Type": "application/json",
@@ -75,11 +81,11 @@ class ElasticAppSearch {
     }
 
     if (response.statusCode == 200 && response.data != null) {
-      ElasticResponse finalReponse =
+      ElasticResponse finalResponse =
           ElasticResponse.fromJson(response.data as Map<String, dynamic>);
 
       final disjunctiveQueries = query._disjunctives;
-      if (disjunctiveQueries == null) return finalReponse;
+      if (disjunctiveQueries == null) return finalResponse;
 
       for (final disjunctiveQuery in disjunctiveQueries) {
         if (_debug) {
@@ -88,7 +94,7 @@ class ElasticAppSearch {
         }
 
         final disjunctiveResponse = await _dio.post<Map>(
-          _apiUrl(disjunctiveQuery.engine!.name),
+          url,
           options: Options(
             headers: {
               "Content-Type": "application/json",
@@ -110,8 +116,8 @@ class ElasticAppSearch {
               disjunctiveResponse.data as Map<String, dynamic>);
 
           Map<String, List<ElasticFacet>>? rawFacets =
-              finalReponse.rawFacets != null
-                  ? {...finalReponse.rawFacets!}
+              finalResponse.rawFacets != null
+                  ? {...finalResponse.rawFacets!}
                   : {};
 
           for (String field in query.disjunctiveFacets ?? []) {
@@ -124,7 +130,7 @@ class ElasticAppSearch {
               }
             }
           }
-          finalReponse = finalReponse.copyWith(rawFacets: rawFacets);
+          finalResponse = finalResponse.copyWith(rawFacets: rawFacets);
         } else {
           throw _errorMessage;
         }
@@ -132,21 +138,67 @@ class ElasticAppSearch {
 
       if (_debug) {
         print("====== Final Response ======");
-        print(finalReponse);
+        print(finalResponse);
       }
 
-      return finalReponse;
+      return finalResponse;
     } else {
       throw _errorMessage;
     }
   }
 
-  /// Creates and retuens a new [ElasticObject] linked to this instance of service.
+  Future<ElasticQuerySuggestionResponse> postSuggestionOperation(
+    ElasticSuggestionsQuery query, [
+    CancelToken? cancelToken,
+  ]) async {
+    final url = _apiUrl(
+      query.engine!.name,
+      Operation.querySuggestion,
+    );
+    if (_debug) {
+      print("====== Query ======");
+      print(query.toJson());
+      print("====== Url ======");
+      print(url);
+    }
+
+    final response = await _dio.post<Map>(
+      url,
+      options: Options(
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $_searchKey",
+        },
+      ),
+      data: query.toJson(),
+      cancelToken: cancelToken,
+    );
+
+    if (_debug) {
+      print("====== Response ======");
+      print(response);
+    }
+
+    if (response.statusCode == 200 && response.data != null) {
+      ElasticQuerySuggestionResponse finalResponse =
+          ElasticQuerySuggestionResponse.fromJson(
+        response.data as Map<String, dynamic>,
+      );
+      return finalResponse;
+    } else {
+      throw _errorMessage;
+    }
+  }
+
+  /// Creates and returns a new [ElasticObject] linked to this instance of service.
   ElasticEngine engine(String name) {
     assert(
       name.isNotEmpty,
       "An engine name must be a non-empty string",
     );
-    return ElasticEngine(service: this, name: name);
+    return ElasticEngine(
+      service: this,
+      name: name,
+    );
   }
 }

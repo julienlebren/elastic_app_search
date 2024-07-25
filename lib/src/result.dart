@@ -125,3 +125,31 @@ class ElasticResultSnippet with _$ElasticResultSnippet {
   factory ElasticResultSnippet.fromJson(Map<String, dynamic> json) =>
       _$ElasticResultSnippetFromJson(json);
 }
+
+/// An object presenting a result to the suggestion query
+@freezed
+class ElasticSuggestionResult with _$ElasticSuggestionResult {
+  const ElasticSuggestionResult._();
+
+  factory ElasticSuggestionResult({
+    /// A list of documents
+    List<ElasticSuggestionDocument>? documents,
+  }) = _ElasticSuggestionResult;
+
+  factory ElasticSuggestionResult.fromJson(Map<String, dynamic> json) =>
+      _$ElasticSuggestionResultFromJson(json);
+}
+
+/// An object presenting a suggestion to the suggestion query
+@freezed
+class ElasticSuggestionDocument with _$ElasticSuggestionDocument {
+  const ElasticSuggestionDocument._();
+
+  factory ElasticSuggestionDocument({
+    /// The suggestion contained in the document of the query suggestion
+    required String suggestion,
+  }) = _ElasticSuggestionDocument;
+
+  factory ElasticSuggestionDocument.fromJson(Map<String, dynamic> json) =>
+      _$ElasticSuggestionDocumentFromJson(json);
+}

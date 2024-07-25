@@ -21,7 +21,7 @@ enum BoostOperation {
 }
 
 @freezed
-class _ElasticBoost with _$_ElasticBoost {
+class _ElasticBoost with _$ElasticBoost {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticBoost({
     /// Type of boost
@@ -41,5 +41,5 @@ class _ElasticBoost with _$_ElasticBoost {
   }) = __ElasticBoost;
 
   factory _ElasticBoost.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticBoostFromJson(json);
+      _$ElasticBoostFromJson(json);
 }

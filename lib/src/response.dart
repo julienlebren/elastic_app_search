@@ -89,3 +89,16 @@ class ElasticResponseMetaPage with _$ElasticResponseMetaPage {
   factory ElasticResponseMetaPage.fromJson(Map<String, dynamic> json) =>
       _$ElasticResponseMetaPageFromJson(json);
 }
+
+@freezed
+class ElasticQuerySuggestionResponse with _$ElasticQuerySuggestionResponse {
+  ElasticQuerySuggestionResponse._();
+
+  factory ElasticQuerySuggestionResponse({
+    /// Documents containing the suggestions
+    required ElasticSuggestionResult results,
+  }) = _ElasticQuerySuggestionResponse;
+
+  factory ElasticQuerySuggestionResponse.fromJson(Map<String, dynamic> json) =>
+      _$ElasticQuerySuggestionResponseFromJson(json);
+}

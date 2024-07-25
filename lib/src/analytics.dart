@@ -3,7 +3,7 @@
 part of elastic_app_search;
 
 @freezed
-class _ElasticAnalytics with _$_ElasticAnalytics {
+class _ElasticAnalytics with _$ElasticAnalytics {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   @Assert('tags.length <= 16', 'You cannot submit more than 16 tags.')
   const factory _ElasticAnalytics({
@@ -13,5 +13,5 @@ class _ElasticAnalytics with _$_ElasticAnalytics {
   }) = __ElasticAnalytics;
 
   factory _ElasticAnalytics.fromJson(Map<String, dynamic> json) =>
-      _$_ElasticAnalyticsFromJson(json);
+      _$ElasticAnalyticsFromJson(json);
 }

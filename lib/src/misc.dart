@@ -98,3 +98,12 @@ class _LatLongConverter implements JsonConverter<LatLong?, String?> {
     return "${value.latitude}, ${value.longitude}";
   }
 }
+
+enum Operation {
+  search("search"),
+  querySuggestion("query_suggestion");
+
+  const Operation(this.value);
+
+  final String value;
+}

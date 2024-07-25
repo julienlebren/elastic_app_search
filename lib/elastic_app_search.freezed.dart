@@ -1,9 +1,9 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of elastic_app_search;
+part of 'elastic_app_search.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -12,14 +12,14 @@ part of elastic_app_search;
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-_ElasticAnalytics _$_ElasticAnalyticsFromJson(Map<String, dynamic> json) {
+_ElasticAnalytics _$ElasticAnalyticsFromJson(Map<String, dynamic> json) {
   return __ElasticAnalytics.fromJson(json);
 }
 
 /// @nodoc
-mixin _$_ElasticAnalytics {
+mixin _$ElasticAnalytics {
   /// Array of strings representing the tags you’d like to apply to the query.
   /// You may submit up to 16 tags, and each may be up to 64 characters in length.
   List<String> get tags => throw _privateConstructorUsedError;
@@ -34,59 +34,61 @@ mixin _$_ElasticAnalytics {
 abstract class _$ElasticAnalyticsCopyWith<$Res> {
   factory _$ElasticAnalyticsCopyWith(
           _ElasticAnalytics value, $Res Function(_ElasticAnalytics) then) =
-      __$ElasticAnalyticsCopyWithImpl<$Res>;
+      __$ElasticAnalyticsCopyWithImpl<$Res, _ElasticAnalytics>;
+  @useResult
   $Res call({List<String> tags});
 }
 
 /// @nodoc
-class __$ElasticAnalyticsCopyWithImpl<$Res>
+class __$ElasticAnalyticsCopyWithImpl<$Res, $Val extends _ElasticAnalytics>
     implements _$ElasticAnalyticsCopyWith<$Res> {
   __$ElasticAnalyticsCopyWithImpl(this._value, this._then);
 
-  final _ElasticAnalytics _value;
   // ignore: unused_field
-  final $Res Function(_ElasticAnalytics) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? tags = freezed,
+    Object? tags = null,
   }) {
     return _then(_value.copyWith(
-      tags: tags == freezed
+      tags: null == tags
           ? _value.tags
           : tags // ignore: cast_nullable_to_non_nullable
               as List<String>,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$__ElasticAnalyticsCopyWith<$Res>
+abstract class _$$_ElasticAnalyticsImplCopyWith<$Res>
     implements _$ElasticAnalyticsCopyWith<$Res> {
-  factory _$$__ElasticAnalyticsCopyWith(_$__ElasticAnalytics value,
-          $Res Function(_$__ElasticAnalytics) then) =
-      __$$__ElasticAnalyticsCopyWithImpl<$Res>;
+  factory _$$_ElasticAnalyticsImplCopyWith(_$_ElasticAnalyticsImpl value,
+          $Res Function(_$_ElasticAnalyticsImpl) then) =
+      __$$_ElasticAnalyticsImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({List<String> tags});
 }
 
 /// @nodoc
-class __$$__ElasticAnalyticsCopyWithImpl<$Res>
-    extends __$ElasticAnalyticsCopyWithImpl<$Res>
-    implements _$$__ElasticAnalyticsCopyWith<$Res> {
-  __$$__ElasticAnalyticsCopyWithImpl(
-      _$__ElasticAnalytics _value, $Res Function(_$__ElasticAnalytics) _then)
-      : super(_value, (v) => _then(v as _$__ElasticAnalytics));
+class __$$_ElasticAnalyticsImplCopyWithImpl<$Res>
+    extends __$ElasticAnalyticsCopyWithImpl<$Res, _$_ElasticAnalyticsImpl>
+    implements _$$_ElasticAnalyticsImplCopyWith<$Res> {
+  __$$_ElasticAnalyticsImplCopyWithImpl(_$_ElasticAnalyticsImpl _value,
+      $Res Function(_$_ElasticAnalyticsImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$__ElasticAnalytics get _value => super._value as _$__ElasticAnalytics;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? tags = freezed,
+    Object? tags = null,
   }) {
-    return _then(_$__ElasticAnalytics(
-      tags: tags == freezed
+    return _then(_$_ElasticAnalyticsImpl(
+      tags: null == tags
           ? _value._tags
           : tags // ignore: cast_nullable_to_non_nullable
               as List<String>,
@@ -97,13 +99,13 @@ class __$$__ElasticAnalyticsCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$__ElasticAnalytics implements __ElasticAnalytics {
-  const _$__ElasticAnalytics({required final List<String> tags})
+class _$_ElasticAnalyticsImpl implements __ElasticAnalytics {
+  const _$_ElasticAnalyticsImpl({required final List<String> tags})
       : assert(tags.length <= 16, 'You cannot submit more than 16 tags.'),
         _tags = tags;
 
-  factory _$__ElasticAnalytics.fromJson(Map<String, dynamic> json) =>
-      _$$__ElasticAnalyticsFromJson(json);
+  factory _$_ElasticAnalyticsImpl.fromJson(Map<String, dynamic> json) =>
+      _$$_ElasticAnalyticsImplFromJson(json);
 
   /// Array of strings representing the tags you’d like to apply to the query.
   /// You may submit up to 16 tags, and each may be up to 64 characters in length.
@@ -113,6 +115,7 @@ class _$__ElasticAnalytics implements __ElasticAnalytics {
   /// You may submit up to 16 tags, and each may be up to 64 characters in length.
   @override
   List<String> get tags {
+    if (_tags is EqualUnmodifiableListView) return _tags;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_tags);
   }
@@ -123,10 +126,10 @@ class _$__ElasticAnalytics implements __ElasticAnalytics {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$__ElasticAnalytics &&
+            other is _$_ElasticAnalyticsImpl &&
             const DeepCollectionEquality().equals(other._tags, _tags));
   }
 
@@ -137,13 +140,14 @@ class _$__ElasticAnalytics implements __ElasticAnalytics {
 
   @JsonKey(ignore: true)
   @override
-  _$$__ElasticAnalyticsCopyWith<_$__ElasticAnalytics> get copyWith =>
-      __$$__ElasticAnalyticsCopyWithImpl<_$__ElasticAnalytics>(
+  @pragma('vm:prefer-inline')
+  _$$_ElasticAnalyticsImplCopyWith<_$_ElasticAnalyticsImpl> get copyWith =>
+      __$$_ElasticAnalyticsImplCopyWithImpl<_$_ElasticAnalyticsImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$__ElasticAnalyticsToJson(
+    return _$$_ElasticAnalyticsImplToJson(
       this,
     );
   }
@@ -151,10 +155,10 @@ class _$__ElasticAnalytics implements __ElasticAnalytics {
 
 abstract class __ElasticAnalytics implements _ElasticAnalytics {
   const factory __ElasticAnalytics({required final List<String> tags}) =
-      _$__ElasticAnalytics;
+      _$_ElasticAnalyticsImpl;
 
   factory __ElasticAnalytics.fromJson(Map<String, dynamic> json) =
-      _$__ElasticAnalytics.fromJson;
+      _$_ElasticAnalyticsImpl.fromJson;
 
   @override
 
@@ -163,16 +167,16 @@ abstract class __ElasticAnalytics implements _ElasticAnalytics {
   List<String> get tags;
   @override
   @JsonKey(ignore: true)
-  _$$__ElasticAnalyticsCopyWith<_$__ElasticAnalytics> get copyWith =>
+  _$$_ElasticAnalyticsImplCopyWith<_$_ElasticAnalyticsImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-_ElasticBoost _$_ElasticBoostFromJson(Map<String, dynamic> json) {
+_ElasticBoost _$ElasticBoostFromJson(Map<String, dynamic> json) {
   return __ElasticBoost.fromJson(json);
 }
 
 /// @nodoc
-mixin _$_ElasticBoost {
+mixin _$ElasticBoost {
   /// Type of boost
   BoostType get type => throw _privateConstructorUsedError;
 
@@ -198,7 +202,8 @@ mixin _$_ElasticBoost {
 abstract class _$ElasticBoostCopyWith<$Res> {
   factory _$ElasticBoostCopyWith(
           _ElasticBoost value, $Res Function(_ElasticBoost) then) =
-      __$ElasticBoostCopyWithImpl<$Res>;
+      __$ElasticBoostCopyWithImpl<$Res, _ElasticBoost>;
+  @useResult
   $Res call(
       {BoostType type,
       List<String>? value,
@@ -207,49 +212,52 @@ abstract class _$ElasticBoostCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$ElasticBoostCopyWithImpl<$Res>
+class __$ElasticBoostCopyWithImpl<$Res, $Val extends _ElasticBoost>
     implements _$ElasticBoostCopyWith<$Res> {
   __$ElasticBoostCopyWithImpl(this._value, this._then);
 
-  final _ElasticBoost _value;
   // ignore: unused_field
-  final $Res Function(_ElasticBoost) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? type = freezed,
+    Object? type = null,
     Object? value = freezed,
     Object? operation = freezed,
     Object? factor = freezed,
   }) {
     return _then(_value.copyWith(
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as BoostType,
-      value: value == freezed
+      value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
               as List<String>?,
-      operation: operation == freezed
+      operation: freezed == operation
           ? _value.operation
           : operation // ignore: cast_nullable_to_non_nullable
               as BoostOperation?,
-      factor: factor == freezed
+      factor: freezed == factor
           ? _value.factor
           : factor // ignore: cast_nullable_to_non_nullable
               as double?,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$__ElasticBoostCopyWith<$Res>
+abstract class _$$_ElasticBoostImplCopyWith<$Res>
     implements _$ElasticBoostCopyWith<$Res> {
-  factory _$$__ElasticBoostCopyWith(
-          _$__ElasticBoost value, $Res Function(_$__ElasticBoost) then) =
-      __$$__ElasticBoostCopyWithImpl<$Res>;
+  factory _$$_ElasticBoostImplCopyWith(
+          _$_ElasticBoostImpl value, $Res Function(_$_ElasticBoostImpl) then) =
+      __$$_ElasticBoostImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {BoostType type,
       List<String>? value,
@@ -258,37 +266,35 @@ abstract class _$$__ElasticBoostCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$__ElasticBoostCopyWithImpl<$Res>
-    extends __$ElasticBoostCopyWithImpl<$Res>
-    implements _$$__ElasticBoostCopyWith<$Res> {
-  __$$__ElasticBoostCopyWithImpl(
-      _$__ElasticBoost _value, $Res Function(_$__ElasticBoost) _then)
-      : super(_value, (v) => _then(v as _$__ElasticBoost));
+class __$$_ElasticBoostImplCopyWithImpl<$Res>
+    extends __$ElasticBoostCopyWithImpl<$Res, _$_ElasticBoostImpl>
+    implements _$$_ElasticBoostImplCopyWith<$Res> {
+  __$$_ElasticBoostImplCopyWithImpl(
+      _$_ElasticBoostImpl _value, $Res Function(_$_ElasticBoostImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$__ElasticBoost get _value => super._value as _$__ElasticBoost;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? type = freezed,
+    Object? type = null,
     Object? value = freezed,
     Object? operation = freezed,
     Object? factor = freezed,
   }) {
-    return _then(_$__ElasticBoost(
-      type: type == freezed
+    return _then(_$_ElasticBoostImpl(
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as BoostType,
-      value: value == freezed
+      value: freezed == value
           ? _value._value
           : value // ignore: cast_nullable_to_non_nullable
               as List<String>?,
-      operation: operation == freezed
+      operation: freezed == operation
           ? _value.operation
           : operation // ignore: cast_nullable_to_non_nullable
               as BoostOperation?,
-      factor: factor == freezed
+      factor: freezed == factor
           ? _value.factor
           : factor // ignore: cast_nullable_to_non_nullable
               as double?,
@@ -299,16 +305,16 @@ class __$$__ElasticBoostCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$__ElasticBoost implements __ElasticBoost {
-  const _$__ElasticBoost(
+class _$_ElasticBoostImpl implements __ElasticBoost {
+  const _$_ElasticBoostImpl(
       {required this.type,
       final List<String>? value,
       this.operation,
       this.factor})
       : _value = value;
 
-  factory _$__ElasticBoost.fromJson(Map<String, dynamic> json) =>
-      _$$__ElasticBoostFromJson(json);
+  factory _$_ElasticBoostImpl.fromJson(Map<String, dynamic> json) =>
+      _$$_ElasticBoostImplFromJson(json);
 
   /// Type of boost
   @override
@@ -322,6 +328,7 @@ class _$__ElasticBoost implements __ElasticBoost {
   List<String>? get value {
     final value = _value;
     if (value == null) return null;
+    if (_value is EqualUnmodifiableListView) return _value;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
@@ -343,33 +350,31 @@ class _$__ElasticBoost implements __ElasticBoost {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$__ElasticBoost &&
-            const DeepCollectionEquality().equals(other.type, type) &&
+            other is _$_ElasticBoostImpl &&
+            (identical(other.type, type) || other.type == type) &&
             const DeepCollectionEquality().equals(other._value, _value) &&
-            const DeepCollectionEquality().equals(other.operation, operation) &&
-            const DeepCollectionEquality().equals(other.factor, factor));
+            (identical(other.operation, operation) ||
+                other.operation == operation) &&
+            (identical(other.factor, factor) || other.factor == factor));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(_value),
-      const DeepCollectionEquality().hash(operation),
-      const DeepCollectionEquality().hash(factor));
+  int get hashCode => Object.hash(runtimeType, type,
+      const DeepCollectionEquality().hash(_value), operation, factor);
 
   @JsonKey(ignore: true)
   @override
-  _$$__ElasticBoostCopyWith<_$__ElasticBoost> get copyWith =>
-      __$$__ElasticBoostCopyWithImpl<_$__ElasticBoost>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_ElasticBoostImplCopyWith<_$_ElasticBoostImpl> get copyWith =>
+      __$$_ElasticBoostImplCopyWithImpl<_$_ElasticBoostImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$__ElasticBoostToJson(
+    return _$$_ElasticBoostImplToJson(
       this,
     );
   }
@@ -380,10 +385,10 @@ abstract class __ElasticBoost implements _ElasticBoost {
       {required final BoostType type,
       final List<String>? value,
       final BoostOperation? operation,
-      final double? factor}) = _$__ElasticBoost;
+      final double? factor}) = _$_ElasticBoostImpl;
 
   factory __ElasticBoost.fromJson(Map<String, dynamic> json) =
-      _$__ElasticBoost.fromJson;
+      _$_ElasticBoostImpl.fromJson;
 
   @override
 
@@ -406,16 +411,16 @@ abstract class __ElasticBoost implements _ElasticBoost {
   double? get factor;
   @override
   @JsonKey(ignore: true)
-  _$$__ElasticBoostCopyWith<_$__ElasticBoost> get copyWith =>
+  _$$_ElasticBoostImplCopyWith<_$_ElasticBoostImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-_ElasticQueryFacet _$_ElasticQueryFacetFromJson(Map<String, dynamic> json) {
+_ElasticQueryFacet _$ElasticQueryFacetFromJson(Map<String, dynamic> json) {
   return __ElasticQueryFacet.fromJson(json);
 }
 
 /// @nodoc
-mixin _$_ElasticQueryFacet {
+mixin _$ElasticQueryFacet {
   String get type => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   List<_ElasticRangeFacet>? get ranges => throw _privateConstructorUsedError;
@@ -434,7 +439,8 @@ mixin _$_ElasticQueryFacet {
 abstract class _$ElasticQueryFacetCopyWith<$Res> {
   factory _$ElasticQueryFacetCopyWith(
           _ElasticQueryFacet value, $Res Function(_ElasticQueryFacet) then) =
-      __$ElasticQueryFacetCopyWithImpl<$Res>;
+      __$ElasticQueryFacetCopyWithImpl<$Res, _ElasticQueryFacet>;
+  @useResult
   $Res call(
       {String type,
       String? name,
@@ -447,17 +453,19 @@ abstract class _$ElasticQueryFacetCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$ElasticQueryFacetCopyWithImpl<$Res>
+class __$ElasticQueryFacetCopyWithImpl<$Res, $Val extends _ElasticQueryFacet>
     implements _$ElasticQueryFacetCopyWith<$Res> {
   __$ElasticQueryFacetCopyWithImpl(this._value, this._then);
 
-  final _ElasticQueryFacet _value;
   // ignore: unused_field
-  final $Res Function(_ElasticQueryFacet) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? type = freezed,
+    Object? type = null,
     Object? name = freezed,
     Object? ranges = freezed,
     Object? size = freezed,
@@ -465,52 +473,54 @@ class __$ElasticQueryFacetCopyWithImpl<$Res>
     Object? unit = freezed,
   }) {
     return _then(_value.copyWith(
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      ranges: ranges == freezed
+      ranges: freezed == ranges
           ? _value.ranges
           : ranges // ignore: cast_nullable_to_non_nullable
               as List<_ElasticRangeFacet>?,
-      size: size == freezed
+      size: freezed == size
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as int?,
-      center: center == freezed
+      center: freezed == center
           ? _value.center
           : center // ignore: cast_nullable_to_non_nullable
               as LatLong?,
-      unit: unit == freezed
+      unit: freezed == unit
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
               as GeoUnit?,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $LatLongCopyWith<$Res>? get center {
     if (_value.center == null) {
       return null;
     }
 
     return $LatLongCopyWith<$Res>(_value.center!, (value) {
-      return _then(_value.copyWith(center: value));
+      return _then(_value.copyWith(center: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$$__ElasticQueryFacetCopyWith<$Res>
+abstract class _$$_ElasticQueryFacetImplCopyWith<$Res>
     implements _$ElasticQueryFacetCopyWith<$Res> {
-  factory _$$__ElasticQueryFacetCopyWith(_$__ElasticQueryFacet value,
-          $Res Function(_$__ElasticQueryFacet) then) =
-      __$$__ElasticQueryFacetCopyWithImpl<$Res>;
+  factory _$$_ElasticQueryFacetImplCopyWith(_$_ElasticQueryFacetImpl value,
+          $Res Function(_$_ElasticQueryFacetImpl) then) =
+      __$$_ElasticQueryFacetImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String type,
       String? name,
@@ -524,47 +534,45 @@ abstract class _$$__ElasticQueryFacetCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$__ElasticQueryFacetCopyWithImpl<$Res>
-    extends __$ElasticQueryFacetCopyWithImpl<$Res>
-    implements _$$__ElasticQueryFacetCopyWith<$Res> {
-  __$$__ElasticQueryFacetCopyWithImpl(
-      _$__ElasticQueryFacet _value, $Res Function(_$__ElasticQueryFacet) _then)
-      : super(_value, (v) => _then(v as _$__ElasticQueryFacet));
+class __$$_ElasticQueryFacetImplCopyWithImpl<$Res>
+    extends __$ElasticQueryFacetCopyWithImpl<$Res, _$_ElasticQueryFacetImpl>
+    implements _$$_ElasticQueryFacetImplCopyWith<$Res> {
+  __$$_ElasticQueryFacetImplCopyWithImpl(_$_ElasticQueryFacetImpl _value,
+      $Res Function(_$_ElasticQueryFacetImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$__ElasticQueryFacet get _value => super._value as _$__ElasticQueryFacet;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? type = freezed,
+    Object? type = null,
     Object? name = freezed,
     Object? ranges = freezed,
     Object? size = freezed,
     Object? center = freezed,
     Object? unit = freezed,
   }) {
-    return _then(_$__ElasticQueryFacet(
-      type: type == freezed
+    return _then(_$_ElasticQueryFacetImpl(
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String,
-      name: name == freezed
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      ranges: ranges == freezed
+      ranges: freezed == ranges
           ? _value._ranges
           : ranges // ignore: cast_nullable_to_non_nullable
               as List<_ElasticRangeFacet>?,
-      size: size == freezed
+      size: freezed == size
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as int?,
-      center: center == freezed
+      center: freezed == center
           ? _value.center
           : center // ignore: cast_nullable_to_non_nullable
               as LatLong?,
-      unit: unit == freezed
+      unit: freezed == unit
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
               as GeoUnit?,
@@ -575,8 +583,8 @@ class __$$__ElasticQueryFacetCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$__ElasticQueryFacet implements __ElasticQueryFacet {
-  const _$__ElasticQueryFacet(
+class _$_ElasticQueryFacetImpl implements __ElasticQueryFacet {
+  const _$_ElasticQueryFacetImpl(
       {required this.type,
       this.name,
       final List<_ElasticRangeFacet>? ranges,
@@ -585,8 +593,8 @@ class _$__ElasticQueryFacet implements __ElasticQueryFacet {
       this.unit})
       : _ranges = ranges;
 
-  factory _$__ElasticQueryFacet.fromJson(Map<String, dynamic> json) =>
-      _$$__ElasticQueryFacetFromJson(json);
+  factory _$_ElasticQueryFacetImpl.fromJson(Map<String, dynamic> json) =>
+      _$$_ElasticQueryFacetImplFromJson(json);
 
   @override
   final String type;
@@ -597,6 +605,7 @@ class _$__ElasticQueryFacet implements __ElasticQueryFacet {
   List<_ElasticRangeFacet>? get ranges {
     final value = _ranges;
     if (value == null) return null;
+    if (_ranges is EqualUnmodifiableListView) return _ranges;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
@@ -615,38 +624,33 @@ class _$__ElasticQueryFacet implements __ElasticQueryFacet {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$__ElasticQueryFacet &&
-            const DeepCollectionEquality().equals(other.type, type) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
+            other is _$_ElasticQueryFacetImpl &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality().equals(other._ranges, _ranges) &&
-            const DeepCollectionEquality().equals(other.size, size) &&
-            const DeepCollectionEquality().equals(other.center, center) &&
-            const DeepCollectionEquality().equals(other.unit, unit));
+            (identical(other.size, size) || other.size == size) &&
+            (identical(other.center, center) || other.center == center) &&
+            (identical(other.unit, unit) || other.unit == unit));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(_ranges),
-      const DeepCollectionEquality().hash(size),
-      const DeepCollectionEquality().hash(center),
-      const DeepCollectionEquality().hash(unit));
+  int get hashCode => Object.hash(runtimeType, type, name,
+      const DeepCollectionEquality().hash(_ranges), size, center, unit);
 
   @JsonKey(ignore: true)
   @override
-  _$$__ElasticQueryFacetCopyWith<_$__ElasticQueryFacet> get copyWith =>
-      __$$__ElasticQueryFacetCopyWithImpl<_$__ElasticQueryFacet>(
+  @pragma('vm:prefer-inline')
+  _$$_ElasticQueryFacetImplCopyWith<_$_ElasticQueryFacetImpl> get copyWith =>
+      __$$_ElasticQueryFacetImplCopyWithImpl<_$_ElasticQueryFacetImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$__ElasticQueryFacetToJson(
+    return _$$_ElasticQueryFacetImplToJson(
       this,
     );
   }
@@ -659,10 +663,10 @@ abstract class __ElasticQueryFacet implements _ElasticQueryFacet {
       final List<_ElasticRangeFacet>? ranges,
       final int? size,
       @_LatLongConverter() final LatLong? center,
-      final GeoUnit? unit}) = _$__ElasticQueryFacet;
+      final GeoUnit? unit}) = _$_ElasticQueryFacetImpl;
 
   factory __ElasticQueryFacet.fromJson(Map<String, dynamic> json) =
-      _$__ElasticQueryFacet.fromJson;
+      _$_ElasticQueryFacetImpl.fromJson;
 
   @override
   String get type;
@@ -679,16 +683,16 @@ abstract class __ElasticQueryFacet implements _ElasticQueryFacet {
   GeoUnit? get unit;
   @override
   @JsonKey(ignore: true)
-  _$$__ElasticQueryFacetCopyWith<_$__ElasticQueryFacet> get copyWith =>
+  _$$_ElasticQueryFacetImplCopyWith<_$_ElasticQueryFacetImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-_ElasticRangeFacet _$_ElasticRangeFacetFromJson(Map<String, dynamic> json) {
+_ElasticRangeFacet _$ElasticRangeFacetFromJson(Map<String, dynamic> json) {
   return __ElasticRangeFacet.fromJson(json);
 }
 
 /// @nodoc
-mixin _$_ElasticRangeFacet {
+mixin _$ElasticRangeFacet {
   String? get name => throw _privateConstructorUsedError;
   String? get from => throw _privateConstructorUsedError;
   String? get to => throw _privateConstructorUsedError;
@@ -704,19 +708,22 @@ mixin _$_ElasticRangeFacet {
 abstract class _$ElasticRangeFacetCopyWith<$Res> {
   factory _$ElasticRangeFacetCopyWith(
           _ElasticRangeFacet value, $Res Function(_ElasticRangeFacet) then) =
-      __$ElasticRangeFacetCopyWithImpl<$Res>;
+      __$ElasticRangeFacetCopyWithImpl<$Res, _ElasticRangeFacet>;
+  @useResult
   $Res call({String? name, String? from, String? to, int? count});
 }
 
 /// @nodoc
-class __$ElasticRangeFacetCopyWithImpl<$Res>
+class __$ElasticRangeFacetCopyWithImpl<$Res, $Val extends _ElasticRangeFacet>
     implements _$ElasticRangeFacetCopyWith<$Res> {
   __$ElasticRangeFacetCopyWithImpl(this._value, this._then);
 
-  final _ElasticRangeFacet _value;
   // ignore: unused_field
-  final $Res Function(_ElasticRangeFacet) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? name = freezed,
@@ -725,47 +732,46 @@ class __$ElasticRangeFacetCopyWithImpl<$Res>
     Object? count = freezed,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      from: from == freezed
+      from: freezed == from
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
               as String?,
-      to: to == freezed
+      to: freezed == to
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
               as String?,
-      count: count == freezed
+      count: freezed == count
           ? _value.count
           : count // ignore: cast_nullable_to_non_nullable
               as int?,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$__ElasticRangeFacetCopyWith<$Res>
+abstract class _$$_ElasticRangeFacetImplCopyWith<$Res>
     implements _$ElasticRangeFacetCopyWith<$Res> {
-  factory _$$__ElasticRangeFacetCopyWith(_$__ElasticRangeFacet value,
-          $Res Function(_$__ElasticRangeFacet) then) =
-      __$$__ElasticRangeFacetCopyWithImpl<$Res>;
+  factory _$$_ElasticRangeFacetImplCopyWith(_$_ElasticRangeFacetImpl value,
+          $Res Function(_$_ElasticRangeFacetImpl) then) =
+      __$$_ElasticRangeFacetImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({String? name, String? from, String? to, int? count});
 }
 
 /// @nodoc
-class __$$__ElasticRangeFacetCopyWithImpl<$Res>
-    extends __$ElasticRangeFacetCopyWithImpl<$Res>
-    implements _$$__ElasticRangeFacetCopyWith<$Res> {
-  __$$__ElasticRangeFacetCopyWithImpl(
-      _$__ElasticRangeFacet _value, $Res Function(_$__ElasticRangeFacet) _then)
-      : super(_value, (v) => _then(v as _$__ElasticRangeFacet));
+class __$$_ElasticRangeFacetImplCopyWithImpl<$Res>
+    extends __$ElasticRangeFacetCopyWithImpl<$Res, _$_ElasticRangeFacetImpl>
+    implements _$$_ElasticRangeFacetImplCopyWith<$Res> {
+  __$$_ElasticRangeFacetImplCopyWithImpl(_$_ElasticRangeFacetImpl _value,
+      $Res Function(_$_ElasticRangeFacetImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$__ElasticRangeFacet get _value => super._value as _$__ElasticRangeFacet;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? name = freezed,
@@ -773,20 +779,20 @@ class __$$__ElasticRangeFacetCopyWithImpl<$Res>
     Object? to = freezed,
     Object? count = freezed,
   }) {
-    return _then(_$__ElasticRangeFacet(
-      name: name == freezed
+    return _then(_$_ElasticRangeFacetImpl(
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      from: from == freezed
+      from: freezed == from
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
               as String?,
-      to: to == freezed
+      to: freezed == to
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
               as String?,
-      count: count == freezed
+      count: freezed == count
           ? _value.count
           : count // ignore: cast_nullable_to_non_nullable
               as int?,
@@ -797,11 +803,11 @@ class __$$__ElasticRangeFacetCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$__ElasticRangeFacet implements __ElasticRangeFacet {
-  const _$__ElasticRangeFacet({this.name, this.from, this.to, this.count});
+class _$_ElasticRangeFacetImpl implements __ElasticRangeFacet {
+  const _$_ElasticRangeFacetImpl({this.name, this.from, this.to, this.count});
 
-  factory _$__ElasticRangeFacet.fromJson(Map<String, dynamic> json) =>
-      _$$__ElasticRangeFacetFromJson(json);
+  factory _$_ElasticRangeFacetImpl.fromJson(Map<String, dynamic> json) =>
+      _$$_ElasticRangeFacetImplFromJson(json);
 
   @override
   final String? name;
@@ -818,34 +824,30 @@ class _$__ElasticRangeFacet implements __ElasticRangeFacet {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$__ElasticRangeFacet &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality().equals(other.from, from) &&
-            const DeepCollectionEquality().equals(other.to, to) &&
-            const DeepCollectionEquality().equals(other.count, count));
+            other is _$_ElasticRangeFacetImpl &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.from, from) || other.from == from) &&
+            (identical(other.to, to) || other.to == to) &&
+            (identical(other.count, count) || other.count == count));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(from),
-      const DeepCollectionEquality().hash(to),
-      const DeepCollectionEquality().hash(count));
+  int get hashCode => Object.hash(runtimeType, name, from, to, count);
 
   @JsonKey(ignore: true)
   @override
-  _$$__ElasticRangeFacetCopyWith<_$__ElasticRangeFacet> get copyWith =>
-      __$$__ElasticRangeFacetCopyWithImpl<_$__ElasticRangeFacet>(
+  @pragma('vm:prefer-inline')
+  _$$_ElasticRangeFacetImplCopyWith<_$_ElasticRangeFacetImpl> get copyWith =>
+      __$$_ElasticRangeFacetImplCopyWithImpl<_$_ElasticRangeFacetImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$__ElasticRangeFacetToJson(
+    return _$$_ElasticRangeFacetImplToJson(
       this,
     );
   }
@@ -856,10 +858,10 @@ abstract class __ElasticRangeFacet implements _ElasticRangeFacet {
       {final String? name,
       final String? from,
       final String? to,
-      final int? count}) = _$__ElasticRangeFacet;
+      final int? count}) = _$_ElasticRangeFacetImpl;
 
   factory __ElasticRangeFacet.fromJson(Map<String, dynamic> json) =
-      _$__ElasticRangeFacet.fromJson;
+      _$_ElasticRangeFacetImpl.fromJson;
 
   @override
   String? get name;
@@ -871,7 +873,7 @@ abstract class __ElasticRangeFacet implements _ElasticRangeFacet {
   int? get count;
   @override
   @JsonKey(ignore: true)
-  _$$__ElasticRangeFacetCopyWith<_$__ElasticRangeFacet> get copyWith =>
+  _$$_ElasticRangeFacetImplCopyWith<_$_ElasticRangeFacetImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -895,80 +897,83 @@ mixin _$ElasticFacet {
 abstract class $ElasticFacetCopyWith<$Res> {
   factory $ElasticFacetCopyWith(
           ElasticFacet value, $Res Function(ElasticFacet) then) =
-      _$ElasticFacetCopyWithImpl<$Res>;
+      _$ElasticFacetCopyWithImpl<$Res, ElasticFacet>;
+  @useResult
   $Res call(
       {ElasticFacetType type, String? name, List<ElasticFacetData>? data});
 }
 
 /// @nodoc
-class _$ElasticFacetCopyWithImpl<$Res> implements $ElasticFacetCopyWith<$Res> {
+class _$ElasticFacetCopyWithImpl<$Res, $Val extends ElasticFacet>
+    implements $ElasticFacetCopyWith<$Res> {
   _$ElasticFacetCopyWithImpl(this._value, this._then);
 
-  final ElasticFacet _value;
   // ignore: unused_field
-  final $Res Function(ElasticFacet) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? type = freezed,
+    Object? type = null,
     Object? name = freezed,
     Object? data = freezed,
   }) {
     return _then(_value.copyWith(
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as ElasticFacetType,
-      name: name == freezed
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      data: data == freezed
+      data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as List<ElasticFacetData>?,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$_ElasticFacetCopyWith<$Res>
+abstract class _$$ElasticFacetImplCopyWith<$Res>
     implements $ElasticFacetCopyWith<$Res> {
-  factory _$$_ElasticFacetCopyWith(
-          _$_ElasticFacet value, $Res Function(_$_ElasticFacet) then) =
-      __$$_ElasticFacetCopyWithImpl<$Res>;
+  factory _$$ElasticFacetImplCopyWith(
+          _$ElasticFacetImpl value, $Res Function(_$ElasticFacetImpl) then) =
+      __$$ElasticFacetImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {ElasticFacetType type, String? name, List<ElasticFacetData>? data});
 }
 
 /// @nodoc
-class __$$_ElasticFacetCopyWithImpl<$Res>
-    extends _$ElasticFacetCopyWithImpl<$Res>
-    implements _$$_ElasticFacetCopyWith<$Res> {
-  __$$_ElasticFacetCopyWithImpl(
-      _$_ElasticFacet _value, $Res Function(_$_ElasticFacet) _then)
-      : super(_value, (v) => _then(v as _$_ElasticFacet));
+class __$$ElasticFacetImplCopyWithImpl<$Res>
+    extends _$ElasticFacetCopyWithImpl<$Res, _$ElasticFacetImpl>
+    implements _$$ElasticFacetImplCopyWith<$Res> {
+  __$$ElasticFacetImplCopyWithImpl(
+      _$ElasticFacetImpl _value, $Res Function(_$ElasticFacetImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$_ElasticFacet get _value => super._value as _$_ElasticFacet;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? type = freezed,
+    Object? type = null,
     Object? name = freezed,
     Object? data = freezed,
   }) {
-    return _then(_$_ElasticFacet(
-      type: type == freezed
+    return _then(_$ElasticFacetImpl(
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as ElasticFacetType,
-      name: name == freezed
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      data: data == freezed
+      data: freezed == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
               as List<ElasticFacetData>?,
@@ -979,14 +984,14 @@ class __$$_ElasticFacetCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$_ElasticFacet extends _ElasticFacet {
-  const _$_ElasticFacet(
+class _$ElasticFacetImpl extends _ElasticFacet {
+  const _$ElasticFacetImpl(
       {required this.type, this.name, final List<ElasticFacetData>? data})
       : _data = data,
         super._();
 
-  factory _$_ElasticFacet.fromJson(Map<String, dynamic> json) =>
-      _$$_ElasticFacetFromJson(json);
+  factory _$ElasticFacetImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ElasticFacetImplFromJson(json);
 
   @override
   final ElasticFacetType type;
@@ -997,6 +1002,7 @@ class _$_ElasticFacet extends _ElasticFacet {
   List<ElasticFacetData>? get data {
     final value = _data;
     if (value == null) return null;
+    if (_data is EqualUnmodifiableListView) return _data;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
@@ -1007,31 +1013,29 @@ class _$_ElasticFacet extends _ElasticFacet {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ElasticFacet &&
-            const DeepCollectionEquality().equals(other.type, type) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
+            other is _$ElasticFacetImpl &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality().equals(other._data, _data));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(_data));
+      runtimeType, type, name, const DeepCollectionEquality().hash(_data));
 
   @JsonKey(ignore: true)
   @override
-  _$$_ElasticFacetCopyWith<_$_ElasticFacet> get copyWith =>
-      __$$_ElasticFacetCopyWithImpl<_$_ElasticFacet>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$ElasticFacetImplCopyWith<_$ElasticFacetImpl> get copyWith =>
+      __$$ElasticFacetImplCopyWithImpl<_$ElasticFacetImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ElasticFacetToJson(
+    return _$$ElasticFacetImplToJson(
       this,
     );
   }
@@ -1041,11 +1045,11 @@ abstract class _ElasticFacet extends ElasticFacet {
   const factory _ElasticFacet(
       {required final ElasticFacetType type,
       final String? name,
-      final List<ElasticFacetData>? data}) = _$_ElasticFacet;
+      final List<ElasticFacetData>? data}) = _$ElasticFacetImpl;
   const _ElasticFacet._() : super._();
 
   factory _ElasticFacet.fromJson(Map<String, dynamic> json) =
-      _$_ElasticFacet.fromJson;
+      _$ElasticFacetImpl.fromJson;
 
   @override
   ElasticFacetType get type;
@@ -1055,7 +1059,7 @@ abstract class _ElasticFacet extends ElasticFacet {
   List<ElasticFacetData>? get data;
   @override
   @JsonKey(ignore: true)
-  _$$_ElasticFacetCopyWith<_$_ElasticFacet> get copyWith =>
+  _$$ElasticFacetImplCopyWith<_$ElasticFacetImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1081,81 +1085,83 @@ mixin _$ElasticFacetData {
 abstract class $ElasticFacetDataCopyWith<$Res> {
   factory $ElasticFacetDataCopyWith(
           ElasticFacetData value, $Res Function(ElasticFacetData) then) =
-      _$ElasticFacetDataCopyWithImpl<$Res>;
+      _$ElasticFacetDataCopyWithImpl<$Res, ElasticFacetData>;
+  @useResult
   $Res call({String? name, Object? value, Object? from, Object? to, int count});
 }
 
 /// @nodoc
-class _$ElasticFacetDataCopyWithImpl<$Res>
+class _$ElasticFacetDataCopyWithImpl<$Res, $Val extends ElasticFacetData>
     implements $ElasticFacetDataCopyWith<$Res> {
   _$ElasticFacetDataCopyWithImpl(this._value, this._then);
 
-  final ElasticFacetData _value;
   // ignore: unused_field
-  final $Res Function(ElasticFacetData) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? name = freezed,
     Object? value = freezed,
     Object? from = freezed,
     Object? to = freezed,
-    Object? count = freezed,
+    Object? count = null,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      value: value == freezed ? _value.value : value,
-      from: from == freezed ? _value.from : from,
-      to: to == freezed ? _value.to : to,
-      count: count == freezed
+      value: freezed == value ? _value.value : value,
+      from: freezed == from ? _value.from : from,
+      to: freezed == to ? _value.to : to,
+      count: null == count
           ? _value.count
           : count // ignore: cast_nullable_to_non_nullable
               as int,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$_ElasticFacetDataCopyWith<$Res>
+abstract class _$$ElasticFacetDataImplCopyWith<$Res>
     implements $ElasticFacetDataCopyWith<$Res> {
-  factory _$$_ElasticFacetDataCopyWith(
-          _$_ElasticFacetData value, $Res Function(_$_ElasticFacetData) then) =
-      __$$_ElasticFacetDataCopyWithImpl<$Res>;
+  factory _$$ElasticFacetDataImplCopyWith(_$ElasticFacetDataImpl value,
+          $Res Function(_$ElasticFacetDataImpl) then) =
+      __$$ElasticFacetDataImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({String? name, Object? value, Object? from, Object? to, int count});
 }
 
 /// @nodoc
-class __$$_ElasticFacetDataCopyWithImpl<$Res>
-    extends _$ElasticFacetDataCopyWithImpl<$Res>
-    implements _$$_ElasticFacetDataCopyWith<$Res> {
-  __$$_ElasticFacetDataCopyWithImpl(
-      _$_ElasticFacetData _value, $Res Function(_$_ElasticFacetData) _then)
-      : super(_value, (v) => _then(v as _$_ElasticFacetData));
+class __$$ElasticFacetDataImplCopyWithImpl<$Res>
+    extends _$ElasticFacetDataCopyWithImpl<$Res, _$ElasticFacetDataImpl>
+    implements _$$ElasticFacetDataImplCopyWith<$Res> {
+  __$$ElasticFacetDataImplCopyWithImpl(_$ElasticFacetDataImpl _value,
+      $Res Function(_$ElasticFacetDataImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$_ElasticFacetData get _value => super._value as _$_ElasticFacetData;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? name = freezed,
     Object? value = freezed,
     Object? from = freezed,
     Object? to = freezed,
-    Object? count = freezed,
+    Object? count = null,
   }) {
-    return _then(_$_ElasticFacetData(
-      name: name == freezed
+    return _then(_$ElasticFacetDataImpl(
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      value: value == freezed ? _value.value : value,
-      from: from == freezed ? _value.from : from,
-      to: to == freezed ? _value.to : to,
-      count: count == freezed
+      value: freezed == value ? _value.value : value,
+      from: freezed == from ? _value.from : from,
+      to: freezed == to ? _value.to : to,
+      count: null == count
           ? _value.count
           : count // ignore: cast_nullable_to_non_nullable
               as int,
@@ -1166,12 +1172,12 @@ class __$$_ElasticFacetDataCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$_ElasticFacetData implements _ElasticFacetData {
-  const _$_ElasticFacetData(
+class _$ElasticFacetDataImpl implements _ElasticFacetData {
+  const _$ElasticFacetDataImpl(
       {this.name, this.value, this.from, this.to, required this.count});
 
-  factory _$_ElasticFacetData.fromJson(Map<String, dynamic> json) =>
-      _$$_ElasticFacetDataFromJson(json);
+  factory _$ElasticFacetDataImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ElasticFacetDataImplFromJson(json);
 
   @override
   final String? name;
@@ -1190,35 +1196,37 @@ class _$_ElasticFacetData implements _ElasticFacetData {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ElasticFacetData &&
-            const DeepCollectionEquality().equals(other.name, name) &&
+            other is _$ElasticFacetDataImpl &&
+            (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality().equals(other.value, value) &&
             const DeepCollectionEquality().equals(other.from, from) &&
             const DeepCollectionEquality().equals(other.to, to) &&
-            const DeepCollectionEquality().equals(other.count, count));
+            (identical(other.count, count) || other.count == count));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(name),
+      name,
       const DeepCollectionEquality().hash(value),
       const DeepCollectionEquality().hash(from),
       const DeepCollectionEquality().hash(to),
-      const DeepCollectionEquality().hash(count));
+      count);
 
   @JsonKey(ignore: true)
   @override
-  _$$_ElasticFacetDataCopyWith<_$_ElasticFacetData> get copyWith =>
-      __$$_ElasticFacetDataCopyWithImpl<_$_ElasticFacetData>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$ElasticFacetDataImplCopyWith<_$ElasticFacetDataImpl> get copyWith =>
+      __$$ElasticFacetDataImplCopyWithImpl<_$ElasticFacetDataImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ElasticFacetDataToJson(
+    return _$$ElasticFacetDataImplToJson(
       this,
     );
   }
@@ -1230,10 +1238,10 @@ abstract class _ElasticFacetData implements ElasticFacetData {
       final Object? value,
       final Object? from,
       final Object? to,
-      required final int count}) = _$_ElasticFacetData;
+      required final int count}) = _$ElasticFacetDataImpl;
 
   factory _ElasticFacetData.fromJson(Map<String, dynamic> json) =
-      _$_ElasticFacetData.fromJson;
+      _$ElasticFacetDataImpl.fromJson;
 
   @override
   String? get name;
@@ -1247,7 +1255,7 @@ abstract class _ElasticFacetData implements ElasticFacetData {
   int get count;
   @override
   @JsonKey(ignore: true)
-  _$$_ElasticFacetDataCopyWith<_$_ElasticFacetData> get copyWith =>
+  _$$ElasticFacetDataImplCopyWith<_$ElasticFacetDataImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1266,18 +1274,22 @@ mixin _$ElasticRange {
 abstract class $ElasticRangeCopyWith<$Res> {
   factory $ElasticRangeCopyWith(
           ElasticRange value, $Res Function(ElasticRange) then) =
-      _$ElasticRangeCopyWithImpl<$Res>;
+      _$ElasticRangeCopyWithImpl<$Res, ElasticRange>;
+  @useResult
   $Res call({String? name, Object? from, Object? to});
 }
 
 /// @nodoc
-class _$ElasticRangeCopyWithImpl<$Res> implements $ElasticRangeCopyWith<$Res> {
+class _$ElasticRangeCopyWithImpl<$Res, $Val extends ElasticRange>
+    implements $ElasticRangeCopyWith<$Res> {
   _$ElasticRangeCopyWithImpl(this._value, this._then);
 
-  final ElasticRange _value;
   // ignore: unused_field
-  final $Res Function(ElasticRange) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? name = freezed,
@@ -1285,58 +1297,57 @@ class _$ElasticRangeCopyWithImpl<$Res> implements $ElasticRangeCopyWith<$Res> {
     Object? to = freezed,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      from: from == freezed ? _value.from : from,
-      to: to == freezed ? _value.to : to,
-    ));
+      from: freezed == from ? _value.from : from,
+      to: freezed == to ? _value.to : to,
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$_ElasticRangeCopyWith<$Res>
+abstract class _$$ElasticRangeImplCopyWith<$Res>
     implements $ElasticRangeCopyWith<$Res> {
-  factory _$$_ElasticRangeCopyWith(
-          _$_ElasticRange value, $Res Function(_$_ElasticRange) then) =
-      __$$_ElasticRangeCopyWithImpl<$Res>;
+  factory _$$ElasticRangeImplCopyWith(
+          _$ElasticRangeImpl value, $Res Function(_$ElasticRangeImpl) then) =
+      __$$ElasticRangeImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({String? name, Object? from, Object? to});
 }
 
 /// @nodoc
-class __$$_ElasticRangeCopyWithImpl<$Res>
-    extends _$ElasticRangeCopyWithImpl<$Res>
-    implements _$$_ElasticRangeCopyWith<$Res> {
-  __$$_ElasticRangeCopyWithImpl(
-      _$_ElasticRange _value, $Res Function(_$_ElasticRange) _then)
-      : super(_value, (v) => _then(v as _$_ElasticRange));
+class __$$ElasticRangeImplCopyWithImpl<$Res>
+    extends _$ElasticRangeCopyWithImpl<$Res, _$ElasticRangeImpl>
+    implements _$$ElasticRangeImplCopyWith<$Res> {
+  __$$ElasticRangeImplCopyWithImpl(
+      _$ElasticRangeImpl _value, $Res Function(_$ElasticRangeImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$_ElasticRange get _value => super._value as _$_ElasticRange;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? name = freezed,
     Object? from = freezed,
     Object? to = freezed,
   }) {
-    return _then(_$_ElasticRange(
-      name: name == freezed
+    return _then(_$ElasticRangeImpl(
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      from: from == freezed ? _value.from : from,
-      to: to == freezed ? _value.to : to,
+      from: freezed == from ? _value.from : from,
+      to: freezed == to ? _value.to : to,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_ElasticRange implements _ElasticRange {
-  const _$_ElasticRange({this.name, this.from, this.to})
+class _$ElasticRangeImpl implements _ElasticRange {
+  const _$ElasticRangeImpl({this.name, this.from, this.to})
       : assert(from != null || to != null,
             'You must provide at least `from` or `to`.'),
         assert(
@@ -1362,11 +1373,11 @@ class _$_ElasticRange implements _ElasticRange {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ElasticRange &&
-            const DeepCollectionEquality().equals(other.name, name) &&
+            other is _$ElasticRangeImpl &&
+            (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality().equals(other.from, from) &&
             const DeepCollectionEquality().equals(other.to, to));
   }
@@ -1374,21 +1385,22 @@ class _$_ElasticRange implements _ElasticRange {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(name),
+      name,
       const DeepCollectionEquality().hash(from),
       const DeepCollectionEquality().hash(to));
 
   @JsonKey(ignore: true)
   @override
-  _$$_ElasticRangeCopyWith<_$_ElasticRange> get copyWith =>
-      __$$_ElasticRangeCopyWithImpl<_$_ElasticRange>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$ElasticRangeImplCopyWith<_$ElasticRangeImpl> get copyWith =>
+      __$$ElasticRangeImplCopyWithImpl<_$ElasticRangeImpl>(this, _$identity);
 }
 
 abstract class _ElasticRange implements ElasticRange {
   const factory _ElasticRange(
       {final String? name,
       final Object? from,
-      final Object? to}) = _$_ElasticRange;
+      final Object? to}) = _$ElasticRangeImpl;
 
   @override
   String? get name;
@@ -1398,7 +1410,7 @@ abstract class _ElasticRange implements ElasticRange {
   Object? get to;
   @override
   @JsonKey(ignore: true)
-  _$$_ElasticRangeCopyWith<_$_ElasticRange> get copyWith =>
+  _$$ElasticRangeImplCopyWith<_$ElasticRangeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1414,65 +1426,70 @@ mixin _$LatLong {
 /// @nodoc
 abstract class $LatLongCopyWith<$Res> {
   factory $LatLongCopyWith(LatLong value, $Res Function(LatLong) then) =
-      _$LatLongCopyWithImpl<$Res>;
+      _$LatLongCopyWithImpl<$Res, LatLong>;
+  @useResult
   $Res call({double latitude, double longitude});
 }
 
 /// @nodoc
-class _$LatLongCopyWithImpl<$Res> implements $LatLongCopyWith<$Res> {
+class _$LatLongCopyWithImpl<$Res, $Val extends LatLong>
+    implements $LatLongCopyWith<$Res> {
   _$LatLongCopyWithImpl(this._value, this._then);
 
-  final LatLong _value;
   // ignore: unused_field
-  final $Res Function(LatLong) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? latitude = freezed,
-    Object? longitude = freezed,
+    Object? latitude = null,
+    Object? longitude = null,
   }) {
     return _then(_value.copyWith(
-      latitude: latitude == freezed
+      latitude: null == latitude
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
               as double,
-      longitude: longitude == freezed
+      longitude: null == longitude
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$_LatLongCopyWith<$Res> implements $LatLongCopyWith<$Res> {
-  factory _$$_LatLongCopyWith(
-          _$_LatLong value, $Res Function(_$_LatLong) then) =
-      __$$_LatLongCopyWithImpl<$Res>;
+abstract class _$$LatLongImplCopyWith<$Res> implements $LatLongCopyWith<$Res> {
+  factory _$$LatLongImplCopyWith(
+          _$LatLongImpl value, $Res Function(_$LatLongImpl) then) =
+      __$$LatLongImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({double latitude, double longitude});
 }
 
 /// @nodoc
-class __$$_LatLongCopyWithImpl<$Res> extends _$LatLongCopyWithImpl<$Res>
-    implements _$$_LatLongCopyWith<$Res> {
-  __$$_LatLongCopyWithImpl(_$_LatLong _value, $Res Function(_$_LatLong) _then)
-      : super(_value, (v) => _then(v as _$_LatLong));
+class __$$LatLongImplCopyWithImpl<$Res>
+    extends _$LatLongCopyWithImpl<$Res, _$LatLongImpl>
+    implements _$$LatLongImplCopyWith<$Res> {
+  __$$LatLongImplCopyWithImpl(
+      _$LatLongImpl _value, $Res Function(_$LatLongImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$_LatLong get _value => super._value as _$_LatLong;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? latitude = freezed,
-    Object? longitude = freezed,
+    Object? latitude = null,
+    Object? longitude = null,
   }) {
-    return _then(_$_LatLong(
-      latitude == freezed
+    return _then(_$LatLongImpl(
+      null == latitude
           ? _value.latitude
           : latitude // ignore: cast_nullable_to_non_nullable
               as double,
-      longitude == freezed
+      null == longitude
           ? _value.longitude
           : longitude // ignore: cast_nullable_to_non_nullable
               as double,
@@ -1482,8 +1499,8 @@ class __$$_LatLongCopyWithImpl<$Res> extends _$LatLongCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_LatLong implements _LatLong {
-  const _$_LatLong(this.latitude, this.longitude)
+class _$LatLongImpl implements _LatLong {
+  const _$LatLongImpl(this.latitude, this.longitude)
       : assert(latitude >= -90 && latitude <= 90,
             'Latitude must be between -90 and 90 degrees.'),
         assert(longitude >= -180 && latitude <= 180,
@@ -1500,29 +1517,29 @@ class _$_LatLong implements _LatLong {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_LatLong &&
-            const DeepCollectionEquality().equals(other.latitude, latitude) &&
-            const DeepCollectionEquality().equals(other.longitude, longitude));
+            other is _$LatLongImpl &&
+            (identical(other.latitude, latitude) ||
+                other.latitude == latitude) &&
+            (identical(other.longitude, longitude) ||
+                other.longitude == longitude));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(latitude),
-      const DeepCollectionEquality().hash(longitude));
+  int get hashCode => Object.hash(runtimeType, latitude, longitude);
 
   @JsonKey(ignore: true)
   @override
-  _$$_LatLongCopyWith<_$_LatLong> get copyWith =>
-      __$$_LatLongCopyWithImpl<_$_LatLong>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$LatLongImplCopyWith<_$LatLongImpl> get copyWith =>
+      __$$LatLongImplCopyWithImpl<_$LatLongImpl>(this, _$identity);
 }
 
 abstract class _LatLong implements LatLong {
   const factory _LatLong(final double latitude, final double longitude) =
-      _$_LatLong;
+      _$LatLongImpl;
 
   @override
   double get latitude;
@@ -1530,7 +1547,7 @@ abstract class _LatLong implements LatLong {
   double get longitude;
   @override
   @JsonKey(ignore: true)
-  _$$_LatLongCopyWith<_$_LatLong> get copyWith =>
+  _$$LatLongImplCopyWith<_$LatLongImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -1541,7 +1558,7 @@ ElasticQuery _$ElasticQueryFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ElasticQuery {
   /// An object representing an Elastic engine
-  @JsonKey(ignore: true)
+  @JsonKey(includeToJson: false, includeFromJson: false)
   ElasticEngine? get engine => throw _privateConstructorUsedError;
 
   /// String or number to match.
@@ -1590,7 +1607,7 @@ mixin _$ElasticQuery {
   /// it will return all the available facets as if that filter was not applied.
   /// This is not a native part of Elastic App Search, this is a workaround. In fact, multiple queries are
   /// passed to Elastic and the package concatenates all responses in one response.
-  @JsonKey(ignore: true)
+  @JsonKey(includeToJson: false)
   List<String>? get disjunctiveFacets => throw _privateConstructorUsedError;
 
   /// Tags can be used to enrich each query with unique information.
@@ -1617,35 +1634,28 @@ mixin _$ElasticQuery {
 abstract class $ElasticQueryCopyWith<$Res> {
   factory $ElasticQueryCopyWith(
           ElasticQuery value, $Res Function(ElasticQuery) then) =
-      _$ElasticQueryCopyWithImpl<$Res>;
+      _$ElasticQueryCopyWithImpl<$Res, ElasticQuery>;
+  @useResult
   $Res call(
-      {@JsonKey(ignore: true)
-          ElasticEngine? engine,
+      {@JsonKey(includeToJson: false, includeFromJson: false)
+      ElasticEngine? engine,
       String query,
-      @protected
-      @JsonKey(name: "precision")
-          int? precisionTuning,
-      @JsonKey(name: "page")
-          _ElasticSearchPage? searchPage,
-      @_ElasticSearchFiltersConverter()
-          List<_ElasticSearchFilter>? filters,
+      @protected @JsonKey(name: "precision") int? precisionTuning,
+      @JsonKey(name: "page") _ElasticSearchPage? searchPage,
+      @_ElasticSearchFiltersConverter() List<_ElasticSearchFilter>? filters,
       @_ElasticSearchFieldsConverter()
       @JsonKey(name: "search_fields")
-          List<_ElasticSearchField>? searchFields,
+      List<_ElasticSearchField>? searchFields,
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
-          List<_ElasticResultField>? resultFields,
-      @protected
-          Map<String, _ElasticQueryFacet>? facets,
-      @JsonKey(ignore: true)
-          List<String>? disjunctiveFacets,
+      List<_ElasticResultField>? resultFields,
+      @protected Map<String, _ElasticQueryFacet>? facets,
+      @JsonKey(includeToJson: false) List<String>? disjunctiveFacets,
       _ElasticAnalytics? analytics,
-      @protected
-      @JsonKey(name: "group")
-          _ElasticGroup? groupBy,
+      @protected @JsonKey(name: "group") _ElasticGroup? groupBy,
       @_ElasticSortConverter()
       @JsonKey(name: "sort")
-          List<_ElasticSort>? sortBy});
+      List<_ElasticSort>? sortBy});
 
   _$ElasticSearchPageCopyWith<$Res>? get searchPage;
   _$ElasticAnalyticsCopyWith<$Res>? get analytics;
@@ -1653,17 +1663,20 @@ abstract class $ElasticQueryCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
+class _$ElasticQueryCopyWithImpl<$Res, $Val extends ElasticQuery>
+    implements $ElasticQueryCopyWith<$Res> {
   _$ElasticQueryCopyWithImpl(this._value, this._then);
 
-  final ElasticQuery _value;
   // ignore: unused_field
-  final $Res Function(ElasticQuery) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? engine = freezed,
-    Object? query = freezed,
+    Object? query = null,
     Object? precisionTuning = freezed,
     Object? searchPage = freezed,
     Object? filters = freezed,
@@ -1676,126 +1689,122 @@ class _$ElasticQueryCopyWithImpl<$Res> implements $ElasticQueryCopyWith<$Res> {
     Object? sortBy = freezed,
   }) {
     return _then(_value.copyWith(
-      engine: engine == freezed
+      engine: freezed == engine
           ? _value.engine
           : engine // ignore: cast_nullable_to_non_nullable
               as ElasticEngine?,
-      query: query == freezed
+      query: null == query
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
               as String,
-      precisionTuning: precisionTuning == freezed
+      precisionTuning: freezed == precisionTuning
           ? _value.precisionTuning
           : precisionTuning // ignore: cast_nullable_to_non_nullable
               as int?,
-      searchPage: searchPage == freezed
+      searchPage: freezed == searchPage
           ? _value.searchPage
           : searchPage // ignore: cast_nullable_to_non_nullable
               as _ElasticSearchPage?,
-      filters: filters == freezed
+      filters: freezed == filters
           ? _value.filters
           : filters // ignore: cast_nullable_to_non_nullable
               as List<_ElasticSearchFilter>?,
-      searchFields: searchFields == freezed
+      searchFields: freezed == searchFields
           ? _value.searchFields
           : searchFields // ignore: cast_nullable_to_non_nullable
               as List<_ElasticSearchField>?,
-      resultFields: resultFields == freezed
+      resultFields: freezed == resultFields
           ? _value.resultFields
           : resultFields // ignore: cast_nullable_to_non_nullable
               as List<_ElasticResultField>?,
-      facets: facets == freezed
+      facets: freezed == facets
           ? _value.facets
           : facets // ignore: cast_nullable_to_non_nullable
               as Map<String, _ElasticQueryFacet>?,
-      disjunctiveFacets: disjunctiveFacets == freezed
+      disjunctiveFacets: freezed == disjunctiveFacets
           ? _value.disjunctiveFacets
           : disjunctiveFacets // ignore: cast_nullable_to_non_nullable
               as List<String>?,
-      analytics: analytics == freezed
+      analytics: freezed == analytics
           ? _value.analytics
           : analytics // ignore: cast_nullable_to_non_nullable
               as _ElasticAnalytics?,
-      groupBy: groupBy == freezed
+      groupBy: freezed == groupBy
           ? _value.groupBy
           : groupBy // ignore: cast_nullable_to_non_nullable
               as _ElasticGroup?,
-      sortBy: sortBy == freezed
+      sortBy: freezed == sortBy
           ? _value.sortBy
           : sortBy // ignore: cast_nullable_to_non_nullable
               as List<_ElasticSort>?,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   _$ElasticSearchPageCopyWith<$Res>? get searchPage {
     if (_value.searchPage == null) {
       return null;
     }
 
     return _$ElasticSearchPageCopyWith<$Res>(_value.searchPage!, (value) {
-      return _then(_value.copyWith(searchPage: value));
+      return _then(_value.copyWith(searchPage: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   _$ElasticAnalyticsCopyWith<$Res>? get analytics {
     if (_value.analytics == null) {
       return null;
     }
 
     return _$ElasticAnalyticsCopyWith<$Res>(_value.analytics!, (value) {
-      return _then(_value.copyWith(analytics: value));
+      return _then(_value.copyWith(analytics: value) as $Val);
     });
   }
 
   @override
+  @pragma('vm:prefer-inline')
   _$ElasticGroupCopyWith<$Res>? get groupBy {
     if (_value.groupBy == null) {
       return null;
     }
 
     return _$ElasticGroupCopyWith<$Res>(_value.groupBy!, (value) {
-      return _then(_value.copyWith(groupBy: value));
+      return _then(_value.copyWith(groupBy: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$$_ElasticQueryCopyWith<$Res>
+abstract class _$$ElasticQueryImplCopyWith<$Res>
     implements $ElasticQueryCopyWith<$Res> {
-  factory _$$_ElasticQueryCopyWith(
-          _$_ElasticQuery value, $Res Function(_$_ElasticQuery) then) =
-      __$$_ElasticQueryCopyWithImpl<$Res>;
+  factory _$$ElasticQueryImplCopyWith(
+          _$ElasticQueryImpl value, $Res Function(_$ElasticQueryImpl) then) =
+      __$$ElasticQueryImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
-      {@JsonKey(ignore: true)
-          ElasticEngine? engine,
+      {@JsonKey(includeToJson: false, includeFromJson: false)
+      ElasticEngine? engine,
       String query,
-      @protected
-      @JsonKey(name: "precision")
-          int? precisionTuning,
-      @JsonKey(name: "page")
-          _ElasticSearchPage? searchPage,
-      @_ElasticSearchFiltersConverter()
-          List<_ElasticSearchFilter>? filters,
+      @protected @JsonKey(name: "precision") int? precisionTuning,
+      @JsonKey(name: "page") _ElasticSearchPage? searchPage,
+      @_ElasticSearchFiltersConverter() List<_ElasticSearchFilter>? filters,
       @_ElasticSearchFieldsConverter()
       @JsonKey(name: "search_fields")
-          List<_ElasticSearchField>? searchFields,
+      List<_ElasticSearchField>? searchFields,
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
-          List<_ElasticResultField>? resultFields,
-      @protected
-          Map<String, _ElasticQueryFacet>? facets,
-      @JsonKey(ignore: true)
-          List<String>? disjunctiveFacets,
+      List<_ElasticResultField>? resultFields,
+      @protected Map<String, _ElasticQueryFacet>? facets,
+      @JsonKey(includeToJson: false) List<String>? disjunctiveFacets,
       _ElasticAnalytics? analytics,
-      @protected
-      @JsonKey(name: "group")
-          _ElasticGroup? groupBy,
+      @protected @JsonKey(name: "group") _ElasticGroup? groupBy,
       @_ElasticSortConverter()
       @JsonKey(name: "sort")
-          List<_ElasticSort>? sortBy});
+      List<_ElasticSort>? sortBy});
 
   @override
   _$ElasticSearchPageCopyWith<$Res>? get searchPage;
@@ -1806,20 +1815,18 @@ abstract class _$$_ElasticQueryCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ElasticQueryCopyWithImpl<$Res>
-    extends _$ElasticQueryCopyWithImpl<$Res>
-    implements _$$_ElasticQueryCopyWith<$Res> {
-  __$$_ElasticQueryCopyWithImpl(
-      _$_ElasticQuery _value, $Res Function(_$_ElasticQuery) _then)
-      : super(_value, (v) => _then(v as _$_ElasticQuery));
+class __$$ElasticQueryImplCopyWithImpl<$Res>
+    extends _$ElasticQueryCopyWithImpl<$Res, _$ElasticQueryImpl>
+    implements _$$ElasticQueryImplCopyWith<$Res> {
+  __$$ElasticQueryImplCopyWithImpl(
+      _$ElasticQueryImpl _value, $Res Function(_$ElasticQueryImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$_ElasticQuery get _value => super._value as _$_ElasticQuery;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? engine = freezed,
-    Object? query = freezed,
+    Object? query = null,
     Object? precisionTuning = freezed,
     Object? searchPage = freezed,
     Object? filters = freezed,
@@ -1831,52 +1838,52 @@ class __$$_ElasticQueryCopyWithImpl<$Res>
     Object? groupBy = freezed,
     Object? sortBy = freezed,
   }) {
-    return _then(_$_ElasticQuery(
-      engine: engine == freezed
+    return _then(_$ElasticQueryImpl(
+      engine: freezed == engine
           ? _value.engine
           : engine // ignore: cast_nullable_to_non_nullable
               as ElasticEngine?,
-      query: query == freezed
+      query: null == query
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
               as String,
-      precisionTuning: precisionTuning == freezed
+      precisionTuning: freezed == precisionTuning
           ? _value.precisionTuning
           : precisionTuning // ignore: cast_nullable_to_non_nullable
               as int?,
-      searchPage: searchPage == freezed
+      searchPage: freezed == searchPage
           ? _value.searchPage
           : searchPage // ignore: cast_nullable_to_non_nullable
               as _ElasticSearchPage?,
-      filters: filters == freezed
+      filters: freezed == filters
           ? _value._filters
           : filters // ignore: cast_nullable_to_non_nullable
               as List<_ElasticSearchFilter>?,
-      searchFields: searchFields == freezed
+      searchFields: freezed == searchFields
           ? _value._searchFields
           : searchFields // ignore: cast_nullable_to_non_nullable
               as List<_ElasticSearchField>?,
-      resultFields: resultFields == freezed
+      resultFields: freezed == resultFields
           ? _value._resultFields
           : resultFields // ignore: cast_nullable_to_non_nullable
               as List<_ElasticResultField>?,
-      facets: facets == freezed
+      facets: freezed == facets
           ? _value._facets
           : facets // ignore: cast_nullable_to_non_nullable
               as Map<String, _ElasticQueryFacet>?,
-      disjunctiveFacets: disjunctiveFacets == freezed
+      disjunctiveFacets: freezed == disjunctiveFacets
           ? _value._disjunctiveFacets
           : disjunctiveFacets // ignore: cast_nullable_to_non_nullable
               as List<String>?,
-      analytics: analytics == freezed
+      analytics: freezed == analytics
           ? _value.analytics
           : analytics // ignore: cast_nullable_to_non_nullable
               as _ElasticAnalytics?,
-      groupBy: groupBy == freezed
+      groupBy: freezed == groupBy
           ? _value.groupBy
           : groupBy // ignore: cast_nullable_to_non_nullable
               as _ElasticGroup?,
-      sortBy: sortBy == freezed
+      sortBy: freezed == sortBy
           ? _value._sortBy
           : sortBy // ignore: cast_nullable_to_non_nullable
               as List<_ElasticSort>?,
@@ -1887,35 +1894,27 @@ class __$$_ElasticQueryCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$_ElasticQuery extends _ElasticQuery {
-  const _$_ElasticQuery(
-      {@JsonKey(ignore: true)
-          this.engine,
+class _$ElasticQueryImpl extends _ElasticQuery {
+  const _$ElasticQueryImpl(
+      {@JsonKey(includeToJson: false, includeFromJson: false) this.engine,
       required this.query,
-      @protected
-      @JsonKey(name: "precision")
-          this.precisionTuning,
-      @JsonKey(name: "page")
-          this.searchPage,
+      @protected @JsonKey(name: "precision") this.precisionTuning,
+      @JsonKey(name: "page") this.searchPage,
       @_ElasticSearchFiltersConverter()
-          final List<_ElasticSearchFilter>? filters,
+      final List<_ElasticSearchFilter>? filters,
       @_ElasticSearchFieldsConverter()
       @JsonKey(name: "search_fields")
-          final List<_ElasticSearchField>? searchFields,
+      final List<_ElasticSearchField>? searchFields,
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
-          final List<_ElasticResultField>? resultFields,
-      @protected
-          final Map<String, _ElasticQueryFacet>? facets,
-      @JsonKey(ignore: true)
-          final List<String>? disjunctiveFacets,
+      final List<_ElasticResultField>? resultFields,
+      @protected final Map<String, _ElasticQueryFacet>? facets,
+      @JsonKey(includeToJson: false) final List<String>? disjunctiveFacets,
       this.analytics,
-      @protected
-      @JsonKey(name: "group")
-          this.groupBy,
+      @protected @JsonKey(name: "group") this.groupBy,
       @_ElasticSortConverter()
       @JsonKey(name: "sort")
-          final List<_ElasticSort>? sortBy})
+      final List<_ElasticSort>? sortBy})
       : assert(engine != null, 'An engine is required to build a query.'),
         assert(
             precisionTuning == null ||
@@ -1931,12 +1930,12 @@ class _$_ElasticQuery extends _ElasticQuery {
         _sortBy = sortBy,
         super._();
 
-  factory _$_ElasticQuery.fromJson(Map<String, dynamic> json) =>
-      _$$_ElasticQueryFromJson(json);
+  factory _$ElasticQueryImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ElasticQueryImplFromJson(json);
 
   /// An object representing an Elastic engine
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeToJson: false, includeFromJson: false)
   final ElasticEngine? engine;
 
   /// String or number to match.
@@ -1971,6 +1970,7 @@ class _$_ElasticQuery extends _ElasticQuery {
   List<_ElasticSearchFilter>? get filters {
     final value = _filters;
     if (value == null) return null;
+    if (_filters is EqualUnmodifiableListView) return _filters;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
@@ -1985,6 +1985,7 @@ class _$_ElasticQuery extends _ElasticQuery {
   List<_ElasticSearchField>? get searchFields {
     final value = _searchFields;
     if (value == null) return null;
+    if (_searchFields is EqualUnmodifiableListView) return _searchFields;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
@@ -1999,6 +2000,7 @@ class _$_ElasticQuery extends _ElasticQuery {
   List<_ElasticResultField>? get resultFields {
     final value = _resultFields;
     if (value == null) return null;
+    if (_resultFields is EqualUnmodifiableListView) return _resultFields;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
@@ -2014,6 +2016,7 @@ class _$_ElasticQuery extends _ElasticQuery {
   Map<String, _ElasticQueryFacet>? get facets {
     final value = _facets;
     if (value == null) return null;
+    if (_facets is EqualUnmodifiableMapView) return _facets;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(value);
   }
@@ -2031,10 +2034,12 @@ class _$_ElasticQuery extends _ElasticQuery {
   /// This is not a native part of Elastic App Search, this is a workaround. In fact, multiple queries are
   /// passed to Elastic and the package concatenates all responses in one response.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeToJson: false)
   List<String>? get disjunctiveFacets {
     final value = _disjunctiveFacets;
     if (value == null) return null;
+    if (_disjunctiveFacets is EqualUnmodifiableListView)
+      return _disjunctiveFacets;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
@@ -2060,6 +2065,7 @@ class _$_ElasticQuery extends _ElasticQuery {
   List<_ElasticSort>? get sortBy {
     final value = _sortBy;
     if (value == null) return null;
+    if (_sortBy is EqualUnmodifiableListView) return _sortBy;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
@@ -2070,16 +2076,16 @@ class _$_ElasticQuery extends _ElasticQuery {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ElasticQuery &&
-            const DeepCollectionEquality().equals(other.engine, engine) &&
-            const DeepCollectionEquality().equals(other.query, query) &&
-            const DeepCollectionEquality()
-                .equals(other.precisionTuning, precisionTuning) &&
-            const DeepCollectionEquality()
-                .equals(other.searchPage, searchPage) &&
+            other is _$ElasticQueryImpl &&
+            (identical(other.engine, engine) || other.engine == engine) &&
+            (identical(other.query, query) || other.query == query) &&
+            (identical(other.precisionTuning, precisionTuning) ||
+                other.precisionTuning == precisionTuning) &&
+            (identical(other.searchPage, searchPage) ||
+                other.searchPage == searchPage) &&
             const DeepCollectionEquality().equals(other._filters, _filters) &&
             const DeepCollectionEquality()
                 .equals(other._searchFields, _searchFields) &&
@@ -2088,8 +2094,9 @@ class _$_ElasticQuery extends _ElasticQuery {
             const DeepCollectionEquality().equals(other._facets, _facets) &&
             const DeepCollectionEquality()
                 .equals(other._disjunctiveFacets, _disjunctiveFacets) &&
-            const DeepCollectionEquality().equals(other.analytics, analytics) &&
-            const DeepCollectionEquality().equals(other.groupBy, groupBy) &&
+            (identical(other.analytics, analytics) ||
+                other.analytics == analytics) &&
+            (identical(other.groupBy, groupBy) || other.groupBy == groupBy) &&
             const DeepCollectionEquality().equals(other._sortBy, _sortBy));
   }
 
@@ -2097,27 +2104,28 @@ class _$_ElasticQuery extends _ElasticQuery {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(engine),
-      const DeepCollectionEquality().hash(query),
-      const DeepCollectionEquality().hash(precisionTuning),
-      const DeepCollectionEquality().hash(searchPage),
+      engine,
+      query,
+      precisionTuning,
+      searchPage,
       const DeepCollectionEquality().hash(_filters),
       const DeepCollectionEquality().hash(_searchFields),
       const DeepCollectionEquality().hash(_resultFields),
       const DeepCollectionEquality().hash(_facets),
       const DeepCollectionEquality().hash(_disjunctiveFacets),
-      const DeepCollectionEquality().hash(analytics),
-      const DeepCollectionEquality().hash(groupBy),
+      analytics,
+      groupBy,
       const DeepCollectionEquality().hash(_sortBy));
 
   @JsonKey(ignore: true)
   @override
-  _$$_ElasticQueryCopyWith<_$_ElasticQuery> get copyWith =>
-      __$$_ElasticQueryCopyWithImpl<_$_ElasticQuery>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$ElasticQueryImplCopyWith<_$ElasticQueryImpl> get copyWith =>
+      __$$ElasticQueryImplCopyWithImpl<_$ElasticQueryImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ElasticQueryToJson(
+    return _$$ElasticQueryImplToJson(
       this,
     );
   }
@@ -2125,42 +2133,35 @@ class _$_ElasticQuery extends _ElasticQuery {
 
 abstract class _ElasticQuery extends ElasticQuery {
   const factory _ElasticQuery(
-      {@JsonKey(ignore: true)
-          final ElasticEngine? engine,
+      {@JsonKey(includeToJson: false, includeFromJson: false)
+      final ElasticEngine? engine,
       required final String query,
-      @protected
-      @JsonKey(name: "precision")
-          final int? precisionTuning,
-      @JsonKey(name: "page")
-          final _ElasticSearchPage? searchPage,
+      @protected @JsonKey(name: "precision") final int? precisionTuning,
+      @JsonKey(name: "page") final _ElasticSearchPage? searchPage,
       @_ElasticSearchFiltersConverter()
-          final List<_ElasticSearchFilter>? filters,
+      final List<_ElasticSearchFilter>? filters,
       @_ElasticSearchFieldsConverter()
       @JsonKey(name: "search_fields")
-          final List<_ElasticSearchField>? searchFields,
+      final List<_ElasticSearchField>? searchFields,
       @_ElasticResultFieldsConverter()
       @JsonKey(name: "result_fields")
-          final List<_ElasticResultField>? resultFields,
-      @protected
-          final Map<String, _ElasticQueryFacet>? facets,
-      @JsonKey(ignore: true)
-          final List<String>? disjunctiveFacets,
+      final List<_ElasticResultField>? resultFields,
+      @protected final Map<String, _ElasticQueryFacet>? facets,
+      @JsonKey(includeToJson: false) final List<String>? disjunctiveFacets,
       final _ElasticAnalytics? analytics,
-      @protected
-      @JsonKey(name: "group")
-          final _ElasticGroup? groupBy,
+      @protected @JsonKey(name: "group") final _ElasticGroup? groupBy,
       @_ElasticSortConverter()
       @JsonKey(name: "sort")
-          final List<_ElasticSort>? sortBy}) = _$_ElasticQuery;
+      final List<_ElasticSort>? sortBy}) = _$ElasticQueryImpl;
   const _ElasticQuery._() : super._();
 
   factory _ElasticQuery.fromJson(Map<String, dynamic> json) =
-      _$_ElasticQuery.fromJson;
+      _$ElasticQueryImpl.fromJson;
 
   @override
 
   /// An object representing an Elastic engine
-  @JsonKey(ignore: true)
+  @JsonKey(includeToJson: false, includeFromJson: false)
   ElasticEngine? get engine;
   @override
 
@@ -2214,7 +2215,7 @@ abstract class _ElasticQuery extends ElasticQuery {
   /// it will return all the available facets as if that filter was not applied.
   /// This is not a native part of Elastic App Search, this is a workaround. In fact, multiple queries are
   /// passed to Elastic and the package concatenates all responses in one response.
-  @JsonKey(ignore: true)
+  @JsonKey(includeToJson: false)
   List<String>? get disjunctiveFacets;
   @override
 
@@ -2235,16 +2236,16 @@ abstract class _ElasticQuery extends ElasticQuery {
   List<_ElasticSort>? get sortBy;
   @override
   @JsonKey(ignore: true)
-  _$$_ElasticQueryCopyWith<_$_ElasticQuery> get copyWith =>
+  _$$ElasticQueryImplCopyWith<_$ElasticQueryImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-_ElasticSearchPage _$_ElasticSearchPageFromJson(Map<String, dynamic> json) {
+_ElasticSearchPage _$ElasticSearchPageFromJson(Map<String, dynamic> json) {
   return __ElasticSearchPage.fromJson(json);
 }
 
 /// @nodoc
-mixin _$_ElasticSearchPage {
+mixin _$ElasticSearchPage {
   /// Number of results per page.
   /// Must be greater than or equal to 1 and less than or equal to 1000.
   /// Defaults to 10.
@@ -2265,69 +2266,71 @@ mixin _$_ElasticSearchPage {
 abstract class _$ElasticSearchPageCopyWith<$Res> {
   factory _$ElasticSearchPageCopyWith(
           _ElasticSearchPage value, $Res Function(_ElasticSearchPage) then) =
-      __$ElasticSearchPageCopyWithImpl<$Res>;
+      __$ElasticSearchPageCopyWithImpl<$Res, _ElasticSearchPage>;
+  @useResult
   $Res call({int? size, int? current});
 }
 
 /// @nodoc
-class __$ElasticSearchPageCopyWithImpl<$Res>
+class __$ElasticSearchPageCopyWithImpl<$Res, $Val extends _ElasticSearchPage>
     implements _$ElasticSearchPageCopyWith<$Res> {
   __$ElasticSearchPageCopyWithImpl(this._value, this._then);
 
-  final _ElasticSearchPage _value;
   // ignore: unused_field
-  final $Res Function(_ElasticSearchPage) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? size = freezed,
     Object? current = freezed,
   }) {
     return _then(_value.copyWith(
-      size: size == freezed
+      size: freezed == size
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as int?,
-      current: current == freezed
+      current: freezed == current
           ? _value.current
           : current // ignore: cast_nullable_to_non_nullable
               as int?,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$__ElasticSearchPageCopyWith<$Res>
+abstract class _$$_ElasticSearchPageImplCopyWith<$Res>
     implements _$ElasticSearchPageCopyWith<$Res> {
-  factory _$$__ElasticSearchPageCopyWith(_$__ElasticSearchPage value,
-          $Res Function(_$__ElasticSearchPage) then) =
-      __$$__ElasticSearchPageCopyWithImpl<$Res>;
+  factory _$$_ElasticSearchPageImplCopyWith(_$_ElasticSearchPageImpl value,
+          $Res Function(_$_ElasticSearchPageImpl) then) =
+      __$$_ElasticSearchPageImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({int? size, int? current});
 }
 
 /// @nodoc
-class __$$__ElasticSearchPageCopyWithImpl<$Res>
-    extends __$ElasticSearchPageCopyWithImpl<$Res>
-    implements _$$__ElasticSearchPageCopyWith<$Res> {
-  __$$__ElasticSearchPageCopyWithImpl(
-      _$__ElasticSearchPage _value, $Res Function(_$__ElasticSearchPage) _then)
-      : super(_value, (v) => _then(v as _$__ElasticSearchPage));
+class __$$_ElasticSearchPageImplCopyWithImpl<$Res>
+    extends __$ElasticSearchPageCopyWithImpl<$Res, _$_ElasticSearchPageImpl>
+    implements _$$_ElasticSearchPageImplCopyWith<$Res> {
+  __$$_ElasticSearchPageImplCopyWithImpl(_$_ElasticSearchPageImpl _value,
+      $Res Function(_$_ElasticSearchPageImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$__ElasticSearchPage get _value => super._value as _$__ElasticSearchPage;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? size = freezed,
     Object? current = freezed,
   }) {
-    return _then(_$__ElasticSearchPage(
-      size: size == freezed
+    return _then(_$_ElasticSearchPageImpl(
+      size: freezed == size
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as int?,
-      current: current == freezed
+      current: freezed == current
           ? _value.current
           : current // ignore: cast_nullable_to_non_nullable
               as int?,
@@ -2338,8 +2341,8 @@ class __$$__ElasticSearchPageCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$__ElasticSearchPage implements __ElasticSearchPage {
-  const _$__ElasticSearchPage({this.size = 10, this.current = 1})
+class _$_ElasticSearchPageImpl implements __ElasticSearchPage {
+  const _$_ElasticSearchPageImpl({this.size = 10, this.current = 1})
       : assert(size == null || (size != null && size >= 0 && size <= 1000),
             'The number of results per page must be greater than or equal to 1 and less than or equal to 1000.'),
         assert(
@@ -2347,8 +2350,8 @@ class _$__ElasticSearchPage implements __ElasticSearchPage {
                 (current != null && current >= 1 && current <= 100),
             'The current must be greater than or equal to 1 and less than or equal to 100.');
 
-  factory _$__ElasticSearchPage.fromJson(Map<String, dynamic> json) =>
-      _$$__ElasticSearchPageFromJson(json);
+  factory _$_ElasticSearchPageImpl.fromJson(Map<String, dynamic> json) =>
+      _$$_ElasticSearchPageImplFromJson(json);
 
   /// Number of results per page.
   /// Must be greater than or equal to 1 and less than or equal to 1000.
@@ -2370,30 +2373,28 @@ class _$__ElasticSearchPage implements __ElasticSearchPage {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$__ElasticSearchPage &&
-            const DeepCollectionEquality().equals(other.size, size) &&
-            const DeepCollectionEquality().equals(other.current, current));
+            other is _$_ElasticSearchPageImpl &&
+            (identical(other.size, size) || other.size == size) &&
+            (identical(other.current, current) || other.current == current));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(size),
-      const DeepCollectionEquality().hash(current));
+  int get hashCode => Object.hash(runtimeType, size, current);
 
   @JsonKey(ignore: true)
   @override
-  _$$__ElasticSearchPageCopyWith<_$__ElasticSearchPage> get copyWith =>
-      __$$__ElasticSearchPageCopyWithImpl<_$__ElasticSearchPage>(
+  @pragma('vm:prefer-inline')
+  _$$_ElasticSearchPageImplCopyWith<_$_ElasticSearchPageImpl> get copyWith =>
+      __$$_ElasticSearchPageImplCopyWithImpl<_$_ElasticSearchPageImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$__ElasticSearchPageToJson(
+    return _$$_ElasticSearchPageImplToJson(
       this,
     );
   }
@@ -2401,10 +2402,10 @@ class _$__ElasticSearchPage implements __ElasticSearchPage {
 
 abstract class __ElasticSearchPage implements _ElasticSearchPage {
   const factory __ElasticSearchPage({final int? size, final int? current}) =
-      _$__ElasticSearchPage;
+      _$_ElasticSearchPageImpl;
 
   factory __ElasticSearchPage.fromJson(Map<String, dynamic> json) =
-      _$__ElasticSearchPage.fromJson;
+      _$_ElasticSearchPageImpl.fromJson;
 
   @override
 
@@ -2420,16 +2421,16 @@ abstract class __ElasticSearchPage implements _ElasticSearchPage {
   int? get current;
   @override
   @JsonKey(ignore: true)
-  _$$__ElasticSearchPageCopyWith<_$__ElasticSearchPage> get copyWith =>
+  _$$_ElasticSearchPageImplCopyWith<_$_ElasticSearchPageImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-_ElasticSearchFilter _$_ElasticSearchFilterFromJson(Map<String, dynamic> json) {
+_ElasticSearchFilter _$ElasticSearchFilterFromJson(Map<String, dynamic> json) {
   return __ElasticSearchFilter.fromJson(json);
 }
 
 /// @nodoc
-mixin _$_ElasticSearchFilter {
+mixin _$ElasticSearchFilter {
   /// The type of the filter, which will determine if it's an 'OR', 'AND' or 'NOT' condition.
   _ElasticFilterType get type => throw _privateConstructorUsedError;
 
@@ -2450,79 +2451,82 @@ mixin _$_ElasticSearchFilter {
 abstract class _$ElasticSearchFilterCopyWith<$Res> {
   factory _$ElasticSearchFilterCopyWith(_ElasticSearchFilter value,
           $Res Function(_ElasticSearchFilter) then) =
-      __$ElasticSearchFilterCopyWithImpl<$Res>;
+      __$ElasticSearchFilterCopyWithImpl<$Res, _ElasticSearchFilter>;
+  @useResult
   $Res call({_ElasticFilterType type, String name, dynamic value});
 }
 
 /// @nodoc
-class __$ElasticSearchFilterCopyWithImpl<$Res>
+class __$ElasticSearchFilterCopyWithImpl<$Res,
+        $Val extends _ElasticSearchFilter>
     implements _$ElasticSearchFilterCopyWith<$Res> {
   __$ElasticSearchFilterCopyWithImpl(this._value, this._then);
 
-  final _ElasticSearchFilter _value;
   // ignore: unused_field
-  final $Res Function(_ElasticSearchFilter) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? type = freezed,
-    Object? name = freezed,
+    Object? type = null,
+    Object? name = null,
     Object? value = freezed,
   }) {
     return _then(_value.copyWith(
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as _ElasticFilterType,
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      value: value == freezed
+      value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
               as dynamic,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$__ElasticSearchFilterCopyWith<$Res>
+abstract class _$$_ElasticSearchFilterImplCopyWith<$Res>
     implements _$ElasticSearchFilterCopyWith<$Res> {
-  factory _$$__ElasticSearchFilterCopyWith(_$__ElasticSearchFilter value,
-          $Res Function(_$__ElasticSearchFilter) then) =
-      __$$__ElasticSearchFilterCopyWithImpl<$Res>;
+  factory _$$_ElasticSearchFilterImplCopyWith(_$_ElasticSearchFilterImpl value,
+          $Res Function(_$_ElasticSearchFilterImpl) then) =
+      __$$_ElasticSearchFilterImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({_ElasticFilterType type, String name, dynamic value});
 }
 
 /// @nodoc
-class __$$__ElasticSearchFilterCopyWithImpl<$Res>
-    extends __$ElasticSearchFilterCopyWithImpl<$Res>
-    implements _$$__ElasticSearchFilterCopyWith<$Res> {
-  __$$__ElasticSearchFilterCopyWithImpl(_$__ElasticSearchFilter _value,
-      $Res Function(_$__ElasticSearchFilter) _then)
-      : super(_value, (v) => _then(v as _$__ElasticSearchFilter));
+class __$$_ElasticSearchFilterImplCopyWithImpl<$Res>
+    extends __$ElasticSearchFilterCopyWithImpl<$Res, _$_ElasticSearchFilterImpl>
+    implements _$$_ElasticSearchFilterImplCopyWith<$Res> {
+  __$$_ElasticSearchFilterImplCopyWithImpl(_$_ElasticSearchFilterImpl _value,
+      $Res Function(_$_ElasticSearchFilterImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$__ElasticSearchFilter get _value => super._value as _$__ElasticSearchFilter;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? type = freezed,
-    Object? name = freezed,
+    Object? type = null,
+    Object? name = null,
     Object? value = freezed,
   }) {
-    return _then(_$__ElasticSearchFilter(
-      type: type == freezed
+    return _then(_$_ElasticSearchFilterImpl(
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as _ElasticFilterType,
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      value: value == freezed
+      value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
               as dynamic,
@@ -2533,14 +2537,14 @@ class __$$__ElasticSearchFilterCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$__ElasticSearchFilter implements __ElasticSearchFilter {
-  const _$__ElasticSearchFilter(
+class _$_ElasticSearchFilterImpl implements __ElasticSearchFilter {
+  const _$_ElasticSearchFilterImpl(
       {this.type = _ElasticFilterType.all,
       required this.name,
       required this.value});
 
-  factory _$__ElasticSearchFilter.fromJson(Map<String, dynamic> json) =>
-      _$$__ElasticSearchFilterFromJson(json);
+  factory _$_ElasticSearchFilterImpl.fromJson(Map<String, dynamic> json) =>
+      _$$_ElasticSearchFilterImplFromJson(json);
 
   /// The type of the filter, which will determine if it's an 'OR', 'AND' or 'NOT' condition.
   @override
@@ -2562,32 +2566,31 @@ class _$__ElasticSearchFilter implements __ElasticSearchFilter {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$__ElasticSearchFilter &&
-            const DeepCollectionEquality().equals(other.type, type) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
+            other is _$_ElasticSearchFilterImpl &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality().equals(other.value, value));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(value));
+      runtimeType, type, name, const DeepCollectionEquality().hash(value));
 
   @JsonKey(ignore: true)
   @override
-  _$$__ElasticSearchFilterCopyWith<_$__ElasticSearchFilter> get copyWith =>
-      __$$__ElasticSearchFilterCopyWithImpl<_$__ElasticSearchFilter>(
-          this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_ElasticSearchFilterImplCopyWith<_$_ElasticSearchFilterImpl>
+      get copyWith =>
+          __$$_ElasticSearchFilterImplCopyWithImpl<_$_ElasticSearchFilterImpl>(
+              this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$__ElasticSearchFilterToJson(
+    return _$$_ElasticSearchFilterImplToJson(
       this,
     );
   }
@@ -2597,10 +2600,10 @@ abstract class __ElasticSearchFilter implements _ElasticSearchFilter {
   const factory __ElasticSearchFilter(
       {final _ElasticFilterType type,
       required final String name,
-      required final dynamic value}) = _$__ElasticSearchFilter;
+      required final dynamic value}) = _$_ElasticSearchFilterImpl;
 
   factory __ElasticSearchFilter.fromJson(Map<String, dynamic> json) =
-      _$__ElasticSearchFilter.fromJson;
+      _$_ElasticSearchFilterImpl.fromJson;
 
   @override
 
@@ -2617,17 +2620,17 @@ abstract class __ElasticSearchFilter implements _ElasticSearchFilter {
   dynamic get value;
   @override
   @JsonKey(ignore: true)
-  _$$__ElasticSearchFilterCopyWith<_$__ElasticSearchFilter> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$_ElasticSearchFilterImplCopyWith<_$_ElasticSearchFilterImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
-_ElasticDateRangeFilter _$_ElasticDateRangeFilterFromJson(
+_ElasticDateRangeFilter _$ElasticDateRangeFilterFromJson(
     Map<String, dynamic> json) {
   return __ElasticDateRangeFilter.fromJson(json);
 }
 
 /// @nodoc
-mixin _$_ElasticDateRangeFilter {
+mixin _$ElasticDateRangeFilter {
   String? get from => throw _privateConstructorUsedError;
   String? get to => throw _privateConstructorUsedError;
 
@@ -2641,70 +2644,75 @@ mixin _$_ElasticDateRangeFilter {
 abstract class _$ElasticDateRangeFilterCopyWith<$Res> {
   factory _$ElasticDateRangeFilterCopyWith(_ElasticDateRangeFilter value,
           $Res Function(_ElasticDateRangeFilter) then) =
-      __$ElasticDateRangeFilterCopyWithImpl<$Res>;
+      __$ElasticDateRangeFilterCopyWithImpl<$Res, _ElasticDateRangeFilter>;
+  @useResult
   $Res call({String? from, String? to});
 }
 
 /// @nodoc
-class __$ElasticDateRangeFilterCopyWithImpl<$Res>
+class __$ElasticDateRangeFilterCopyWithImpl<$Res,
+        $Val extends _ElasticDateRangeFilter>
     implements _$ElasticDateRangeFilterCopyWith<$Res> {
   __$ElasticDateRangeFilterCopyWithImpl(this._value, this._then);
 
-  final _ElasticDateRangeFilter _value;
   // ignore: unused_field
-  final $Res Function(_ElasticDateRangeFilter) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? from = freezed,
     Object? to = freezed,
   }) {
     return _then(_value.copyWith(
-      from: from == freezed
+      from: freezed == from
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
               as String?,
-      to: to == freezed
+      to: freezed == to
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
               as String?,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$__ElasticDateRangeFilterCopyWith<$Res>
+abstract class _$$_ElasticDateRangeFilterImplCopyWith<$Res>
     implements _$ElasticDateRangeFilterCopyWith<$Res> {
-  factory _$$__ElasticDateRangeFilterCopyWith(_$__ElasticDateRangeFilter value,
-          $Res Function(_$__ElasticDateRangeFilter) then) =
-      __$$__ElasticDateRangeFilterCopyWithImpl<$Res>;
+  factory _$$_ElasticDateRangeFilterImplCopyWith(
+          _$_ElasticDateRangeFilterImpl value,
+          $Res Function(_$_ElasticDateRangeFilterImpl) then) =
+      __$$_ElasticDateRangeFilterImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({String? from, String? to});
 }
 
 /// @nodoc
-class __$$__ElasticDateRangeFilterCopyWithImpl<$Res>
-    extends __$ElasticDateRangeFilterCopyWithImpl<$Res>
-    implements _$$__ElasticDateRangeFilterCopyWith<$Res> {
-  __$$__ElasticDateRangeFilterCopyWithImpl(_$__ElasticDateRangeFilter _value,
-      $Res Function(_$__ElasticDateRangeFilter) _then)
-      : super(_value, (v) => _then(v as _$__ElasticDateRangeFilter));
+class __$$_ElasticDateRangeFilterImplCopyWithImpl<$Res>
+    extends __$ElasticDateRangeFilterCopyWithImpl<$Res,
+        _$_ElasticDateRangeFilterImpl>
+    implements _$$_ElasticDateRangeFilterImplCopyWith<$Res> {
+  __$$_ElasticDateRangeFilterImplCopyWithImpl(
+      _$_ElasticDateRangeFilterImpl _value,
+      $Res Function(_$_ElasticDateRangeFilterImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$__ElasticDateRangeFilter get _value =>
-      super._value as _$__ElasticDateRangeFilter;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? from = freezed,
     Object? to = freezed,
   }) {
-    return _then(_$__ElasticDateRangeFilter(
-      from: from == freezed
+    return _then(_$_ElasticDateRangeFilterImpl(
+      from: freezed == from
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
               as String?,
-      to: to == freezed
+      to: freezed == to
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
               as String?,
@@ -2715,11 +2723,11 @@ class __$$__ElasticDateRangeFilterCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$__ElasticDateRangeFilter implements __ElasticDateRangeFilter {
-  const _$__ElasticDateRangeFilter({this.from, this.to});
+class _$_ElasticDateRangeFilterImpl implements __ElasticDateRangeFilter {
+  const _$_ElasticDateRangeFilterImpl({this.from, this.to});
 
-  factory _$__ElasticDateRangeFilter.fromJson(Map<String, dynamic> json) =>
-      _$$__ElasticDateRangeFilterFromJson(json);
+  factory _$_ElasticDateRangeFilterImpl.fromJson(Map<String, dynamic> json) =>
+      _$$_ElasticDateRangeFilterImplFromJson(json);
 
   @override
   final String? from;
@@ -2732,31 +2740,28 @@ class _$__ElasticDateRangeFilter implements __ElasticDateRangeFilter {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$__ElasticDateRangeFilter &&
-            const DeepCollectionEquality().equals(other.from, from) &&
-            const DeepCollectionEquality().equals(other.to, to));
+            other is _$_ElasticDateRangeFilterImpl &&
+            (identical(other.from, from) || other.from == from) &&
+            (identical(other.to, to) || other.to == to));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(from),
-      const DeepCollectionEquality().hash(to));
+  int get hashCode => Object.hash(runtimeType, from, to);
 
   @JsonKey(ignore: true)
   @override
-  _$$__ElasticDateRangeFilterCopyWith<_$__ElasticDateRangeFilter>
-      get copyWith =>
-          __$$__ElasticDateRangeFilterCopyWithImpl<_$__ElasticDateRangeFilter>(
-              this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_ElasticDateRangeFilterImplCopyWith<_$_ElasticDateRangeFilterImpl>
+      get copyWith => __$$_ElasticDateRangeFilterImplCopyWithImpl<
+          _$_ElasticDateRangeFilterImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$__ElasticDateRangeFilterToJson(
+    return _$$_ElasticDateRangeFilterImplToJson(
       this,
     );
   }
@@ -2764,10 +2769,10 @@ class _$__ElasticDateRangeFilter implements __ElasticDateRangeFilter {
 
 abstract class __ElasticDateRangeFilter implements _ElasticDateRangeFilter {
   const factory __ElasticDateRangeFilter(
-      {final String? from, final String? to}) = _$__ElasticDateRangeFilter;
+      {final String? from, final String? to}) = _$_ElasticDateRangeFilterImpl;
 
   factory __ElasticDateRangeFilter.fromJson(Map<String, dynamic> json) =
-      _$__ElasticDateRangeFilter.fromJson;
+      _$_ElasticDateRangeFilterImpl.fromJson;
 
   @override
   String? get from;
@@ -2775,17 +2780,17 @@ abstract class __ElasticDateRangeFilter implements _ElasticDateRangeFilter {
   String? get to;
   @override
   @JsonKey(ignore: true)
-  _$$__ElasticDateRangeFilterCopyWith<_$__ElasticDateRangeFilter>
+  _$$_ElasticDateRangeFilterImplCopyWith<_$_ElasticDateRangeFilterImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
-_ElasticNumberRangeFilter _$_ElasticNumberRangeFilterFromJson(
+_ElasticNumberRangeFilter _$ElasticNumberRangeFilterFromJson(
     Map<String, dynamic> json) {
   return __ElasticNumberRangeFilter.fromJson(json);
 }
 
 /// @nodoc
-mixin _$_ElasticNumberRangeFilter {
+mixin _$ElasticNumberRangeFilter {
   double? get from => throw _privateConstructorUsedError;
   double? get to => throw _privateConstructorUsedError;
 
@@ -2799,72 +2804,75 @@ mixin _$_ElasticNumberRangeFilter {
 abstract class _$ElasticNumberRangeFilterCopyWith<$Res> {
   factory _$ElasticNumberRangeFilterCopyWith(_ElasticNumberRangeFilter value,
           $Res Function(_ElasticNumberRangeFilter) then) =
-      __$ElasticNumberRangeFilterCopyWithImpl<$Res>;
+      __$ElasticNumberRangeFilterCopyWithImpl<$Res, _ElasticNumberRangeFilter>;
+  @useResult
   $Res call({double? from, double? to});
 }
 
 /// @nodoc
-class __$ElasticNumberRangeFilterCopyWithImpl<$Res>
+class __$ElasticNumberRangeFilterCopyWithImpl<$Res,
+        $Val extends _ElasticNumberRangeFilter>
     implements _$ElasticNumberRangeFilterCopyWith<$Res> {
   __$ElasticNumberRangeFilterCopyWithImpl(this._value, this._then);
 
-  final _ElasticNumberRangeFilter _value;
   // ignore: unused_field
-  final $Res Function(_ElasticNumberRangeFilter) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? from = freezed,
     Object? to = freezed,
   }) {
     return _then(_value.copyWith(
-      from: from == freezed
+      from: freezed == from
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
               as double?,
-      to: to == freezed
+      to: freezed == to
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
               as double?,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$__ElasticNumberRangeFilterCopyWith<$Res>
+abstract class _$$_ElasticNumberRangeFilterImplCopyWith<$Res>
     implements _$ElasticNumberRangeFilterCopyWith<$Res> {
-  factory _$$__ElasticNumberRangeFilterCopyWith(
-          _$__ElasticNumberRangeFilter value,
-          $Res Function(_$__ElasticNumberRangeFilter) then) =
-      __$$__ElasticNumberRangeFilterCopyWithImpl<$Res>;
+  factory _$$_ElasticNumberRangeFilterImplCopyWith(
+          _$_ElasticNumberRangeFilterImpl value,
+          $Res Function(_$_ElasticNumberRangeFilterImpl) then) =
+      __$$_ElasticNumberRangeFilterImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({double? from, double? to});
 }
 
 /// @nodoc
-class __$$__ElasticNumberRangeFilterCopyWithImpl<$Res>
-    extends __$ElasticNumberRangeFilterCopyWithImpl<$Res>
-    implements _$$__ElasticNumberRangeFilterCopyWith<$Res> {
-  __$$__ElasticNumberRangeFilterCopyWithImpl(
-      _$__ElasticNumberRangeFilter _value,
-      $Res Function(_$__ElasticNumberRangeFilter) _then)
-      : super(_value, (v) => _then(v as _$__ElasticNumberRangeFilter));
+class __$$_ElasticNumberRangeFilterImplCopyWithImpl<$Res>
+    extends __$ElasticNumberRangeFilterCopyWithImpl<$Res,
+        _$_ElasticNumberRangeFilterImpl>
+    implements _$$_ElasticNumberRangeFilterImplCopyWith<$Res> {
+  __$$_ElasticNumberRangeFilterImplCopyWithImpl(
+      _$_ElasticNumberRangeFilterImpl _value,
+      $Res Function(_$_ElasticNumberRangeFilterImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$__ElasticNumberRangeFilter get _value =>
-      super._value as _$__ElasticNumberRangeFilter;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? from = freezed,
     Object? to = freezed,
   }) {
-    return _then(_$__ElasticNumberRangeFilter(
-      from: from == freezed
+    return _then(_$_ElasticNumberRangeFilterImpl(
+      from: freezed == from
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
               as double?,
-      to: to == freezed
+      to: freezed == to
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
               as double?,
@@ -2875,11 +2883,11 @@ class __$$__ElasticNumberRangeFilterCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$__ElasticNumberRangeFilter implements __ElasticNumberRangeFilter {
-  const _$__ElasticNumberRangeFilter({this.from, this.to});
+class _$_ElasticNumberRangeFilterImpl implements __ElasticNumberRangeFilter {
+  const _$_ElasticNumberRangeFilterImpl({this.from, this.to});
 
-  factory _$__ElasticNumberRangeFilter.fromJson(Map<String, dynamic> json) =>
-      _$$__ElasticNumberRangeFilterFromJson(json);
+  factory _$_ElasticNumberRangeFilterImpl.fromJson(Map<String, dynamic> json) =>
+      _$$_ElasticNumberRangeFilterImplFromJson(json);
 
   @override
   final double? from;
@@ -2892,30 +2900,28 @@ class _$__ElasticNumberRangeFilter implements __ElasticNumberRangeFilter {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$__ElasticNumberRangeFilter &&
-            const DeepCollectionEquality().equals(other.from, from) &&
-            const DeepCollectionEquality().equals(other.to, to));
+            other is _$_ElasticNumberRangeFilterImpl &&
+            (identical(other.from, from) || other.from == from) &&
+            (identical(other.to, to) || other.to == to));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(from),
-      const DeepCollectionEquality().hash(to));
+  int get hashCode => Object.hash(runtimeType, from, to);
 
   @JsonKey(ignore: true)
   @override
-  _$$__ElasticNumberRangeFilterCopyWith<_$__ElasticNumberRangeFilter>
-      get copyWith => __$$__ElasticNumberRangeFilterCopyWithImpl<
-          _$__ElasticNumberRangeFilter>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_ElasticNumberRangeFilterImplCopyWith<_$_ElasticNumberRangeFilterImpl>
+      get copyWith => __$$_ElasticNumberRangeFilterImplCopyWithImpl<
+          _$_ElasticNumberRangeFilterImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$__ElasticNumberRangeFilterToJson(
+    return _$$_ElasticNumberRangeFilterImplToJson(
       this,
     );
   }
@@ -2923,10 +2929,10 @@ class _$__ElasticNumberRangeFilter implements __ElasticNumberRangeFilter {
 
 abstract class __ElasticNumberRangeFilter implements _ElasticNumberRangeFilter {
   const factory __ElasticNumberRangeFilter(
-      {final double? from, final double? to}) = _$__ElasticNumberRangeFilter;
+      {final double? from, final double? to}) = _$_ElasticNumberRangeFilterImpl;
 
   factory __ElasticNumberRangeFilter.fromJson(Map<String, dynamic> json) =
-      _$__ElasticNumberRangeFilter.fromJson;
+      _$_ElasticNumberRangeFilterImpl.fromJson;
 
   @override
   double? get from;
@@ -2934,16 +2940,16 @@ abstract class __ElasticNumberRangeFilter implements _ElasticNumberRangeFilter {
   double? get to;
   @override
   @JsonKey(ignore: true)
-  _$$__ElasticNumberRangeFilterCopyWith<_$__ElasticNumberRangeFilter>
+  _$$_ElasticNumberRangeFilterImplCopyWith<_$_ElasticNumberRangeFilterImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
-_ElasticGeoFilter _$_ElasticGeoFilterFromJson(Map<String, dynamic> json) {
+_ElasticGeoFilter _$ElasticGeoFilterFromJson(Map<String, dynamic> json) {
   return __ElasticGeoFilter.fromJson(json);
 }
 
 /// @nodoc
-mixin _$_ElasticGeoFilter {
+mixin _$ElasticGeoFilter {
   @_LatLongConverter()
   LatLong? get center => throw _privateConstructorUsedError;
   double? get distance => throw _privateConstructorUsedError;
@@ -2961,7 +2967,8 @@ mixin _$_ElasticGeoFilter {
 abstract class _$ElasticGeoFilterCopyWith<$Res> {
   factory _$ElasticGeoFilterCopyWith(
           _ElasticGeoFilter value, $Res Function(_ElasticGeoFilter) then) =
-      __$ElasticGeoFilterCopyWithImpl<$Res>;
+      __$ElasticGeoFilterCopyWithImpl<$Res, _ElasticGeoFilter>;
+  @useResult
   $Res call(
       {@_LatLongConverter() LatLong? center,
       double? distance,
@@ -2973,65 +2980,69 @@ abstract class _$ElasticGeoFilterCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$ElasticGeoFilterCopyWithImpl<$Res>
+class __$ElasticGeoFilterCopyWithImpl<$Res, $Val extends _ElasticGeoFilter>
     implements _$ElasticGeoFilterCopyWith<$Res> {
   __$ElasticGeoFilterCopyWithImpl(this._value, this._then);
 
-  final _ElasticGeoFilter _value;
   // ignore: unused_field
-  final $Res Function(_ElasticGeoFilter) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? center = freezed,
     Object? distance = freezed,
-    Object? unit = freezed,
+    Object? unit = null,
     Object? from = freezed,
     Object? to = freezed,
   }) {
     return _then(_value.copyWith(
-      center: center == freezed
+      center: freezed == center
           ? _value.center
           : center // ignore: cast_nullable_to_non_nullable
               as LatLong?,
-      distance: distance == freezed
+      distance: freezed == distance
           ? _value.distance
           : distance // ignore: cast_nullable_to_non_nullable
               as double?,
-      unit: unit == freezed
+      unit: null == unit
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
               as GeoUnit,
-      from: from == freezed
+      from: freezed == from
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
               as double?,
-      to: to == freezed
+      to: freezed == to
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
               as double?,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $LatLongCopyWith<$Res>? get center {
     if (_value.center == null) {
       return null;
     }
 
     return $LatLongCopyWith<$Res>(_value.center!, (value) {
-      return _then(_value.copyWith(center: value));
+      return _then(_value.copyWith(center: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$$__ElasticGeoFilterCopyWith<$Res>
+abstract class _$$_ElasticGeoFilterImplCopyWith<$Res>
     implements _$ElasticGeoFilterCopyWith<$Res> {
-  factory _$$__ElasticGeoFilterCopyWith(_$__ElasticGeoFilter value,
-          $Res Function(_$__ElasticGeoFilter) then) =
-      __$$__ElasticGeoFilterCopyWithImpl<$Res>;
+  factory _$$_ElasticGeoFilterImplCopyWith(_$_ElasticGeoFilterImpl value,
+          $Res Function(_$_ElasticGeoFilterImpl) then) =
+      __$$_ElasticGeoFilterImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@_LatLongConverter() LatLong? center,
       double? distance,
@@ -3044,42 +3055,40 @@ abstract class _$$__ElasticGeoFilterCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$__ElasticGeoFilterCopyWithImpl<$Res>
-    extends __$ElasticGeoFilterCopyWithImpl<$Res>
-    implements _$$__ElasticGeoFilterCopyWith<$Res> {
-  __$$__ElasticGeoFilterCopyWithImpl(
-      _$__ElasticGeoFilter _value, $Res Function(_$__ElasticGeoFilter) _then)
-      : super(_value, (v) => _then(v as _$__ElasticGeoFilter));
+class __$$_ElasticGeoFilterImplCopyWithImpl<$Res>
+    extends __$ElasticGeoFilterCopyWithImpl<$Res, _$_ElasticGeoFilterImpl>
+    implements _$$_ElasticGeoFilterImplCopyWith<$Res> {
+  __$$_ElasticGeoFilterImplCopyWithImpl(_$_ElasticGeoFilterImpl _value,
+      $Res Function(_$_ElasticGeoFilterImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$__ElasticGeoFilter get _value => super._value as _$__ElasticGeoFilter;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? center = freezed,
     Object? distance = freezed,
-    Object? unit = freezed,
+    Object? unit = null,
     Object? from = freezed,
     Object? to = freezed,
   }) {
-    return _then(_$__ElasticGeoFilter(
-      center: center == freezed
+    return _then(_$_ElasticGeoFilterImpl(
+      center: freezed == center
           ? _value.center
           : center // ignore: cast_nullable_to_non_nullable
               as LatLong?,
-      distance: distance == freezed
+      distance: freezed == distance
           ? _value.distance
           : distance // ignore: cast_nullable_to_non_nullable
               as double?,
-      unit: unit == freezed
+      unit: null == unit
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
               as GeoUnit,
-      from: from == freezed
+      from: freezed == from
           ? _value.from
           : from // ignore: cast_nullable_to_non_nullable
               as double?,
-      to: to == freezed
+      to: freezed == to
           ? _value.to
           : to // ignore: cast_nullable_to_non_nullable
               as double?,
@@ -3090,8 +3099,8 @@ class __$$__ElasticGeoFilterCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$__ElasticGeoFilter implements __ElasticGeoFilter {
-  const _$__ElasticGeoFilter(
+class _$_ElasticGeoFilterImpl implements __ElasticGeoFilter {
+  const _$_ElasticGeoFilterImpl(
       {@_LatLongConverter() this.center,
       this.distance,
       required this.unit,
@@ -3099,8 +3108,8 @@ class _$__ElasticGeoFilter implements __ElasticGeoFilter {
       this.to})
       : assert(center != null, 'center is required.');
 
-  factory _$__ElasticGeoFilter.fromJson(Map<String, dynamic> json) =>
-      _$$__ElasticGeoFilterFromJson(json);
+  factory _$_ElasticGeoFilterImpl.fromJson(Map<String, dynamic> json) =>
+      _$$_ElasticGeoFilterImplFromJson(json);
 
   @override
   @_LatLongConverter()
@@ -3120,36 +3129,33 @@ class _$__ElasticGeoFilter implements __ElasticGeoFilter {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$__ElasticGeoFilter &&
-            const DeepCollectionEquality().equals(other.center, center) &&
-            const DeepCollectionEquality().equals(other.distance, distance) &&
-            const DeepCollectionEquality().equals(other.unit, unit) &&
-            const DeepCollectionEquality().equals(other.from, from) &&
-            const DeepCollectionEquality().equals(other.to, to));
+            other is _$_ElasticGeoFilterImpl &&
+            (identical(other.center, center) || other.center == center) &&
+            (identical(other.distance, distance) ||
+                other.distance == distance) &&
+            (identical(other.unit, unit) || other.unit == unit) &&
+            (identical(other.from, from) || other.from == from) &&
+            (identical(other.to, to) || other.to == to));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(center),
-      const DeepCollectionEquality().hash(distance),
-      const DeepCollectionEquality().hash(unit),
-      const DeepCollectionEquality().hash(from),
-      const DeepCollectionEquality().hash(to));
+  int get hashCode =>
+      Object.hash(runtimeType, center, distance, unit, from, to);
 
   @JsonKey(ignore: true)
   @override
-  _$$__ElasticGeoFilterCopyWith<_$__ElasticGeoFilter> get copyWith =>
-      __$$__ElasticGeoFilterCopyWithImpl<_$__ElasticGeoFilter>(
+  @pragma('vm:prefer-inline')
+  _$$_ElasticGeoFilterImplCopyWith<_$_ElasticGeoFilterImpl> get copyWith =>
+      __$$_ElasticGeoFilterImplCopyWithImpl<_$_ElasticGeoFilterImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$__ElasticGeoFilterToJson(
+    return _$$_ElasticGeoFilterImplToJson(
       this,
     );
   }
@@ -3161,10 +3167,10 @@ abstract class __ElasticGeoFilter implements _ElasticGeoFilter {
       final double? distance,
       required final GeoUnit unit,
       final double? from,
-      final double? to}) = _$__ElasticGeoFilter;
+      final double? to}) = _$_ElasticGeoFilterImpl;
 
   factory __ElasticGeoFilter.fromJson(Map<String, dynamic> json) =
-      _$__ElasticGeoFilter.fromJson;
+      _$_ElasticGeoFilterImpl.fromJson;
 
   @override
   @_LatLongConverter()
@@ -3179,16 +3185,16 @@ abstract class __ElasticGeoFilter implements _ElasticGeoFilter {
   double? get to;
   @override
   @JsonKey(ignore: true)
-  _$$__ElasticGeoFilterCopyWith<_$__ElasticGeoFilter> get copyWith =>
+  _$$_ElasticGeoFilterImplCopyWith<_$_ElasticGeoFilterImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-_ElasticSearchField _$_ElasticSearchFieldFromJson(Map<String, dynamic> json) {
+_ElasticSearchField _$ElasticSearchFieldFromJson(Map<String, dynamic> json) {
   return __ElasticSearchField.fromJson(json);
 }
 
 /// @nodoc
-mixin _$_ElasticSearchField {
+mixin _$ElasticSearchField {
   /// The name of the field. It must exist within your Engine schema and be of type text.
   String get name => throw _privateConstructorUsedError;
 
@@ -3206,69 +3212,71 @@ mixin _$_ElasticSearchField {
 abstract class _$ElasticSearchFieldCopyWith<$Res> {
   factory _$ElasticSearchFieldCopyWith(
           _ElasticSearchField value, $Res Function(_ElasticSearchField) then) =
-      __$ElasticSearchFieldCopyWithImpl<$Res>;
+      __$ElasticSearchFieldCopyWithImpl<$Res, _ElasticSearchField>;
+  @useResult
   $Res call({String name, int? weight});
 }
 
 /// @nodoc
-class __$ElasticSearchFieldCopyWithImpl<$Res>
+class __$ElasticSearchFieldCopyWithImpl<$Res, $Val extends _ElasticSearchField>
     implements _$ElasticSearchFieldCopyWith<$Res> {
   __$ElasticSearchFieldCopyWithImpl(this._value, this._then);
 
-  final _ElasticSearchField _value;
   // ignore: unused_field
-  final $Res Function(_ElasticSearchField) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
+    Object? name = null,
     Object? weight = freezed,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      weight: weight == freezed
+      weight: freezed == weight
           ? _value.weight
           : weight // ignore: cast_nullable_to_non_nullable
               as int?,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$__ElasticSearchFieldCopyWith<$Res>
+abstract class _$$_ElasticSearchFieldImplCopyWith<$Res>
     implements _$ElasticSearchFieldCopyWith<$Res> {
-  factory _$$__ElasticSearchFieldCopyWith(_$__ElasticSearchField value,
-          $Res Function(_$__ElasticSearchField) then) =
-      __$$__ElasticSearchFieldCopyWithImpl<$Res>;
+  factory _$$_ElasticSearchFieldImplCopyWith(_$_ElasticSearchFieldImpl value,
+          $Res Function(_$_ElasticSearchFieldImpl) then) =
+      __$$_ElasticSearchFieldImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({String name, int? weight});
 }
 
 /// @nodoc
-class __$$__ElasticSearchFieldCopyWithImpl<$Res>
-    extends __$ElasticSearchFieldCopyWithImpl<$Res>
-    implements _$$__ElasticSearchFieldCopyWith<$Res> {
-  __$$__ElasticSearchFieldCopyWithImpl(_$__ElasticSearchField _value,
-      $Res Function(_$__ElasticSearchField) _then)
-      : super(_value, (v) => _then(v as _$__ElasticSearchField));
+class __$$_ElasticSearchFieldImplCopyWithImpl<$Res>
+    extends __$ElasticSearchFieldCopyWithImpl<$Res, _$_ElasticSearchFieldImpl>
+    implements _$$_ElasticSearchFieldImplCopyWith<$Res> {
+  __$$_ElasticSearchFieldImplCopyWithImpl(_$_ElasticSearchFieldImpl _value,
+      $Res Function(_$_ElasticSearchFieldImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$__ElasticSearchField get _value => super._value as _$__ElasticSearchField;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
+    Object? name = null,
     Object? weight = freezed,
   }) {
-    return _then(_$__ElasticSearchField(
-      name: name == freezed
+    return _then(_$_ElasticSearchFieldImpl(
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      weight: weight == freezed
+      weight: freezed == weight
           ? _value.weight
           : weight // ignore: cast_nullable_to_non_nullable
               as int?,
@@ -3279,11 +3287,11 @@ class __$$__ElasticSearchFieldCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$__ElasticSearchField implements __ElasticSearchField {
-  const _$__ElasticSearchField({required this.name, this.weight});
+class _$_ElasticSearchFieldImpl implements __ElasticSearchField {
+  const _$_ElasticSearchFieldImpl({required this.name, this.weight});
 
-  factory _$__ElasticSearchField.fromJson(Map<String, dynamic> json) =>
-      _$$__ElasticSearchFieldFromJson(json);
+  factory _$_ElasticSearchFieldImpl.fromJson(Map<String, dynamic> json) =>
+      _$$_ElasticSearchFieldImplFromJson(json);
 
   /// The name of the field. It must exist within your Engine schema and be of type text.
   @override
@@ -3300,30 +3308,28 @@ class _$__ElasticSearchField implements __ElasticSearchField {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$__ElasticSearchField &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality().equals(other.weight, weight));
+            other is _$_ElasticSearchFieldImpl &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.weight, weight) || other.weight == weight));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(weight));
+  int get hashCode => Object.hash(runtimeType, name, weight);
 
   @JsonKey(ignore: true)
   @override
-  _$$__ElasticSearchFieldCopyWith<_$__ElasticSearchField> get copyWith =>
-      __$$__ElasticSearchFieldCopyWithImpl<_$__ElasticSearchField>(
+  @pragma('vm:prefer-inline')
+  _$$_ElasticSearchFieldImplCopyWith<_$_ElasticSearchFieldImpl> get copyWith =>
+      __$$_ElasticSearchFieldImplCopyWithImpl<_$_ElasticSearchFieldImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$__ElasticSearchFieldToJson(
+    return _$$_ElasticSearchFieldImplToJson(
       this,
     );
   }
@@ -3331,10 +3337,11 @@ class _$__ElasticSearchField implements __ElasticSearchField {
 
 abstract class __ElasticSearchField implements _ElasticSearchField {
   const factory __ElasticSearchField(
-      {required final String name, final int? weight}) = _$__ElasticSearchField;
+      {required final String name,
+      final int? weight}) = _$_ElasticSearchFieldImpl;
 
   factory __ElasticSearchField.fromJson(Map<String, dynamic> json) =
-      _$__ElasticSearchField.fromJson;
+      _$_ElasticSearchFieldImpl.fromJson;
 
   @override
 
@@ -3347,16 +3354,16 @@ abstract class __ElasticSearchField implements _ElasticSearchField {
   int? get weight;
   @override
   @JsonKey(ignore: true)
-  _$$__ElasticSearchFieldCopyWith<_$__ElasticSearchField> get copyWith =>
+  _$$_ElasticSearchFieldImplCopyWith<_$_ElasticSearchFieldImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-_ElasticResultField _$_ElasticResultFieldFromJson(Map<String, dynamic> json) {
+_ElasticResultField _$ElasticResultFieldFromJson(Map<String, dynamic> json) {
   return __ElasticResultField.fromJson(json);
 }
 
 /// @nodoc
-mixin _$_ElasticResultField {
+mixin _$ElasticResultField {
   /// The name of the field. It must exist within your Engine schema and be of type text.
   String get name => throw _privateConstructorUsedError;
 
@@ -3382,89 +3389,91 @@ mixin _$_ElasticResultField {
 abstract class _$ElasticResultFieldCopyWith<$Res> {
   factory _$ElasticResultFieldCopyWith(
           _ElasticResultField value, $Res Function(_ElasticResultField) then) =
-      __$ElasticResultFieldCopyWithImpl<$Res>;
+      __$ElasticResultFieldCopyWithImpl<$Res, _ElasticResultField>;
+  @useResult
   $Res call({String name, int? rawSize, int? snippetSize, bool fallback});
 }
 
 /// @nodoc
-class __$ElasticResultFieldCopyWithImpl<$Res>
+class __$ElasticResultFieldCopyWithImpl<$Res, $Val extends _ElasticResultField>
     implements _$ElasticResultFieldCopyWith<$Res> {
   __$ElasticResultFieldCopyWithImpl(this._value, this._then);
 
-  final _ElasticResultField _value;
   // ignore: unused_field
-  final $Res Function(_ElasticResultField) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
+    Object? name = null,
     Object? rawSize = freezed,
     Object? snippetSize = freezed,
-    Object? fallback = freezed,
+    Object? fallback = null,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      rawSize: rawSize == freezed
+      rawSize: freezed == rawSize
           ? _value.rawSize
           : rawSize // ignore: cast_nullable_to_non_nullable
               as int?,
-      snippetSize: snippetSize == freezed
+      snippetSize: freezed == snippetSize
           ? _value.snippetSize
           : snippetSize // ignore: cast_nullable_to_non_nullable
               as int?,
-      fallback: fallback == freezed
+      fallback: null == fallback
           ? _value.fallback
           : fallback // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$__ElasticResultFieldCopyWith<$Res>
+abstract class _$$_ElasticResultFieldImplCopyWith<$Res>
     implements _$ElasticResultFieldCopyWith<$Res> {
-  factory _$$__ElasticResultFieldCopyWith(_$__ElasticResultField value,
-          $Res Function(_$__ElasticResultField) then) =
-      __$$__ElasticResultFieldCopyWithImpl<$Res>;
+  factory _$$_ElasticResultFieldImplCopyWith(_$_ElasticResultFieldImpl value,
+          $Res Function(_$_ElasticResultFieldImpl) then) =
+      __$$_ElasticResultFieldImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({String name, int? rawSize, int? snippetSize, bool fallback});
 }
 
 /// @nodoc
-class __$$__ElasticResultFieldCopyWithImpl<$Res>
-    extends __$ElasticResultFieldCopyWithImpl<$Res>
-    implements _$$__ElasticResultFieldCopyWith<$Res> {
-  __$$__ElasticResultFieldCopyWithImpl(_$__ElasticResultField _value,
-      $Res Function(_$__ElasticResultField) _then)
-      : super(_value, (v) => _then(v as _$__ElasticResultField));
+class __$$_ElasticResultFieldImplCopyWithImpl<$Res>
+    extends __$ElasticResultFieldCopyWithImpl<$Res, _$_ElasticResultFieldImpl>
+    implements _$$_ElasticResultFieldImplCopyWith<$Res> {
+  __$$_ElasticResultFieldImplCopyWithImpl(_$_ElasticResultFieldImpl _value,
+      $Res Function(_$_ElasticResultFieldImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$__ElasticResultField get _value => super._value as _$__ElasticResultField;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
+    Object? name = null,
     Object? rawSize = freezed,
     Object? snippetSize = freezed,
-    Object? fallback = freezed,
+    Object? fallback = null,
   }) {
-    return _then(_$__ElasticResultField(
-      name: name == freezed
+    return _then(_$_ElasticResultFieldImpl(
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      rawSize: rawSize == freezed
+      rawSize: freezed == rawSize
           ? _value.rawSize
           : rawSize // ignore: cast_nullable_to_non_nullable
               as int?,
-      snippetSize: snippetSize == freezed
+      snippetSize: freezed == snippetSize
           ? _value.snippetSize
           : snippetSize // ignore: cast_nullable_to_non_nullable
               as int?,
-      fallback: fallback == freezed
+      fallback: null == fallback
           ? _value.fallback
           : fallback // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -3475,15 +3484,15 @@ class __$$__ElasticResultFieldCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$__ElasticResultField implements __ElasticResultField {
-  const _$__ElasticResultField(
+class _$_ElasticResultFieldImpl implements __ElasticResultField {
+  const _$_ElasticResultFieldImpl(
       {required this.name,
       this.rawSize,
       this.snippetSize,
       this.fallback = true});
 
-  factory _$__ElasticResultField.fromJson(Map<String, dynamic> json) =>
-      _$$__ElasticResultFieldFromJson(json);
+  factory _$_ElasticResultFieldImpl.fromJson(Map<String, dynamic> json) =>
+      _$$_ElasticResultFieldImplFromJson(json);
 
   /// The name of the field. It must exist within your Engine schema and be of type text.
   @override
@@ -3511,35 +3520,33 @@ class _$__ElasticResultField implements __ElasticResultField {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$__ElasticResultField &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality().equals(other.rawSize, rawSize) &&
-            const DeepCollectionEquality()
-                .equals(other.snippetSize, snippetSize) &&
-            const DeepCollectionEquality().equals(other.fallback, fallback));
+            other is _$_ElasticResultFieldImpl &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.rawSize, rawSize) || other.rawSize == rawSize) &&
+            (identical(other.snippetSize, snippetSize) ||
+                other.snippetSize == snippetSize) &&
+            (identical(other.fallback, fallback) ||
+                other.fallback == fallback));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(rawSize),
-      const DeepCollectionEquality().hash(snippetSize),
-      const DeepCollectionEquality().hash(fallback));
+  int get hashCode =>
+      Object.hash(runtimeType, name, rawSize, snippetSize, fallback);
 
   @JsonKey(ignore: true)
   @override
-  _$$__ElasticResultFieldCopyWith<_$__ElasticResultField> get copyWith =>
-      __$$__ElasticResultFieldCopyWithImpl<_$__ElasticResultField>(
+  @pragma('vm:prefer-inline')
+  _$$_ElasticResultFieldImplCopyWith<_$_ElasticResultFieldImpl> get copyWith =>
+      __$$_ElasticResultFieldImplCopyWithImpl<_$_ElasticResultFieldImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$__ElasticResultFieldToJson(
+    return _$$_ElasticResultFieldImplToJson(
       this,
     );
   }
@@ -3550,10 +3557,10 @@ abstract class __ElasticResultField implements _ElasticResultField {
       {required final String name,
       final int? rawSize,
       final int? snippetSize,
-      final bool fallback}) = _$__ElasticResultField;
+      final bool fallback}) = _$_ElasticResultFieldImpl;
 
   factory __ElasticResultField.fromJson(Map<String, dynamic> json) =
-      _$__ElasticResultField.fromJson;
+      _$_ElasticResultFieldImpl.fromJson;
 
   @override
 
@@ -3576,16 +3583,16 @@ abstract class __ElasticResultField implements _ElasticResultField {
   bool get fallback;
   @override
   @JsonKey(ignore: true)
-  _$$__ElasticResultFieldCopyWith<_$__ElasticResultField> get copyWith =>
+  _$$_ElasticResultFieldImplCopyWith<_$_ElasticResultFieldImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-_ElasticGroup _$_ElasticGroupFromJson(Map<String, dynamic> json) {
+_ElasticGroup _$ElasticGroupFromJson(Map<String, dynamic> json) {
   return __ElasticGroup.fromJson(json);
 }
 
 /// @nodoc
-mixin _$_ElasticGroup {
+mixin _$ElasticGroup {
   /// Field name to group results on.
   String get field => throw _privateConstructorUsedError;
 
@@ -3603,69 +3610,71 @@ mixin _$_ElasticGroup {
 abstract class _$ElasticGroupCopyWith<$Res> {
   factory _$ElasticGroupCopyWith(
           _ElasticGroup value, $Res Function(_ElasticGroup) then) =
-      __$ElasticGroupCopyWithImpl<$Res>;
+      __$ElasticGroupCopyWithImpl<$Res, _ElasticGroup>;
+  @useResult
   $Res call({String field, int? size});
 }
 
 /// @nodoc
-class __$ElasticGroupCopyWithImpl<$Res>
+class __$ElasticGroupCopyWithImpl<$Res, $Val extends _ElasticGroup>
     implements _$ElasticGroupCopyWith<$Res> {
   __$ElasticGroupCopyWithImpl(this._value, this._then);
 
-  final _ElasticGroup _value;
   // ignore: unused_field
-  final $Res Function(_ElasticGroup) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? field = freezed,
+    Object? field = null,
     Object? size = freezed,
   }) {
     return _then(_value.copyWith(
-      field: field == freezed
+      field: null == field
           ? _value.field
           : field // ignore: cast_nullable_to_non_nullable
               as String,
-      size: size == freezed
+      size: freezed == size
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as int?,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$__ElasticGroupCopyWith<$Res>
+abstract class _$$_ElasticGroupImplCopyWith<$Res>
     implements _$ElasticGroupCopyWith<$Res> {
-  factory _$$__ElasticGroupCopyWith(
-          _$__ElasticGroup value, $Res Function(_$__ElasticGroup) then) =
-      __$$__ElasticGroupCopyWithImpl<$Res>;
+  factory _$$_ElasticGroupImplCopyWith(
+          _$_ElasticGroupImpl value, $Res Function(_$_ElasticGroupImpl) then) =
+      __$$_ElasticGroupImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({String field, int? size});
 }
 
 /// @nodoc
-class __$$__ElasticGroupCopyWithImpl<$Res>
-    extends __$ElasticGroupCopyWithImpl<$Res>
-    implements _$$__ElasticGroupCopyWith<$Res> {
-  __$$__ElasticGroupCopyWithImpl(
-      _$__ElasticGroup _value, $Res Function(_$__ElasticGroup) _then)
-      : super(_value, (v) => _then(v as _$__ElasticGroup));
+class __$$_ElasticGroupImplCopyWithImpl<$Res>
+    extends __$ElasticGroupCopyWithImpl<$Res, _$_ElasticGroupImpl>
+    implements _$$_ElasticGroupImplCopyWith<$Res> {
+  __$$_ElasticGroupImplCopyWithImpl(
+      _$_ElasticGroupImpl _value, $Res Function(_$_ElasticGroupImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$__ElasticGroup get _value => super._value as _$__ElasticGroup;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? field = freezed,
+    Object? field = null,
     Object? size = freezed,
   }) {
-    return _then(_$__ElasticGroup(
-      field: field == freezed
+    return _then(_$_ElasticGroupImpl(
+      field: null == field
           ? _value.field
           : field // ignore: cast_nullable_to_non_nullable
               as String,
-      size: size == freezed
+      size: freezed == size
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as int?,
@@ -3676,11 +3685,11 @@ class __$$__ElasticGroupCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$__ElasticGroup implements __ElasticGroup {
-  const _$__ElasticGroup({required this.field, this.size});
+class _$_ElasticGroupImpl implements __ElasticGroup {
+  const _$_ElasticGroupImpl({required this.field, this.size});
 
-  factory _$__ElasticGroup.fromJson(Map<String, dynamic> json) =>
-      _$$__ElasticGroupFromJson(json);
+  factory _$_ElasticGroupImpl.fromJson(Map<String, dynamic> json) =>
+      _$$_ElasticGroupImplFromJson(json);
 
   /// Field name to group results on.
   @override
@@ -3697,29 +3706,27 @@ class _$__ElasticGroup implements __ElasticGroup {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$__ElasticGroup &&
-            const DeepCollectionEquality().equals(other.field, field) &&
-            const DeepCollectionEquality().equals(other.size, size));
+            other is _$_ElasticGroupImpl &&
+            (identical(other.field, field) || other.field == field) &&
+            (identical(other.size, size) || other.size == size));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(field),
-      const DeepCollectionEquality().hash(size));
+  int get hashCode => Object.hash(runtimeType, field, size);
 
   @JsonKey(ignore: true)
   @override
-  _$$__ElasticGroupCopyWith<_$__ElasticGroup> get copyWith =>
-      __$$__ElasticGroupCopyWithImpl<_$__ElasticGroup>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_ElasticGroupImplCopyWith<_$_ElasticGroupImpl> get copyWith =>
+      __$$_ElasticGroupImplCopyWithImpl<_$_ElasticGroupImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$__ElasticGroupToJson(
+    return _$$_ElasticGroupImplToJson(
       this,
     );
   }
@@ -3727,10 +3734,10 @@ class _$__ElasticGroup implements __ElasticGroup {
 
 abstract class __ElasticGroup implements _ElasticGroup {
   const factory __ElasticGroup({required final String field, final int? size}) =
-      _$__ElasticGroup;
+      _$_ElasticGroupImpl;
 
   factory __ElasticGroup.fromJson(Map<String, dynamic> json) =
-      _$__ElasticGroup.fromJson;
+      _$_ElasticGroupImpl.fromJson;
 
   @override
 
@@ -3743,16 +3750,16 @@ abstract class __ElasticGroup implements _ElasticGroup {
   int? get size;
   @override
   @JsonKey(ignore: true)
-  _$$__ElasticGroupCopyWith<_$__ElasticGroup> get copyWith =>
+  _$$_ElasticGroupImplCopyWith<_$_ElasticGroupImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
-_ElasticSort _$_ElasticSortFromJson(Map<String, dynamic> json) {
+_ElasticSort _$ElasticSortFromJson(Map<String, dynamic> json) {
   return __ElasticSort.fromJson(json);
 }
 
 /// @nodoc
-mixin _$_ElasticSort {
+mixin _$ElasticSort {
   /// Field name to sort results
   String get field => throw _privateConstructorUsedError;
   bool get descending => throw _privateConstructorUsedError;
@@ -3767,68 +3774,71 @@ mixin _$_ElasticSort {
 abstract class _$ElasticSortCopyWith<$Res> {
   factory _$ElasticSortCopyWith(
           _ElasticSort value, $Res Function(_ElasticSort) then) =
-      __$ElasticSortCopyWithImpl<$Res>;
+      __$ElasticSortCopyWithImpl<$Res, _ElasticSort>;
+  @useResult
   $Res call({String field, bool descending});
 }
 
 /// @nodoc
-class __$ElasticSortCopyWithImpl<$Res> implements _$ElasticSortCopyWith<$Res> {
+class __$ElasticSortCopyWithImpl<$Res, $Val extends _ElasticSort>
+    implements _$ElasticSortCopyWith<$Res> {
   __$ElasticSortCopyWithImpl(this._value, this._then);
 
-  final _ElasticSort _value;
   // ignore: unused_field
-  final $Res Function(_ElasticSort) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? field = freezed,
-    Object? descending = freezed,
+    Object? field = null,
+    Object? descending = null,
   }) {
     return _then(_value.copyWith(
-      field: field == freezed
+      field: null == field
           ? _value.field
           : field // ignore: cast_nullable_to_non_nullable
               as String,
-      descending: descending == freezed
+      descending: null == descending
           ? _value.descending
           : descending // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$__ElasticSortCopyWith<$Res>
+abstract class _$$_ElasticSortImplCopyWith<$Res>
     implements _$ElasticSortCopyWith<$Res> {
-  factory _$$__ElasticSortCopyWith(
-          _$__ElasticSort value, $Res Function(_$__ElasticSort) then) =
-      __$$__ElasticSortCopyWithImpl<$Res>;
+  factory _$$_ElasticSortImplCopyWith(
+          _$_ElasticSortImpl value, $Res Function(_$_ElasticSortImpl) then) =
+      __$$_ElasticSortImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({String field, bool descending});
 }
 
 /// @nodoc
-class __$$__ElasticSortCopyWithImpl<$Res>
-    extends __$ElasticSortCopyWithImpl<$Res>
-    implements _$$__ElasticSortCopyWith<$Res> {
-  __$$__ElasticSortCopyWithImpl(
-      _$__ElasticSort _value, $Res Function(_$__ElasticSort) _then)
-      : super(_value, (v) => _then(v as _$__ElasticSort));
+class __$$_ElasticSortImplCopyWithImpl<$Res>
+    extends __$ElasticSortCopyWithImpl<$Res, _$_ElasticSortImpl>
+    implements _$$_ElasticSortImplCopyWith<$Res> {
+  __$$_ElasticSortImplCopyWithImpl(
+      _$_ElasticSortImpl _value, $Res Function(_$_ElasticSortImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$__ElasticSort get _value => super._value as _$__ElasticSort;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? field = freezed,
-    Object? descending = freezed,
+    Object? field = null,
+    Object? descending = null,
   }) {
-    return _then(_$__ElasticSort(
-      field: field == freezed
+    return _then(_$_ElasticSortImpl(
+      field: null == field
           ? _value.field
           : field // ignore: cast_nullable_to_non_nullable
               as String,
-      descending: descending == freezed
+      descending: null == descending
           ? _value.descending
           : descending // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -3839,11 +3849,11 @@ class __$$__ElasticSortCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
-class _$__ElasticSort implements __ElasticSort {
-  const _$__ElasticSort({required this.field, this.descending = false});
+class _$_ElasticSortImpl implements __ElasticSort {
+  const _$_ElasticSortImpl({required this.field, this.descending = false});
 
-  factory _$__ElasticSort.fromJson(Map<String, dynamic> json) =>
-      _$$__ElasticSortFromJson(json);
+  factory _$_ElasticSortImpl.fromJson(Map<String, dynamic> json) =>
+      _$$_ElasticSortImplFromJson(json);
 
   /// Field name to sort results
   @override
@@ -3858,30 +3868,28 @@ class _$__ElasticSort implements __ElasticSort {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$__ElasticSort &&
-            const DeepCollectionEquality().equals(other.field, field) &&
-            const DeepCollectionEquality()
-                .equals(other.descending, descending));
+            other is _$_ElasticSortImpl &&
+            (identical(other.field, field) || other.field == field) &&
+            (identical(other.descending, descending) ||
+                other.descending == descending));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(field),
-      const DeepCollectionEquality().hash(descending));
+  int get hashCode => Object.hash(runtimeType, field, descending);
 
   @JsonKey(ignore: true)
   @override
-  _$$__ElasticSortCopyWith<_$__ElasticSort> get copyWith =>
-      __$$__ElasticSortCopyWithImpl<_$__ElasticSort>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$_ElasticSortImplCopyWith<_$_ElasticSortImpl> get copyWith =>
+      __$$_ElasticSortImplCopyWithImpl<_$_ElasticSortImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$__ElasticSortToJson(
+    return _$$_ElasticSortImplToJson(
       this,
     );
   }
@@ -3889,10 +3897,11 @@ class _$__ElasticSort implements __ElasticSort {
 
 abstract class __ElasticSort implements _ElasticSort {
   const factory __ElasticSort(
-      {required final String field, final bool descending}) = _$__ElasticSort;
+      {required final String field,
+      final bool descending}) = _$_ElasticSortImpl;
 
   factory __ElasticSort.fromJson(Map<String, dynamic> json) =
-      _$__ElasticSort.fromJson;
+      _$_ElasticSortImpl.fromJson;
 
   @override
 
@@ -3902,8 +3911,338 @@ abstract class __ElasticSort implements _ElasticSort {
   bool get descending;
   @override
   @JsonKey(ignore: true)
-  _$$__ElasticSortCopyWith<_$__ElasticSort> get copyWith =>
+  _$$_ElasticSortImplCopyWith<_$_ElasticSortImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+ElasticSuggestionsQuery _$ElasticSuggestionsQueryFromJson(
+    Map<String, dynamic> json) {
+  return _ElasticSuggestionsQuery.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ElasticSuggestionsQuery {
+  /// An object representing an Elastic engine
+  @JsonKey(includeToJson: false, includeFromJson: false)
+  ElasticEngine? get engine => throw _privateConstructorUsedError;
+
+  /// String or number to match.
+  String get query => throw _privateConstructorUsedError;
+
+  /// Number of query suggestions.
+  /// Must be greater than or equal to 1 and less than or equal to 1000.
+  /// Defaults to 10.
+  @JsonKey(name: "size")
+  int? get sizeField => throw _privateConstructorUsedError;
+
+  /// Object which restricts a query to search only specific fields.
+  @_ElasticSearchFieldsConverter()
+  @JsonKey(name: "search_fields")
+  List<_ElasticSearchField>? get searchFields =>
+      throw _privateConstructorUsedError;
+
+  /// Object to sort your results in an order other than document score.
+  @_ElasticSortConverter()
+  @JsonKey(name: "sort")
+  List<_ElasticSort>? get sortBy => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ElasticSuggestionsQueryCopyWith<ElasticSuggestionsQuery> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ElasticSuggestionsQueryCopyWith<$Res> {
+  factory $ElasticSuggestionsQueryCopyWith(ElasticSuggestionsQuery value,
+          $Res Function(ElasticSuggestionsQuery) then) =
+      _$ElasticSuggestionsQueryCopyWithImpl<$Res, ElasticSuggestionsQuery>;
+  @useResult
+  $Res call(
+      {@JsonKey(includeToJson: false, includeFromJson: false)
+      ElasticEngine? engine,
+      String query,
+      @JsonKey(name: "size") int? sizeField,
+      @_ElasticSearchFieldsConverter()
+      @JsonKey(name: "search_fields")
+      List<_ElasticSearchField>? searchFields,
+      @_ElasticSortConverter()
+      @JsonKey(name: "sort")
+      List<_ElasticSort>? sortBy});
+}
+
+/// @nodoc
+class _$ElasticSuggestionsQueryCopyWithImpl<$Res,
+        $Val extends ElasticSuggestionsQuery>
+    implements $ElasticSuggestionsQueryCopyWith<$Res> {
+  _$ElasticSuggestionsQueryCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? engine = freezed,
+    Object? query = null,
+    Object? sizeField = freezed,
+    Object? searchFields = freezed,
+    Object? sortBy = freezed,
+  }) {
+    return _then(_value.copyWith(
+      engine: freezed == engine
+          ? _value.engine
+          : engine // ignore: cast_nullable_to_non_nullable
+              as ElasticEngine?,
+      query: null == query
+          ? _value.query
+          : query // ignore: cast_nullable_to_non_nullable
+              as String,
+      sizeField: freezed == sizeField
+          ? _value.sizeField
+          : sizeField // ignore: cast_nullable_to_non_nullable
+              as int?,
+      searchFields: freezed == searchFields
+          ? _value.searchFields
+          : searchFields // ignore: cast_nullable_to_non_nullable
+              as List<_ElasticSearchField>?,
+      sortBy: freezed == sortBy
+          ? _value.sortBy
+          : sortBy // ignore: cast_nullable_to_non_nullable
+              as List<_ElasticSort>?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$ElasticSuggestionsQueryImplCopyWith<$Res>
+    implements $ElasticSuggestionsQueryCopyWith<$Res> {
+  factory _$$ElasticSuggestionsQueryImplCopyWith(
+          _$ElasticSuggestionsQueryImpl value,
+          $Res Function(_$ElasticSuggestionsQueryImpl) then) =
+      __$$ElasticSuggestionsQueryImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {@JsonKey(includeToJson: false, includeFromJson: false)
+      ElasticEngine? engine,
+      String query,
+      @JsonKey(name: "size") int? sizeField,
+      @_ElasticSearchFieldsConverter()
+      @JsonKey(name: "search_fields")
+      List<_ElasticSearchField>? searchFields,
+      @_ElasticSortConverter()
+      @JsonKey(name: "sort")
+      List<_ElasticSort>? sortBy});
+}
+
+/// @nodoc
+class __$$ElasticSuggestionsQueryImplCopyWithImpl<$Res>
+    extends _$ElasticSuggestionsQueryCopyWithImpl<$Res,
+        _$ElasticSuggestionsQueryImpl>
+    implements _$$ElasticSuggestionsQueryImplCopyWith<$Res> {
+  __$$ElasticSuggestionsQueryImplCopyWithImpl(
+      _$ElasticSuggestionsQueryImpl _value,
+      $Res Function(_$ElasticSuggestionsQueryImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? engine = freezed,
+    Object? query = null,
+    Object? sizeField = freezed,
+    Object? searchFields = freezed,
+    Object? sortBy = freezed,
+  }) {
+    return _then(_$ElasticSuggestionsQueryImpl(
+      engine: freezed == engine
+          ? _value.engine
+          : engine // ignore: cast_nullable_to_non_nullable
+              as ElasticEngine?,
+      query: null == query
+          ? _value.query
+          : query // ignore: cast_nullable_to_non_nullable
+              as String,
+      sizeField: freezed == sizeField
+          ? _value.sizeField
+          : sizeField // ignore: cast_nullable_to_non_nullable
+              as int?,
+      searchFields: freezed == searchFields
+          ? _value._searchFields
+          : searchFields // ignore: cast_nullable_to_non_nullable
+              as List<_ElasticSearchField>?,
+      sortBy: freezed == sortBy
+          ? _value._sortBy
+          : sortBy // ignore: cast_nullable_to_non_nullable
+              as List<_ElasticSort>?,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _$ElasticSuggestionsQueryImpl extends _ElasticSuggestionsQuery {
+  const _$ElasticSuggestionsQueryImpl(
+      {@JsonKey(includeToJson: false, includeFromJson: false) this.engine,
+      required this.query,
+      @JsonKey(name: "size") this.sizeField = 10,
+      @_ElasticSearchFieldsConverter()
+      @JsonKey(name: "search_fields")
+      final List<_ElasticSearchField>? searchFields,
+      @_ElasticSortConverter()
+      @JsonKey(name: "sort")
+      final List<_ElasticSort>? sortBy})
+      : assert(engine != null, 'An engine is required to build a query.'),
+        _searchFields = searchFields,
+        _sortBy = sortBy,
+        super._();
+
+  factory _$ElasticSuggestionsQueryImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ElasticSuggestionsQueryImplFromJson(json);
+
+  /// An object representing an Elastic engine
+  @override
+  @JsonKey(includeToJson: false, includeFromJson: false)
+  final ElasticEngine? engine;
+
+  /// String or number to match.
+  @override
+  final String query;
+
+  /// Number of query suggestions.
+  /// Must be greater than or equal to 1 and less than or equal to 1000.
+  /// Defaults to 10.
+  @override
+  @JsonKey(name: "size")
+  final int? sizeField;
+
+  /// Object which restricts a query to search only specific fields.
+  final List<_ElasticSearchField>? _searchFields;
+
+  /// Object which restricts a query to search only specific fields.
+  @override
+  @_ElasticSearchFieldsConverter()
+  @JsonKey(name: "search_fields")
+  List<_ElasticSearchField>? get searchFields {
+    final value = _searchFields;
+    if (value == null) return null;
+    if (_searchFields is EqualUnmodifiableListView) return _searchFields;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  /// Object to sort your results in an order other than document score.
+  final List<_ElasticSort>? _sortBy;
+
+  /// Object to sort your results in an order other than document score.
+  @override
+  @_ElasticSortConverter()
+  @JsonKey(name: "sort")
+  List<_ElasticSort>? get sortBy {
+    final value = _sortBy;
+    if (value == null) return null;
+    if (_sortBy is EqualUnmodifiableListView) return _sortBy;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  String toString() {
+    return 'ElasticSuggestionsQuery(engine: $engine, query: $query, sizeField: $sizeField, searchFields: $searchFields, sortBy: $sortBy)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ElasticSuggestionsQueryImpl &&
+            (identical(other.engine, engine) || other.engine == engine) &&
+            (identical(other.query, query) || other.query == query) &&
+            (identical(other.sizeField, sizeField) ||
+                other.sizeField == sizeField) &&
+            const DeepCollectionEquality()
+                .equals(other._searchFields, _searchFields) &&
+            const DeepCollectionEquality().equals(other._sortBy, _sortBy));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      engine,
+      query,
+      sizeField,
+      const DeepCollectionEquality().hash(_searchFields),
+      const DeepCollectionEquality().hash(_sortBy));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ElasticSuggestionsQueryImplCopyWith<_$ElasticSuggestionsQueryImpl>
+      get copyWith => __$$ElasticSuggestionsQueryImplCopyWithImpl<
+          _$ElasticSuggestionsQueryImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ElasticSuggestionsQueryImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ElasticSuggestionsQuery extends ElasticSuggestionsQuery {
+  const factory _ElasticSuggestionsQuery(
+      {@JsonKey(includeToJson: false, includeFromJson: false)
+      final ElasticEngine? engine,
+      required final String query,
+      @JsonKey(name: "size") final int? sizeField,
+      @_ElasticSearchFieldsConverter()
+      @JsonKey(name: "search_fields")
+      final List<_ElasticSearchField>? searchFields,
+      @_ElasticSortConverter()
+      @JsonKey(name: "sort")
+      final List<_ElasticSort>? sortBy}) = _$ElasticSuggestionsQueryImpl;
+  const _ElasticSuggestionsQuery._() : super._();
+
+  factory _ElasticSuggestionsQuery.fromJson(Map<String, dynamic> json) =
+      _$ElasticSuggestionsQueryImpl.fromJson;
+
+  @override
+
+  /// An object representing an Elastic engine
+  @JsonKey(includeToJson: false, includeFromJson: false)
+  ElasticEngine? get engine;
+  @override
+
+  /// String or number to match.
+  String get query;
+  @override
+
+  /// Number of query suggestions.
+  /// Must be greater than or equal to 1 and less than or equal to 1000.
+  /// Defaults to 10.
+  @JsonKey(name: "size")
+  int? get sizeField;
+  @override
+
+  /// Object which restricts a query to search only specific fields.
+  @_ElasticSearchFieldsConverter()
+  @JsonKey(name: "search_fields")
+  List<_ElasticSearchField>? get searchFields;
+  @override
+
+  /// Object to sort your results in an order other than document score.
+  @_ElasticSortConverter()
+  @JsonKey(name: "sort")
+  List<_ElasticSort>? get sortBy;
+  @override
+  @JsonKey(ignore: true)
+  _$$ElasticSuggestionsQueryImplCopyWith<_$ElasticSuggestionsQueryImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 ElasticResponse _$ElasticResponseFromJson(Map<String, dynamic> json) {
@@ -3933,7 +4272,8 @@ mixin _$ElasticResponse {
 abstract class $ElasticResponseCopyWith<$Res> {
   factory $ElasticResponseCopyWith(
           ElasticResponse value, $Res Function(ElasticResponse) then) =
-      _$ElasticResponseCopyWithImpl<$Res>;
+      _$ElasticResponseCopyWithImpl<$Res, ElasticResponse>;
+  @useResult
   $Res call(
       {ElasticResponseMeta meta,
       List<ElasticResult> results,
@@ -3943,51 +4283,55 @@ abstract class $ElasticResponseCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ElasticResponseCopyWithImpl<$Res>
+class _$ElasticResponseCopyWithImpl<$Res, $Val extends ElasticResponse>
     implements $ElasticResponseCopyWith<$Res> {
   _$ElasticResponseCopyWithImpl(this._value, this._then);
 
-  final ElasticResponse _value;
   // ignore: unused_field
-  final $Res Function(ElasticResponse) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? meta = freezed,
-    Object? results = freezed,
+    Object? meta = null,
+    Object? results = null,
     Object? rawFacets = freezed,
   }) {
     return _then(_value.copyWith(
-      meta: meta == freezed
+      meta: null == meta
           ? _value.meta
           : meta // ignore: cast_nullable_to_non_nullable
               as ElasticResponseMeta,
-      results: results == freezed
+      results: null == results
           ? _value.results
           : results // ignore: cast_nullable_to_non_nullable
               as List<ElasticResult>,
-      rawFacets: rawFacets == freezed
+      rawFacets: freezed == rawFacets
           ? _value.rawFacets
           : rawFacets // ignore: cast_nullable_to_non_nullable
               as Map<String, List<ElasticFacet>>?,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $ElasticResponseMetaCopyWith<$Res> get meta {
     return $ElasticResponseMetaCopyWith<$Res>(_value.meta, (value) {
-      return _then(_value.copyWith(meta: value));
+      return _then(_value.copyWith(meta: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$$_ElasticResponseCopyWith<$Res>
+abstract class _$$ElasticResponseImplCopyWith<$Res>
     implements $ElasticResponseCopyWith<$Res> {
-  factory _$$_ElasticResponseCopyWith(
-          _$_ElasticResponse value, $Res Function(_$_ElasticResponse) then) =
-      __$$_ElasticResponseCopyWithImpl<$Res>;
+  factory _$$ElasticResponseImplCopyWith(_$ElasticResponseImpl value,
+          $Res Function(_$ElasticResponseImpl) then) =
+      __$$ElasticResponseImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {ElasticResponseMeta meta,
       List<ElasticResult> results,
@@ -3998,32 +4342,30 @@ abstract class _$$_ElasticResponseCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ElasticResponseCopyWithImpl<$Res>
-    extends _$ElasticResponseCopyWithImpl<$Res>
-    implements _$$_ElasticResponseCopyWith<$Res> {
-  __$$_ElasticResponseCopyWithImpl(
-      _$_ElasticResponse _value, $Res Function(_$_ElasticResponse) _then)
-      : super(_value, (v) => _then(v as _$_ElasticResponse));
+class __$$ElasticResponseImplCopyWithImpl<$Res>
+    extends _$ElasticResponseCopyWithImpl<$Res, _$ElasticResponseImpl>
+    implements _$$ElasticResponseImplCopyWith<$Res> {
+  __$$ElasticResponseImplCopyWithImpl(
+      _$ElasticResponseImpl _value, $Res Function(_$ElasticResponseImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$_ElasticResponse get _value => super._value as _$_ElasticResponse;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? meta = freezed,
-    Object? results = freezed,
+    Object? meta = null,
+    Object? results = null,
     Object? rawFacets = freezed,
   }) {
-    return _then(_$_ElasticResponse(
-      meta: meta == freezed
+    return _then(_$ElasticResponseImpl(
+      meta: null == meta
           ? _value.meta
           : meta // ignore: cast_nullable_to_non_nullable
               as ElasticResponseMeta,
-      results: results == freezed
+      results: null == results
           ? _value._results
           : results // ignore: cast_nullable_to_non_nullable
               as List<ElasticResult>,
-      rawFacets: rawFacets == freezed
+      rawFacets: freezed == rawFacets
           ? _value._rawFacets
           : rawFacets // ignore: cast_nullable_to_non_nullable
               as Map<String, List<ElasticFacet>>?,
@@ -4033,18 +4375,18 @@ class __$$_ElasticResponseCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ElasticResponse extends _ElasticResponse {
-  _$_ElasticResponse(
+class _$ElasticResponseImpl extends _ElasticResponse {
+  _$ElasticResponseImpl(
       {required this.meta,
       required final List<ElasticResult> results,
       @JsonKey(name: "facets")
-          final Map<String, List<ElasticFacet>>? rawFacets})
+      final Map<String, List<ElasticFacet>>? rawFacets})
       : _results = results,
         _rawFacets = rawFacets,
         super._();
 
-  factory _$_ElasticResponse.fromJson(Map<String, dynamic> json) =>
-      _$$_ElasticResponseFromJson(json);
+  factory _$ElasticResponseImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ElasticResponseImplFromJson(json);
 
   /// Object delimiting the results meta data.
   @override
@@ -4056,6 +4398,7 @@ class _$_ElasticResponse extends _ElasticResponse {
   /// Array of results matching the search.
   @override
   List<ElasticResult> get results {
+    if (_results is EqualUnmodifiableListView) return _results;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_results);
   }
@@ -4069,6 +4412,7 @@ class _$_ElasticResponse extends _ElasticResponse {
   Map<String, List<ElasticFacet>>? get rawFacets {
     final value = _rawFacets;
     if (value == null) return null;
+    if (_rawFacets is EqualUnmodifiableMapView) return _rawFacets;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(value);
   }
@@ -4079,11 +4423,11 @@ class _$_ElasticResponse extends _ElasticResponse {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ElasticResponse &&
-            const DeepCollectionEquality().equals(other.meta, meta) &&
+            other is _$ElasticResponseImpl &&
+            (identical(other.meta, meta) || other.meta == meta) &&
             const DeepCollectionEquality().equals(other._results, _results) &&
             const DeepCollectionEquality()
                 .equals(other._rawFacets, _rawFacets));
@@ -4093,18 +4437,20 @@ class _$_ElasticResponse extends _ElasticResponse {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(meta),
+      meta,
       const DeepCollectionEquality().hash(_results),
       const DeepCollectionEquality().hash(_rawFacets));
 
   @JsonKey(ignore: true)
   @override
-  _$$_ElasticResponseCopyWith<_$_ElasticResponse> get copyWith =>
-      __$$_ElasticResponseCopyWithImpl<_$_ElasticResponse>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$ElasticResponseImplCopyWith<_$ElasticResponseImpl> get copyWith =>
+      __$$ElasticResponseImplCopyWithImpl<_$ElasticResponseImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ElasticResponseToJson(
+    return _$$ElasticResponseImplToJson(
       this,
     );
   }
@@ -4115,12 +4461,12 @@ abstract class _ElasticResponse extends ElasticResponse {
           {required final ElasticResponseMeta meta,
           required final List<ElasticResult> results,
           @JsonKey(name: "facets")
-              final Map<String, List<ElasticFacet>>? rawFacets}) =
-      _$_ElasticResponse;
+          final Map<String, List<ElasticFacet>>? rawFacets}) =
+      _$ElasticResponseImpl;
   _ElasticResponse._() : super._();
 
   factory _ElasticResponse.fromJson(Map<String, dynamic> json) =
-      _$_ElasticResponse.fromJson;
+      _$ElasticResponseImpl.fromJson;
 
   @override
 
@@ -4137,7 +4483,7 @@ abstract class _ElasticResponse extends ElasticResponse {
   Map<String, List<ElasticFacet>>? get rawFacets;
   @override
   @JsonKey(ignore: true)
-  _$$_ElasticResponseCopyWith<_$_ElasticResponse> get copyWith =>
+  _$$ElasticResponseImplCopyWith<_$ElasticResponseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -4174,7 +4520,8 @@ mixin _$ElasticResponseMeta {
 abstract class $ElasticResponseMetaCopyWith<$Res> {
   factory $ElasticResponseMetaCopyWith(
           ElasticResponseMeta value, $Res Function(ElasticResponseMeta) then) =
-      _$ElasticResponseMetaCopyWithImpl<$Res>;
+      _$ElasticResponseMetaCopyWithImpl<$Res, ElasticResponseMeta>;
+  @useResult
   $Res call(
       {@JsonKey(name: "request_id") String requestId,
       List<dynamic> warnings,
@@ -4185,56 +4532,60 @@ abstract class $ElasticResponseMetaCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ElasticResponseMetaCopyWithImpl<$Res>
+class _$ElasticResponseMetaCopyWithImpl<$Res, $Val extends ElasticResponseMeta>
     implements $ElasticResponseMetaCopyWith<$Res> {
   _$ElasticResponseMetaCopyWithImpl(this._value, this._then);
 
-  final ElasticResponseMeta _value;
   // ignore: unused_field
-  final $Res Function(ElasticResponseMeta) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? requestId = freezed,
-    Object? warnings = freezed,
-    Object? alerts = freezed,
-    Object? page = freezed,
+    Object? requestId = null,
+    Object? warnings = null,
+    Object? alerts = null,
+    Object? page = null,
   }) {
     return _then(_value.copyWith(
-      requestId: requestId == freezed
+      requestId: null == requestId
           ? _value.requestId
           : requestId // ignore: cast_nullable_to_non_nullable
               as String,
-      warnings: warnings == freezed
+      warnings: null == warnings
           ? _value.warnings
           : warnings // ignore: cast_nullable_to_non_nullable
               as List<dynamic>,
-      alerts: alerts == freezed
+      alerts: null == alerts
           ? _value.alerts
           : alerts // ignore: cast_nullable_to_non_nullable
               as List<dynamic>,
-      page: page == freezed
+      page: null == page
           ? _value.page
           : page // ignore: cast_nullable_to_non_nullable
               as ElasticResponseMetaPage,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $ElasticResponseMetaPageCopyWith<$Res> get page {
     return $ElasticResponseMetaPageCopyWith<$Res>(_value.page, (value) {
-      return _then(_value.copyWith(page: value));
+      return _then(_value.copyWith(page: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$$_ElasticResponseMetaCopyWith<$Res>
+abstract class _$$ElasticResponseMetaImplCopyWith<$Res>
     implements $ElasticResponseMetaCopyWith<$Res> {
-  factory _$$_ElasticResponseMetaCopyWith(_$_ElasticResponseMeta value,
-          $Res Function(_$_ElasticResponseMeta) then) =
-      __$$_ElasticResponseMetaCopyWithImpl<$Res>;
+  factory _$$ElasticResponseMetaImplCopyWith(_$ElasticResponseMetaImpl value,
+          $Res Function(_$ElasticResponseMetaImpl) then) =
+      __$$ElasticResponseMetaImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {@JsonKey(name: "request_id") String requestId,
       List<dynamic> warnings,
@@ -4246,37 +4597,35 @@ abstract class _$$_ElasticResponseMetaCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ElasticResponseMetaCopyWithImpl<$Res>
-    extends _$ElasticResponseMetaCopyWithImpl<$Res>
-    implements _$$_ElasticResponseMetaCopyWith<$Res> {
-  __$$_ElasticResponseMetaCopyWithImpl(_$_ElasticResponseMeta _value,
-      $Res Function(_$_ElasticResponseMeta) _then)
-      : super(_value, (v) => _then(v as _$_ElasticResponseMeta));
+class __$$ElasticResponseMetaImplCopyWithImpl<$Res>
+    extends _$ElasticResponseMetaCopyWithImpl<$Res, _$ElasticResponseMetaImpl>
+    implements _$$ElasticResponseMetaImplCopyWith<$Res> {
+  __$$ElasticResponseMetaImplCopyWithImpl(_$ElasticResponseMetaImpl _value,
+      $Res Function(_$ElasticResponseMetaImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$_ElasticResponseMeta get _value => super._value as _$_ElasticResponseMeta;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? requestId = freezed,
-    Object? warnings = freezed,
-    Object? alerts = freezed,
-    Object? page = freezed,
+    Object? requestId = null,
+    Object? warnings = null,
+    Object? alerts = null,
+    Object? page = null,
   }) {
-    return _then(_$_ElasticResponseMeta(
-      requestId: requestId == freezed
+    return _then(_$ElasticResponseMetaImpl(
+      requestId: null == requestId
           ? _value.requestId
           : requestId // ignore: cast_nullable_to_non_nullable
               as String,
-      warnings: warnings == freezed
+      warnings: null == warnings
           ? _value._warnings
           : warnings // ignore: cast_nullable_to_non_nullable
               as List<dynamic>,
-      alerts: alerts == freezed
+      alerts: null == alerts
           ? _value._alerts
           : alerts // ignore: cast_nullable_to_non_nullable
               as List<dynamic>,
-      page: page == freezed
+      page: null == page
           ? _value.page
           : page // ignore: cast_nullable_to_non_nullable
               as ElasticResponseMetaPage,
@@ -4286,8 +4635,8 @@ class __$$_ElasticResponseMetaCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ElasticResponseMeta implements _ElasticResponseMeta {
-  _$_ElasticResponseMeta(
+class _$ElasticResponseMetaImpl implements _ElasticResponseMeta {
+  _$ElasticResponseMetaImpl(
       {@JsonKey(name: "request_id") required this.requestId,
       required final List<dynamic> warnings,
       required final List<dynamic> alerts,
@@ -4295,8 +4644,8 @@ class _$_ElasticResponseMeta implements _ElasticResponseMeta {
       : _warnings = warnings,
         _alerts = alerts;
 
-  factory _$_ElasticResponseMeta.fromJson(Map<String, dynamic> json) =>
-      _$$_ElasticResponseMetaFromJson(json);
+  factory _$ElasticResponseMetaImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ElasticResponseMetaImplFromJson(json);
 
   /// String ID representing the request. Guaranteed to be unique.
   @override
@@ -4313,6 +4662,7 @@ class _$_ElasticResponseMeta implements _ElasticResponseMeta {
   /// Included with error responses and success responses, so inspect all responses for warnings.
   @override
   List<dynamic> get warnings {
+    if (_warnings is EqualUnmodifiableListView) return _warnings;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_warnings);
   }
@@ -4327,6 +4677,7 @@ class _$_ElasticResponseMeta implements _ElasticResponseMeta {
   /// Included with error responses and success responses, so inspect all responses for alerts.
   @override
   List<dynamic> get alerts {
+    if (_alerts is EqualUnmodifiableListView) return _alerts;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_alerts);
   }
@@ -4341,34 +4692,36 @@ class _$_ElasticResponseMeta implements _ElasticResponseMeta {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ElasticResponseMeta &&
-            const DeepCollectionEquality().equals(other.requestId, requestId) &&
+            other is _$ElasticResponseMetaImpl &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId) &&
             const DeepCollectionEquality().equals(other._warnings, _warnings) &&
             const DeepCollectionEquality().equals(other._alerts, _alerts) &&
-            const DeepCollectionEquality().equals(other.page, page));
+            (identical(other.page, page) || other.page == page));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(requestId),
+      requestId,
       const DeepCollectionEquality().hash(_warnings),
       const DeepCollectionEquality().hash(_alerts),
-      const DeepCollectionEquality().hash(page));
+      page);
 
   @JsonKey(ignore: true)
   @override
-  _$$_ElasticResponseMetaCopyWith<_$_ElasticResponseMeta> get copyWith =>
-      __$$_ElasticResponseMetaCopyWithImpl<_$_ElasticResponseMeta>(
+  @pragma('vm:prefer-inline')
+  _$$ElasticResponseMetaImplCopyWith<_$ElasticResponseMetaImpl> get copyWith =>
+      __$$ElasticResponseMetaImplCopyWithImpl<_$ElasticResponseMetaImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ElasticResponseMetaToJson(
+    return _$$ElasticResponseMetaImplToJson(
       this,
     );
   }
@@ -4379,10 +4732,10 @@ abstract class _ElasticResponseMeta implements ElasticResponseMeta {
       {@JsonKey(name: "request_id") required final String requestId,
       required final List<dynamic> warnings,
       required final List<dynamic> alerts,
-      required final ElasticResponseMetaPage page}) = _$_ElasticResponseMeta;
+      required final ElasticResponseMetaPage page}) = _$ElasticResponseMetaImpl;
 
   factory _ElasticResponseMeta.fromJson(Map<String, dynamic> json) =
-      _$_ElasticResponseMeta.fromJson;
+      _$ElasticResponseMetaImpl.fromJson;
 
   @override
 
@@ -4407,7 +4760,7 @@ abstract class _ElasticResponseMeta implements ElasticResponseMeta {
   ElasticResponseMetaPage get page;
   @override
   @JsonKey(ignore: true)
-  _$$_ElasticResponseMetaCopyWith<_$_ElasticResponseMeta> get copyWith =>
+  _$$ElasticResponseMetaImplCopyWith<_$ElasticResponseMetaImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -4452,7 +4805,8 @@ mixin _$ElasticResponseMetaPage {
 abstract class $ElasticResponseMetaPageCopyWith<$Res> {
   factory $ElasticResponseMetaPageCopyWith(ElasticResponseMetaPage value,
           $Res Function(ElasticResponseMetaPage) then) =
-      _$ElasticResponseMetaPageCopyWithImpl<$Res>;
+      _$ElasticResponseMetaPageCopyWithImpl<$Res, ElasticResponseMetaPage>;
+  @useResult
   $Res call(
       {int current,
       int size,
@@ -4461,49 +4815,54 @@ abstract class $ElasticResponseMetaPageCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ElasticResponseMetaPageCopyWithImpl<$Res>
+class _$ElasticResponseMetaPageCopyWithImpl<$Res,
+        $Val extends ElasticResponseMetaPage>
     implements $ElasticResponseMetaPageCopyWith<$Res> {
   _$ElasticResponseMetaPageCopyWithImpl(this._value, this._then);
 
-  final ElasticResponseMetaPage _value;
   // ignore: unused_field
-  final $Res Function(ElasticResponseMetaPage) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? current = freezed,
-    Object? size = freezed,
-    Object? totalPages = freezed,
-    Object? totalResults = freezed,
+    Object? current = null,
+    Object? size = null,
+    Object? totalPages = null,
+    Object? totalResults = null,
   }) {
     return _then(_value.copyWith(
-      current: current == freezed
+      current: null == current
           ? _value.current
           : current // ignore: cast_nullable_to_non_nullable
               as int,
-      size: size == freezed
+      size: null == size
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as int,
-      totalPages: totalPages == freezed
+      totalPages: null == totalPages
           ? _value.totalPages
           : totalPages // ignore: cast_nullable_to_non_nullable
               as int,
-      totalResults: totalResults == freezed
+      totalResults: null == totalResults
           ? _value.totalResults
           : totalResults // ignore: cast_nullable_to_non_nullable
               as int,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$_ElasticResponseMetaPageCopyWith<$Res>
+abstract class _$$ElasticResponseMetaPageImplCopyWith<$Res>
     implements $ElasticResponseMetaPageCopyWith<$Res> {
-  factory _$$_ElasticResponseMetaPageCopyWith(_$_ElasticResponseMetaPage value,
-          $Res Function(_$_ElasticResponseMetaPage) then) =
-      __$$_ElasticResponseMetaPageCopyWithImpl<$Res>;
+  factory _$$ElasticResponseMetaPageImplCopyWith(
+          _$ElasticResponseMetaPageImpl value,
+          $Res Function(_$ElasticResponseMetaPageImpl) then) =
+      __$$ElasticResponseMetaPageImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {int current,
       int size,
@@ -4512,38 +4871,37 @@ abstract class _$$_ElasticResponseMetaPageCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ElasticResponseMetaPageCopyWithImpl<$Res>
-    extends _$ElasticResponseMetaPageCopyWithImpl<$Res>
-    implements _$$_ElasticResponseMetaPageCopyWith<$Res> {
-  __$$_ElasticResponseMetaPageCopyWithImpl(_$_ElasticResponseMetaPage _value,
-      $Res Function(_$_ElasticResponseMetaPage) _then)
-      : super(_value, (v) => _then(v as _$_ElasticResponseMetaPage));
+class __$$ElasticResponseMetaPageImplCopyWithImpl<$Res>
+    extends _$ElasticResponseMetaPageCopyWithImpl<$Res,
+        _$ElasticResponseMetaPageImpl>
+    implements _$$ElasticResponseMetaPageImplCopyWith<$Res> {
+  __$$ElasticResponseMetaPageImplCopyWithImpl(
+      _$ElasticResponseMetaPageImpl _value,
+      $Res Function(_$ElasticResponseMetaPageImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$_ElasticResponseMetaPage get _value =>
-      super._value as _$_ElasticResponseMetaPage;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? current = freezed,
-    Object? size = freezed,
-    Object? totalPages = freezed,
-    Object? totalResults = freezed,
+    Object? current = null,
+    Object? size = null,
+    Object? totalPages = null,
+    Object? totalResults = null,
   }) {
-    return _then(_$_ElasticResponseMetaPage(
-      current: current == freezed
+    return _then(_$ElasticResponseMetaPageImpl(
+      current: null == current
           ? _value.current
           : current // ignore: cast_nullable_to_non_nullable
               as int,
-      size: size == freezed
+      size: null == size
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as int,
-      totalPages: totalPages == freezed
+      totalPages: null == totalPages
           ? _value.totalPages
           : totalPages // ignore: cast_nullable_to_non_nullable
               as int,
-      totalResults: totalResults == freezed
+      totalResults: null == totalResults
           ? _value.totalResults
           : totalResults // ignore: cast_nullable_to_non_nullable
               as int,
@@ -4553,15 +4911,15 @@ class __$$_ElasticResponseMetaPageCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ElasticResponseMetaPage implements _ElasticResponseMetaPage {
-  _$_ElasticResponseMetaPage(
+class _$ElasticResponseMetaPageImpl implements _ElasticResponseMetaPage {
+  _$ElasticResponseMetaPageImpl(
       {required this.current,
       required this.size,
       @JsonKey(name: "total_pages") required this.totalPages,
       @JsonKey(name: "total_results") required this.totalResults});
 
-  factory _$_ElasticResponseMetaPage.fromJson(Map<String, dynamic> json) =>
-      _$$_ElasticResponseMetaPageFromJson(json);
+  factory _$ElasticResponseMetaPageImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ElasticResponseMetaPageImplFromJson(json);
 
   /// Number representing the current page of results.
   @override
@@ -4597,37 +4955,33 @@ class _$_ElasticResponseMetaPage implements _ElasticResponseMetaPage {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ElasticResponseMetaPage &&
-            const DeepCollectionEquality().equals(other.current, current) &&
-            const DeepCollectionEquality().equals(other.size, size) &&
-            const DeepCollectionEquality()
-                .equals(other.totalPages, totalPages) &&
-            const DeepCollectionEquality()
-                .equals(other.totalResults, totalResults));
+            other is _$ElasticResponseMetaPageImpl &&
+            (identical(other.current, current) || other.current == current) &&
+            (identical(other.size, size) || other.size == size) &&
+            (identical(other.totalPages, totalPages) ||
+                other.totalPages == totalPages) &&
+            (identical(other.totalResults, totalResults) ||
+                other.totalResults == totalResults));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(current),
-      const DeepCollectionEquality().hash(size),
-      const DeepCollectionEquality().hash(totalPages),
-      const DeepCollectionEquality().hash(totalResults));
+  int get hashCode =>
+      Object.hash(runtimeType, current, size, totalPages, totalResults);
 
   @JsonKey(ignore: true)
   @override
-  _$$_ElasticResponseMetaPageCopyWith<_$_ElasticResponseMetaPage>
-      get copyWith =>
-          __$$_ElasticResponseMetaPageCopyWithImpl<_$_ElasticResponseMetaPage>(
-              this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$ElasticResponseMetaPageImplCopyWith<_$ElasticResponseMetaPageImpl>
+      get copyWith => __$$ElasticResponseMetaPageImplCopyWithImpl<
+          _$ElasticResponseMetaPageImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ElasticResponseMetaPageToJson(
+    return _$$ElasticResponseMetaPageImplToJson(
       this,
     );
   }
@@ -4639,10 +4993,10 @@ abstract class _ElasticResponseMetaPage implements ElasticResponseMetaPage {
           required final int size,
           @JsonKey(name: "total_pages") required final int totalPages,
           @JsonKey(name: "total_results") required final int totalResults}) =
-      _$_ElasticResponseMetaPage;
+      _$ElasticResponseMetaPageImpl;
 
   factory _ElasticResponseMetaPage.fromJson(Map<String, dynamic> json) =
-      _$_ElasticResponseMetaPage.fromJson;
+      _$ElasticResponseMetaPageImpl.fromJson;
 
   @override
 
@@ -4674,7 +5028,176 @@ abstract class _ElasticResponseMetaPage implements ElasticResponseMetaPage {
   int get totalResults;
   @override
   @JsonKey(ignore: true)
-  _$$_ElasticResponseMetaPageCopyWith<_$_ElasticResponseMetaPage>
+  _$$ElasticResponseMetaPageImplCopyWith<_$ElasticResponseMetaPageImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+ElasticQuerySuggestionResponse _$ElasticQuerySuggestionResponseFromJson(
+    Map<String, dynamic> json) {
+  return _ElasticQuerySuggestionResponse.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ElasticQuerySuggestionResponse {
+  /// Documents containing the suggestions
+  ElasticSuggestionResult get results => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ElasticQuerySuggestionResponseCopyWith<ElasticQuerySuggestionResponse>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ElasticQuerySuggestionResponseCopyWith<$Res> {
+  factory $ElasticQuerySuggestionResponseCopyWith(
+          ElasticQuerySuggestionResponse value,
+          $Res Function(ElasticQuerySuggestionResponse) then) =
+      _$ElasticQuerySuggestionResponseCopyWithImpl<$Res,
+          ElasticQuerySuggestionResponse>;
+  @useResult
+  $Res call({ElasticSuggestionResult results});
+
+  $ElasticSuggestionResultCopyWith<$Res> get results;
+}
+
+/// @nodoc
+class _$ElasticQuerySuggestionResponseCopyWithImpl<$Res,
+        $Val extends ElasticQuerySuggestionResponse>
+    implements $ElasticQuerySuggestionResponseCopyWith<$Res> {
+  _$ElasticQuerySuggestionResponseCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? results = null,
+  }) {
+    return _then(_value.copyWith(
+      results: null == results
+          ? _value.results
+          : results // ignore: cast_nullable_to_non_nullable
+              as ElasticSuggestionResult,
+    ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $ElasticSuggestionResultCopyWith<$Res> get results {
+    return $ElasticSuggestionResultCopyWith<$Res>(_value.results, (value) {
+      return _then(_value.copyWith(results: value) as $Val);
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$$ElasticQuerySuggestionResponseImplCopyWith<$Res>
+    implements $ElasticQuerySuggestionResponseCopyWith<$Res> {
+  factory _$$ElasticQuerySuggestionResponseImplCopyWith(
+          _$ElasticQuerySuggestionResponseImpl value,
+          $Res Function(_$ElasticQuerySuggestionResponseImpl) then) =
+      __$$ElasticQuerySuggestionResponseImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({ElasticSuggestionResult results});
+
+  @override
+  $ElasticSuggestionResultCopyWith<$Res> get results;
+}
+
+/// @nodoc
+class __$$ElasticQuerySuggestionResponseImplCopyWithImpl<$Res>
+    extends _$ElasticQuerySuggestionResponseCopyWithImpl<$Res,
+        _$ElasticQuerySuggestionResponseImpl>
+    implements _$$ElasticQuerySuggestionResponseImplCopyWith<$Res> {
+  __$$ElasticQuerySuggestionResponseImplCopyWithImpl(
+      _$ElasticQuerySuggestionResponseImpl _value,
+      $Res Function(_$ElasticQuerySuggestionResponseImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? results = null,
+  }) {
+    return _then(_$ElasticQuerySuggestionResponseImpl(
+      results: null == results
+          ? _value.results
+          : results // ignore: cast_nullable_to_non_nullable
+              as ElasticSuggestionResult,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ElasticQuerySuggestionResponseImpl
+    extends _ElasticQuerySuggestionResponse {
+  _$ElasticQuerySuggestionResponseImpl({required this.results}) : super._();
+
+  factory _$ElasticQuerySuggestionResponseImpl.fromJson(
+          Map<String, dynamic> json) =>
+      _$$ElasticQuerySuggestionResponseImplFromJson(json);
+
+  /// Documents containing the suggestions
+  @override
+  final ElasticSuggestionResult results;
+
+  @override
+  String toString() {
+    return 'ElasticQuerySuggestionResponse(results: $results)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ElasticQuerySuggestionResponseImpl &&
+            (identical(other.results, results) || other.results == results));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, results);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ElasticQuerySuggestionResponseImplCopyWith<
+          _$ElasticQuerySuggestionResponseImpl>
+      get copyWith => __$$ElasticQuerySuggestionResponseImplCopyWithImpl<
+          _$ElasticQuerySuggestionResponseImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ElasticQuerySuggestionResponseImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ElasticQuerySuggestionResponse
+    extends ElasticQuerySuggestionResponse {
+  factory _ElasticQuerySuggestionResponse(
+          {required final ElasticSuggestionResult results}) =
+      _$ElasticQuerySuggestionResponseImpl;
+  _ElasticQuerySuggestionResponse._() : super._();
+
+  factory _ElasticQuerySuggestionResponse.fromJson(Map<String, dynamic> json) =
+      _$ElasticQuerySuggestionResponseImpl.fromJson;
+
+  @override
+
+  /// Documents containing the suggestions
+  ElasticSuggestionResult get results;
+  @override
+  @JsonKey(ignore: true)
+  _$$ElasticQuerySuggestionResponseImplCopyWith<
+          _$ElasticQuerySuggestionResponseImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -4697,59 +5220,61 @@ mixin _$ElasticResultMeta {
 abstract class $ElasticResultMetaCopyWith<$Res> {
   factory $ElasticResultMetaCopyWith(
           ElasticResultMeta value, $Res Function(ElasticResultMeta) then) =
-      _$ElasticResultMetaCopyWithImpl<$Res>;
+      _$ElasticResultMetaCopyWithImpl<$Res, ElasticResultMeta>;
+  @useResult
   $Res call({double? score});
 }
 
 /// @nodoc
-class _$ElasticResultMetaCopyWithImpl<$Res>
+class _$ElasticResultMetaCopyWithImpl<$Res, $Val extends ElasticResultMeta>
     implements $ElasticResultMetaCopyWith<$Res> {
   _$ElasticResultMetaCopyWithImpl(this._value, this._then);
 
-  final ElasticResultMeta _value;
   // ignore: unused_field
-  final $Res Function(ElasticResultMeta) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? score = freezed,
   }) {
     return _then(_value.copyWith(
-      score: score == freezed
+      score: freezed == score
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
               as double?,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$_ElasticResultMetaCopyWith<$Res>
+abstract class _$$ElasticResultMetaImplCopyWith<$Res>
     implements $ElasticResultMetaCopyWith<$Res> {
-  factory _$$_ElasticResultMetaCopyWith(_$_ElasticResultMeta value,
-          $Res Function(_$_ElasticResultMeta) then) =
-      __$$_ElasticResultMetaCopyWithImpl<$Res>;
+  factory _$$ElasticResultMetaImplCopyWith(_$ElasticResultMetaImpl value,
+          $Res Function(_$ElasticResultMetaImpl) then) =
+      __$$ElasticResultMetaImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({double? score});
 }
 
 /// @nodoc
-class __$$_ElasticResultMetaCopyWithImpl<$Res>
-    extends _$ElasticResultMetaCopyWithImpl<$Res>
-    implements _$$_ElasticResultMetaCopyWith<$Res> {
-  __$$_ElasticResultMetaCopyWithImpl(
-      _$_ElasticResultMeta _value, $Res Function(_$_ElasticResultMeta) _then)
-      : super(_value, (v) => _then(v as _$_ElasticResultMeta));
+class __$$ElasticResultMetaImplCopyWithImpl<$Res>
+    extends _$ElasticResultMetaCopyWithImpl<$Res, _$ElasticResultMetaImpl>
+    implements _$$ElasticResultMetaImplCopyWith<$Res> {
+  __$$ElasticResultMetaImplCopyWithImpl(_$ElasticResultMetaImpl _value,
+      $Res Function(_$ElasticResultMetaImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$_ElasticResultMeta get _value => super._value as _$_ElasticResultMeta;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? score = freezed,
   }) {
-    return _then(_$_ElasticResultMeta(
-      score: score == freezed
+    return _then(_$ElasticResultMetaImpl(
+      score: freezed == score
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
               as double?,
@@ -4759,11 +5284,11 @@ class __$$_ElasticResultMetaCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ElasticResultMeta implements _ElasticResultMeta {
-  _$_ElasticResultMeta({this.score});
+class _$ElasticResultMetaImpl implements _ElasticResultMeta {
+  _$ElasticResultMetaImpl({this.score});
 
-  factory _$_ElasticResultMeta.fromJson(Map<String, dynamic> json) =>
-      _$$_ElasticResultMetaFromJson(json);
+  factory _$ElasticResultMetaImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ElasticResultMetaImplFromJson(json);
 
   /// The relevance of the result
   @override
@@ -4775,37 +5300,37 @@ class _$_ElasticResultMeta implements _ElasticResultMeta {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ElasticResultMeta &&
-            const DeepCollectionEquality().equals(other.score, score));
+            other is _$ElasticResultMetaImpl &&
+            (identical(other.score, score) || other.score == score));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(score));
+  int get hashCode => Object.hash(runtimeType, score);
 
   @JsonKey(ignore: true)
   @override
-  _$$_ElasticResultMetaCopyWith<_$_ElasticResultMeta> get copyWith =>
-      __$$_ElasticResultMetaCopyWithImpl<_$_ElasticResultMeta>(
+  @pragma('vm:prefer-inline')
+  _$$ElasticResultMetaImplCopyWith<_$ElasticResultMetaImpl> get copyWith =>
+      __$$ElasticResultMetaImplCopyWithImpl<_$ElasticResultMetaImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ElasticResultMetaToJson(
+    return _$$ElasticResultMetaImplToJson(
       this,
     );
   }
 }
 
 abstract class _ElasticResultMeta implements ElasticResultMeta {
-  factory _ElasticResultMeta({final double? score}) = _$_ElasticResultMeta;
+  factory _ElasticResultMeta({final double? score}) = _$ElasticResultMetaImpl;
 
   factory _ElasticResultMeta.fromJson(Map<String, dynamic> json) =
-      _$_ElasticResultMeta.fromJson;
+      _$ElasticResultMetaImpl.fromJson;
 
   @override
 
@@ -4813,7 +5338,7 @@ abstract class _ElasticResultMeta implements ElasticResultMeta {
   double? get score;
   @override
   @JsonKey(ignore: true)
-  _$$_ElasticResultMetaCopyWith<_$_ElasticResultMeta> get copyWith =>
+  _$$ElasticResultMetaImplCopyWith<_$ElasticResultMetaImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -4859,7 +5384,8 @@ mixin _$ElasticResult {
 abstract class $ElasticResultCopyWith<$Res> {
   factory $ElasticResultCopyWith(
           ElasticResult value, $Res Function(ElasticResult) then) =
-      _$ElasticResultCopyWithImpl<$Res>;
+      _$ElasticResultCopyWithImpl<$Res, ElasticResult>;
+  @useResult
   $Res call(
       {Map<String, dynamic>? data,
       Map<String, ElasticResultSnippet>? snippets,
@@ -4871,61 +5397,65 @@ abstract class $ElasticResultCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ElasticResultCopyWithImpl<$Res>
+class _$ElasticResultCopyWithImpl<$Res, $Val extends ElasticResult>
     implements $ElasticResultCopyWith<$Res> {
   _$ElasticResultCopyWithImpl(this._value, this._then);
 
-  final ElasticResult _value;
   // ignore: unused_field
-  final $Res Function(ElasticResult) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? data = freezed,
     Object? snippets = freezed,
-    Object? meta = freezed,
+    Object? meta = null,
     Object? group = freezed,
     Object? groupKey = freezed,
   }) {
     return _then(_value.copyWith(
-      data: data == freezed
+      data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as Map<String, dynamic>?,
-      snippets: snippets == freezed
+      snippets: freezed == snippets
           ? _value.snippets
           : snippets // ignore: cast_nullable_to_non_nullable
               as Map<String, ElasticResultSnippet>?,
-      meta: meta == freezed
+      meta: null == meta
           ? _value.meta
           : meta // ignore: cast_nullable_to_non_nullable
               as ElasticResultMeta,
-      group: group == freezed
+      group: freezed == group
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
               as List<ElasticResult>?,
-      groupKey: groupKey == freezed
+      groupKey: freezed == groupKey
           ? _value.groupKey
           : groupKey // ignore: cast_nullable_to_non_nullable
               as String?,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $ElasticResultMetaCopyWith<$Res> get meta {
     return $ElasticResultMetaCopyWith<$Res>(_value.meta, (value) {
-      return _then(_value.copyWith(meta: value));
+      return _then(_value.copyWith(meta: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-abstract class _$$_ElasticResultCopyWith<$Res>
+abstract class _$$ElasticResultImplCopyWith<$Res>
     implements $ElasticResultCopyWith<$Res> {
-  factory _$$_ElasticResultCopyWith(
-          _$_ElasticResult value, $Res Function(_$_ElasticResult) then) =
-      __$$_ElasticResultCopyWithImpl<$Res>;
+  factory _$$ElasticResultImplCopyWith(
+          _$ElasticResultImpl value, $Res Function(_$ElasticResultImpl) then) =
+      __$$ElasticResultImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {Map<String, dynamic>? data,
       Map<String, ElasticResultSnippet>? snippets,
@@ -4938,42 +5468,40 @@ abstract class _$$_ElasticResultCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ElasticResultCopyWithImpl<$Res>
-    extends _$ElasticResultCopyWithImpl<$Res>
-    implements _$$_ElasticResultCopyWith<$Res> {
-  __$$_ElasticResultCopyWithImpl(
-      _$_ElasticResult _value, $Res Function(_$_ElasticResult) _then)
-      : super(_value, (v) => _then(v as _$_ElasticResult));
+class __$$ElasticResultImplCopyWithImpl<$Res>
+    extends _$ElasticResultCopyWithImpl<$Res, _$ElasticResultImpl>
+    implements _$$ElasticResultImplCopyWith<$Res> {
+  __$$ElasticResultImplCopyWithImpl(
+      _$ElasticResultImpl _value, $Res Function(_$ElasticResultImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$_ElasticResult get _value => super._value as _$_ElasticResult;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? data = freezed,
     Object? snippets = freezed,
-    Object? meta = freezed,
+    Object? meta = null,
     Object? group = freezed,
     Object? groupKey = freezed,
   }) {
-    return _then(_$_ElasticResult(
-      data: data == freezed
+    return _then(_$ElasticResultImpl(
+      data: freezed == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
               as Map<String, dynamic>?,
-      snippets: snippets == freezed
+      snippets: freezed == snippets
           ? _value._snippets
           : snippets // ignore: cast_nullable_to_non_nullable
               as Map<String, ElasticResultSnippet>?,
-      meta: meta == freezed
+      meta: null == meta
           ? _value.meta
           : meta // ignore: cast_nullable_to_non_nullable
               as ElasticResultMeta,
-      group: group == freezed
+      group: freezed == group
           ? _value._group
           : group // ignore: cast_nullable_to_non_nullable
               as List<ElasticResult>?,
-      groupKey: groupKey == freezed
+      groupKey: freezed == groupKey
           ? _value.groupKey
           : groupKey // ignore: cast_nullable_to_non_nullable
               as String?,
@@ -4983,8 +5511,8 @@ class __$$_ElasticResultCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ElasticResult extends _ElasticResult {
-  _$_ElasticResult(
+class _$ElasticResultImpl extends _ElasticResult {
+  _$ElasticResultImpl(
       {final Map<String, dynamic>? data,
       final Map<String, ElasticResultSnippet>? snippets,
       @JsonKey(name: "_meta") required this.meta,
@@ -4995,8 +5523,8 @@ class _$_ElasticResult extends _ElasticResult {
         _group = group,
         super._();
 
-  factory _$_ElasticResult.fromJson(Map<String, dynamic> json) =>
-      _$$_ElasticResultFromJson(json);
+  factory _$ElasticResultImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ElasticResultImplFromJson(json);
 
   /// A map of the raw data of the document, containing the fields
   /// requested in the [ElasticResultField] passed to the query
@@ -5014,6 +5542,7 @@ class _$_ElasticResult extends _ElasticResult {
   Map<String, dynamic>? get data {
     final value = _data;
     if (value == null) return null;
+    if (_data is EqualUnmodifiableMapView) return _data;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(value);
   }
@@ -5028,6 +5557,7 @@ class _$_ElasticResult extends _ElasticResult {
   Map<String, ElasticResultSnippet>? get snippets {
     final value = _snippets;
     if (value == null) return null;
+    if (_snippets is EqualUnmodifiableMapView) return _snippets;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(value);
   }
@@ -5048,6 +5578,7 @@ class _$_ElasticResult extends _ElasticResult {
   List<ElasticResult>? get group {
     final value = _group;
     if (value == null) return null;
+    if (_group is EqualUnmodifiableListView) return _group;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
@@ -5064,15 +5595,16 @@ class _$_ElasticResult extends _ElasticResult {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ElasticResult &&
+            other is _$ElasticResultImpl &&
             const DeepCollectionEquality().equals(other._data, _data) &&
             const DeepCollectionEquality().equals(other._snippets, _snippets) &&
-            const DeepCollectionEquality().equals(other.meta, meta) &&
+            (identical(other.meta, meta) || other.meta == meta) &&
             const DeepCollectionEquality().equals(other._group, _group) &&
-            const DeepCollectionEquality().equals(other.groupKey, groupKey));
+            (identical(other.groupKey, groupKey) ||
+                other.groupKey == groupKey));
   }
 
   @JsonKey(ignore: true)
@@ -5081,18 +5613,19 @@ class _$_ElasticResult extends _ElasticResult {
       runtimeType,
       const DeepCollectionEquality().hash(_data),
       const DeepCollectionEquality().hash(_snippets),
-      const DeepCollectionEquality().hash(meta),
+      meta,
       const DeepCollectionEquality().hash(_group),
-      const DeepCollectionEquality().hash(groupKey));
+      groupKey);
 
   @JsonKey(ignore: true)
   @override
-  _$$_ElasticResultCopyWith<_$_ElasticResult> get copyWith =>
-      __$$_ElasticResultCopyWithImpl<_$_ElasticResult>(this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$ElasticResultImplCopyWith<_$ElasticResultImpl> get copyWith =>
+      __$$ElasticResultImplCopyWithImpl<_$ElasticResultImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ElasticResultToJson(
+    return _$$ElasticResultImplToJson(
       this,
     );
   }
@@ -5100,15 +5633,16 @@ class _$_ElasticResult extends _ElasticResult {
 
 abstract class _ElasticResult extends ElasticResult {
   factory _ElasticResult(
-      {final Map<String, dynamic>? data,
-      final Map<String, ElasticResultSnippet>? snippets,
-      @JsonKey(name: "_meta") required final ElasticResultMeta meta,
-      @JsonKey(name: "_group") final List<ElasticResult>? group,
-      @JsonKey(name: "_group_key") final String? groupKey}) = _$_ElasticResult;
+          {final Map<String, dynamic>? data,
+          final Map<String, ElasticResultSnippet>? snippets,
+          @JsonKey(name: "_meta") required final ElasticResultMeta meta,
+          @JsonKey(name: "_group") final List<ElasticResult>? group,
+          @JsonKey(name: "_group_key") final String? groupKey}) =
+      _$ElasticResultImpl;
   _ElasticResult._() : super._();
 
   factory _ElasticResult.fromJson(Map<String, dynamic> json) =
-      _$_ElasticResult.fromJson;
+      _$ElasticResultImpl.fromJson;
 
   @override
 
@@ -5142,7 +5676,7 @@ abstract class _ElasticResult extends ElasticResult {
   String? get groupKey;
   @override
   @JsonKey(ignore: true)
-  _$$_ElasticResultCopyWith<_$_ElasticResult> get copyWith =>
+  _$$ElasticResultImplCopyWith<_$ElasticResultImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -5179,79 +5713,82 @@ mixin _$ElasticResultSnippet {
 abstract class $ElasticResultSnippetCopyWith<$Res> {
   factory $ElasticResultSnippetCopyWith(ElasticResultSnippet value,
           $Res Function(ElasticResultSnippet) then) =
-      _$ElasticResultSnippetCopyWithImpl<$Res>;
+      _$ElasticResultSnippetCopyWithImpl<$Res, ElasticResultSnippet>;
+  @useResult
   $Res call({String fullText, List<String> textParts, List<String> highlights});
 }
 
 /// @nodoc
-class _$ElasticResultSnippetCopyWithImpl<$Res>
+class _$ElasticResultSnippetCopyWithImpl<$Res,
+        $Val extends ElasticResultSnippet>
     implements $ElasticResultSnippetCopyWith<$Res> {
   _$ElasticResultSnippetCopyWithImpl(this._value, this._then);
 
-  final ElasticResultSnippet _value;
   // ignore: unused_field
-  final $Res Function(ElasticResultSnippet) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? fullText = freezed,
-    Object? textParts = freezed,
-    Object? highlights = freezed,
+    Object? fullText = null,
+    Object? textParts = null,
+    Object? highlights = null,
   }) {
     return _then(_value.copyWith(
-      fullText: fullText == freezed
+      fullText: null == fullText
           ? _value.fullText
           : fullText // ignore: cast_nullable_to_non_nullable
               as String,
-      textParts: textParts == freezed
+      textParts: null == textParts
           ? _value.textParts
           : textParts // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      highlights: highlights == freezed
+      highlights: null == highlights
           ? _value.highlights
           : highlights // ignore: cast_nullable_to_non_nullable
               as List<String>,
-    ));
+    ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$_ElasticResultSnippetCopyWith<$Res>
+abstract class _$$ElasticResultSnippetImplCopyWith<$Res>
     implements $ElasticResultSnippetCopyWith<$Res> {
-  factory _$$_ElasticResultSnippetCopyWith(_$_ElasticResultSnippet value,
-          $Res Function(_$_ElasticResultSnippet) then) =
-      __$$_ElasticResultSnippetCopyWithImpl<$Res>;
+  factory _$$ElasticResultSnippetImplCopyWith(_$ElasticResultSnippetImpl value,
+          $Res Function(_$ElasticResultSnippetImpl) then) =
+      __$$ElasticResultSnippetImplCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({String fullText, List<String> textParts, List<String> highlights});
 }
 
 /// @nodoc
-class __$$_ElasticResultSnippetCopyWithImpl<$Res>
-    extends _$ElasticResultSnippetCopyWithImpl<$Res>
-    implements _$$_ElasticResultSnippetCopyWith<$Res> {
-  __$$_ElasticResultSnippetCopyWithImpl(_$_ElasticResultSnippet _value,
-      $Res Function(_$_ElasticResultSnippet) _then)
-      : super(_value, (v) => _then(v as _$_ElasticResultSnippet));
+class __$$ElasticResultSnippetImplCopyWithImpl<$Res>
+    extends _$ElasticResultSnippetCopyWithImpl<$Res, _$ElasticResultSnippetImpl>
+    implements _$$ElasticResultSnippetImplCopyWith<$Res> {
+  __$$ElasticResultSnippetImplCopyWithImpl(_$ElasticResultSnippetImpl _value,
+      $Res Function(_$ElasticResultSnippetImpl) _then)
+      : super(_value, _then);
 
-  @override
-  _$_ElasticResultSnippet get _value => super._value as _$_ElasticResultSnippet;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? fullText = freezed,
-    Object? textParts = freezed,
-    Object? highlights = freezed,
+    Object? fullText = null,
+    Object? textParts = null,
+    Object? highlights = null,
   }) {
-    return _then(_$_ElasticResultSnippet(
-      fullText: fullText == freezed
+    return _then(_$ElasticResultSnippetImpl(
+      fullText: null == fullText
           ? _value.fullText
           : fullText // ignore: cast_nullable_to_non_nullable
               as String,
-      textParts: textParts == freezed
+      textParts: null == textParts
           ? _value._textParts
           : textParts // ignore: cast_nullable_to_non_nullable
               as List<String>,
-      highlights: highlights == freezed
+      highlights: null == highlights
           ? _value._highlights
           : highlights // ignore: cast_nullable_to_non_nullable
               as List<String>,
@@ -5261,16 +5798,16 @@ class __$$_ElasticResultSnippetCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ElasticResultSnippet implements _ElasticResultSnippet {
-  _$_ElasticResultSnippet(
+class _$ElasticResultSnippetImpl implements _ElasticResultSnippet {
+  _$ElasticResultSnippetImpl(
       {required this.fullText,
       required final List<String> textParts,
       required final List<String> highlights})
       : _textParts = textParts,
         _highlights = highlights;
 
-  factory _$_ElasticResultSnippet.fromJson(Map<String, dynamic> json) =>
-      _$$_ElasticResultSnippetFromJson(json);
+  factory _$ElasticResultSnippetImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ElasticResultSnippetImplFromJson(json);
 
   /// The full snippet, matching the size provided in the [ElasticResultField]
   /// passed to the query.
@@ -5293,6 +5830,7 @@ class _$_ElasticResultSnippet implements _ElasticResultSnippet {
   /// in the result.
   @override
   List<String> get textParts {
+    if (_textParts is EqualUnmodifiableListView) return _textParts;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_textParts);
   }
@@ -5307,6 +5845,7 @@ class _$_ElasticResultSnippet implements _ElasticResultSnippet {
   /// return all the words Elastic decided to match in order to highlight all the matching words.
   @override
   List<String> get highlights {
+    if (_highlights is EqualUnmodifiableListView) return _highlights;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_highlights);
   }
@@ -5317,11 +5856,12 @@ class _$_ElasticResultSnippet implements _ElasticResultSnippet {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ElasticResultSnippet &&
-            const DeepCollectionEquality().equals(other.fullText, fullText) &&
+            other is _$ElasticResultSnippetImpl &&
+            (identical(other.fullText, fullText) ||
+                other.fullText == fullText) &&
             const DeepCollectionEquality()
                 .equals(other._textParts, _textParts) &&
             const DeepCollectionEquality()
@@ -5332,19 +5872,21 @@ class _$_ElasticResultSnippet implements _ElasticResultSnippet {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(fullText),
+      fullText,
       const DeepCollectionEquality().hash(_textParts),
       const DeepCollectionEquality().hash(_highlights));
 
   @JsonKey(ignore: true)
   @override
-  _$$_ElasticResultSnippetCopyWith<_$_ElasticResultSnippet> get copyWith =>
-      __$$_ElasticResultSnippetCopyWithImpl<_$_ElasticResultSnippet>(
-          this, _$identity);
+  @pragma('vm:prefer-inline')
+  _$$ElasticResultSnippetImplCopyWith<_$ElasticResultSnippetImpl>
+      get copyWith =>
+          __$$ElasticResultSnippetImplCopyWithImpl<_$ElasticResultSnippetImpl>(
+              this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ElasticResultSnippetToJson(
+    return _$$ElasticResultSnippetImplToJson(
       this,
     );
   }
@@ -5354,10 +5896,10 @@ abstract class _ElasticResultSnippet implements ElasticResultSnippet {
   factory _ElasticResultSnippet(
       {required final String fullText,
       required final List<String> textParts,
-      required final List<String> highlights}) = _$_ElasticResultSnippet;
+      required final List<String> highlights}) = _$ElasticResultSnippetImpl;
 
   factory _ElasticResultSnippet.fromJson(Map<String, dynamic> json) =
-      _$_ElasticResultSnippet.fromJson;
+      _$ElasticResultSnippetImpl.fromJson;
 
   @override
 
@@ -5381,6 +5923,319 @@ abstract class _ElasticResultSnippet implements ElasticResultSnippet {
   List<String> get highlights;
   @override
   @JsonKey(ignore: true)
-  _$$_ElasticResultSnippetCopyWith<_$_ElasticResultSnippet> get copyWith =>
+  _$$ElasticResultSnippetImplCopyWith<_$ElasticResultSnippetImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+ElasticSuggestionResult _$ElasticSuggestionResultFromJson(
+    Map<String, dynamic> json) {
+  return _ElasticSuggestionResult.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ElasticSuggestionResult {
+  /// A list of documents
+  List<ElasticSuggestionDocument>? get documents =>
       throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ElasticSuggestionResultCopyWith<ElasticSuggestionResult> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ElasticSuggestionResultCopyWith<$Res> {
+  factory $ElasticSuggestionResultCopyWith(ElasticSuggestionResult value,
+          $Res Function(ElasticSuggestionResult) then) =
+      _$ElasticSuggestionResultCopyWithImpl<$Res, ElasticSuggestionResult>;
+  @useResult
+  $Res call({List<ElasticSuggestionDocument>? documents});
+}
+
+/// @nodoc
+class _$ElasticSuggestionResultCopyWithImpl<$Res,
+        $Val extends ElasticSuggestionResult>
+    implements $ElasticSuggestionResultCopyWith<$Res> {
+  _$ElasticSuggestionResultCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? documents = freezed,
+  }) {
+    return _then(_value.copyWith(
+      documents: freezed == documents
+          ? _value.documents
+          : documents // ignore: cast_nullable_to_non_nullable
+              as List<ElasticSuggestionDocument>?,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$ElasticSuggestionResultImplCopyWith<$Res>
+    implements $ElasticSuggestionResultCopyWith<$Res> {
+  factory _$$ElasticSuggestionResultImplCopyWith(
+          _$ElasticSuggestionResultImpl value,
+          $Res Function(_$ElasticSuggestionResultImpl) then) =
+      __$$ElasticSuggestionResultImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({List<ElasticSuggestionDocument>? documents});
+}
+
+/// @nodoc
+class __$$ElasticSuggestionResultImplCopyWithImpl<$Res>
+    extends _$ElasticSuggestionResultCopyWithImpl<$Res,
+        _$ElasticSuggestionResultImpl>
+    implements _$$ElasticSuggestionResultImplCopyWith<$Res> {
+  __$$ElasticSuggestionResultImplCopyWithImpl(
+      _$ElasticSuggestionResultImpl _value,
+      $Res Function(_$ElasticSuggestionResultImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? documents = freezed,
+  }) {
+    return _then(_$ElasticSuggestionResultImpl(
+      documents: freezed == documents
+          ? _value._documents
+          : documents // ignore: cast_nullable_to_non_nullable
+              as List<ElasticSuggestionDocument>?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ElasticSuggestionResultImpl extends _ElasticSuggestionResult {
+  _$ElasticSuggestionResultImpl(
+      {final List<ElasticSuggestionDocument>? documents})
+      : _documents = documents,
+        super._();
+
+  factory _$ElasticSuggestionResultImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ElasticSuggestionResultImplFromJson(json);
+
+  /// A list of documents
+  final List<ElasticSuggestionDocument>? _documents;
+
+  /// A list of documents
+  @override
+  List<ElasticSuggestionDocument>? get documents {
+    final value = _documents;
+    if (value == null) return null;
+    if (_documents is EqualUnmodifiableListView) return _documents;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  String toString() {
+    return 'ElasticSuggestionResult(documents: $documents)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ElasticSuggestionResultImpl &&
+            const DeepCollectionEquality()
+                .equals(other._documents, _documents));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_documents));
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ElasticSuggestionResultImplCopyWith<_$ElasticSuggestionResultImpl>
+      get copyWith => __$$ElasticSuggestionResultImplCopyWithImpl<
+          _$ElasticSuggestionResultImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ElasticSuggestionResultImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ElasticSuggestionResult extends ElasticSuggestionResult {
+  factory _ElasticSuggestionResult(
+          {final List<ElasticSuggestionDocument>? documents}) =
+      _$ElasticSuggestionResultImpl;
+  _ElasticSuggestionResult._() : super._();
+
+  factory _ElasticSuggestionResult.fromJson(Map<String, dynamic> json) =
+      _$ElasticSuggestionResultImpl.fromJson;
+
+  @override
+
+  /// A list of documents
+  List<ElasticSuggestionDocument>? get documents;
+  @override
+  @JsonKey(ignore: true)
+  _$$ElasticSuggestionResultImplCopyWith<_$ElasticSuggestionResultImpl>
+      get copyWith => throw _privateConstructorUsedError;
+}
+
+ElasticSuggestionDocument _$ElasticSuggestionDocumentFromJson(
+    Map<String, dynamic> json) {
+  return _ElasticSuggestionDocument.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ElasticSuggestionDocument {
+  /// The suggestion contained in the document of the query suggestion
+  String get suggestion => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $ElasticSuggestionDocumentCopyWith<ElasticSuggestionDocument> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ElasticSuggestionDocumentCopyWith<$Res> {
+  factory $ElasticSuggestionDocumentCopyWith(ElasticSuggestionDocument value,
+          $Res Function(ElasticSuggestionDocument) then) =
+      _$ElasticSuggestionDocumentCopyWithImpl<$Res, ElasticSuggestionDocument>;
+  @useResult
+  $Res call({String suggestion});
+}
+
+/// @nodoc
+class _$ElasticSuggestionDocumentCopyWithImpl<$Res,
+        $Val extends ElasticSuggestionDocument>
+    implements $ElasticSuggestionDocumentCopyWith<$Res> {
+  _$ElasticSuggestionDocumentCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? suggestion = null,
+  }) {
+    return _then(_value.copyWith(
+      suggestion: null == suggestion
+          ? _value.suggestion
+          : suggestion // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$ElasticSuggestionDocumentImplCopyWith<$Res>
+    implements $ElasticSuggestionDocumentCopyWith<$Res> {
+  factory _$$ElasticSuggestionDocumentImplCopyWith(
+          _$ElasticSuggestionDocumentImpl value,
+          $Res Function(_$ElasticSuggestionDocumentImpl) then) =
+      __$$ElasticSuggestionDocumentImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String suggestion});
+}
+
+/// @nodoc
+class __$$ElasticSuggestionDocumentImplCopyWithImpl<$Res>
+    extends _$ElasticSuggestionDocumentCopyWithImpl<$Res,
+        _$ElasticSuggestionDocumentImpl>
+    implements _$$ElasticSuggestionDocumentImplCopyWith<$Res> {
+  __$$ElasticSuggestionDocumentImplCopyWithImpl(
+      _$ElasticSuggestionDocumentImpl _value,
+      $Res Function(_$ElasticSuggestionDocumentImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? suggestion = null,
+  }) {
+    return _then(_$ElasticSuggestionDocumentImpl(
+      suggestion: null == suggestion
+          ? _value.suggestion
+          : suggestion // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$ElasticSuggestionDocumentImpl extends _ElasticSuggestionDocument {
+  _$ElasticSuggestionDocumentImpl({required this.suggestion}) : super._();
+
+  factory _$ElasticSuggestionDocumentImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ElasticSuggestionDocumentImplFromJson(json);
+
+  /// The suggestion contained in the document of the query suggestion
+  @override
+  final String suggestion;
+
+  @override
+  String toString() {
+    return 'ElasticSuggestionDocument(suggestion: $suggestion)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ElasticSuggestionDocumentImpl &&
+            (identical(other.suggestion, suggestion) ||
+                other.suggestion == suggestion));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(runtimeType, suggestion);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ElasticSuggestionDocumentImplCopyWith<_$ElasticSuggestionDocumentImpl>
+      get copyWith => __$$ElasticSuggestionDocumentImplCopyWithImpl<
+          _$ElasticSuggestionDocumentImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ElasticSuggestionDocumentImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ElasticSuggestionDocument extends ElasticSuggestionDocument {
+  factory _ElasticSuggestionDocument({required final String suggestion}) =
+      _$ElasticSuggestionDocumentImpl;
+  _ElasticSuggestionDocument._() : super._();
+
+  factory _ElasticSuggestionDocument.fromJson(Map<String, dynamic> json) =
+      _$ElasticSuggestionDocumentImpl.fromJson;
+
+  @override
+
+  /// The suggestion contained in the document of the query suggestion
+  String get suggestion;
+  @override
+  @JsonKey(ignore: true)
+  _$$ElasticSuggestionDocumentImplCopyWith<_$ElasticSuggestionDocumentImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }
