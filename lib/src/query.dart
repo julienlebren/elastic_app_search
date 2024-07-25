@@ -895,6 +895,10 @@ class _ElasticSortConverter
   }
 }
 
+/// An object containing all the settings to execute a suggestion query
+///
+/// See https://www.elastic.co/guide/en/app-search/current/query-suggestions-guide.html
+/// to get more information about all the parameters.
 @freezed
 class ElasticSuggestionsQuery with _$ElasticSuggestionsQuery {
   const ElasticSuggestionsQuery._();

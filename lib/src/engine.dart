@@ -30,6 +30,9 @@ class ElasticEngine {
   ]) =>
       service.postSearchOperation(query, cancelToken);
 
+  /// Executes the given query in a query suggestion operation on this engine
+  ///
+  /// See [https://www.elastic.co/guide/en/app-search/current/query-suggestions-guide.html]
   Future<ElasticQuerySuggestionResponse> getQuerySuggestion(
     ElasticSuggestionsQuery query, [
     CancelToken? cancelToken,
