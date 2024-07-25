@@ -2,14 +2,18 @@
 
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:elastic_app_search/elastic_app_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:elastic_app_search/elastic_app_search.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 const elasticOfficePoint = LatLong(37.7749, -122.4194);
+
+void main() {
+  runApp(const App());
+}
 
 class Park {
   Park({
@@ -26,7 +30,7 @@ class Park {
 }
 
 class App extends StatefulWidget {
-  const App({Key? key}) : super(key: key);
+  const App({super.key});
 
   @override
   createState() => _AppState();
@@ -382,8 +386,8 @@ class _AppState extends State<App> {
 class ParkCard extends StatelessWidget {
   const ParkCard({
     required this.park,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Park park;
 
@@ -416,7 +420,7 @@ class ParkCard extends StatelessWidget {
                   ),
                   if (park.worldHeritageSite == true)
                     Image.asset(
-                      'assets/images/wh.png',
+                      'assets/wh.png',
                       height: 30,
                       width: 30,
                     )
@@ -458,8 +462,8 @@ class SearchFilters extends StatelessWidget {
     required this.closeCallback,
     required this.showAllStates,
     required this.showAllStatesCallback,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ElasticFacet statesFacet;
   final List<String> enabledStates;
@@ -606,16 +610,16 @@ class SearchFilters extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           child: FlutterMap(
                             options: MapOptions(
-                              center: LatLng(37.7749, -112.4194),
-                              zoom: 4.5,
+                              initialCenter: LatLng(37.7749, -112.4194),
+                              initialZoom: 4.5,
                             ),
-                            layers: [
-                              TileLayerOptions(
+                            children: [
+                              TileLayer(
                                 urlTemplate:
                                     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
                                 subdomains: ['a', 'b', 'c'],
                               ),
-                              CircleLayerOptions(circles: [
+                              CircleLayer(circles: [
                                 CircleMarker(
                                   point: LatLng(37.7749, -122.4194),
                                   borderColor: Colors.lightBlueAccent,
@@ -626,17 +630,6 @@ class SearchFilters extends StatelessWidget {
                                   useRadiusInMeter: true,
                                 ),
                               ]),
-                              MarkerLayerOptions(
-                                markers: [
-                                  Marker(
-                                    width: 40.0,
-                                    height: 40.0,
-                                    point: LatLng(37.7749, -122.4194),
-                                    builder: (ctx) => Image.asset(
-                                        'assets/images/elastic.png'),
-                                  ),
-                                ],
-                              ),
                             ],
                           ),
                         ),
@@ -676,8 +669,8 @@ class SearchFiltersSection extends StatelessWidget {
   const SearchFiltersSection({
     required this.title,
     required this.children,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String title;
   final List<Widget> children;
@@ -715,8 +708,8 @@ class SearchFiltersRow extends StatelessWidget {
     required this.title,
     required this.child,
     this.count,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String title;
   final int? count;
@@ -751,8 +744,8 @@ class SearchFiltersSwitch extends StatelessWidget {
   const SearchFiltersSwitch({
     required this.value,
     this.onChanged,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final bool value;
   final ValueChanged<bool>? onChanged;
@@ -772,8 +765,8 @@ class SearchFiltersRadio extends StatelessWidget {
     required this.value,
     required this.groupValue,
     this.onChanged,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final String value;
   final String groupValue;
