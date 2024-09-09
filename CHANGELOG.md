@@ -1,3 +1,8 @@
+## 0.5.0
+
+* Query suggestion integrated by @Senne021 
+* Updated the dependecies to maintain compatibility
+
 ## 0.4.3
 
 * Updated the dependecies to maintain compatibility
