@@ -1,5 +1,3 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
-
 part of '../elastic_app_search.dart';
 
 class ElasticAppSearchException implements Exception {
@@ -191,7 +189,7 @@ class ElasticAppSearch {
 
           if (disjunctiveResponse.statusCode == 200 &&
               disjunctiveResponse.data != null) {
-            final _disjunctiveResponse = ElasticResponse.fromJson(
+            final disjunctiveParsedResponse = ElasticResponse.fromJson(
               disjunctiveResponse.data as Map<String, dynamic>,
             );
 
@@ -205,7 +203,8 @@ class ElasticAppSearch {
                   ?.where((e) => e.name == field)
                   .toList();
               if (filters != null && filters.isNotEmpty) {
-                final replacedFacets = _disjunctiveResponse.rawFacets?[field];
+                final replacedFacets =
+                    disjunctiveParsedResponse.rawFacets?[field];
                 if (replacedFacets != null) {
                   rawFacets[field] = replacedFacets;
                 }
@@ -252,7 +251,8 @@ class ElasticAppSearch {
     ElasticSuggestionsQuery query, [
     CancelToken? cancelToken,
   ]) async {
-    final queryEngine = query.engine;
+    final validatedQuery = _validateElasticSuggestionsQuery(query);
+    final queryEngine = validatedQuery.engine;
     if (queryEngine == null) {
       throw StateError(
         'An engine is required to execute a query suggestion operation. '
@@ -264,7 +264,7 @@ class ElasticAppSearch {
     final url = _apiUrl(engine, Operation.querySuggestion);
     if (_debug) {
       print("====== Query ======");
-      print(query.toJson());
+      print(validatedQuery.toJson());
       print("====== Url ======");
       print(url);
     }
@@ -273,7 +273,7 @@ class ElasticAppSearch {
       final response = await _dio.post<Map>(
         url,
         options: _requestOptions,
-        data: query.toJson(),
+        data: validatedQuery.toJson(),
         cancelToken: cancelToken,
       );
 

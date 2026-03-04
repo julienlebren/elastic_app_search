@@ -5,6 +5,17 @@ const _highlightEnd = '</em>';
 
 typedef FromElastic<T> = T Function(Map<String, dynamic> data);
 
+Map<String, dynamic>? _asStringDynamicMap(Object? value) {
+  if (value is Map<String, dynamic>) return value;
+  if (value is! Map) return null;
+
+  final mapped = <String, dynamic>{};
+  for (final entry in value.entries) {
+    mapped[entry.key.toString()] = entry.value;
+  }
+  return mapped;
+}
+
 /// An object containing information about a given result
 @freezed
 abstract class ElasticResultMeta with _$ElasticResultMeta {
@@ -50,44 +61,50 @@ abstract class ElasticResult with _$ElasticResult {
       ElasticResult._fromJsonWithData(json);
 
   factory ElasticResult._fromJsonWithData(Map<String, dynamic> json) {
-    var unescape = HtmlUnescape();
-    var data = <String, dynamic>{};
-    var snippets = <String, ElasticResultSnippet>{};
-    for (var key in json.keys) {
-      if (!key.startsWith('_')) {
-        if (json[key]["raw"] != null) {
-          data[key] = json[key]["raw"];
-        }
-        if (json[key]["snippet"] != null) {
-          final text = unescape
-              .convert(json[key]["snippet"])
-              .replaceAll("\n", "")
-              .trim();
+    final unescape = HtmlUnescape();
+    final data = <String, dynamic>{};
+    final snippets = <String, ElasticResultSnippet>{};
 
-          final highlightExp = RegExp(r'<em>([^<]*)</em>');
+    for (final entry in json.entries) {
+      final key = entry.key;
+      if (key.startsWith('_')) continue;
 
-          List<String?> highlights = highlightExp
-              .allMatches(text)
-              .map((match) => match.group(0))
-              .where((element) => element != null)
-              .toList();
+      final fieldData = _asStringDynamicMap(entry.value);
+      if (fieldData == null) continue;
 
-          snippets[key] = ElasticResultSnippet(
-            fullText: text
-                .replaceAll(_highlightStart, "")
-                .replaceAll(_highlightEnd, ""),
-            textParts: text
-                .replaceAll(_highlightEnd, _highlightStart)
-                .split(_highlightStart),
-            highlights: highlights
-                .map(
-                  (e) => e!
-                      .replaceAll(_highlightStart, "")
-                      .replaceAll(_highlightEnd, ""),
-                )
-                .toList(),
-          );
-        }
+      final rawValue = fieldData['raw'];
+      if (rawValue != null) {
+        data[key] = rawValue;
+      }
+
+      final rawSnippet = fieldData['snippet'];
+      if (rawSnippet != null) {
+        final text = unescape
+            .convert(rawSnippet.toString())
+            .replaceAll('\n', '')
+            .trim();
+
+        final highlightExp = RegExp(r'<em>([^<]*)</em>');
+        final highlights = highlightExp
+            .allMatches(text)
+            .map((match) => match.group(0))
+            .whereType<String>()
+            .map(
+              (highlight) => highlight
+                  .replaceAll(_highlightStart, '')
+                  .replaceAll(_highlightEnd, ''),
+            )
+            .toList();
+
+        snippets[key] = ElasticResultSnippet(
+          fullText: text
+              .replaceAll(_highlightStart, '')
+              .replaceAll(_highlightEnd, ''),
+          textParts: text
+              .replaceAll(_highlightEnd, _highlightStart)
+              .split(_highlightStart),
+          highlights: highlights,
+        );
       }
     }
     return _$ElasticResultFromJson(

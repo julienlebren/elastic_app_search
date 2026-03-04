@@ -15,6 +15,65 @@ void _validatePrecisionTuning(int? precisionTuning) {
   }
 }
 
+void _validateFieldNameValue(String field, String method) {
+  if (field.trim().isEmpty) {
+    throw ArgumentError.value(
+      field,
+      'field',
+      'Field name passed to $method must be a non-empty string.',
+    );
+  }
+}
+
+void _validateWeightValue(int? weight) {
+  if (weight != null && (weight < 1 || weight > 10)) {
+    throw RangeError.range(
+      weight,
+      1,
+      10,
+      'weight',
+      'The value of the weight parameter must be an integer between 1 and 10.',
+    );
+  }
+}
+
+void _validateResultSizesValue({int? rawSize, int? snippetSize}) {
+  if (rawSize != null && rawSize < 20) {
+    throw RangeError.value(rawSize, 'rawSize', 'Raw size must be at least 20.');
+  }
+  if (snippetSize != null && snippetSize < 20) {
+    throw RangeError.value(
+      snippetSize,
+      'snippetSize',
+      'Snippet size must be at least 20.',
+    );
+  }
+}
+
+void _validateGroupSizeValue(int? size) {
+  if (size != null && (size < 1 || size > 10)) {
+    throw RangeError.range(
+      size,
+      1,
+      10,
+      'size',
+      'size must be between 1 and 10.',
+    );
+  }
+}
+
+void _validateSuggestionSize(int? size) {
+  if (size != null && (size < 1 || size > 1000)) {
+    throw RangeError.range(
+      size,
+      1,
+      1000,
+      'size',
+      'The size of suggestions must be between 1 and 1000.',
+    );
+  }
+}
+
 void _validateSearchPage({required int current, required int size}) {
   if (size < 0 || size > 1000) {
     throw RangeError.range(
@@ -46,7 +105,97 @@ ElasticQuery _validateElasticQuery(ElasticQuery query) {
 
   final tags = query.analytics?.tags;
   if (tags != null) {
+    for (final tag in tags) {
+      if (tag.isEmpty) {
+        throw ArgumentError.value(
+          tag,
+          'tag',
+          'A tag must be a non-empty string.',
+        );
+      }
+      if (tag.length > 64) {
+        throw ArgumentError.value(
+          tag,
+          'tag',
+          'A tag is limited to 64 characters.',
+        );
+      }
+    }
     _validateAnalyticsTags(tags);
+  }
+
+  for (final searchField
+      in query.searchFields ?? const <_ElasticSearchField>[]) {
+    _validateFieldNameValue(searchField.name, 'searchField');
+    _validateWeightValue(searchField.weight);
+  }
+
+  for (final resultField
+      in query.resultFields ?? const <_ElasticResultField>[]) {
+    _validateFieldNameValue(resultField.name, 'resultField');
+    _validateResultSizesValue(
+      rawSize: resultField.rawSize,
+      snippetSize: resultField.snippetSize,
+    );
+  }
+
+  for (final sortBy in query.sortBy ?? const <_ElasticSort>[]) {
+    _validateFieldNameValue(sortBy.field, 'sort');
+  }
+
+  final groupBy = query.groupBy;
+  if (groupBy != null) {
+    _validateFieldNameValue(groupBy.field, 'group');
+    _validateGroupSizeValue(groupBy.size);
+  }
+
+  for (final filter in query.filters ?? const <_ElasticSearchFilter>[]) {
+    _validateFieldNameValue(filter.name, 'filter');
+    if (filter.value case final _ElasticGeoFilter geoFilter) {
+      final center = geoFilter.center;
+      if (center == null) {
+        throw ArgumentError('center is required.');
+      }
+      _validateLatLongValues(center.latitude, center.longitude);
+    }
+  }
+
+  final facets = query.facets;
+  if (facets != null) {
+    for (final facetField in facets.keys) {
+      _validateFieldNameValue(facetField, 'facet');
+    }
+  }
+
+  final disjunctiveFacets = query.disjunctiveFacets;
+  if (disjunctiveFacets != null) {
+    for (final disjunctiveFacet in disjunctiveFacets) {
+      _validateFieldNameValue(disjunctiveFacet, 'disjunctiveFacet');
+      if (facets?[disjunctiveFacet] == null) {
+        throw StateError(
+          'No facet currently exists for "$disjunctiveFacet". '
+          'Please create your facet before calling disjunctiveFacet.',
+        );
+      }
+    }
+  }
+
+  return query;
+}
+
+ElasticSuggestionsQuery _validateElasticSuggestionsQuery(
+  ElasticSuggestionsQuery query,
+) {
+  _validateSuggestionSize(query.sizeField);
+
+  for (final searchField
+      in query.searchFields ?? const <_ElasticSearchField>[]) {
+    _validateFieldNameValue(searchField.name, 'searchField');
+    _validateWeightValue(searchField.weight);
+  }
+
+  for (final sortBy in query.sortBy ?? const <_ElasticSort>[]) {
+    _validateFieldNameValue(sortBy.field, 'sort');
   }
 
   return query;
@@ -124,42 +273,15 @@ abstract class ElasticQuery with _$ElasticQuery {
       _validateElasticQuery(_$ElasticQueryFromJson(json));
 
   void _validateFieldName(String field, String method) {
-    if (field.trim().isEmpty) {
-      throw ArgumentError.value(
-        field,
-        'field',
-        'Field name passed to $method must be a non-empty string.',
-      );
-    }
+    _validateFieldNameValue(field, method);
   }
 
   void _validateWeight(int? weight) {
-    if (weight != null && (weight < 1 || weight > 10)) {
-      throw RangeError.range(
-        weight,
-        1,
-        10,
-        'weight',
-        'The value of the weight parameter must be an integer between 1 and 10.',
-      );
-    }
+    _validateWeightValue(weight);
   }
 
   void _validateResultSizes({int? rawSize, int? snippetSize}) {
-    if (rawSize != null && rawSize < 20) {
-      throw RangeError.value(
-        rawSize,
-        'rawSize',
-        'Raw size must be at least 20.',
-      );
-    }
-    if (snippetSize != null && snippetSize < 20) {
-      throw RangeError.value(
-        snippetSize,
-        'snippetSize',
-        'Snippet size must be at least 20.',
-      );
-    }
+    _validateResultSizesValue(rawSize: rawSize, snippetSize: snippetSize);
   }
 
   void _validateFilterArguments({
@@ -485,10 +607,6 @@ abstract class ElasticQuery with _$ElasticQuery {
       _ElasticSearchFilter(type: type, name: field, value: value),
     ];
 
-    // TO DO
-    // Once all filters have been set, we must now check them
-    // to ensure the query is valid.
-
     return copyWith(filters: newFilters);
   }
 
@@ -690,15 +808,7 @@ abstract class ElasticQuery with _$ElasticQuery {
   /// See [https://www.elastic.co/guide/en/app-search/current/grouping.html]
   ElasticQuery group(String field, {int? size}) {
     _validateFieldName(field, 'group');
-    if (size != null && (size < 1 || size > 10)) {
-      throw RangeError.range(
-        size,
-        1,
-        10,
-        'size',
-        'size must be between 1 and 10.',
-      );
-    }
+    _validateGroupSizeValue(size);
 
     return copyWith(
       groupBy: _ElasticGroup(field: field, size: size),
@@ -1263,7 +1373,7 @@ abstract class ElasticSuggestionsQuery with _$ElasticSuggestionsQuery {
   }) = _ElasticSuggestionsQuery;
 
   factory ElasticSuggestionsQuery.fromJson(Map<String, dynamic> json) =>
-      _$ElasticSuggestionsQueryFromJson(json);
+      _validateElasticSuggestionsQuery(_$ElasticSuggestionsQueryFromJson(json));
 
   /// Takes a field with an optional `weight`, creates and returns a new [ElasticSuggestionsQuery]
   ///
@@ -1276,22 +1386,8 @@ abstract class ElasticSuggestionsQuery with _$ElasticSuggestionsQuery {
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/search-fields-weights.html]
   ElasticSuggestionsQuery searchField(String field, {int? weight}) {
-    if (field.trim().isEmpty) {
-      throw ArgumentError.value(
-        field,
-        'field',
-        'Field name passed to searchField must be a non-empty string.',
-      );
-    }
-    if (weight != null && (weight < 1 || weight > 10)) {
-      throw RangeError.range(
-        weight,
-        1,
-        10,
-        'weight',
-        'The value of the weight parameter must be an integer between 1 and 10.',
-      );
-    }
+    _validateFieldNameValue(field, 'searchField');
+    _validateWeightValue(weight);
 
     return copyWith(
       searchFields: [
@@ -1306,13 +1402,7 @@ abstract class ElasticSuggestionsQuery with _$ElasticSuggestionsQuery {
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/sort.html]
   ElasticSuggestionsQuery sort(String field, {bool descending = false}) {
-    if (field.trim().isEmpty) {
-      throw ArgumentError.value(
-        field,
-        'field',
-        'Field name passed to sort must be a non-empty string.',
-      );
-    }
+    _validateFieldNameValue(field, 'sort');
 
     final newSortBy = _ElasticSort(field: field, descending: descending);
     return copyWith(sortBy: [...?sortBy, newSortBy]);
@@ -1320,15 +1410,7 @@ abstract class ElasticSuggestionsQuery with _$ElasticSuggestionsQuery {
 
   /// Creates and returns a new [ElasticSuggestionsQuery] with new size parameters.
   ElasticSuggestionsQuery size(int size) {
-    if (size < 1 || size > 1000) {
-      throw RangeError.range(
-        size,
-        1,
-        1000,
-        'size',
-        'The size of suggestions must be between 1 and 1000.',
-      );
-    }
+    _validateSuggestionSize(size);
 
     return copyWith(sizeField: size);
   }

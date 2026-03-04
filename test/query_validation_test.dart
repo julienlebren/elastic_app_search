@@ -187,6 +187,28 @@ void main() {
       );
     });
 
+    test('search query validates search field weights at runtime', () {
+      expect(
+        () => ElasticQuery.fromJson({
+          'query': 'mountains',
+          'search_fields': {
+            'title': {'weight': 0},
+          },
+        }),
+        throwsRangeError,
+      );
+    });
+
+    test('search query validates group size at runtime', () {
+      expect(
+        () => ElasticQuery.fromJson({
+          'query': 'mountains',
+          'group': {'field': 'states', 'size': 0},
+        }),
+        throwsRangeError,
+      );
+    });
+
     test('search query validates geo filter center at runtime', () {
       expect(
         () => ElasticQuery.fromJson({
@@ -213,6 +235,25 @@ void main() {
                 'location': {'center': '91,-122.4194', 'unit': 'mi', 'from': 1},
               },
             ],
+          },
+        }),
+        throwsRangeError,
+      );
+    });
+
+    test('suggestion query validates size at runtime', () {
+      expect(
+        () => ElasticSuggestionsQuery.fromJson({'query': 'mount', 'size': 0}),
+        throwsRangeError,
+      );
+    });
+
+    test('suggestion query validates search field weights at runtime', () {
+      expect(
+        () => ElasticSuggestionsQuery.fromJson({
+          'query': 'mount',
+          'search_fields': {
+            'title': {'weight': 11},
           },
         }),
         throwsRangeError,
