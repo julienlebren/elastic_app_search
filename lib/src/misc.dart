@@ -1,30 +1,4 @@
-// ignore_for_file: unused_element
-
 part of '../elastic_app_search.dart';
-
-void _validateElasticRange(Object? from, Object? to) {
-  if (from == null && to == null) {
-    throw ArgumentError('You must provide at least `from` or `to`.');
-  }
-
-  final isValidFrom = from == null || from is num || from is DateTime;
-  if (!isValidFrom) {
-    throw ArgumentError.value(
-      from,
-      'from',
-      '`from` must be an int, a double or a DateTime',
-    );
-  }
-
-  final isValidTo = to == null || to is num || to is DateTime;
-  if (!isValidTo) {
-    throw ArgumentError.value(
-      to,
-      'to',
-      '`to` must be an int, a double or a DateTime',
-    );
-  }
-}
 
 void _validateLatLongValues(double latitude, double longitude) {
   if (latitude < -90 || latitude > 90) {
@@ -91,32 +65,12 @@ extension _DateTimeX on DateTime {
 
 @freezed
 abstract class ElasticRange with _$ElasticRange {
-  @Assert(
-    'from != null || to != null',
-    'You must provide at least `from` or `to`.',
-  )
-  @Assert(
-    'from == null || (from != null && (from is int || from is double || from is DateTime))',
-    '`from` must be an int, a double or a DateTime',
-  )
-  @Assert(
-    'to == null || (to != null && (to is int || to is double || to is DateTime))',
-    '`to` must be an int, a double or a DateTime',
-  )
   const factory ElasticRange({String? name, Object? from, Object? to}) =
       _ElasticRange;
 }
 
 @freezed
 abstract class LatLong with _$LatLong {
-  @Assert(
-    'latitude >= -90 && latitude <= 90',
-    'Latitude must be between -90 and 90 degrees.',
-  )
-  @Assert(
-    'longitude >= -180 && longitude <= 180',
-    'Longitude must be between -180 and 180 degrees.',
-  )
   const factory LatLong(double latitude, double longitude) = _LatLong;
 }
 

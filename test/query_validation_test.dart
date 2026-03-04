@@ -260,4 +260,32 @@ void main() {
       );
     });
   });
+
+  group('LatLong usage validation', () {
+    test('query filter validates invalid coordinates at runtime', () {
+      expect(
+        () => engine
+            .query('mountains')
+            .filter(
+              'location',
+              isFurtherThanOrAt: 1,
+              from: const LatLong(91, 0),
+            ),
+        throwsRangeError,
+      );
+    });
+
+    test('query facet validates invalid coordinates at runtime', () {
+      expect(
+        () => engine
+            .query('mountains')
+            .facet(
+              'location',
+              isFurtherThanOrAt: 1,
+              from: const LatLong(0, -181),
+            ),
+        throwsRangeError,
+      );
+    });
+  });
 }

@@ -1932,7 +1932,7 @@ return $default(_that.name,_that.from,_that.to);case _:
 
 
 class _ElasticRange implements ElasticRange {
-  const _ElasticRange({this.name, this.from, this.to}): assert(from != null || to != null, 'You must provide at least `from` or `to`.'),assert(from == null || (from != null && (from is int || from is double || from is DateTime)), '`from` must be an int, a double or a DateTime'),assert(to == null || (to != null && (to is int || to is double || to is DateTime)), '`to` must be an int, a double or a DateTime');
+  const _ElasticRange({this.name, this.from, this.to});
   
 
 @override final  String? name;
@@ -2192,7 +2192,7 @@ return $default(_that.latitude,_that.longitude);case _:
 
 
 class _LatLong implements LatLong {
-  const _LatLong(this.latitude, this.longitude): assert(latitude >= -90 && latitude <= 90, 'Latitude must be between -90 and 90 degrees.'),assert(longitude >= -180 && longitude <= 180, 'Longitude must be between -180 and 180 degrees.');
+  const _LatLong(this.latitude, this.longitude);
   
 
 @override final  double latitude;

@@ -1,5 +1,3 @@
-// ignore_for_file: unused_element
-
 part of '../elastic_app_search.dart';
 
 void _validateAnalyticsTags(List<String> tags) {

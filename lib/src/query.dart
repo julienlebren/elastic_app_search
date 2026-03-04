@@ -1,4 +1,4 @@
-// ignore_for_file: unused_element, unused_element_parameter, library_private_types_in_public_api, no_leading_underscores_for_local_identifiers
+// ignore_for_file: unused_element, unused_element_parameter, library_private_types_in_public_api
 
 part of '../elastic_app_search.dart';
 
@@ -701,7 +701,7 @@ abstract class ElasticQuery with _$ElasticQuery {
       from: from,
     );
 
-    Map<String, _ElasticQueryFacet> _facets = facets != null
+    Map<String, _ElasticQueryFacet> facetsMap = facets != null
         ? {...facets!}
         : {};
     _ElasticQueryFacet facet;
@@ -756,8 +756,8 @@ abstract class ElasticQuery with _$ElasticQuery {
       facet = _ElasticQueryFacet(type: "value", size: size);
     }
 
-    _facets[field] = facet;
-    return copyWith(facets: _facets);
+    facetsMap[field] = facet;
+    return copyWith(facets: facetsMap);
   }
 
   /// Creates and returns a new [ElasticQuery] with additional disjunctive facet.
@@ -853,15 +853,15 @@ abstract class ElasticQuery with _$ElasticQuery {
   /// at the same time of the main query, when disjunctive facets are set.
   List<ElasticQuery>? get _disjunctives {
     if (disjunctiveFacets == null || disjunctiveFacets!.isEmpty) return null;
-    List<ElasticQuery> _disjunctives = [];
+    List<ElasticQuery> disjunctiveQueries = [];
 
     for (String field in disjunctiveFacets ?? []) {
-      final _disjunctiveQuery = _disjunctive(field);
-      if (_disjunctiveQuery != null) {
-        _disjunctives.add(_disjunctiveQuery);
+      final disjunctiveQuery = _disjunctive(field);
+      if (disjunctiveQuery != null) {
+        disjunctiveQueries.add(disjunctiveQuery);
       }
     }
-    return _disjunctives;
+    return disjunctiveQueries;
   }
 
   /// Private method - not intended to be used
