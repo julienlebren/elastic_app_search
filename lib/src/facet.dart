@@ -1,9 +1,9 @@
-// ignore_for_file: unused_element
+// ignore_for_file: unused_element, unused_element_parameter
 
-part of elastic_app_search;
+part of '../elastic_app_search.dart';
 
 @freezed
-class _ElasticQueryFacet with _$ElasticQueryFacet {
+abstract class _ElasticQueryFacet with _$ElasticQueryFacet {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticQueryFacet({
     required String type,
@@ -12,28 +12,28 @@ class _ElasticQueryFacet with _$ElasticQueryFacet {
     int? size,
     @_LatLongConverter() LatLong? center,
     GeoUnit? unit,
-  }) = __ElasticQueryFacet;
+  }) = _ElasticQueryFacetImpl;
 
   factory _ElasticQueryFacet.fromJson(Map<String, dynamic> json) =>
       _$ElasticQueryFacetFromJson(json);
 }
 
 @freezed
-class _ElasticRangeFacet with _$ElasticRangeFacet {
+abstract class _ElasticRangeFacet with _$ElasticRangeFacet {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticRangeFacet({
     String? name,
     String? from,
     String? to,
     int? count,
-  }) = __ElasticRangeFacet;
+  }) = _ElasticRangeFacetImpl;
 
   factory _ElasticRangeFacet.fromJson(Map<String, dynamic> json) =>
       _$ElasticRangeFacetFromJson(json);
 }
 
 @freezed
-class ElasticFacet with _$ElasticFacet {
+abstract class ElasticFacet with _$ElasticFacet {
   const ElasticFacet._();
 
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
@@ -67,12 +67,11 @@ class ElasticFacet with _$ElasticFacet {
     return 0;
   }
 
-  int countForRange({
-    double? from,
-    double? to,
-  }) {
-    final rangeData = data?.where((element) =>
-        element.from == from?.toString() && element.to == to?.toString());
+  int countForRange({double? from, double? to}) {
+    final rangeData = data?.where(
+      (element) =>
+          element.from == from?.toString() && element.to == to?.toString(),
+    );
     if (rangeData != null && rangeData.isNotEmpty) {
       return rangeData.first.count;
     }
@@ -81,7 +80,7 @@ class ElasticFacet with _$ElasticFacet {
 }
 
 @freezed
-class ElasticFacetData with _$ElasticFacetData {
+abstract class ElasticFacetData with _$ElasticFacetData {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory ElasticFacetData({
     String? name,

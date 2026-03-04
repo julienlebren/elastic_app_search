@@ -1,15 +1,13 @@
-part of elastic_app_search;
+part of '../elastic_app_search.dart';
 
 const _highlightStart = '<em>';
 const _highlightEnd = '</em>';
 
-typedef FromElastic<T> = T Function(
-  Map<String, dynamic> data,
-);
+typedef FromElastic<T> = T Function(Map<String, dynamic> data);
 
 /// An object containing information about a given result
 @freezed
-class ElasticResultMeta with _$ElasticResultMeta {
+abstract class ElasticResultMeta with _$ElasticResultMeta {
   factory ElasticResultMeta({
     /// The relevance of the result
     double? score,
@@ -21,7 +19,7 @@ class ElasticResultMeta with _$ElasticResultMeta {
 
 /// An object presenting a result to the query
 @freezed
-class ElasticResult with _$ElasticResult {
+abstract class ElasticResult with _$ElasticResult {
   const ElasticResult._();
 
   factory ElasticResult({
@@ -82,18 +80,19 @@ class ElasticResult with _$ElasticResult {
                 .replaceAll(_highlightEnd, _highlightStart)
                 .split(_highlightStart),
             highlights: highlights
-                .map((e) => e!
-                    .replaceAll(_highlightStart, "")
-                    .replaceAll(_highlightEnd, ""))
+                .map(
+                  (e) => e!
+                      .replaceAll(_highlightStart, "")
+                      .replaceAll(_highlightEnd, ""),
+                )
                 .toList(),
           );
         }
       }
     }
-    return _$ElasticResultFromJson(json).copyWith(
-      data: data,
-      snippets: snippets,
-    );
+    return _$ElasticResultFromJson(
+      json,
+    ).copyWith(data: data, snippets: snippets);
   }
 
   /// An easier way to get the score
@@ -102,7 +101,7 @@ class ElasticResult with _$ElasticResult {
 
 /// An object contaning the snippet of the result
 @freezed
-class ElasticResultSnippet with _$ElasticResultSnippet {
+abstract class ElasticResultSnippet with _$ElasticResultSnippet {
   factory ElasticResultSnippet({
     /// The full snippet, matching the size provided in the [ElasticResultField]
     /// passed to the query.
@@ -128,7 +127,7 @@ class ElasticResultSnippet with _$ElasticResultSnippet {
 
 /// An object presenting a result to the suggestion query
 @freezed
-class ElasticSuggestionResult with _$ElasticSuggestionResult {
+abstract class ElasticSuggestionResult with _$ElasticSuggestionResult {
   const ElasticSuggestionResult._();
 
   factory ElasticSuggestionResult({
@@ -142,7 +141,7 @@ class ElasticSuggestionResult with _$ElasticSuggestionResult {
 
 /// An object presenting a suggestion to the suggestion query
 @freezed
-class ElasticSuggestionDocument with _$ElasticSuggestionDocument {
+abstract class ElasticSuggestionDocument with _$ElasticSuggestionDocument {
   const ElasticSuggestionDocument._();
 
   factory ElasticSuggestionDocument({

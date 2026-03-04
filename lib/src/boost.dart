@@ -1,6 +1,6 @@
-// ignore_for_file: unused_element
+// ignore_for_file: unused_element, unused_element_parameter
 
-part of elastic_app_search;
+part of '../elastic_app_search.dart';
 
 enum BoostType {
   @JsonValue("value")
@@ -21,7 +21,7 @@ enum BoostOperation {
 }
 
 @freezed
-class _ElasticBoost with _$ElasticBoost {
+abstract class _ElasticBoost with _$ElasticBoost {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticBoost({
     /// Type of boost
@@ -38,7 +38,7 @@ class _ElasticBoost with _$ElasticBoost {
     /// Must be between 0 and 10. Defaults to 1.0.
     /// A negative factor or fractional factor will not deboost a result.
     double? factor,
-  }) = __ElasticBoost;
+  }) = _ElasticBoostImpl;
 
   factory _ElasticBoost.fromJson(Map<String, dynamic> json) =>
       _$ElasticBoostFromJson(json);

@@ -1,11 +1,8 @@
-part of elastic_app_search;
+part of '../elastic_app_search.dart';
 
 /// An object representing an Elastic engine
 class ElasticEngine {
-  const ElasticEngine({
-    required this.name,
-    required this.service,
-  });
+  const ElasticEngine({required this.name, required this.service});
 
   /// The name must fit one of the engines created in your Elastic deployment
   final String name;
@@ -18,16 +15,10 @@ class ElasticEngine {
 
   /// Creates a [ElasticSuggestionsQuery] object related to this engine
   ElasticSuggestionsQuery suggestionQuery(String query) =>
-      ElasticSuggestionsQuery(
-        engine: this,
-        query: query,
-      );
+      ElasticSuggestionsQuery(engine: this, query: query);
 
   /// Executes the given query on this engine
-  Future<ElasticResponse> get(
-    ElasticQuery query, [
-    CancelToken? cancelToken,
-  ]) =>
+  Future<ElasticResponse> get(ElasticQuery query, [CancelToken? cancelToken]) =>
       service.postSearchOperation(query, cancelToken);
 
   /// Executes the given query in a query suggestion operation on this engine
@@ -36,6 +27,5 @@ class ElasticEngine {
   Future<ElasticQuerySuggestionResponse> getQuerySuggestion(
     ElasticSuggestionsQuery query, [
     CancelToken? cancelToken,
-  ]) =>
-      service.postSuggestionOperation(query, cancelToken);
+  ]) => service.postSuggestionOperation(query, cancelToken);
 }

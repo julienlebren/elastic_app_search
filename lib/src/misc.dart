@@ -1,6 +1,6 @@
 // ignore_for_file: unused_element
 
-part of elastic_app_search;
+part of '../elastic_app_search.dart';
 
 enum _ElasticFilterType {
   @JsonValue("all")
@@ -44,32 +44,34 @@ extension _DateTimeX on DateTime {
 }
 
 @freezed
-class ElasticRange with _$ElasticRange {
+abstract class ElasticRange with _$ElasticRange {
   @Assert(
-      'from != null || to != null', 'You must provide at least `from` or `to`.')
+    'from != null || to != null',
+    'You must provide at least `from` or `to`.',
+  )
   @Assert(
-      'from == null || (from != null && (from is int || from is double || from is DateTime))',
-      '`from` must be an int, a double or a DateTime')
+    'from == null || (from != null && (from is int || from is double || from is DateTime))',
+    '`from` must be an int, a double or a DateTime',
+  )
   @Assert(
-      'to == null || (to != null && (to is int || to is double || to is DateTime))',
-      '`to` must be an int, a double or a DateTime')
-  const factory ElasticRange({
-    String? name,
-    Object? from,
-    Object? to,
-  }) = _ElasticRange;
+    'to == null || (to != null && (to is int || to is double || to is DateTime))',
+    '`to` must be an int, a double or a DateTime',
+  )
+  const factory ElasticRange({String? name, Object? from, Object? to}) =
+      _ElasticRange;
 }
 
 @freezed
-class LatLong with _$LatLong {
-  @Assert('latitude >= -90 && latitude <= 90',
-      'Latitude must be between -90 and 90 degrees.')
-  @Assert('longitude >= -180 && longitude <= 180',
-      'Longitude must be between -180 and 180 degrees.')
-  const factory LatLong(
-    double latitude,
-    double longitude,
-  ) = _LatLong;
+abstract class LatLong with _$LatLong {
+  @Assert(
+    'latitude >= -90 && latitude <= 90',
+    'Latitude must be between -90 and 90 degrees.',
+  )
+  @Assert(
+    'longitude >= -180 && longitude <= 180',
+    'Longitude must be between -180 and 180 degrees.',
+  )
+  const factory LatLong(double latitude, double longitude) = _LatLong;
 }
 
 class _LatLongConverter implements JsonConverter<LatLong?, String?> {
@@ -79,10 +81,7 @@ class _LatLongConverter implements JsonConverter<LatLong?, String?> {
   LatLong? fromJson(String? value) {
     if (value == null) return null;
     final values = value.split(',');
-    return LatLong(
-      double.parse(values[0]),
-      double.parse(values[1]),
-    );
+    return LatLong(double.parse(values[0]), double.parse(values[1]));
   }
 
   @override

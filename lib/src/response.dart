@@ -1,10 +1,10 @@
-part of elastic_app_search;
+part of '../elastic_app_search.dart';
 
 /// An object containing the response for a given query
 ///
 /// See [https://www.elastic.co/guide/en/app-search/current/search.html]
 @freezed
-class ElasticResponse with _$ElasticResponse {
+abstract class ElasticResponse with _$ElasticResponse {
   ElasticResponse._();
 
   factory ElasticResponse({
@@ -36,7 +36,7 @@ class ElasticResponse with _$ElasticResponse {
 ///
 /// See [https://www.elastic.co/guide/en/app-search/current/search.html#search-api-response-body]
 @freezed
-class ElasticResponseMeta with _$ElasticResponseMeta {
+abstract class ElasticResponseMeta with _$ElasticResponseMeta {
   factory ElasticResponseMeta({
     /// String ID representing the request. Guaranteed to be unique.
     @JsonKey(name: "request_id") required String requestId,
@@ -61,7 +61,7 @@ class ElasticResponseMeta with _$ElasticResponseMeta {
 
 /// Object delimiting the pagination meta data.
 @freezed
-class ElasticResponseMetaPage with _$ElasticResponseMetaPage {
+abstract class ElasticResponseMetaPage with _$ElasticResponseMetaPage {
   factory ElasticResponseMetaPage({
     /// Number representing the current page of results.
     required int current,
@@ -91,7 +91,8 @@ class ElasticResponseMetaPage with _$ElasticResponseMetaPage {
 }
 
 @freezed
-class ElasticQuerySuggestionResponse with _$ElasticQuerySuggestionResponse {
+abstract class ElasticQuerySuggestionResponse
+    with _$ElasticQuerySuggestionResponse {
   ElasticQuerySuggestionResponse._();
 
   factory ElasticQuerySuggestionResponse({

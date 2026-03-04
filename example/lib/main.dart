@@ -307,7 +307,7 @@ class _AppState extends State<App> {
                 ),
                 if (isLoading)
                   Container(
-                    color: Colors.white.withOpacity(0.8),
+                    color: Colors.white.withAlpha(204),
                     child: const Center(
                       child: CircularProgressIndicator(),
                     ),
@@ -585,21 +585,25 @@ class SearchFilters extends StatelessWidget {
                         ],
                       ],
                     ),
-                    SearchFiltersSection(
-                      title: "PARK SIZE",
-                      children: [
-                        for (final size in sizesFacet.data!) ...[
-                          SearchFiltersRow(
-                            title: size.name!,
-                            count: size.count,
-                            child: SearchFiltersRadio(
-                              groupValue: enabledSize,
-                              value: size.name!,
-                              onChanged: (size) => sizeCallback(size!),
+                    RadioGroup<String>(
+                      groupValue: enabledSize,
+                      onChanged: (size) {
+                        if (size != null) {
+                          sizeCallback(size);
+                        }
+                      },
+                      child: SearchFiltersSection(
+                        title: "PARK SIZE",
+                        children: [
+                          for (final size in sizesFacet.data!) ...[
+                            SearchFiltersRow(
+                              title: size.name!,
+                              count: size.count,
+                              child: SearchFiltersRadio(value: size.name!),
                             ),
-                          ),
+                          ],
                         ],
-                      ],
+                      ),
                     ),
                     SearchFiltersSection(
                       title: "DISTANCE",
@@ -625,8 +629,7 @@ class SearchFilters extends StatelessWidget {
                                   borderColor: Colors.lightBlueAccent,
                                   borderStrokeWidth: 2.0,
                                   radius: enabledDistance * 1.60934 * 1000,
-                                  color:
-                                      Colors.lightBlueAccent.withOpacity(0.2),
+                                  color: Colors.lightBlueAccent.withAlpha(51),
                                   useRadiusInMeter: true,
                                 ),
                               ]),
@@ -755,7 +758,7 @@ class SearchFiltersSwitch extends StatelessWidget {
     return Switch(
       value: value,
       onChanged: onChanged,
-      activeColor: Colors.lightBlueAccent,
+      activeThumbColor: Colors.lightBlueAccent,
     );
   }
 }
@@ -763,21 +766,15 @@ class SearchFiltersSwitch extends StatelessWidget {
 class SearchFiltersRadio extends StatelessWidget {
   const SearchFiltersRadio({
     required this.value,
-    required this.groupValue,
-    this.onChanged,
     super.key,
   });
 
   final String value;
-  final String groupValue;
-  final ValueChanged<String?>? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return Radio<String>(
       value: value,
-      groupValue: groupValue,
-      onChanged: onChanged,
       activeColor: Colors.lightBlueAccent,
     );
   }

@@ -1,6 +1,6 @@
-// ignore_for_file: unused_element, library_private_types_in_public_api, no_leading_underscores_for_local_identifiers
+// ignore_for_file: unused_element, unused_element_parameter, library_private_types_in_public_api, no_leading_underscores_for_local_identifiers
 
-part of elastic_app_search;
+part of '../elastic_app_search.dart';
 
 /// An object containing all the settings to execute a query
 ///
@@ -10,17 +10,14 @@ part of elastic_app_search;
 /// Note: All the parameters of Elastic App Search are not currently
 /// available in this package.
 @freezed
-class ElasticQuery with _$ElasticQuery {
+abstract class ElasticQuery with _$ElasticQuery {
   const ElasticQuery._();
 
-  @JsonSerializable(
-    explicitToJson: true,
-    includeIfNull: false,
-  )
-  @Assert('engine != null', 'An engine is required to build a query.')
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
   @Assert(
-      'precisionTuning == null || (precisionTuning != null && precisionTuning >= 1 && precisionTuning <= 11)',
-      'The value of the precision parameter must be an integer between 1 and 11, inclusive.')
+    'precisionTuning == null || (precisionTuning != null && precisionTuning >= 1 && precisionTuning <= 11)',
+    'The value of the precision parameter must be an integer between 1 and 11, inclusive.',
+  )
   const factory ElasticQuery({
     /// An object representing an Elastic engine
     @JsonKey(includeToJson: false, includeFromJson: false)
@@ -80,6 +77,156 @@ class ElasticQuery with _$ElasticQuery {
   factory ElasticQuery.fromJson(Map<String, dynamic> json) =>
       _$ElasticQueryFromJson(json);
 
+  void _validateFieldName(String field, String method) {
+    if (field.trim().isEmpty) {
+      throw ArgumentError.value(
+        field,
+        'field',
+        'Field name passed to $method must be a non-empty string.',
+      );
+    }
+  }
+
+  void _validateWeight(int? weight) {
+    if (weight != null && (weight < 1 || weight > 10)) {
+      throw RangeError.range(
+        weight,
+        1,
+        10,
+        'weight',
+        'The value of the weight parameter must be an integer between 1 and 10.',
+      );
+    }
+  }
+
+  void _validateResultSizes({int? rawSize, int? snippetSize}) {
+    if (rawSize != null && rawSize < 20) {
+      throw RangeError.value(
+        rawSize,
+        'rawSize',
+        'Raw size must be at least 20.',
+      );
+    }
+    if (snippetSize != null && snippetSize < 20) {
+      throw RangeError.value(
+        snippetSize,
+        'snippetSize',
+        'Snippet size must be at least 20.',
+      );
+    }
+  }
+
+  void _validateFilterArguments({
+    required String field,
+    Object? isEqualTo,
+    List<Object?>? whereIn,
+    Object? isGreaterThanOrEqualTo,
+    Object? isLessThan,
+    double? isFurtherThanOrAt,
+    double? isLessFarThan,
+    LatLong? from,
+  }) {
+    _validateFieldName(field, 'filter');
+
+    final hasValueFilter = isEqualTo != null || whereIn != null;
+    final hasRangeFilter = isGreaterThanOrEqualTo != null || isLessThan != null;
+    final hasGeoFilter = isFurtherThanOrAt != null || isLessFarThan != null;
+
+    if (!hasValueFilter && !hasRangeFilter && !hasGeoFilter) {
+      throw ArgumentError(
+        'You must provide at least one condition '
+        '(isEqualTo, whereIn, isGreaterThanOrEqualTo, isLessThan, '
+        'isFurtherThanOrAt, isLessFarThan).',
+      );
+    }
+
+    if (isEqualTo != null && whereIn != null) {
+      throw ArgumentError(
+        'You cannot use isEqualTo and whereIn at the same time.',
+      );
+    }
+
+    if (isEqualTo != null && hasRangeFilter) {
+      throw ArgumentError(
+        'You cannot use isEqualTo and isGreaterThanOrEqualTo/isLessThan at the same time.',
+      );
+    }
+
+    if (isEqualTo != null && hasGeoFilter) {
+      throw ArgumentError(
+        'You cannot use isEqualTo and isFurtherThanOrAt/isLessFarThan at the same time.',
+      );
+    }
+
+    if (hasRangeFilter && hasGeoFilter) {
+      throw ArgumentError(
+        'You cannot use isFurtherThanOrAt/isLessFarThan and '
+        'isGreaterThanOrEqualTo/isLessThan at the same time.',
+      );
+    }
+
+    if (hasGeoFilter && from == null) {
+      throw ArgumentError(
+        'You must provide from (center point) when using isFurtherThanOrAt/isLessFarThan.',
+      );
+    }
+
+    final validRangeType =
+        (isGreaterThanOrEqualTo == null ||
+            isGreaterThanOrEqualTo is num ||
+            isGreaterThanOrEqualTo is DateTime) &&
+        (isLessThan == null || isLessThan is num || isLessThan is DateTime);
+    if (!validRangeType) {
+      throw ArgumentError(
+        'isGreaterThanOrEqualTo/isLessThan must be a number or a DateTime.',
+      );
+    }
+  }
+
+  void _validateFacetArguments({
+    required String field,
+    Object? isGreaterThanOrEqualTo,
+    Object? isLessThan,
+    Object? isFurtherThanOrAt,
+    Object? isLessFarThan,
+    LatLong? from,
+  }) {
+    _validateFieldName(field, 'facet');
+
+    if (isGreaterThanOrEqualTo != null &&
+        isGreaterThanOrEqualTo is! num &&
+        isGreaterThanOrEqualTo is! DateTime) {
+      throw ArgumentError.value(
+        isGreaterThanOrEqualTo,
+        'isGreaterThanOrEqualTo',
+        '`isGreaterThanOrEqualTo` must be a number or a DateTime.',
+      );
+    }
+
+    if (isLessThan != null && isLessThan is! num && isLessThan is! DateTime) {
+      throw ArgumentError.value(
+        isLessThan,
+        'isLessThan',
+        '`isLessThan` must be a number or a DateTime.',
+      );
+    }
+
+    final hasRangeFilter = isGreaterThanOrEqualTo != null || isLessThan != null;
+    final hasGeoFilter = isFurtherThanOrAt != null || isLessFarThan != null;
+    if (hasRangeFilter && hasGeoFilter) {
+      throw ArgumentError(
+        'You cannot use isFurtherThanOrAt/isLessFarThan and '
+        'isGreaterThanOrEqualTo/isLessThan at the same time.',
+      );
+    }
+
+    if (hasGeoFilter && from == null) {
+      throw ArgumentError(
+        'You must provide from (center point) when using isFurtherThanOrAt/isLessFarThan.',
+      );
+    }
+  }
+
   /// Creates and returns a new [ElasticQuery] with additional [ElasticSearchFilter],
   /// an object to filter documents that contain a specific field value.
   /// Available on text, number, and date fields.
@@ -116,19 +263,18 @@ class ElasticQuery with _$ElasticQuery {
     double? isLessFarThan,
     LatLong? from,
     GeoUnit unit = GeoUnit.meters,
-  }) =>
-      _filter(
-        field,
-        isEqualTo: isEqualTo,
-        whereIn: whereIn,
-        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
-        isLessThan: isLessThan,
-        isFurtherThanOrAt: isFurtherThanOrAt,
-        isLessFarThan: isLessFarThan,
-        from: from,
-        unit: unit,
-        type: _ElasticFilterType.all,
-      );
+  }) => _filter(
+    field,
+    isEqualTo: isEqualTo,
+    whereIn: whereIn,
+    isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+    isLessThan: isLessThan,
+    isFurtherThanOrAt: isFurtherThanOrAt,
+    isLessFarThan: isLessFarThan,
+    from: from,
+    unit: unit,
+    type: _ElasticFilterType.all,
+  );
 
   /// Creates and returns a new [ElasticQuery] with additional [ElasticSearchFilter],
   /// an object to filter documents that contain a specific field value.
@@ -166,19 +312,18 @@ class ElasticQuery with _$ElasticQuery {
     double? isLessFarThan,
     LatLong? from,
     GeoUnit unit = GeoUnit.meters,
-  }) =>
-      _filter(
-        field,
-        isEqualTo: isEqualTo,
-        whereIn: whereIn,
-        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
-        isLessThan: isLessThan,
-        isFurtherThanOrAt: isFurtherThanOrAt,
-        isLessFarThan: isLessFarThan,
-        from: from,
-        unit: unit,
-        type: _ElasticFilterType.any,
-      );
+  }) => _filter(
+    field,
+    isEqualTo: isEqualTo,
+    whereIn: whereIn,
+    isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+    isLessThan: isLessThan,
+    isFurtherThanOrAt: isFurtherThanOrAt,
+    isLessFarThan: isLessFarThan,
+    from: from,
+    unit: unit,
+    type: _ElasticFilterType.any,
+  );
 
   /// Creates and returns a new [ElasticQuery] with additional [ElasticSearchFilter],
   /// an object to filter documents that contain a specific field value.
@@ -216,39 +361,20 @@ class ElasticQuery with _$ElasticQuery {
     double? isLessFarThan,
     LatLong? from,
     GeoUnit unit = GeoUnit.meters,
-  }) =>
-      _filter(
-        field,
-        isEqualTo: isEqualTo,
-        whereIn: whereIn,
-        isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
-        isLessThan: isLessThan,
-        isFurtherThanOrAt: isFurtherThanOrAt,
-        isLessFarThan: isLessFarThan,
-        from: from,
-        unit: unit,
-        type: _ElasticFilterType.none,
-      );
+  }) => _filter(
+    field,
+    isEqualTo: isEqualTo,
+    whereIn: whereIn,
+    isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+    isLessThan: isLessThan,
+    isFurtherThanOrAt: isFurtherThanOrAt,
+    isLessFarThan: isLessFarThan,
+    from: from,
+    unit: unit,
+    type: _ElasticFilterType.none,
+  );
 
   /// Private method which handles filters.
-  @Assert(
-      'isEqualTo != null || whereIn != null || isGreaterThanOrEqualTo != null || isLessThan != null || isFurtherThanOrAt != null || isLessFarThan != null',
-      'You must provide at least one condition (isEqualTo, whereIn, isGreaterThanOrEqualTo, isLessThan, isFurtherThanOrAt, isLessFarThan)')
-  @Assert(
-      '(isEqualTo != null && whereIn == null) || (isEqualTo == null && whereIn != null) || (isEqualTo == null && whereIn == null)',
-      'You cannot use isEqualTo and whereIn at the same time.')
-  @Assert(
-      '(isEqualTo != null && isGreaterThanOrEqualTo == null && isLessThan == null) || (isEqualTo == null && (isGreaterThanOrEqualTo != null || isLessThan != null)) || (isEqualTo == null && isGreaterThanOrEqualTo == null && isLessThan == null)',
-      'You cannot use isEqualTo and isGreaterThanOrEqualTo/isLessThan at the same time.')
-  @Assert(
-      '(isEqualTo != null && isFurtherThanOrAt == null && isLessFarThan == null) || (isEqualTo == null && (isFurtherThanOrAt != null || isLessFarThan != null)) || (isEqualTo == null && isFurtherThanOrAt == null && isLessFarThan == null)',
-      'You cannot use isEqualTo and isFurtherThanOrAt/isLessFarThan at the same time.')
-  @Assert(
-      '((isFurtherThanOrAt != null || isLessFarThan != null) && isGreaterThanOrEqualTo == null && isLessThan == null) || ((isGreaterThanOrEqualTo != null || isLessThan != null) && isFurtherThanOrAt == null && isLessFarThan == null) || (isGreaterThanOrEqualTo == null && isLessThan == null && isFurtherThanOrAt == null && isLessFarThan == null)',
-      'You cannot use isFurtherThanOrAt/isLessFarThan and isGreaterThanOrEqualTo/isLessThan at the same time.')
-  @Assert(
-      '((isFurtherThanOrAt != null || isLessFarThan != null) && from == null) || (isFurtherThanOrAt == null && isLessFarThan == null && from == null)',
-      'You must provide from (which is the center point of your query) when using isFurtherThanOrAt/isLessFarThan.')
   ElasticQuery _filter(
     String field, {
     Object? isEqualTo,
@@ -261,6 +387,17 @@ class ElasticQuery with _$ElasticQuery {
     GeoUnit unit = GeoUnit.meters,
     required _ElasticFilterType type,
   }) {
+    _validateFilterArguments(
+      field: field,
+      isEqualTo: isEqualTo,
+      whereIn: whereIn,
+      isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+      isLessThan: isLessThan,
+      isFurtherThanOrAt: isFurtherThanOrAt,
+      isLessFarThan: isLessFarThan,
+      from: from,
+    );
+
     dynamic value;
 
     if (whereIn != null) {
@@ -293,20 +430,14 @@ class ElasticQuery with _$ElasticQuery {
 
     final List<_ElasticSearchFilter> newFilters = [
       ...?filters,
-      _ElasticSearchFilter(
-        type: type,
-        name: field,
-        value: value,
-      ),
+      _ElasticSearchFilter(type: type, name: field, value: value),
     ];
 
     // TO DO
     // Once all filters have been set, we must now check them
     // to ensure the query is valid.
 
-    return copyWith(
-      filters: newFilters,
-    );
+    return copyWith(filters: newFilters);
   }
 
   /// Takes a precision [int], creates and returns a new [ElasticQuery]
@@ -327,19 +458,14 @@ class ElasticQuery with _$ElasticQuery {
   /// Only available within text fields.
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/search-fields-weights.html]
-  @Assert('weight != null && (weight < 1 || weight > 10)',
-      'The value of the weight parameter must be an integer between 1 and 10.')
-  ElasticQuery searchField(
-    String field, {
-    int? weight,
-  }) {
+  ElasticQuery searchField(String field, {int? weight}) {
+    _validateFieldName(field, 'searchField');
+    _validateWeight(weight);
+
     return copyWith(
       searchFields: [
         ...?searchFields,
-        _ElasticSearchField(
-          name: field,
-          weight: weight,
-        ),
+        _ElasticSearchField(name: field, weight: weight),
       ],
     );
   }
@@ -354,16 +480,15 @@ class ElasticQuery with _$ElasticQuery {
   /// The example of the package presents a use case of this feature.
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/result-fields-highlights.html]
-  @Assert('rawSize == null || (rawSize != null && rawSize >= 20)',
-      'Raw size must be at least 20.')
-  @Assert('snippetSize == null || (snippetSize != null && snippetSize >= 20)',
-      'Raw size must be at least 20.')
   ElasticQuery resultField(
     String field, {
     int? rawSize,
     int? snippetSize,
     bool fallback = true,
   }) {
+    _validateFieldName(field, 'resultField');
+    _validateResultSizes(rawSize: rawSize, snippetSize: snippetSize);
+
     return copyWith(
       resultFields: [
         ...?resultFields,
@@ -382,21 +507,6 @@ class ElasticQuery with _$ElasticQuery {
   /// if `isMoreThanOrEqualTo` or `isLessThan` is provided.
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/facets.html]
-  @Assert(
-      'isGreaterThanOrEqualTo == null || (isGreaterThanOrEqualTo != null && (isGreaterThanOrEqualTo is double || isGreaterThanOrEqualTo is DateTime))',
-      '`isMoreThanOrEqualTo` must be a double or a DateTime')
-  @Assert(
-      'isLessThan == null || (isLessThan != null && (isLessThan is double || isLessThan is DateTime))',
-      '`isLessThan` must be a double or a DateTime')
-  @Assert(
-      '(isEqualTo != null && isFurtherThanOrAt == null && isLessFarThan == null) || (isEqualTo == null && (isFurtherThanOrAt != null || isLessFarThan != null)) || (isEqualTo == null && isFurtherThanOrAt == null && isLessFarThan == null)',
-      'You cannot use isEqualTo and isFurtherThanOrAt/isLessFarThan at the same time.')
-  @Assert(
-      '((isFurtherThanOrAt != null || isLessFarThan != null) && isGreaterThanOrEqualTo == null && isLessThan == null) || ((isGreaterThanOrEqualTo != null || isLessThan != null) && isFurtherThanOrAt == null && isLessFarThan == null) || (isGreaterThanOrEqualTo == null && isLessThan == null && isFurtherThanOrAt == null && isLessFarThan == null)',
-      'You cannot use isFurtherThanOrAt/isLessFarThan and isGreaterThanOrEqualTo/isLessThan at the same time.')
-  @Assert(
-      '((isFurtherThanOrAt != null || isLessFarThan != null) && from == null) || (isFurtherThanOrAt == null && isLessFarThan == null && from == null)',
-      'You must provide from (which is the center point of your query) when using isFurtherThanOrAt/isLessFarThan.')
   ElasticQuery facet(
     String field, {
     String? name,
@@ -409,8 +519,18 @@ class ElasticQuery with _$ElasticQuery {
     int? size,
     //List<ElasticRange>? ranges,
   }) {
-    Map<String, _ElasticQueryFacet> _facets =
-        facets != null ? {...facets!} : {};
+    _validateFacetArguments(
+      field: field,
+      isGreaterThanOrEqualTo: isGreaterThanOrEqualTo,
+      isLessThan: isLessThan,
+      isFurtherThanOrAt: isFurtherThanOrAt,
+      isLessFarThan: isLessFarThan,
+      from: from,
+    );
+
+    Map<String, _ElasticQueryFacet> _facets = facets != null
+        ? {...facets!}
+        : {};
     _ElasticQueryFacet facet;
 
     /*if (ranges != null) {
@@ -441,10 +561,7 @@ class ElasticQuery with _$ElasticQuery {
       );
       facet = _ElasticQueryFacet(
         type: "range",
-        ranges: [
-          ...?facets?[field]?.ranges,
-          newRange,
-        ],
+        ranges: [...?facets?[field]?.ranges, newRange],
         center: from,
         unit: unit,
       );
@@ -460,16 +577,10 @@ class ElasticQuery with _$ElasticQuery {
       );
       facet = _ElasticQueryFacet(
         type: "range",
-        ranges: [
-          ...?facets?[field]?.ranges,
-          newRange,
-        ],
+        ranges: [...?facets?[field]?.ranges, newRange],
       );
     } else {
-      facet = _ElasticQueryFacet(
-        type: "value",
-        size: size,
-      );
+      facet = _ElasticQueryFacet(type: "value", size: size);
     }
 
     _facets[field] = facet;
@@ -481,29 +592,32 @@ class ElasticQuery with _$ElasticQuery {
   /// Disjunctive facets are useful when you have many filters in your form, and especially
   /// when you filter your query with a value that corresponds to a facet: if a disjunctive facet is set,
   /// it will return all the available facets as if that filter was not applied.
-  @Assert('facets[field] != null',
-      'No facet currently exists for this field. Please create your facet before call `disjunctiveFacet`.')
   ElasticQuery disjunctiveFacet(String field) {
-    return copyWith(
-      disjunctiveFacets: [
-        ...?disjunctiveFacets,
-        field,
-      ],
-    );
+    _validateFieldName(field, 'disjunctiveFacet');
+    if (facets?[field] == null) {
+      throw StateError(
+        'No facet currently exists for "$field". '
+        'Please create your facet before calling disjunctiveFacet.',
+      );
+    }
+
+    return copyWith(disjunctiveFacets: [...?disjunctiveFacets, field]);
   }
 
   /// Creates and returns a new [ElasticQuery] with additional analytics tag.
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/tags.html]
-  @Assert('tag.length > 64', 'A tag is limited to 64 characters.')
   ElasticQuery tag(String tag) {
+    if (tag.length > 64) {
+      throw ArgumentError.value(
+        tag,
+        'tag',
+        'A tag is limited to 64 characters.',
+      );
+    }
+
     return copyWith(
-      analytics: _ElasticAnalytics(
-        tags: [
-          ...?analytics?.tags,
-          tag,
-        ],
-      ),
+      analytics: _ElasticAnalytics(tags: [...?analytics?.tags, tag]),
     );
   }
 
@@ -511,18 +625,20 @@ class ElasticQuery with _$ElasticQuery {
   /// which will return grouped results based on shared fields.
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/grouping.html]
-  @Assert('field != null', 'Field name to group results on must not be null')
-  @Assert('size == null || (size != null && size >= 1 && size <= 10',
-      'size must be between 1 and 10')
-  ElasticQuery group(
-    String field, {
-    int? size,
-  }) {
+  ElasticQuery group(String field, {int? size}) {
+    _validateFieldName(field, 'group');
+    if (size != null && (size < 1 || size > 10)) {
+      throw RangeError.range(
+        size,
+        1,
+        10,
+        'size',
+        'size must be between 1 and 10.',
+      );
+    }
+
     return copyWith(
-      groupBy: _ElasticGroup(
-        field: field,
-        size: size,
-      ),
+      groupBy: _ElasticGroup(field: field, size: size),
     );
   }
 
@@ -530,36 +646,32 @@ class ElasticQuery with _$ElasticQuery {
   /// which will sort your results in an order other than document score.
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/sort.html]
-  @Assert('field != null', 'Field name to sort results must not be null')
-  ElasticQuery sort(
-    String field, {
-    bool descending = false,
-  }) {
-    final newSortBy = _ElasticSort(
-      field: field,
-      descending: descending,
-    );
+  ElasticQuery sort(String field, {bool descending = false}) {
+    _validateFieldName(field, 'sort');
+
+    final newSortBy = _ElasticSort(field: field, descending: descending);
     return copyWith(sortBy: [...?sortBy, newSortBy]);
   }
 
   /// Creates and returns a new [ElasticQuery] with new pagination parameters.
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/search-guide.html#search-guide-paginate]
-  ElasticQuery page(
-    int current, {
-    int size = 10,
-  }) {
+  ElasticQuery page(int current, {int size = 10}) {
     return copyWith(
-      searchPage: _ElasticSearchPage(
-        current: current,
-        size: size,
-      ),
+      searchPage: _ElasticSearchPage(current: current, size: size),
     );
   }
 
   /// Fetch the documents for this query.
   Future<ElasticResponse> get([CancelToken? cancelToken]) {
-    return engine!.get(this, cancelToken);
+    final currentEngine = engine;
+    if (currentEngine == null) {
+      throw StateError(
+        'An engine is required to execute this query. '
+        'Create the query from ElasticEngine.query(...) or set engine before calling get().',
+      );
+    }
+    return currentEngine.get(this, cancelToken);
   }
 
   /// Private method - not intended to be used
@@ -581,8 +693,9 @@ class ElasticQuery with _$ElasticQuery {
   /// Private method - not intended to be used
   /// Build a disjunctive query when disjunctive facets are set.
   ElasticQuery? _disjunctive(String field) {
-    final disjunctiveFilters =
-        filters?.where((filter) => filter.name != field).toList();
+    final disjunctiveFilters = filters
+        ?.where((filter) => filter.name != field)
+        .toList();
     final disjunctiveFacets = facets?[field];
 
     if (filters?.length == disjunctiveFilters?.length) return null;
@@ -598,13 +711,16 @@ class ElasticQuery with _$ElasticQuery {
 ///
 /// See [https://www.elastic.co/guide/en/app-search/current/search-guide.html#search-guide-paginate]
 @freezed
-class _ElasticSearchPage with _$ElasticSearchPage {
+abstract class _ElasticSearchPage with _$ElasticSearchPage {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  @Assert('size == null || (size != null && size >= 0 && size <= 1000)',
-      'The number of results per page must be greater than or equal to 1 and less than or equal to 1000.')
   @Assert(
-      'current == null || (current != null && current >= 1 && current <= 100)',
-      'The current must be greater than or equal to 1 and less than or equal to 100.')
+    'size == null || (size != null && size >= 0 && size <= 1000)',
+    'The number of results per page must be greater than or equal to 1 and less than or equal to 1000.',
+  )
+  @Assert(
+    'current == null || (current != null && current >= 1 && current <= 100)',
+    'The current must be greater than or equal to 1 and less than or equal to 100.',
+  )
   const factory _ElasticSearchPage({
     /// Number of results per page.
     /// Must be greater than or equal to 1 and less than or equal to 1000.
@@ -615,7 +731,7 @@ class _ElasticSearchPage with _$ElasticSearchPage {
     /// Must be greater than or equal to 1 and less than or equal to 100.
     /// Defaults to 1.
     @Default(1) int? current,
-  }) = __ElasticSearchPage;
+  }) = _ElasticSearchPageImpl;
 
   factory _ElasticSearchPage.fromJson(Map<String, dynamic> json) =>
       _$ElasticSearchPageFromJson(json);
@@ -631,7 +747,7 @@ class _ElasticSearchPage with _$ElasticSearchPage {
 ///
 /// See [https://www.elastic.co/guide/en/app-search/current/filters.html]
 @freezed
-class _ElasticSearchFilter with _$ElasticSearchFilter {
+abstract class _ElasticSearchFilter with _$ElasticSearchFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticSearchFilter({
     /// The type of the filter, which will determine if it's an 'OR', 'AND' or 'NOT' condition.
@@ -643,7 +759,7 @@ class _ElasticSearchFilter with _$ElasticSearchFilter {
     /// The value upon which to filter. The value must be an exact match,
     /// and can be a String, a boolean, a number, or an array of these types.
     required dynamic value,
-  }) = __ElasticSearchFilter;
+  }) = _ElasticSearchFilterImpl;
 
   factory _ElasticSearchFilter.fromJson(Map<String, dynamic> json) =>
       _$ElasticSearchFilterFromJson(json);
@@ -663,8 +779,9 @@ class _ElasticSearchFiltersConverter
       final rawTypeFilters = value[type.name];
       if (rawTypeFilters == null) continue;
 
-      final typedFilters =
-          rawTypeFilters is List ? rawTypeFilters : [rawTypeFilters];
+      final typedFilters = rawTypeFilters is List
+          ? rawTypeFilters
+          : [rawTypeFilters];
       for (final rawFilter in typedFilters) {
         if (rawFilter is! Map) continue;
 
@@ -703,10 +820,7 @@ class _ElasticSearchFiltersConverter
       final to = _toDouble(value['to']);
 
       if (from != null || to != null) {
-        return _ElasticNumberRangeFilter(
-          from: from,
-          to: to,
-        );
+        return _ElasticNumberRangeFilter(from: from, to: to);
       }
 
       return _ElasticDateRangeFilter(
@@ -731,19 +845,20 @@ class _ElasticSearchFiltersConverter
 
     for (final type in _ElasticFilterType.values) {
       var values = [];
-      for (final searchFilter
-          in searchFilters.where((filter) => filter.type == type)) {
+      for (final searchFilter in searchFilters.where(
+        (filter) => filter.type == type,
+      )) {
         if (searchFilter.value is _ElasticDateRangeFilter) {
-          final encodedValue =
-              (searchFilter.value as _ElasticDateRangeFilter).toJson();
+          final encodedValue = (searchFilter.value as _ElasticDateRangeFilter)
+              .toJson();
           values.add({searchFilter.name: encodedValue});
         } else if (searchFilter.value is _ElasticNumberRangeFilter) {
-          final encodedValue =
-              (searchFilter.value as _ElasticNumberRangeFilter).toJson();
+          final encodedValue = (searchFilter.value as _ElasticNumberRangeFilter)
+              .toJson();
           values.add({searchFilter.name: encodedValue});
         } else if (searchFilter.value is _ElasticGeoFilter) {
-          final encodedValue =
-              (searchFilter.value as _ElasticGeoFilter).toJson();
+          final encodedValue = (searchFilter.value as _ElasticGeoFilter)
+              .toJson();
           values.add({searchFilter.name: encodedValue});
         } else {
           values.add({searchFilter.name: searchFilter.value});
@@ -757,31 +872,27 @@ class _ElasticSearchFiltersConverter
 }
 
 @freezed
-class _ElasticDateRangeFilter with _$ElasticDateRangeFilter {
+abstract class _ElasticDateRangeFilter with _$ElasticDateRangeFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory _ElasticDateRangeFilter({
-    String? from,
-    String? to,
-  }) = __ElasticDateRangeFilter;
+  const factory _ElasticDateRangeFilter({String? from, String? to}) =
+      _ElasticDateRangeFilterImpl;
 
   factory _ElasticDateRangeFilter.fromJson(Map<String, dynamic> json) =>
       _$ElasticDateRangeFilterFromJson(json);
 }
 
 @freezed
-class _ElasticNumberRangeFilter with _$ElasticNumberRangeFilter {
+abstract class _ElasticNumberRangeFilter with _$ElasticNumberRangeFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  const factory _ElasticNumberRangeFilter({
-    double? from,
-    double? to,
-  }) = __ElasticNumberRangeFilter;
+  const factory _ElasticNumberRangeFilter({double? from, double? to}) =
+      _ElasticNumberRangeFilterImpl;
 
   factory _ElasticNumberRangeFilter.fromJson(Map<String, dynamic> json) =>
       _$ElasticNumberRangeFilterFromJson(json);
 }
 
 @freezed
-class _ElasticGeoFilter with _$ElasticGeoFilter {
+abstract class _ElasticGeoFilter with _$ElasticGeoFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   @Assert('center != null', 'center is required.')
   const factory _ElasticGeoFilter({
@@ -790,7 +901,7 @@ class _ElasticGeoFilter with _$ElasticGeoFilter {
     required GeoUnit unit,
     double? from,
     double? to,
-  }) = __ElasticGeoFilter;
+  }) = _ElasticGeoFilterImpl;
 
   factory _ElasticGeoFilter.fromJson(Map<String, dynamic> json) =>
       _$ElasticGeoFilterFromJson(json);
@@ -803,7 +914,7 @@ class _ElasticGeoFilter with _$ElasticGeoFilter {
 ///
 /// See [https://www.elastic.co/guide/en/app-search/current/search-fields-weights.html]
 @freezed
-class _ElasticSearchField with _$ElasticSearchField {
+abstract class _ElasticSearchField with _$ElasticSearchField {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticSearchField({
     /// The name of the field. It must exist within your Engine schema and be of type text.
@@ -812,7 +923,7 @@ class _ElasticSearchField with _$ElasticSearchField {
     /// Optionnal. Apply Weights to each search field.
     /// Engine level Weight settings will be applied is none are provided.
     int? weight,
-  }) = __ElasticSearchField;
+  }) = _ElasticSearchFieldImpl;
 
   factory _ElasticSearchField.fromJson(Map<String, dynamic> json) =>
       _$ElasticSearchFieldFromJson(json);
@@ -841,12 +952,7 @@ class _ElasticSearchFieldsConverter
         }
       }
 
-      searchFields.add(
-        _ElasticSearchField(
-          name: name,
-          weight: weight,
-        ),
-      );
+      searchFields.add(_ElasticSearchField(name: name, weight: weight));
     }
 
     return searchFields.isEmpty ? null : searchFields;
@@ -859,9 +965,7 @@ class _ElasticSearchFieldsConverter
     var value = {};
     for (final searchField in searchFields) {
       if (searchField.weight != null) {
-        value[searchField.name] = {
-          "weight": searchField.weight,
-        };
+        value[searchField.name] = {"weight": searchField.weight};
       } else {
         value[searchField.name] = {};
       }
@@ -880,7 +984,7 @@ class _ElasticSearchFieldsConverter
 ///
 /// More information on [https://www.elastic.co/guide/en/app-search/current/result-fields-highlights.html]
 @freezed
-class _ElasticResultField with _$ElasticResultField {
+abstract class _ElasticResultField with _$ElasticResultField {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticResultField({
     /// The name of the field. It must exist within your Engine schema and be of type text.
@@ -897,7 +1001,7 @@ class _ElasticResultField with _$ElasticResultField {
 
     /// If true, return the raw text field if no snippet is found. If false, only use snippets.
     @Default(true) bool fallback,
-  }) = __ElasticResultField;
+  }) = _ElasticResultFieldImpl;
 
   factory _ElasticResultField.fromJson(Map<String, dynamic> json) =>
       _$ElasticResultFieldFromJson(json);
@@ -964,7 +1068,7 @@ class _ElasticResultFieldsConverter
     var value = <String, Map?>{};
     for (final resultField in resultFields) {
       value[resultField.name] = {
-        "raw": resultField.rawSize != null ? {"size": resultField.rawSize} : {}
+        "raw": resultField.rawSize != null ? {"size": resultField.rawSize} : {},
       };
       if (resultField.snippetSize != null) {
         value[resultField.name]!["snippet"] = {
@@ -985,7 +1089,7 @@ class _ElasticResultFieldsConverter
 ///
 /// See [https://www.elastic.co/guide/en/app-search/current/grouping.html]
 @freezed
-class _ElasticGroup with _$ElasticGroup {
+abstract class _ElasticGroup with _$ElasticGroup {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticGroup({
     /// Field name to group results on.
@@ -994,7 +1098,7 @@ class _ElasticGroup with _$ElasticGroup {
     /// Number of results to be included in the _group key of the returned document.
     /// Can be between 1 and 10. Defaults to 10.
     int? size,
-  }) = __ElasticGroup;
+  }) = _ElasticGroupImpl;
 
   factory _ElasticGroup.fromJson(Map<String, dynamic> json) =>
       _$ElasticGroupFromJson(json);
@@ -1007,13 +1111,13 @@ class _ElasticGroup with _$ElasticGroup {
 ///
 /// See [https://www.elastic.co/guide/en/app-search/current/sort.html]
 @freezed
-class _ElasticSort with _$ElasticSort {
+abstract class _ElasticSort with _$ElasticSort {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticSort({
     /// Field name to sort results
     required String field,
     @Default(false) bool descending,
-  }) = __ElasticSort;
+  }) = _ElasticSortImpl;
 
   factory _ElasticSort.fromJson(Map<String, dynamic> json) =>
       _$ElasticSortFromJson(json);
@@ -1035,10 +1139,7 @@ class _ElasticSortConverter
 
         final direction = entry.value.toString().toLowerCase();
         sortBys.add(
-          _ElasticSort(
-            field: field,
-            descending: direction == "desc",
-          ),
+          _ElasticSort(field: field, descending: direction == "desc"),
         );
       }
     }
@@ -1062,14 +1163,10 @@ class _ElasticSortConverter
 /// See https://www.elastic.co/guide/en/app-search/current/query-suggestions-guide.html
 /// to get more information about all the parameters.
 @freezed
-class ElasticSuggestionsQuery with _$ElasticSuggestionsQuery {
+abstract class ElasticSuggestionsQuery with _$ElasticSuggestionsQuery {
   const ElasticSuggestionsQuery._();
 
-  @JsonSerializable(
-    explicitToJson: true,
-    includeIfNull: false,
-  )
-  @Assert('engine != null', 'An engine is required to build a query.')
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory ElasticSuggestionsQuery({
     /// An object representing an Elastic engine
     @JsonKey(includeToJson: false, includeFromJson: false)
@@ -1105,19 +1202,28 @@ class ElasticSuggestionsQuery with _$ElasticSuggestionsQuery {
   /// Only available within text fields.
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/search-fields-weights.html]
-  @Assert('weight != null && (weight < 1 || weight > 10)',
-      'The value of the weight parameter must be an integer between 1 and 10.')
-  ElasticSuggestionsQuery searchField(
-    String field, {
-    int? weight,
-  }) {
+  ElasticSuggestionsQuery searchField(String field, {int? weight}) {
+    if (field.trim().isEmpty) {
+      throw ArgumentError.value(
+        field,
+        'field',
+        'Field name passed to searchField must be a non-empty string.',
+      );
+    }
+    if (weight != null && (weight < 1 || weight > 10)) {
+      throw RangeError.range(
+        weight,
+        1,
+        10,
+        'weight',
+        'The value of the weight parameter must be an integer between 1 and 10.',
+      );
+    }
+
     return copyWith(
       searchFields: [
         ...?searchFields,
-        _ElasticSearchField(
-          name: field,
-          weight: weight,
-        ),
+        _ElasticSearchField(name: field, weight: weight),
       ],
     );
   }
@@ -1126,29 +1232,43 @@ class ElasticSuggestionsQuery with _$ElasticSuggestionsQuery {
   /// which will sort your results in an order other than document score.
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/sort.html]
-  @Assert('field != null', 'Field name to sort results must not be null')
-  ElasticSuggestionsQuery sort(
-    String field, {
-    bool descending = false,
-  }) {
-    final newSortBy = _ElasticSort(
-      field: field,
-      descending: descending,
-    );
+  ElasticSuggestionsQuery sort(String field, {bool descending = false}) {
+    if (field.trim().isEmpty) {
+      throw ArgumentError.value(
+        field,
+        'field',
+        'Field name passed to sort must be a non-empty string.',
+      );
+    }
+
+    final newSortBy = _ElasticSort(field: field, descending: descending);
     return copyWith(sortBy: [...?sortBy, newSortBy]);
   }
 
   /// Creates and returns a new [ElasticSuggestionsQuery] with new size parameters.
-  ElasticSuggestionsQuery size(
-    int size,
-  ) {
-    return copyWith(
-      sizeField: size,
-    );
+  ElasticSuggestionsQuery size(int size) {
+    if (size < 1 || size > 1000) {
+      throw RangeError.range(
+        size,
+        1,
+        1000,
+        'size',
+        'The size of suggestions must be between 1 and 1000.',
+      );
+    }
+
+    return copyWith(sizeField: size);
   }
 
   /// Fetch the documents for this query.
   Future<ElasticQuerySuggestionResponse> get([CancelToken? cancelToken]) {
-    return engine!.getQuerySuggestion(this, cancelToken);
+    final currentEngine = engine;
+    if (currentEngine == null) {
+      throw StateError(
+        'An engine is required to execute this suggestion query. '
+        'Create the query from ElasticEngine.suggestionQuery(...) or set engine before calling get().',
+      );
+    }
+    return currentEngine.getQuerySuggestion(this, cancelToken);
   }
 }
