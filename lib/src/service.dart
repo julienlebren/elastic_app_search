@@ -38,6 +38,7 @@ class ElasticAppSearch {
   ElasticAppSearch get instance => ElasticAppSearch._(
         endPoint: _endPoint,
         searchKey: _searchKey,
+        debug: _debug,
       );
 
   String _apiUrl(String engine, Operation operation) =>
