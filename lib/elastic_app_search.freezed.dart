@@ -1503,8 +1503,8 @@ class _$LatLongImpl implements _LatLong {
   const _$LatLongImpl(this.latitude, this.longitude)
       : assert(latitude >= -90 && latitude <= 90,
             'Latitude must be between -90 and 90 degrees.'),
-        assert(longitude >= -180 && latitude <= 180,
-            'Longitude must be between -90 and 90 degrees.');
+        assert(longitude >= -180 && longitude <= 180,
+            'Longitude must be between -180 and 180 degrees.');
 
   @override
   final double latitude;

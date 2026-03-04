@@ -39,14 +39,7 @@ enum GeoUnit {
 
 extension _DateTimeX on DateTime {
   String toUTCString() {
-    return DateTime.utc(
-      year,
-      month,
-      day,
-      hour,
-      minute,
-      second,
-    ).toString().replaceAll(' ', 'T');
+    return toUtc().toIso8601String();
   }
 }
 
@@ -71,8 +64,8 @@ class ElasticRange with _$ElasticRange {
 class LatLong with _$LatLong {
   @Assert('latitude >= -90 && latitude <= 90',
       'Latitude must be between -90 and 90 degrees.')
-  @Assert('longitude >= -180 && latitude <= 180',
-      'Longitude must be between -90 and 90 degrees.')
+  @Assert('longitude >= -180 && longitude <= 180',
+      'Longitude must be between -180 and 180 degrees.')
   const factory LatLong(
     double latitude,
     double longitude,

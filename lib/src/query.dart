@@ -115,7 +115,7 @@ class ElasticQuery with _$ElasticQuery {
     double? isFurtherThanOrAt,
     double? isLessFarThan,
     LatLong? from,
-    GeoUnit? unit,
+    GeoUnit unit = GeoUnit.meters,
   }) =>
       _filter(
         field,
@@ -165,7 +165,7 @@ class ElasticQuery with _$ElasticQuery {
     double? isFurtherThanOrAt,
     double? isLessFarThan,
     LatLong? from,
-    GeoUnit? unit,
+    GeoUnit unit = GeoUnit.meters,
   }) =>
       _filter(
         field,
@@ -215,7 +215,7 @@ class ElasticQuery with _$ElasticQuery {
     double? isFurtherThanOrAt,
     double? isLessFarThan,
     LatLong? from,
-    GeoUnit? unit,
+    GeoUnit unit = GeoUnit.meters,
   }) =>
       _filter(
         field,
@@ -258,7 +258,7 @@ class ElasticQuery with _$ElasticQuery {
     double? isFurtherThanOrAt,
     double? isLessFarThan,
     LatLong? from,
-    @Default(GeoUnit.meters) GeoUnit? unit,
+    GeoUnit unit = GeoUnit.meters,
     required _ElasticFilterType type,
   }) {
     dynamic value;
@@ -266,11 +266,11 @@ class ElasticQuery with _$ElasticQuery {
     if (whereIn != null) {
       value = whereIn;
     } else if (isEqualTo != null) {
-      value = isEqualTo.toString();
+      value = isEqualTo;
     } else if (from != null) {
       value = _ElasticGeoFilter(
         center: from,
-        unit: unit!,
+        unit: unit,
         from: isFurtherThanOrAt,
         to: isLessFarThan,
       );
@@ -539,7 +539,7 @@ class ElasticQuery with _$ElasticQuery {
       field: field,
       descending: descending,
     );
-    return copyWith(sortBy: sortBy ?? <_ElasticSort>[] + [newSortBy]);
+    return copyWith(sortBy: [...?sortBy, newSortBy]);
   }
 
   /// Creates and returns a new [ElasticQuery] with new pagination parameters.
@@ -654,7 +654,75 @@ class _ElasticSearchFiltersConverter
   const _ElasticSearchFiltersConverter();
 
   @override
-  List<_ElasticSearchFilter>? fromJson(Map? value) => null;
+  List<_ElasticSearchFilter>? fromJson(Map? value) {
+    if (value == null) return null;
+
+    final searchFilters = <_ElasticSearchFilter>[];
+
+    for (final type in _ElasticFilterType.values) {
+      final rawTypeFilters = value[type.name];
+      if (rawTypeFilters == null) continue;
+
+      final typedFilters =
+          rawTypeFilters is List ? rawTypeFilters : [rawTypeFilters];
+      for (final rawFilter in typedFilters) {
+        if (rawFilter is! Map) continue;
+
+        for (final entry in rawFilter.entries) {
+          final name = entry.key.toString();
+          if (name.isEmpty) continue;
+
+          searchFilters.add(
+            _ElasticSearchFilter(
+              type: type,
+              name: name,
+              value: _decodeFilterValue(entry.value),
+            ),
+          );
+        }
+      }
+    }
+
+    return searchFilters.isEmpty ? null : searchFilters;
+  }
+
+  dynamic _decodeFilterValue(dynamic rawValue) {
+    if (rawValue is! Map) return rawValue;
+
+    final value = <String, dynamic>{};
+    for (final entry in rawValue.entries) {
+      value[entry.key.toString()] = entry.value;
+    }
+
+    if (value.containsKey('center') && value.containsKey('unit')) {
+      return _ElasticGeoFilter.fromJson(value);
+    }
+
+    if (value.containsKey('from') || value.containsKey('to')) {
+      final from = _toDouble(value['from']);
+      final to = _toDouble(value['to']);
+
+      if (from != null || to != null) {
+        return _ElasticNumberRangeFilter(
+          from: from,
+          to: to,
+        );
+      }
+
+      return _ElasticDateRangeFilter(
+        from: value['from']?.toString(),
+        to: value['to']?.toString(),
+      );
+    }
+
+    return rawValue;
+  }
+
+  double? _toDouble(dynamic value) {
+    if (value is num) return value.toDouble();
+    if (value is String) return double.tryParse(value);
+    return null;
+  }
 
   @override
   Map? toJson(List<_ElasticSearchFilter>? searchFilters) {
@@ -755,7 +823,34 @@ class _ElasticSearchFieldsConverter
   const _ElasticSearchFieldsConverter();
 
   @override
-  List<_ElasticSearchField>? fromJson(Map? value) => null;
+  List<_ElasticSearchField>? fromJson(Map? value) {
+    if (value == null) return null;
+
+    final searchFields = <_ElasticSearchField>[];
+    for (final entry in value.entries) {
+      final name = entry.key.toString();
+      if (name.isEmpty) continue;
+
+      int? weight;
+      if (entry.value is Map) {
+        final rawWeight = (entry.value as Map)['weight'];
+        if (rawWeight is num) {
+          weight = rawWeight.toInt();
+        } else if (rawWeight is String) {
+          weight = int.tryParse(rawWeight);
+        }
+      }
+
+      searchFields.add(
+        _ElasticSearchField(
+          name: name,
+          weight: weight,
+        ),
+      );
+    }
+
+    return searchFields.isEmpty ? null : searchFields;
+  }
 
   @override
   Map? toJson(List<_ElasticSearchField>? searchFields) {
@@ -813,7 +908,54 @@ class _ElasticResultFieldsConverter
   const _ElasticResultFieldsConverter();
 
   @override
-  List<_ElasticResultField>? fromJson(Map? value) => null;
+  List<_ElasticResultField>? fromJson(Map? value) {
+    if (value == null) return null;
+
+    final resultFields = <_ElasticResultField>[];
+    for (final entry in value.entries) {
+      final name = entry.key.toString();
+      if (name.isEmpty) continue;
+
+      int? rawSize;
+      int? snippetSize;
+      bool fallback = true;
+
+      if (entry.value is Map) {
+        final fieldConfig = entry.value as Map;
+
+        final rawConfig = fieldConfig['raw'];
+        if (rawConfig is Map) {
+          rawSize = _toInt(rawConfig['size']);
+        }
+
+        final snippetConfig = fieldConfig['snippet'];
+        if (snippetConfig is Map) {
+          snippetSize = _toInt(snippetConfig['size']);
+          final rawFallback = snippetConfig['fallback'];
+          if (rawFallback is bool) {
+            fallback = rawFallback;
+          }
+        }
+      }
+
+      resultFields.add(
+        _ElasticResultField(
+          name: name,
+          rawSize: rawSize,
+          snippetSize: snippetSize,
+          fallback: fallback,
+        ),
+      );
+    }
+
+    return resultFields.isEmpty ? null : resultFields;
+  }
+
+  int? _toInt(dynamic value) {
+    if (value is num) return value.toInt();
+    if (value is String) return int.tryParse(value);
+    return null;
+  }
 
   @override
   Map? toJson(List<_ElasticResultField>? resultFields) {
@@ -882,7 +1024,27 @@ class _ElasticSortConverter
   const _ElasticSortConverter();
 
   @override
-  List<_ElasticSort>? fromJson(List<Map>? value) => null;
+  List<_ElasticSort>? fromJson(List<Map>? value) {
+    if (value == null) return null;
+
+    final sortBys = <_ElasticSort>[];
+    for (final sort in value) {
+      for (final entry in sort.entries) {
+        final field = entry.key.toString();
+        if (field.isEmpty) continue;
+
+        final direction = entry.value.toString().toLowerCase();
+        sortBys.add(
+          _ElasticSort(
+            field: field,
+            descending: direction == "desc",
+          ),
+        );
+      }
+    }
+
+    return sortBys.isEmpty ? null : sortBys;
+  }
 
   @override
   List<Map>? toJson(List<_ElasticSort>? sortBys) {
@@ -973,7 +1135,7 @@ class ElasticSuggestionsQuery with _$ElasticSuggestionsQuery {
       field: field,
       descending: descending,
     );
-    return copyWith(sortBy: sortBy ?? <_ElasticSort>[] + [newSortBy]);
+    return copyWith(sortBy: [...?sortBy, newSortBy]);
   }
 
   /// Creates and returns a new [ElasticSuggestionsQuery] with new size parameters.
