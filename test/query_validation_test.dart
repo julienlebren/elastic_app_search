@@ -13,6 +13,27 @@ void main() {
   });
 
   group('ElasticQuery validation', () {
+    test('precision validates range', () {
+      expect(() => engine.query('mountains').precision(0), throwsRangeError);
+      expect(() => engine.query('mountains').precision(12), throwsRangeError);
+    });
+
+    test('page validates current and size ranges', () {
+      expect(() => engine.query('mountains').page(0), throwsRangeError);
+      expect(
+        () => engine.query('mountains').page(1, size: -1),
+        throwsRangeError,
+      );
+      expect(
+        () => engine.query('mountains').page(101, size: 10),
+        throwsRangeError,
+      );
+      expect(
+        () => engine.query('mountains').page(1, size: 1001),
+        throwsRangeError,
+      );
+    });
+
     test('searchField validates weight range', () {
       expect(
         () => engine.query('mountains').searchField('title', weight: 0),
@@ -77,6 +98,15 @@ void main() {
       );
     });
 
+    test('tag validates max number of tags', () {
+      var query = engine.query('mountains');
+      for (var i = 0; i < 16; i++) {
+        query = query.tag('tag-$i');
+      }
+
+      expect(() => query.tag('tag-over-limit'), throwsRangeError);
+    });
+
     test('group validates size range', () {
       expect(
         () => engine.query('mountains').group('category', size: 0),
@@ -119,6 +149,74 @@ void main() {
     test('suggestion query requires an engine at execution time', () {
       final query = ElasticSuggestionsQuery.fromJson({'query': 'mount'});
       expect(() => query.get(), throwsStateError);
+    });
+  });
+
+  group('Deserialization validation', () {
+    test('search query validates precision at runtime', () {
+      expect(
+        () => ElasticQuery.fromJson({'query': 'mountains', 'precision': 12}),
+        throwsRangeError,
+      );
+    });
+
+    test('search query validates page values at runtime', () {
+      expect(
+        () => ElasticQuery.fromJson({
+          'query': 'mountains',
+          'page': {'current': 0, 'size': 10},
+        }),
+        throwsRangeError,
+      );
+      expect(
+        () => ElasticQuery.fromJson({
+          'query': 'mountains',
+          'page': {'current': 1, 'size': 1001},
+        }),
+        throwsRangeError,
+      );
+    });
+
+    test('search query validates analytics tags at runtime', () {
+      expect(
+        () => ElasticQuery.fromJson({
+          'query': 'mountains',
+          'analytics': {'tags': List.generate(17, (i) => 'tag-$i')},
+        }),
+        throwsRangeError,
+      );
+    });
+
+    test('search query validates geo filter center at runtime', () {
+      expect(
+        () => ElasticQuery.fromJson({
+          'query': 'mountains',
+          'filters': {
+            'all': [
+              {
+                'location': {'unit': 'mi', 'from': 1},
+              },
+            ],
+          },
+        }),
+        throwsArgumentError,
+      );
+    });
+
+    test('search query validates geo coordinates at runtime', () {
+      expect(
+        () => ElasticQuery.fromJson({
+          'query': 'mountains',
+          'filters': {
+            'all': [
+              {
+                'location': {'center': '91,-122.4194', 'unit': 'mi', 'from': 1},
+              },
+            ],
+          },
+        }),
+        throwsRangeError,
+      );
     });
   });
 }

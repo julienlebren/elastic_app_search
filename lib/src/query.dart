@@ -2,6 +2,56 @@
 
 part of '../elastic_app_search.dart';
 
+void _validatePrecisionTuning(int? precisionTuning) {
+  if (precisionTuning != null &&
+      (precisionTuning < 1 || precisionTuning > 11)) {
+    throw RangeError.range(
+      precisionTuning,
+      1,
+      11,
+      'precision',
+      'The value of the precision parameter must be an integer between 1 and 11, inclusive.',
+    );
+  }
+}
+
+void _validateSearchPage({required int current, required int size}) {
+  if (size < 0 || size > 1000) {
+    throw RangeError.range(
+      size,
+      0,
+      1000,
+      'size',
+      'The number of results per page must be greater than or equal to 0 and less than or equal to 1000.',
+    );
+  }
+  if (current < 1 || current > 100) {
+    throw RangeError.range(
+      current,
+      1,
+      100,
+      'current',
+      'The current must be greater than or equal to 1 and less than or equal to 100.',
+    );
+  }
+}
+
+ElasticQuery _validateElasticQuery(ElasticQuery query) {
+  _validatePrecisionTuning(query.precisionTuning);
+
+  final page = query.searchPage;
+  if (page != null) {
+    _validateSearchPage(current: page.current ?? 1, size: page.size ?? 10);
+  }
+
+  final tags = query.analytics?.tags;
+  if (tags != null) {
+    _validateAnalyticsTags(tags);
+  }
+
+  return query;
+}
+
 /// An object containing all the settings to execute a query
 ///
 /// See https://www.elastic.co/guide/en/app-search/current/search.html
@@ -14,10 +64,6 @@ abstract class ElasticQuery with _$ElasticQuery {
   const ElasticQuery._();
 
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  @Assert(
-    'precisionTuning == null || (precisionTuning != null && precisionTuning >= 1 && precisionTuning <= 11)',
-    'The value of the precision parameter must be an integer between 1 and 11, inclusive.',
-  )
   const factory ElasticQuery({
     /// An object representing an Elastic engine
     @JsonKey(includeToJson: false, includeFromJson: false)
@@ -75,7 +121,7 @@ abstract class ElasticQuery with _$ElasticQuery {
   }) = _ElasticQuery;
 
   factory ElasticQuery.fromJson(Map<String, dynamic> json) =>
-      _$ElasticQueryFromJson(json);
+      _validateElasticQuery(_$ElasticQueryFromJson(json));
 
   void _validateFieldName(String field, String method) {
     if (field.trim().isEmpty) {
@@ -170,6 +216,9 @@ abstract class ElasticQuery with _$ElasticQuery {
         'You must provide from (center point) when using isFurtherThanOrAt/isLessFarThan.',
       );
     }
+    if (from != null) {
+      _validateLatLongValues(from.latitude, from.longitude);
+    }
 
     final validRangeType =
         (isGreaterThanOrEqualTo == null ||
@@ -224,6 +273,9 @@ abstract class ElasticQuery with _$ElasticQuery {
       throw ArgumentError(
         'You must provide from (center point) when using isFurtherThanOrAt/isLessFarThan.',
       );
+    }
+    if (from != null) {
+      _validateLatLongValues(from.latitude, from.longitude);
     }
   }
 
@@ -446,7 +498,10 @@ abstract class ElasticQuery with _$ElasticQuery {
   /// The value of the precision parameter must be an integer between 1 and 11, inclusive.
   /// The range of values represents a sliding scale that manages the inherent tradeoff between precision and recall.
   /// Lower values favor recall, while higher values favor precision.
-  ElasticQuery precision(int value) => copyWith(precisionTuning: value);
+  ElasticQuery precision(int value) {
+    _validatePrecisionTuning(value);
+    return copyWith(precisionTuning: value);
+  }
 
   /// Takes a field with an optionnal `weight`, creates and returns a new [ElasticQuery]
   ///
@@ -608,6 +663,13 @@ abstract class ElasticQuery with _$ElasticQuery {
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/tags.html]
   ElasticQuery tag(String tag) {
+    if (tag.isEmpty) {
+      throw ArgumentError.value(
+        tag,
+        'tag',
+        'A tag must be a non-empty string.',
+      );
+    }
     if (tag.length > 64) {
       throw ArgumentError.value(
         tag,
@@ -616,9 +678,10 @@ abstract class ElasticQuery with _$ElasticQuery {
       );
     }
 
-    return copyWith(
-      analytics: _ElasticAnalytics(tags: [...?analytics?.tags, tag]),
-    );
+    final newTags = [...?analytics?.tags, tag];
+    _validateAnalyticsTags(newTags);
+
+    return copyWith(analytics: _ElasticAnalytics(tags: newTags));
   }
 
   /// Takes a field with an optionnal `size`, creates and returns a new [ElasticQuery]
@@ -657,6 +720,7 @@ abstract class ElasticQuery with _$ElasticQuery {
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/search-guide.html#search-guide-paginate]
   ElasticQuery page(int current, {int size = 10}) {
+    _validateSearchPage(current: current, size: size);
     return copyWith(
       searchPage: _ElasticSearchPage(current: current, size: size),
     );
@@ -713,14 +777,6 @@ abstract class ElasticQuery with _$ElasticQuery {
 @freezed
 abstract class _ElasticSearchPage with _$ElasticSearchPage {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  @Assert(
-    'size == null || (size != null && size >= 0 && size <= 1000)',
-    'The number of results per page must be greater than or equal to 1 and less than or equal to 1000.',
-  )
-  @Assert(
-    'current == null || (current != null && current >= 1 && current <= 100)',
-    'The current must be greater than or equal to 1 and less than or equal to 100.',
-  )
   const factory _ElasticSearchPage({
     /// Number of results per page.
     /// Must be greater than or equal to 1 and less than or equal to 1000.
@@ -811,8 +867,26 @@ class _ElasticSearchFiltersConverter
       value[entry.key.toString()] = entry.value;
     }
 
-    if (value.containsKey('center') && value.containsKey('unit')) {
-      return _ElasticGeoFilter.fromJson(value);
+    final hasGeoHints =
+        value.containsKey('center') || value.containsKey('unit');
+    if (hasGeoHints) {
+      final center = value['center'];
+      if (center == null || center.toString().trim().isEmpty) {
+        throw ArgumentError('center is required.');
+      }
+
+      final unit = value['unit'];
+      if (unit == null || unit.toString().trim().isEmpty) {
+        throw ArgumentError('unit is required.');
+      }
+
+      final geoFilter = _ElasticGeoFilter.fromJson(value);
+      final parsedCenter = geoFilter.center;
+      if (parsedCenter == null) {
+        throw ArgumentError('center is required.');
+      }
+      _validateLatLongValues(parsedCenter.latitude, parsedCenter.longitude);
+      return geoFilter;
     }
 
     if (value.containsKey('from') || value.containsKey('to')) {
@@ -894,7 +968,6 @@ abstract class _ElasticNumberRangeFilter with _$ElasticNumberRangeFilter {
 @freezed
 abstract class _ElasticGeoFilter with _$ElasticGeoFilter {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
-  @Assert('center != null', 'center is required.')
   const factory _ElasticGeoFilter({
     @_LatLongConverter() LatLong? center,
     double? distance,

@@ -2,6 +2,52 @@
 
 part of '../elastic_app_search.dart';
 
+void _validateElasticRange(Object? from, Object? to) {
+  if (from == null && to == null) {
+    throw ArgumentError('You must provide at least `from` or `to`.');
+  }
+
+  final isValidFrom = from == null || from is num || from is DateTime;
+  if (!isValidFrom) {
+    throw ArgumentError.value(
+      from,
+      'from',
+      '`from` must be an int, a double or a DateTime',
+    );
+  }
+
+  final isValidTo = to == null || to is num || to is DateTime;
+  if (!isValidTo) {
+    throw ArgumentError.value(
+      to,
+      'to',
+      '`to` must be an int, a double or a DateTime',
+    );
+  }
+}
+
+void _validateLatLongValues(double latitude, double longitude) {
+  if (latitude < -90 || latitude > 90) {
+    throw RangeError.range(
+      latitude,
+      -90,
+      90,
+      'latitude',
+      'Latitude must be between -90 and 90 degrees.',
+    );
+  }
+
+  if (longitude < -180 || longitude > 180) {
+    throw RangeError.range(
+      longitude,
+      -180,
+      180,
+      'longitude',
+      'Longitude must be between -180 and 180 degrees.',
+    );
+  }
+}
+
 enum _ElasticFilterType {
   @JsonValue("all")
   all,
@@ -81,7 +127,24 @@ class _LatLongConverter implements JsonConverter<LatLong?, String?> {
   LatLong? fromJson(String? value) {
     if (value == null) return null;
     final values = value.split(',');
-    return LatLong(double.parse(values[0]), double.parse(values[1]));
+    if (values.length != 2) {
+      throw FormatException(
+        'LatLong must be formatted as "latitude,longitude".',
+        value,
+      );
+    }
+
+    final latitude = double.tryParse(values[0].trim());
+    final longitude = double.tryParse(values[1].trim());
+    if (latitude == null || longitude == null) {
+      throw FormatException(
+        'LatLong coordinates must be valid doubles.',
+        value,
+      );
+    }
+
+    _validateLatLongValues(latitude, longitude);
+    return LatLong(latitude, longitude);
   }
 
   @override

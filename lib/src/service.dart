@@ -132,7 +132,8 @@ class ElasticAppSearch {
     ElasticQuery query, [
     CancelToken? cancelToken,
   ]) async {
-    final queryEngine = query.engine;
+    final validatedQuery = _validateElasticQuery(query);
+    final queryEngine = validatedQuery.engine;
     if (queryEngine == null) {
       throw StateError(
         'An engine is required to execute a search operation. '
@@ -144,7 +145,7 @@ class ElasticAppSearch {
     final url = _apiUrl(engine, Operation.search);
     if (_debug) {
       print("====== Query ======");
-      print(query.toJson());
+      print(validatedQuery.toJson());
       print("====== Url ======");
       print(url);
     }
@@ -153,7 +154,7 @@ class ElasticAppSearch {
       final response = await _dio.post<Map>(
         url,
         options: _requestOptions,
-        data: query.toJson(),
+        data: validatedQuery.toJson(),
         cancelToken: cancelToken,
       );
 
@@ -167,7 +168,7 @@ class ElasticAppSearch {
           response.data as Map<String, dynamic>,
         );
 
-        final disjunctiveQueries = query._disjunctives;
+        final disjunctiveQueries = validatedQuery._disjunctives;
         if (disjunctiveQueries == null) return finalResponse;
 
         for (final disjunctiveQuery in disjunctiveQueries) {
@@ -199,8 +200,8 @@ class ElasticAppSearch {
                 ? {...finalResponse.rawFacets!}
                 : {};
 
-            for (String field in query.disjunctiveFacets ?? []) {
-              final filters = query.filters
+            for (String field in validatedQuery.disjunctiveFacets ?? []) {
+              final filters = validatedQuery.filters
                   ?.where((e) => e.name == field)
                   .toList();
               if (filters != null && filters.isNotEmpty) {
@@ -310,7 +311,13 @@ class ElasticAppSearch {
 
   /// Creates and returns a new [ElasticObject] linked to this instance of service.
   ElasticEngine engine(String name) {
-    assert(name.isNotEmpty, "An engine name must be a non-empty string");
+    if (name.trim().isEmpty) {
+      throw ArgumentError.value(
+        name,
+        'name',
+        'An engine name must be a non-empty string.',
+      );
+    }
     return ElasticEngine(service: this, name: name);
   }
 }

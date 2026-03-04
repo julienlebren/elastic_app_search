@@ -218,7 +218,7 @@ return $default(_that.tags);case _:
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticAnalyticsImpl implements _ElasticAnalytics {
-  const _ElasticAnalyticsImpl({required final  List<String> tags}): assert(tags.length <= 16, 'You cannot submit more than 16 tags.'),_tags = tags;
+  const _ElasticAnalyticsImpl({required final  List<String> tags}): _tags = tags;
   factory _ElasticAnalyticsImpl.fromJson(Map<String, dynamic> json) => _$ElasticAnalyticsImplFromJson(json);
 
 /// Array of strings representing the tags you’d like to apply to the query.
@@ -2526,7 +2526,7 @@ return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticQuery extends ElasticQuery {
-  const _ElasticQuery({@JsonKey(includeToJson: false, includeFromJson: false) this.engine, required this.query, @protected@JsonKey(name: "precision") this.precisionTuning, @JsonKey(name: "page") this.searchPage, @_ElasticSearchFiltersConverter() final  List<_ElasticSearchFilter>? filters, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") final  List<_ElasticSearchField>? searchFields, @_ElasticResultFieldsConverter()@JsonKey(name: "result_fields") final  List<_ElasticResultField>? resultFields, @protected final  Map<String, _ElasticQueryFacet>? facets, @JsonKey(includeToJson: false) final  List<String>? disjunctiveFacets, this.analytics, @protected@JsonKey(name: "group") this.groupBy, @_ElasticSortConverter()@JsonKey(name: "sort") final  List<_ElasticSort>? sortBy}): assert(precisionTuning == null || (precisionTuning != null && precisionTuning >= 1 && precisionTuning <= 11), 'The value of the precision parameter must be an integer between 1 and 11, inclusive.'),_filters = filters,_searchFields = searchFields,_resultFields = resultFields,_facets = facets,_disjunctiveFacets = disjunctiveFacets,_sortBy = sortBy,super._();
+  const _ElasticQuery({@JsonKey(includeToJson: false, includeFromJson: false) this.engine, required this.query, @protected@JsonKey(name: "precision") this.precisionTuning, @JsonKey(name: "page") this.searchPage, @_ElasticSearchFiltersConverter() final  List<_ElasticSearchFilter>? filters, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") final  List<_ElasticSearchField>? searchFields, @_ElasticResultFieldsConverter()@JsonKey(name: "result_fields") final  List<_ElasticResultField>? resultFields, @protected final  Map<String, _ElasticQueryFacet>? facets, @JsonKey(includeToJson: false) final  List<String>? disjunctiveFacets, this.analytics, @protected@JsonKey(name: "group") this.groupBy, @_ElasticSortConverter()@JsonKey(name: "sort") final  List<_ElasticSort>? sortBy}): _filters = filters,_searchFields = searchFields,_resultFields = resultFields,_facets = facets,_disjunctiveFacets = disjunctiveFacets,_sortBy = sortBy,super._();
   factory _ElasticQuery.fromJson(Map<String, dynamic> json) => _$ElasticQueryFromJson(json);
 
 /// An object representing an Elastic engine
@@ -2946,7 +2946,7 @@ return $default(_that.size,_that.current);case _:
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticSearchPageImpl implements _ElasticSearchPage {
-  const _ElasticSearchPageImpl({this.size = 10, this.current = 1}): assert(size == null || (size != null && size >= 0 && size <= 1000), 'The number of results per page must be greater than or equal to 1 and less than or equal to 1000.'),assert(current == null || (current != null && current >= 1 && current <= 100), 'The current must be greater than or equal to 1 and less than or equal to 100.');
+  const _ElasticSearchPageImpl({this.size = 10, this.current = 1});
   factory _ElasticSearchPageImpl.fromJson(Map<String, dynamic> json) => _$ElasticSearchPageImplFromJson(json);
 
 /// Number of results per page.
@@ -4070,7 +4070,7 @@ return $default(_that.center,_that.distance,_that.unit,_that.from,_that.to);case
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticGeoFilterImpl implements _ElasticGeoFilter {
-  const _ElasticGeoFilterImpl({@_LatLongConverter() this.center, this.distance, required this.unit, this.from, this.to}): assert(center != null, 'center is required.');
+  const _ElasticGeoFilterImpl({@_LatLongConverter() this.center, this.distance, required this.unit, this.from, this.to});
   factory _ElasticGeoFilterImpl.fromJson(Map<String, dynamic> json) => _$ElasticGeoFilterImplFromJson(json);
 
 @override@_LatLongConverter() final  LatLong? center;

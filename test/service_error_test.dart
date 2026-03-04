@@ -4,13 +4,18 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('ElasticAppSearch error mapping', () {
     late ElasticEngine engine;
+    late ElasticAppSearch service;
 
     setUp(() {
-      final service = ElasticAppSearch(
+      service = ElasticAppSearch(
         endPoint: 'http://127.0.0.1:1',
         searchKey: 'search-key',
       );
       engine = service.engine('parks');
+    });
+
+    test('engine validates name at runtime', () {
+      expect(() => service.engine('   '), throwsArgumentError);
     });
 
     test('search failures are wrapped in ElasticAppSearchException', () async {
