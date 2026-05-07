@@ -127,6 +127,113 @@ class ElasticEngine {
     cancelToken: cancelToken,
   );
 
+  /// Lists synonym sets for this engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/synonyms`.
+  Future<ElasticSynonymsListResponse> listSynonyms({
+    int current = 1,
+    int size = 25,
+    CancelToken? cancelToken,
+  }) => service.listSynonyms(
+    name,
+    page: ElasticPageRequest(current: current, size: size),
+    cancelToken: cancelToken,
+  );
+
+  /// Retrieves a synonym set by identifier.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/synonyms/{synonymSetId}`.
+  Future<ElasticSynonymSet> getSynonymSet(
+    String synonymSetId, [
+    CancelToken? cancelToken,
+  ]) => service.getSynonymSet(name, synonymSetId, cancelToken);
+
+  /// Creates a synonym set.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/synonyms`.
+  Future<ElasticSynonymSet> createSynonymSet(
+    List<String> synonyms, [
+    CancelToken? cancelToken,
+  ]) => service.createSynonymSet(name, synonyms, cancelToken);
+
+  /// Updates a synonym set.
+  ///
+  /// Uses `PUT /api/as/v1/engines/{engine}/synonyms/{synonymSetId}`.
+  Future<ElasticSynonymSet> updateSynonymSet(
+    String synonymSetId,
+    List<String> synonyms, [
+    CancelToken? cancelToken,
+  ]) => service.updateSynonymSet(name, synonymSetId, synonyms, cancelToken);
+
+  /// Deletes a synonym set.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}/synonyms/{synonymSetId}`.
+  Future<bool> deleteSynonymSet(
+    String synonymSetId, [
+    CancelToken? cancelToken,
+  ]) => service.deleteSynonymSet(name, synonymSetId, cancelToken);
+
+  /// Lists curations for this engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/curations`.
+  Future<ElasticCurationsListResponse> listCurations({
+    int current = 1,
+    int size = 25,
+    CancelToken? cancelToken,
+  }) => service.listCurations(
+    name,
+    page: ElasticPageRequest(current: current, size: size),
+    cancelToken: cancelToken,
+  );
+
+  /// Retrieves one curation by identifier.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/curations/{curationId}`.
+  Future<ElasticCuration> getCuration(
+    String curationId, [
+    CancelToken? cancelToken,
+  ]) => service.getCuration(name, curationId, cancelToken);
+
+  /// Creates a curation for one or more queries.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/curations`.
+  Future<ElasticCurationWriteResult> createCuration({
+    required List<String> queries,
+    List<String> promoted = const <String>[],
+    List<String> hidden = const <String>[],
+    CancelToken? cancelToken,
+  }) => service.createCuration(
+    name,
+    queries: queries,
+    promoted: promoted,
+    hidden: hidden,
+    cancelToken: cancelToken,
+  );
+
+  /// Updates an existing curation.
+  ///
+  /// Uses `PUT /api/as/v1/engines/{engine}/curations/{curationId}`.
+  Future<ElasticCurationWriteResult> updateCuration(
+    String curationId, {
+    List<String>? queries,
+    List<String>? promoted,
+    List<String>? hidden,
+    CancelToken? cancelToken,
+  }) => service.updateCuration(
+    name,
+    curationId,
+    queries: queries,
+    promoted: promoted,
+    hidden: hidden,
+    cancelToken: cancelToken,
+  );
+
+  /// Deletes a curation.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}/curations/{curationId}`.
+  Future<bool> deleteCuration(String curationId, [CancelToken? cancelToken]) =>
+      service.deleteCuration(name, curationId, cancelToken);
+
   /// Retrieves metadata for this engine.
   ///
   /// Uses `GET /api/as/v1/engines/{engine}`.

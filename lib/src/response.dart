@@ -327,6 +327,37 @@ List<String>? _toNullableStringList(dynamic value) {
   return value.map((entry) => entry.toString()).toList();
 }
 
+List<Map<String, dynamic>> _asJsonObjectListStrict(
+  dynamic value, {
+  required String context,
+}) {
+  if (value is! List) {
+    throw FormatException('$context must be a JSON array.');
+  }
+
+  final objects = <Map<String, dynamic>>[];
+  for (final item in value) {
+    final mapped = _asStringDynamicMap(item);
+    if (mapped == null) {
+      throw FormatException('$context items must be JSON objects.');
+    }
+    objects.add(mapped);
+  }
+
+  return objects;
+}
+
+Map<String, dynamic> _asJsonObjectStrict(
+  dynamic value, {
+  required String context,
+}) {
+  final mapped = _asStringDynamicMap(value);
+  if (mapped == null) {
+    throw FormatException('$context must be a JSON object.');
+  }
+  return mapped;
+}
+
 /// Detailed engine payload returned by engines and meta-engines endpoints.
 class ElasticEngineInfo {
   const ElasticEngineInfo({
@@ -394,4 +425,205 @@ class ElasticEngineInfo {
     json.removeWhere((key, value) => value == null);
     return json;
   }
+}
+
+/// A single App Search synonym set.
+class ElasticSynonymSet {
+  const ElasticSynonymSet({required this.id, required this.synonyms});
+
+  /// Synonym set identifier.
+  final String id;
+
+  /// Terms grouped inside the synonym set.
+  final List<String> synonyms;
+
+  factory ElasticSynonymSet.fromJson(Map<String, dynamic> json) {
+    return ElasticSynonymSet(
+      id: _toStringOrEmpty(json['id']),
+      synonyms: List.unmodifiable(_toStringList(json['synonyms'])),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {'id': id, 'synonyms': synonyms};
+}
+
+/// Paginated response returned by the synonyms list endpoint.
+class ElasticSynonymsListResponse {
+  const ElasticSynonymsListResponse({
+    required this.meta,
+    required this.results,
+  });
+
+  /// Pagination metadata.
+  final ElasticDocumentsListMeta meta;
+
+  /// Synonym sets in the current page.
+  final List<ElasticSynonymSet> results;
+
+  factory ElasticSynonymsListResponse.fromJson(Map<String, dynamic> json) {
+    final metaJson = _asJsonObjectStrict(json['meta'], context: 'meta');
+    final resultItems = _asJsonObjectListStrict(
+      json['results'],
+      context: 'results',
+    );
+
+    return ElasticSynonymsListResponse(
+      meta: ElasticDocumentsListMeta.fromJson(metaJson),
+      results: List.unmodifiable(
+        resultItems.map(ElasticSynonymSet.fromJson).toList(),
+      ),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'meta': meta.toJson(),
+    'results': results.map((item) => item.toJson()).toList(),
+  };
+}
+
+/// Adaptive relevance suggestion attached to a curation when available.
+class ElasticCurationSuggestion {
+  const ElasticCurationSuggestion({
+    this.status,
+    this.updatedAt,
+    this.createdAt,
+    this.operation,
+    required this.promoted,
+  });
+
+  /// Suggestion status (`pending`, `applied`, `automated`, `rejected`, `disabled`).
+  final String? status;
+
+  /// Suggestion last update timestamp.
+  final String? updatedAt;
+
+  /// Suggestion creation timestamp.
+  final String? createdAt;
+
+  /// Suggested curation operation (`create`, `update`, `delete`).
+  final String? operation;
+
+  /// Suggested promoted document ids.
+  final List<String> promoted;
+
+  factory ElasticCurationSuggestion.fromJson(Map<String, dynamic> json) {
+    return ElasticCurationSuggestion(
+      status: json['status']?.toString(),
+      updatedAt: json['updated_at']?.toString(),
+      createdAt: json['created_at']?.toString(),
+      operation: json['operation']?.toString(),
+      promoted: List.unmodifiable(_toStringList(json['promoted'])),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final json = <String, dynamic>{
+      'status': status,
+      'updated_at': updatedAt,
+      'created_at': createdAt,
+      'operation': operation,
+      'promoted': promoted,
+    };
+    json.removeWhere((key, value) => value == null);
+    return json;
+  }
+}
+
+/// A curation definition for one or more queries.
+class ElasticCuration {
+  const ElasticCuration({
+    required this.id,
+    required this.queries,
+    required this.promoted,
+    required this.hidden,
+    this.suggestion,
+  });
+
+  /// Curation identifier.
+  final String id;
+
+  /// Queries affected by this curation.
+  final List<String> queries;
+
+  /// Promoted document ids returned first for matching queries.
+  final List<String> promoted;
+
+  /// Hidden document ids excluded from matching queries.
+  final List<String> hidden;
+
+  /// Optional adaptive relevance suggestion metadata.
+  final ElasticCurationSuggestion? suggestion;
+
+  factory ElasticCuration.fromJson(Map<String, dynamic> json) {
+    final suggestionJson = _asStringDynamicMap(json['suggestion']);
+    return ElasticCuration(
+      id: _toStringOrEmpty(json['id']),
+      queries: List.unmodifiable(_toStringList(json['queries'])),
+      promoted: List.unmodifiable(_toStringList(json['promoted'])),
+      hidden: List.unmodifiable(_toStringList(json['hidden'])),
+      suggestion: suggestionJson == null
+          ? null
+          : ElasticCurationSuggestion.fromJson(suggestionJson),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final json = <String, dynamic>{
+      'id': id,
+      'queries': queries,
+      'promoted': promoted,
+      'hidden': hidden,
+      'suggestion': suggestion?.toJson(),
+    };
+    json.removeWhere((key, value) => value == null);
+    return json;
+  }
+}
+
+/// Paginated response returned by the curations list endpoint.
+class ElasticCurationsListResponse {
+  const ElasticCurationsListResponse({
+    required this.meta,
+    required this.results,
+  });
+
+  /// Pagination metadata.
+  final ElasticDocumentsListMeta meta;
+
+  /// Curations in the current page.
+  final List<ElasticCuration> results;
+
+  factory ElasticCurationsListResponse.fromJson(Map<String, dynamic> json) {
+    final metaJson = _asJsonObjectStrict(json['meta'], context: 'meta');
+    final resultItems = _asJsonObjectListStrict(
+      json['results'],
+      context: 'results',
+    );
+
+    return ElasticCurationsListResponse(
+      meta: ElasticDocumentsListMeta.fromJson(metaJson),
+      results: List.unmodifiable(
+        resultItems.map(ElasticCuration.fromJson).toList(),
+      ),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'meta': meta.toJson(),
+    'results': results.map((item) => item.toJson()).toList(),
+  };
+}
+
+/// Identifier returned by curation create/update endpoints.
+class ElasticCurationWriteResult {
+  const ElasticCurationWriteResult({required this.id});
+
+  /// Created or updated curation identifier.
+  final String id;
+
+  factory ElasticCurationWriteResult.fromJson(Map<String, dynamic> json) {
+    return ElasticCurationWriteResult(id: _toStringOrEmpty(json['id']));
+  }
+
+  Map<String, dynamic> toJson() => {'id': id};
 }

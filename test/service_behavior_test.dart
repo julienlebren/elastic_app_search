@@ -932,6 +932,299 @@ void main() {
       );
     });
 
+    test('synonyms list success parses paginated response', () async {
+      handler = (request) async {
+        if (request.uri.path == '/api/as/v1/engines/parks/synonyms') {
+          expect(request.method, 'GET');
+          final body = await _readJson(request);
+          final page = body['page'] as Map<String, dynamic>?;
+          expect(page?['current'], 2);
+          expect(page?['size'], 20);
+
+          await _writeJson(request, 200, {
+            'meta': {
+              'page': {
+                'current': 2,
+                'size': 20,
+                'total_pages': 3,
+                'total_results': 42,
+              },
+            },
+            'results': [
+              {
+                'id': 'syn-1',
+                'synonyms': ['park', 'trail'],
+              },
+            ],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final response = await engine.listSynonyms(current: 2, size: 20);
+      expect(response.meta.page.current, 2);
+      expect(response.meta.page.size, 20);
+      expect(response.meta.page.totalPages, 3);
+      expect(response.meta.page.totalResults, 42);
+      expect(response.results, hasLength(1));
+      expect(response.results.first.id, 'syn-1');
+      expect(response.results.first.synonyms, orderedEquals(['park', 'trail']));
+    });
+
+    test('synonyms CRUD endpoints parse payloads', () async {
+      handler = (request) async {
+        if (request.uri.path == '/api/as/v1/engines/parks/synonyms') {
+          if (request.method == 'POST') {
+            final body = await _readJson(request);
+            expect(body['synonyms'], orderedEquals(['park', 'trail']));
+            await _writeJson(request, 200, {
+              'id': 'syn-new',
+              'synonyms': ['park', 'trail'],
+            });
+            return;
+          }
+        }
+
+        if (request.uri.path == '/api/as/v1/engines/parks/synonyms/syn-1') {
+          if (request.method == 'GET') {
+            await _writeJson(request, 200, {
+              'id': 'syn-1',
+              'synonyms': ['hike', 'trek'],
+            });
+            return;
+          }
+
+          if (request.method == 'PUT') {
+            final body = await _readJson(request);
+            expect(body['synonyms'], orderedEquals(['road', 'route']));
+            await _writeJson(request, 200, {
+              'id': 'syn-1',
+              'synonyms': ['road', 'route'],
+            });
+            return;
+          }
+
+          if (request.method == 'DELETE') {
+            await _writeJson(request, 200, {'deleted': true});
+            return;
+          }
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final created = await engine.createSynonymSet(['park', 'trail']);
+      final fetched = await engine.getSynonymSet('syn-1');
+      final updated = await engine.updateSynonymSet('syn-1', ['road', 'route']);
+      final deleted = await engine.deleteSynonymSet('syn-1');
+
+      expect(created.id, 'syn-new');
+      expect(created.synonyms, orderedEquals(['park', 'trail']));
+      expect(fetched.id, 'syn-1');
+      expect(fetched.synonyms, orderedEquals(['hike', 'trek']));
+      expect(updated.id, 'syn-1');
+      expect(updated.synonyms, orderedEquals(['road', 'route']));
+      expect(deleted, isTrue);
+    });
+
+    test('synonyms API validates payload and pagination', () {
+      expect(() => engine.listSynonyms(current: 0), throwsRangeError);
+      expect(() => engine.listSynonyms(size: 0), throwsRangeError);
+      expect(() => engine.listSynonyms(size: 26), throwsRangeError);
+
+      expect(() => engine.getSynonymSet('  '), throwsArgumentError);
+      expect(() => engine.deleteSynonymSet('  '), throwsArgumentError);
+      expect(() => engine.createSynonymSet(['park']), throwsRangeError);
+      expect(
+        () => engine.createSynonymSet(List<String>.generate(33, (i) => 's$i')),
+        throwsRangeError,
+      );
+      expect(
+        () => engine.createSynonymSet(['park', 'Park']),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.updateSynonymSet('syn-1', ['park', '']),
+        throwsArgumentError,
+      );
+    });
+
+    test('curations list success parses paginated response', () async {
+      handler = (request) async {
+        if (request.uri.path == '/api/as/v1/engines/parks/curations') {
+          expect(request.method, 'GET');
+          final body = await _readJson(request);
+          final page = body['page'] as Map<String, dynamic>?;
+          expect(page?['current'], 1);
+          expect(page?['size'], 25);
+
+          await _writeJson(request, 200, {
+            'meta': {
+              'page': {
+                'current': 1,
+                'size': 25,
+                'total_pages': 1,
+                'total_results': 1,
+              },
+            },
+            'results': [
+              {
+                'id': 'cur-1',
+                'queries': ['mountains'],
+                'promoted': ['park_zion'],
+                'hidden': ['park_lake-clark'],
+                'suggestion': {
+                  'status': 'pending',
+                  'operation': 'update',
+                  'promoted': ['park_yellowstone'],
+                  'created_at': '2021-11-16T09:07:38Z',
+                  'updated_at': '2021-11-16T11:35:39Z',
+                },
+              },
+            ],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final response = await engine.listCurations();
+      expect(response.meta.page.current, 1);
+      expect(response.results, hasLength(1));
+      final curation = response.results.first;
+      expect(curation.id, 'cur-1');
+      expect(curation.queries, orderedEquals(['mountains']));
+      expect(curation.promoted, orderedEquals(['park_zion']));
+      expect(curation.hidden, orderedEquals(['park_lake-clark']));
+      expect(curation.suggestion?.status, 'pending');
+      expect(curation.suggestion?.operation, 'update');
+      expect(
+        curation.suggestion?.promoted,
+        orderedEquals(['park_yellowstone']),
+      );
+    });
+
+    test('curations CRUD endpoints parse payloads', () async {
+      handler = (request) async {
+        if (request.uri.path == '/api/as/v1/engines/parks/curations') {
+          if (request.method == 'POST') {
+            final body = await _readJson(request);
+            expect(body['queries'], orderedEquals(['winter coat']));
+            expect(body['promoted'], orderedEquals(['coat-1']));
+            expect(body['hidden'], orderedEquals(['hat-1']));
+            await _writeJson(request, 200, {'id': 'cur-new'});
+            return;
+          }
+        }
+
+        if (request.uri.path == '/api/as/v1/engines/parks/curations/cur-1') {
+          if (request.method == 'GET') {
+            await _writeJson(request, 200, {
+              'id': 'cur-1',
+              'queries': ['hiking'],
+              'promoted': ['park_shenandoah'],
+              'hidden': [],
+            });
+            return;
+          }
+
+          if (request.method == 'PUT') {
+            final body = await _readJson(request);
+            expect(body['queries'], orderedEquals(['hiking', 'mountains']));
+            expect(body['promoted'], orderedEquals(['park_olympic']));
+            expect(body.containsKey('hidden'), isFalse);
+            await _writeJson(request, 200, {'id': 'cur-1'});
+            return;
+          }
+
+          if (request.method == 'DELETE') {
+            await _writeJson(request, 200, {'deleted': true});
+            return;
+          }
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final created = await engine.createCuration(
+        queries: const ['winter coat'],
+        promoted: const ['coat-1'],
+        hidden: const ['hat-1'],
+      );
+      final fetched = await engine.getCuration('cur-1');
+      final updated = await engine.updateCuration(
+        'cur-1',
+        queries: const ['hiking', 'mountains'],
+        promoted: const ['park_olympic'],
+      );
+      final deleted = await engine.deleteCuration('cur-1');
+
+      expect(created.id, 'cur-new');
+      expect(fetched.id, 'cur-1');
+      expect(fetched.queries, orderedEquals(['hiking']));
+      expect(updated.id, 'cur-1');
+      expect(deleted, isTrue);
+    });
+
+    test('curations API validates payload and pagination', () {
+      expect(() => engine.listCurations(current: 0), throwsRangeError);
+      expect(() => engine.listCurations(size: 0), throwsRangeError);
+      expect(() => engine.listCurations(size: 26), throwsRangeError);
+
+      expect(
+        () => engine.createCuration(
+          queries: const ['query'],
+          promoted: const [],
+          hidden: const [],
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.createCuration(queries: const []),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.createCuration(
+          queries: const ['query', 'Query'],
+          promoted: const ['doc-1'],
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.createCuration(
+          queries: const ['query'],
+          promoted: const [''],
+        ),
+        throwsArgumentError,
+      );
+      expect(() => engine.getCuration(' '), throwsArgumentError);
+      expect(() => engine.deleteCuration(' '), throwsArgumentError);
+      expect(() => engine.updateCuration('cur-1'), throwsArgumentError);
+      expect(
+        () => engine.updateCuration(' ', promoted: const ['doc-1']),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.updateCuration('cur-1', queries: const []),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.updateCuration('cur-1', hidden: const ['']),
+        throwsArgumentError,
+      );
+    });
+
     test('multi search validates query count bounds', () {
       expect(() => engine.multiSearch([]), throwsArgumentError);
       expect(

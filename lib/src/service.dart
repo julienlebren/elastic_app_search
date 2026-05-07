@@ -674,6 +674,127 @@ class ElasticAppSearch {
     return validated;
   }
 
+  String _validateResourceId(
+    String value, {
+    required String parameter,
+    required String context,
+  }) {
+    final trimmed = value.trim();
+    if (trimmed.isEmpty) {
+      throw ArgumentError.value(
+        value,
+        parameter,
+        '$context must be a non-empty string.',
+      );
+    }
+    return trimmed;
+  }
+
+  List<String> _validateSynonymTerms(List<String> synonyms) {
+    if (synonyms.length < 2) {
+      throw RangeError.range(
+        synonyms.length,
+        2,
+        32,
+        'synonyms.length',
+        'A synonym set must contain between 2 and 32 terms.',
+      );
+    }
+    if (synonyms.length > 32) {
+      throw RangeError.range(
+        synonyms.length,
+        2,
+        32,
+        'synonyms.length',
+        'A synonym set must contain between 2 and 32 terms.',
+      );
+    }
+
+    final normalized = <String>{};
+    final validated = <String>[];
+
+    for (var i = 0; i < synonyms.length; i++) {
+      final term = synonyms[i].trim();
+      if (term.isEmpty) {
+        throw ArgumentError.value(
+          synonyms[i],
+          'synonyms[$i]',
+          'Synonym terms must be non-empty strings.',
+        );
+      }
+
+      final dedupKey = term.toLowerCase();
+      if (!normalized.add(dedupKey)) {
+        throw ArgumentError.value(
+          synonyms[i],
+          'synonyms[$i]',
+          'Synonym terms must be unique.',
+        );
+      }
+
+      validated.add(term);
+    }
+
+    return validated;
+  }
+
+  List<String> _validateCurationQueries(
+    List<String> queries, {
+    String parameter = 'queries',
+  }) {
+    if (queries.isEmpty) {
+      throw ArgumentError.value(
+        queries,
+        parameter,
+        'At least one query is required.',
+      );
+    }
+
+    final normalized = <String>{};
+    final validated = <String>[];
+
+    for (var i = 0; i < queries.length; i++) {
+      final query = queries[i].trim();
+      if (query.isEmpty) {
+        throw ArgumentError.value(
+          queries[i],
+          '$parameter[$i]',
+          'Query must be a non-empty string.',
+        );
+      }
+      final dedupKey = query.toLowerCase();
+      if (!normalized.add(dedupKey)) {
+        throw ArgumentError.value(
+          queries[i],
+          '$parameter[$i]',
+          'Queries must be unique.',
+        );
+      }
+      validated.add(query);
+    }
+
+    return validated;
+  }
+
+  List<String> _validateCurationDocumentIds(
+    List<String> ids, {
+    required String parameter,
+  }) {
+    final validated = <String>[];
+    for (var i = 0; i < ids.length; i++) {
+      final id = ids[i].trim();
+      if (id.isEmpty) {
+        throw ArgumentError.value(
+          ids[i],
+          '$parameter[$i]',
+          'Document id must be a non-empty string.',
+        );
+      }
+      validated.add(id);
+    }
+    return validated;
+  }
+
   /// Executes a request on Elastic App Search and returns a [ElasticResponse] object
   /// An [ElasticQuery] must be provided with the parameters of the query.
   ///
@@ -1101,6 +1222,360 @@ class ElasticAppSearch {
       cancelToken: cancelToken,
       parse: (responseData) =>
           ElasticDocumentsListResponse.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Lists synonym sets for an engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/synonyms`.
+  Future<ElasticSynonymsListResponse> listSynonyms(
+    String engine, {
+    ElasticPageRequest page = const ElasticPageRequest(current: 1, size: 25),
+    CancelToken? cancelToken,
+  }) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    _validatePageRequest(page: page, maxSize: 25, context: 'synonyms page');
+
+    final url = _operationUrl(engineName, Operation.synonymsList);
+    return _sendRequest<ElasticSynonymsListResponse>(
+      method: 'GET',
+      url: url,
+      operation: Operation.synonymsList,
+      engine: engineName,
+      body: page.toBody(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticSynonymsListResponse.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Retrieves a synonym set by identifier.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/synonyms/{synonymSetId}`.
+  Future<ElasticSynonymSet> getSynonymSet(
+    String engine,
+    String synonymSetId, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedId = _validateResourceId(
+      synonymSetId,
+      parameter: 'synonymSetId',
+      context: 'Synonym set id',
+    );
+
+    final url = _engineApiUrl(engineName, 'synonyms/$validatedId');
+    return _sendRequest<ElasticSynonymSet>(
+      method: 'GET',
+      url: url,
+      operation: Operation.synonymGet,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticSynonymSet.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Creates a synonym set.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/synonyms`.
+  Future<ElasticSynonymSet> createSynonymSet(
+    String engine,
+    List<String> synonyms, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedSynonyms = _validateSynonymTerms(synonyms);
+    final url = _operationUrl(engineName, Operation.synonymCreate);
+
+    return _sendRequest<ElasticSynonymSet>(
+      method: 'POST',
+      url: url,
+      operation: Operation.synonymCreate,
+      engine: engineName,
+      body: {'synonyms': validatedSynonyms},
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticSynonymSet.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Updates a synonym set.
+  ///
+  /// Uses `PUT /api/as/v1/engines/{engine}/synonyms/{synonymSetId}`.
+  Future<ElasticSynonymSet> updateSynonymSet(
+    String engine,
+    String synonymSetId,
+    List<String> synonyms, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedId = _validateResourceId(
+      synonymSetId,
+      parameter: 'synonymSetId',
+      context: 'Synonym set id',
+    );
+    final validatedSynonyms = _validateSynonymTerms(synonyms);
+
+    final url = _engineApiUrl(engineName, 'synonyms/$validatedId');
+    return _sendRequest<ElasticSynonymSet>(
+      method: 'PUT',
+      url: url,
+      operation: Operation.synonymUpdate,
+      engine: engineName,
+      body: {'synonyms': validatedSynonyms},
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticSynonymSet.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Deletes a synonym set by identifier.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}/synonyms/{synonymSetId}`.
+  Future<bool> deleteSynonymSet(
+    String engine,
+    String synonymSetId, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedId = _validateResourceId(
+      synonymSetId,
+      parameter: 'synonymSetId',
+      context: 'Synonym set id',
+    );
+
+    final url = _engineApiUrl(engineName, 'synonyms/$validatedId');
+    return _sendRequest<bool>(
+      method: 'DELETE',
+      url: url,
+      operation: Operation.synonymDelete,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) {
+        final data = _asJsonObject(responseData);
+        return _toBool(data['deleted']);
+      },
+    );
+  }
+
+  /// Lists curations for an engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/curations`.
+  Future<ElasticCurationsListResponse> listCurations(
+    String engine, {
+    ElasticPageRequest page = const ElasticPageRequest(current: 1, size: 25),
+    CancelToken? cancelToken,
+  }) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    _validatePageRequest(page: page, maxSize: 25, context: 'curations page');
+
+    final url = _operationUrl(engineName, Operation.curationsList);
+    return _sendRequest<ElasticCurationsListResponse>(
+      method: 'GET',
+      url: url,
+      operation: Operation.curationsList,
+      engine: engineName,
+      body: page.toBody(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCurationsListResponse.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Retrieves a curation by identifier.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/curations/{curationId}`.
+  Future<ElasticCuration> getCuration(
+    String engine,
+    String curationId, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedId = _validateResourceId(
+      curationId,
+      parameter: 'curationId',
+      context: 'Curation id',
+    );
+
+    final url = _engineApiUrl(engineName, 'curations/$validatedId');
+    return _sendRequest<ElasticCuration>(
+      method: 'GET',
+      url: url,
+      operation: Operation.curationGet,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCuration.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Creates a curation.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/curations`.
+  Future<ElasticCurationWriteResult> createCuration(
+    String engine, {
+    required List<String> queries,
+    List<String> promoted = const <String>[],
+    List<String> hidden = const <String>[],
+    CancelToken? cancelToken,
+  }) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedQueries = _validateCurationQueries(queries);
+    final validatedPromoted = _validateCurationDocumentIds(
+      promoted,
+      parameter: 'promoted',
+    );
+    final validatedHidden = _validateCurationDocumentIds(
+      hidden,
+      parameter: 'hidden',
+    );
+
+    if (validatedPromoted.isEmpty && validatedHidden.isEmpty) {
+      throw ArgumentError(
+        'At least one document id must be provided in promoted or hidden.',
+      );
+    }
+
+    final payload = <String, dynamic>{
+      'queries': validatedQueries,
+      'promoted': validatedPromoted,
+      'hidden': validatedHidden,
+    };
+
+    final url = _operationUrl(engineName, Operation.curationCreate);
+    return _sendRequest<ElasticCurationWriteResult>(
+      method: 'POST',
+      url: url,
+      operation: Operation.curationCreate,
+      engine: engineName,
+      body: payload,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCurationWriteResult.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Updates a curation.
+  ///
+  /// Uses `PUT /api/as/v1/engines/{engine}/curations/{curationId}`.
+  Future<ElasticCurationWriteResult> updateCuration(
+    String engine,
+    String curationId, {
+    List<String>? queries,
+    List<String>? promoted,
+    List<String>? hidden,
+    CancelToken? cancelToken,
+  }) {
+    if (queries == null && promoted == null && hidden == null) {
+      throw ArgumentError(
+        'At least one field must be provided to update a curation (queries, promoted, hidden).',
+      );
+    }
+
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedId = _validateResourceId(
+      curationId,
+      parameter: 'curationId',
+      context: 'Curation id',
+    );
+
+    final payload = <String, dynamic>{};
+    if (queries != null) {
+      payload['queries'] = _validateCurationQueries(queries);
+    }
+    if (promoted != null) {
+      payload['promoted'] = _validateCurationDocumentIds(
+        promoted,
+        parameter: 'promoted',
+      );
+    }
+    if (hidden != null) {
+      payload['hidden'] = _validateCurationDocumentIds(
+        hidden,
+        parameter: 'hidden',
+      );
+    }
+
+    final url = _engineApiUrl(engineName, 'curations/$validatedId');
+    return _sendRequest<ElasticCurationWriteResult>(
+      method: 'PUT',
+      url: url,
+      operation: Operation.curationUpdate,
+      engine: engineName,
+      body: payload,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCurationWriteResult.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Deletes a curation by identifier.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}/curations/{curationId}`.
+  Future<bool> deleteCuration(
+    String engine,
+    String curationId, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedId = _validateResourceId(
+      curationId,
+      parameter: 'curationId',
+      context: 'Curation id',
+    );
+
+    final url = _engineApiUrl(engineName, 'curations/$validatedId');
+    return _sendRequest<bool>(
+      method: 'DELETE',
+      url: url,
+      operation: Operation.curationDelete,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) {
+        final data = _asJsonObject(responseData);
+        return _toBool(data['deleted']);
+      },
     );
   }
 

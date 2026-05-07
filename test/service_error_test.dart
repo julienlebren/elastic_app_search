@@ -485,5 +485,226 @@ void main() {
         );
       },
     );
+
+    test(
+      'list synonyms failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.listSynonyms(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having((e) => e.operation, 'operation', Operation.synonymsList)
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/synonyms',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'get synonym failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.getSynonymSet('syn-1'),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having((e) => e.operation, 'operation', Operation.synonymGet)
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/synonyms/syn-1',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'create synonym failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.createSynonymSet(['park', 'trail']),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.synonymCreate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/synonyms',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'update synonym failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.updateSynonymSet('syn-1', ['road', 'trail']),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.synonymUpdate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/synonyms/syn-1',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'delete synonym failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.deleteSynonymSet('syn-1'),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.synonymDelete,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/synonyms/syn-1',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'list curations failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.listCurations(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.curationsList,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/curations',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'get curation failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.getCuration('cur-1'),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having((e) => e.operation, 'operation', Operation.curationGet)
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/curations/cur-1',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'create curation failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.createCuration(
+            queries: const ['query'],
+            promoted: const ['doc-1'],
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.curationCreate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/curations',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'update curation failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.updateCuration('cur-1', promoted: const ['doc-1']),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.curationUpdate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/curations/cur-1',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'delete curation failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.deleteCuration('cur-1'),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.curationDelete,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/curations/cur-1',
+                ),
+          ),
+        );
+      },
+    );
   });
 }
