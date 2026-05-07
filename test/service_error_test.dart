@@ -18,6 +18,25 @@ void main() {
       expect(() => service.engine('   '), throwsArgumentError);
     });
 
+    test('exception toString includes optional fields when present', () {
+      const exception = ElasticAppSearchException(
+        message: 'Oops',
+        operation: Operation.search,
+        engine: 'parks',
+        statusCode: 500,
+        url: 'https://example.com/search',
+        cause: 'boom',
+      );
+
+      final text = exception.toString();
+      expect(text, contains('message: Oops'));
+      expect(text, contains('operation: search'));
+      expect(text, contains('engine: parks'));
+      expect(text, contains('statusCode: 500'));
+      expect(text, contains('url: https://example.com/search'));
+      expect(text, contains('cause: boom'));
+    });
+
     test('search failures are wrapped in ElasticAppSearchException', () async {
       await expectLater(
         engine.query('mountains').get(),

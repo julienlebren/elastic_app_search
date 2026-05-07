@@ -92,6 +92,42 @@ void main() {
         isTrue,
       );
     });
+
+    test('parses string-typed numeric config values', () {
+      final query = ElasticQuery.fromJson({
+        'query': 'mountains',
+        'filters': {
+          'all': {
+            'visitors': {'from': '10.5', 'to': '20'},
+          },
+        },
+        'search_fields': {
+          'title': {'weight': '7'},
+        },
+        'result_fields': {
+          'description': {
+            'raw': {'size': '60'},
+            'snippet': {'size': '80', 'fallback': true},
+          },
+        },
+      });
+
+      final serialized = query.toJson();
+      final filters = serialized['filters'] as Map;
+      final all = filters['all'] as Map;
+      final visitors = all['visitors'] as Map;
+      expect(visitors['from'], 10.5);
+      expect(visitors['to'], 20.0);
+
+      final searchFields = serialized['search_fields'] as Map;
+      expect(searchFields['title'], {'weight': 7});
+
+      final resultFields = serialized['result_fields'] as Map;
+      expect(resultFields['description'], {
+        'raw': {'size': 60},
+        'snippet': {'size': 80, 'fallback': true},
+      });
+    });
   });
 
   group('ElasticSuggestionsQuery.fromJson', () {

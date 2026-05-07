@@ -19,6 +19,7 @@ Map<String, dynamic>? _asStringDynamicMap(Object? value) {
 /// An object containing information about a given result
 @freezed
 abstract class ElasticResultMeta with _$ElasticResultMeta {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
   factory ElasticResultMeta({
     /// The relevance of the result
     double? score,
@@ -33,6 +34,7 @@ abstract class ElasticResultMeta with _$ElasticResultMeta {
 abstract class ElasticResult with _$ElasticResult {
   const ElasticResult._();
 
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
   factory ElasticResult({
     /// A map of the raw data of the document, containing the fields
     /// requested in the [ElasticResultField] passed to the query
@@ -119,6 +121,7 @@ abstract class ElasticResult with _$ElasticResult {
 /// An object contaning the snippet of the result
 @freezed
 abstract class ElasticResultSnippet with _$ElasticResultSnippet {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
   factory ElasticResultSnippet({
     /// The full snippet, matching the size provided in the [ElasticResultField]
     /// passed to the query.
@@ -147,6 +150,7 @@ abstract class ElasticResultSnippet with _$ElasticResultSnippet {
 abstract class ElasticSuggestionResult with _$ElasticSuggestionResult {
   const ElasticSuggestionResult._();
 
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
   factory ElasticSuggestionResult({
     /// A list of documents
     List<ElasticSuggestionDocument>? documents,
@@ -161,6 +165,7 @@ abstract class ElasticSuggestionResult with _$ElasticSuggestionResult {
 abstract class ElasticSuggestionDocument with _$ElasticSuggestionDocument {
   const ElasticSuggestionDocument._();
 
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
   factory ElasticSuggestionDocument({
     /// The suggestion contained in the document of the query suggestion
     required String suggestion,

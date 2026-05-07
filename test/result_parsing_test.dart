@@ -36,5 +36,42 @@ void main() {
       expect(result.snippets?['description']?.fullText, 'A great park');
       expect(result.snippets?['description']?.highlights, ['great']);
     });
+
+    test('supports map values with non-string keys in document fields', () {
+      final result = ElasticResult.fromJson({
+        'title': {'raw': 'Yosemite', 1: 'ignored'},
+        '_meta': {'score': 4.0},
+      });
+
+      expect(result.data?['title'], 'Yosemite');
+      expect(result.score, 4.0);
+    });
+  });
+
+  group('Result model fromJson', () {
+    test('parses ElasticResultSnippet from JSON', () {
+      final snippet = ElasticResultSnippet.fromJson({
+        'fullText': 'A great park',
+        'textParts': ['A ', 'great', ' park'],
+        'highlights': ['great'],
+      });
+
+      expect(snippet.fullText, 'A great park');
+      expect(snippet.highlights, ['great']);
+    });
+
+    test('parses suggestion models from JSON', () {
+      final document = ElasticSuggestionDocument.fromJson({
+        'suggestion': 'mountain',
+      });
+      final result = ElasticSuggestionResult.fromJson({
+        'documents': [
+          {'suggestion': 'mountain'},
+        ],
+      });
+
+      expect(document.suggestion, 'mountain');
+      expect(result.documents?.first.suggestion, 'mountain');
+    });
   });
 }

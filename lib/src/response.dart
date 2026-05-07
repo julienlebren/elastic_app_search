@@ -7,6 +7,7 @@ part of '../elastic_app_search.dart';
 abstract class ElasticResponse with _$ElasticResponse {
   ElasticResponse._();
 
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
   factory ElasticResponse({
     /// Object delimiting the results meta data.
     required ElasticResponseMeta meta,
@@ -37,6 +38,7 @@ abstract class ElasticResponse with _$ElasticResponse {
 /// See [https://www.elastic.co/guide/en/app-search/current/search.html#search-api-response-body]
 @freezed
 abstract class ElasticResponseMeta with _$ElasticResponseMeta {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
   factory ElasticResponseMeta({
     /// String ID representing the request. Guaranteed to be unique.
     @JsonKey(name: "request_id") required String requestId,
@@ -62,6 +64,7 @@ abstract class ElasticResponseMeta with _$ElasticResponseMeta {
 /// Object delimiting the pagination meta data.
 @freezed
 abstract class ElasticResponseMetaPage with _$ElasticResponseMetaPage {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
   factory ElasticResponseMetaPage({
     /// Number representing the current page of results.
     required int current,
@@ -95,6 +98,7 @@ abstract class ElasticQuerySuggestionResponse
     with _$ElasticQuerySuggestionResponse {
   ElasticQuerySuggestionResponse._();
 
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
   factory ElasticQuerySuggestionResponse({
     /// Documents containing the suggestions
     required ElasticSuggestionResult results,

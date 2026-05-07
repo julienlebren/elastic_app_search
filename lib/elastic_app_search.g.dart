@@ -84,8 +84,8 @@ _ElasticRangeFacetImpl _$ElasticRangeFacetImplFromJson(
   Map<String, dynamic> json,
 ) => _ElasticRangeFacetImpl(
   name: json['name'] as String?,
-  from: json['from'] as String?,
-  to: json['to'] as String?,
+  from: json['from'],
+  to: json['to'],
   count: (json['count'] as num?)?.toInt(),
 );
 
@@ -361,9 +361,11 @@ _ElasticResponse _$ElasticResponseFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ElasticResponseToJson(_ElasticResponse instance) =>
     <String, dynamic>{
-      'meta': instance.meta,
-      'results': instance.results,
-      'facets': instance.rawFacets,
+      'meta': instance.meta.toJson(),
+      'results': instance.results.map((e) => e.toJson()).toList(),
+      'facets': ?instance.rawFacets?.map(
+        (k, e) => MapEntry(k, e.map((e) => e.toJson()).toList()),
+      ),
     };
 
 _ElasticResponseMeta _$ElasticResponseMetaFromJson(Map<String, dynamic> json) =>
@@ -382,7 +384,7 @@ Map<String, dynamic> _$ElasticResponseMetaToJson(
   'request_id': instance.requestId,
   'warnings': instance.warnings,
   'alerts': instance.alerts,
-  'page': instance.page,
+  'page': instance.page.toJson(),
 };
 
 _ElasticResponseMetaPage _$ElasticResponseMetaPageFromJson(
@@ -413,13 +415,13 @@ _ElasticQuerySuggestionResponse _$ElasticQuerySuggestionResponseFromJson(
 
 Map<String, dynamic> _$ElasticQuerySuggestionResponseToJson(
   _ElasticQuerySuggestionResponse instance,
-) => <String, dynamic>{'results': instance.results};
+) => <String, dynamic>{'results': instance.results.toJson()};
 
 _ElasticResultMeta _$ElasticResultMetaFromJson(Map<String, dynamic> json) =>
     _ElasticResultMeta(score: (json['score'] as num?)?.toDouble());
 
 Map<String, dynamic> _$ElasticResultMetaToJson(_ElasticResultMeta instance) =>
-    <String, dynamic>{'score': instance.score};
+    <String, dynamic>{'score': ?instance.score};
 
 _ElasticResult _$ElasticResultFromJson(Map<String, dynamic> json) =>
     _ElasticResult(
@@ -439,11 +441,11 @@ _ElasticResult _$ElasticResultFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$ElasticResultToJson(_ElasticResult instance) =>
     <String, dynamic>{
-      'data': instance.data,
-      'snippets': instance.snippets,
-      '_meta': instance.meta,
-      '_group': instance.group,
-      '_group_key': instance.groupKey,
+      'data': ?instance.data,
+      'snippets': ?instance.snippets?.map((k, e) => MapEntry(k, e.toJson())),
+      '_meta': instance.meta.toJson(),
+      '_group': ?instance.group?.map((e) => e.toJson()).toList(),
+      '_group_key': ?instance.groupKey,
     };
 
 _ElasticResultSnippet _$ElasticResultSnippetFromJson(
@@ -478,7 +480,9 @@ _ElasticSuggestionResult _$ElasticSuggestionResultFromJson(
 
 Map<String, dynamic> _$ElasticSuggestionResultToJson(
   _ElasticSuggestionResult instance,
-) => <String, dynamic>{'documents': instance.documents};
+) => <String, dynamic>{
+  'documents': ?instance.documents?.map((e) => e.toJson()).toList(),
+};
 
 _ElasticSuggestionDocument _$ElasticSuggestionDocumentFromJson(
   Map<String, dynamic> json,

@@ -70,6 +70,61 @@ void main() {
       );
     });
 
+    test('filter validates incompatible condition combinations', () {
+      expect(
+        () => engine
+            .query('mountains')
+            .filter(
+              'states',
+              isEqualTo: 'California',
+              whereIn: ['California', 'Nevada'],
+            ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine
+            .query('mountains')
+            .filter('visitors', isEqualTo: 10, isGreaterThanOrEqualTo: 1),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine
+            .query('mountains')
+            .filter(
+              'location',
+              isEqualTo: 'x',
+              isFurtherThanOrAt: 10,
+              from: const LatLong(37.7749, -122.4194),
+            ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine
+            .query('mountains')
+            .filter(
+              'location',
+              isGreaterThanOrEqualTo: 1,
+              isFurtherThanOrAt: 10,
+              from: const LatLong(37.7749, -122.4194),
+            ),
+        throwsArgumentError,
+      );
+    });
+
+    test('filter validates range types', () {
+      expect(
+        () => engine
+            .query('mountains')
+            .filter('visitors', isGreaterThanOrEqualTo: Object()),
+        throwsArgumentError,
+      );
+      expect(
+        () =>
+            engine.query('mountains').filter('visitors', isLessThan: Object()),
+        throwsArgumentError,
+      );
+    });
+
     test('facet validates range/geo arguments', () {
       expect(
         () => engine
@@ -80,6 +135,17 @@ void main() {
       expect(
         () =>
             engine.query('mountains').facet('location', isFurtherThanOrAt: 10),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine
+            .query('mountains')
+            .facet(
+              'location',
+              isGreaterThanOrEqualTo: 1,
+              isFurtherThanOrAt: 10,
+              from: const LatLong(37.7749, -122.4194),
+            ),
         throwsArgumentError,
       );
     });
@@ -96,6 +162,10 @@ void main() {
         () => engine.query('mountains').tag('x' * 65),
         throwsArgumentError,
       );
+    });
+
+    test('tag validates non-empty value', () {
+      expect(() => engine.query('mountains').tag(''), throwsArgumentError);
     });
 
     test('tag validates max number of tags', () {
@@ -187,6 +257,27 @@ void main() {
       );
     });
 
+    test('search query validates analytics tag content at runtime', () {
+      expect(
+        () => ElasticQuery.fromJson({
+          'query': 'mountains',
+          'analytics': {
+            'tags': [''],
+          },
+        }),
+        throwsArgumentError,
+      );
+      expect(
+        () => ElasticQuery.fromJson({
+          'query': 'mountains',
+          'analytics': {
+            'tags': ['x' * 65],
+          },
+        }),
+        throwsArgumentError,
+      );
+    });
+
     test('search query validates search field weights at runtime', () {
       expect(
         () => ElasticQuery.fromJson({
@@ -238,6 +329,72 @@ void main() {
           },
         }),
         throwsRangeError,
+      );
+    });
+
+    test('search query validates geo center format at runtime', () {
+      expect(
+        () => ElasticQuery.fromJson({
+          'query': 'mountains',
+          'filters': {
+            'all': [
+              {
+                'location': {
+                  'center': '37.7749|-122.4194',
+                  'unit': 'mi',
+                  'from': 1,
+                },
+              },
+            ],
+          },
+        }),
+        throwsFormatException,
+      );
+      expect(
+        () => ElasticQuery.fromJson({
+          'query': 'mountains',
+          'filters': {
+            'all': [
+              {
+                'location': {'center': 'north,west', 'unit': 'mi', 'from': 1},
+              },
+            ],
+          },
+        }),
+        throwsFormatException,
+      );
+    });
+
+    test('search query validates geo unit at runtime', () {
+      expect(
+        () => ElasticQuery.fromJson({
+          'query': 'mountains',
+          'filters': {
+            'all': [
+              {
+                'location': {
+                  'center': '37.7749,-122.4194',
+                  'unit': '',
+                  'from': 1,
+                },
+              },
+            ],
+          },
+        }),
+        throwsArgumentError,
+      );
+    });
+
+    test('search query validates disjunctive facet wiring at runtime', () {
+      expect(
+        () => ElasticQuery.fromJson({
+          'query': 'mountains',
+          'facets': {
+            'states': {'type': 'value'},
+          },
+          'disjunctiveFacets': ['category'],
+        }),
+        throwsStateError,
       );
     });
 

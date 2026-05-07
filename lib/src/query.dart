@@ -688,7 +688,7 @@ abstract class ElasticQuery with _$ElasticQuery {
     Object? isFurtherThanOrAt,
     Object? isLessFarThan,
     LatLong? from,
-    @Default(GeoUnit.meters) GeoUnit? unit,
+    GeoUnit unit = GeoUnit.meters,
     int? size,
     //List<ElasticRange>? ranges,
   }) {
@@ -729,8 +729,8 @@ abstract class ElasticQuery with _$ElasticQuery {
     if (from != null) {
       final newRange = _ElasticRangeFacet(
         name: name,
-        from: isFurtherThanOrAt?.toString(),
-        to: isLessFarThan?.toString(),
+        from: isFurtherThanOrAt,
+        to: isLessFarThan,
       );
       facet = _ElasticQueryFacet(
         type: "range",
@@ -743,10 +743,8 @@ abstract class ElasticQuery with _$ElasticQuery {
         name: name,
         from: isGreaterThanOrEqualTo is DateTime
             ? isGreaterThanOrEqualTo.toUTCString()
-            : isGreaterThanOrEqualTo?.toString(),
-        to: isLessThan is DateTime
-            ? isLessThan.toUTCString()
-            : isLessThan?.toString(),
+            : isGreaterThanOrEqualTo,
+        to: isLessThan is DateTime ? isLessThan.toUTCString() : isLessThan,
       );
       facet = _ElasticQueryFacet(
         type: "range",
@@ -1049,9 +1047,11 @@ class _ElasticSearchFiltersConverter
         }
       }
 
-      filters[type.name] = values.length == 1 ? values.first : values;
+      if (values.isNotEmpty) {
+        filters[type.name] = values.length == 1 ? values.first : values;
+      }
     }
-    return filters;
+    return filters.isEmpty ? null : filters;
   }
 }
 

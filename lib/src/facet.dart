@@ -23,8 +23,8 @@ abstract class _ElasticRangeFacet with _$ElasticRangeFacet {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory _ElasticRangeFacet({
     String? name,
-    String? from,
-    String? to,
+    Object? from,
+    Object? to,
     int? count,
   }) = _ElasticRangeFacetImpl;
 

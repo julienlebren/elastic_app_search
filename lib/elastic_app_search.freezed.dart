@@ -923,7 +923,7 @@ _ElasticRangeFacet _$ElasticRangeFacetFromJson(
 /// @nodoc
 mixin _$ElasticRangeFacet {
 
- String? get name; String? get from; String? get to; int? get count;
+ String? get name; Object? get from; Object? get to; int? get count;
 /// Create a copy of _ElasticRangeFacet
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -936,12 +936,12 @@ _$ElasticRangeFacetCopyWith<_ElasticRangeFacet> get copyWith => __$ElasticRangeF
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticRangeFacet&&(identical(other.name, name) || other.name == name)&&(identical(other.from, from) || other.from == from)&&(identical(other.to, to) || other.to == to)&&(identical(other.count, count) || other.count == count));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticRangeFacet&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.from, from)&&const DeepCollectionEquality().equals(other.to, to)&&(identical(other.count, count) || other.count == count));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,from,to,count);
+int get hashCode => Object.hash(runtimeType,name,const DeepCollectionEquality().hash(from),const DeepCollectionEquality().hash(to),count);
 
 @override
 String toString() {
@@ -956,7 +956,7 @@ abstract mixin class _$ElasticRangeFacetCopyWith<$Res>  {
   factory _$ElasticRangeFacetCopyWith(_ElasticRangeFacet value, $Res Function(_ElasticRangeFacet) _then) = __$ElasticRangeFacetCopyWithImpl;
 @useResult
 $Res call({
- String? name, String? from, String? to, int? count
+ String? name, Object? from, Object? to, int? count
 });
 
 
@@ -976,9 +976,7 @@ class __$ElasticRangeFacetCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? name = freezed,Object? from = freezed,Object? to = freezed,Object? count = freezed,}) {
   return _then(_self.copyWith(
 name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String?,from: freezed == from ? _self.from : from // ignore: cast_nullable_to_non_nullable
-as String?,to: freezed == to ? _self.to : to // ignore: cast_nullable_to_non_nullable
-as String?,count: freezed == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
+as String?,from: freezed == from ? _self.from : from ,to: freezed == to ? _self.to : to ,count: freezed == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
 as int?,
   ));
 }
@@ -1064,7 +1062,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? name,  String? from,  String? to,  int? count)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? name,  Object? from,  Object? to,  int? count)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ElasticRangeFacetImpl() when $default != null:
 return $default(_that.name,_that.from,_that.to,_that.count);case _:
@@ -1085,7 +1083,7 @@ return $default(_that.name,_that.from,_that.to,_that.count);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? name,  String? from,  String? to,  int? count)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? name,  Object? from,  Object? to,  int? count)  $default,) {final _that = this;
 switch (_that) {
 case _ElasticRangeFacetImpl():
 return $default(_that.name,_that.from,_that.to,_that.count);case _:
@@ -1105,7 +1103,7 @@ return $default(_that.name,_that.from,_that.to,_that.count);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? name,  String? from,  String? to,  int? count)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? name,  Object? from,  Object? to,  int? count)?  $default,) {final _that = this;
 switch (_that) {
 case _ElasticRangeFacetImpl() when $default != null:
 return $default(_that.name,_that.from,_that.to,_that.count);case _:
@@ -1124,8 +1122,8 @@ class _ElasticRangeFacetImpl implements _ElasticRangeFacet {
   factory _ElasticRangeFacetImpl.fromJson(Map<String, dynamic> json) => _$ElasticRangeFacetImplFromJson(json);
 
 @override final  String? name;
-@override final  String? from;
-@override final  String? to;
+@override final  Object? from;
+@override final  Object? to;
 @override final  int? count;
 
 /// Create a copy of _ElasticRangeFacet
@@ -1141,12 +1139,12 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticRangeFacetImpl&&(identical(other.name, name) || other.name == name)&&(identical(other.from, from) || other.from == from)&&(identical(other.to, to) || other.to == to)&&(identical(other.count, count) || other.count == count));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticRangeFacetImpl&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.from, from)&&const DeepCollectionEquality().equals(other.to, to)&&(identical(other.count, count) || other.count == count));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,from,to,count);
+int get hashCode => Object.hash(runtimeType,name,const DeepCollectionEquality().hash(from),const DeepCollectionEquality().hash(to),count);
 
 @override
 String toString() {
@@ -1161,7 +1159,7 @@ abstract mixin class _$ElasticRangeFacetImplCopyWith<$Res> implements _$ElasticR
   factory _$ElasticRangeFacetImplCopyWith(_ElasticRangeFacetImpl value, $Res Function(_ElasticRangeFacetImpl) _then) = __$ElasticRangeFacetImplCopyWithImpl;
 @override @useResult
 $Res call({
- String? name, String? from, String? to, int? count
+ String? name, Object? from, Object? to, int? count
 });
 
 
@@ -1181,9 +1179,7 @@ class __$ElasticRangeFacetImplCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? name = freezed,Object? from = freezed,Object? to = freezed,Object? count = freezed,}) {
   return _then(_ElasticRangeFacetImpl(
 name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String?,from: freezed == from ? _self.from : from // ignore: cast_nullable_to_non_nullable
-as String?,to: freezed == to ? _self.to : to // ignore: cast_nullable_to_non_nullable
-as String?,count: freezed == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
+as String?,from: freezed == from ? _self.from : from ,to: freezed == to ? _self.to : to ,count: freezed == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
 as int?,
   ));
 }
@@ -5797,8 +5793,8 @@ return $default(_that.meta,_that.results,_that.rawFacets);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticResponse extends ElasticResponse {
    _ElasticResponse({required this.meta, required final  List<ElasticResult> results, @JsonKey(name: "facets") final  Map<String, List<ElasticFacet>>? rawFacets}): _results = results,_rawFacets = rawFacets,super._();
   factory _ElasticResponse.fromJson(Map<String, dynamic> json) => _$ElasticResponseFromJson(json);
@@ -6112,8 +6108,8 @@ return $default(_that.requestId,_that.warnings,_that.alerts,_that.page);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticResponseMeta implements ElasticResponseMeta {
    _ElasticResponseMeta({@JsonKey(name: "request_id") required this.requestId, required final  List<dynamic> warnings, required final  List<dynamic> alerts, required this.page}): _warnings = warnings,_alerts = alerts;
   factory _ElasticResponseMeta.fromJson(Map<String, dynamic> json) => _$ElasticResponseMetaFromJson(json);
@@ -6433,8 +6429,8 @@ return $default(_that.current,_that.size,_that.totalPages,_that.totalResults);ca
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticResponseMetaPage implements ElasticResponseMetaPage {
    _ElasticResponseMetaPage({required this.current, required this.size, @JsonKey(name: "total_pages") required this.totalPages, @JsonKey(name: "total_results") required this.totalResults});
   factory _ElasticResponseMetaPage.fromJson(Map<String, dynamic> json) => _$ElasticResponseMetaPageFromJson(json);
@@ -6726,8 +6722,8 @@ return $default(_that.results);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticQuerySuggestionResponse extends ElasticQuerySuggestionResponse {
    _ElasticQuerySuggestionResponse({required this.results}): super._();
   factory _ElasticQuerySuggestionResponse.fromJson(Map<String, dynamic> json) => _$ElasticQuerySuggestionResponseFromJson(json);
@@ -7000,8 +6996,8 @@ return $default(_that.score);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticResultMeta implements ElasticResultMeta {
    _ElasticResultMeta({this.score});
   factory _ElasticResultMeta.fromJson(Map<String, dynamic> json) => _$ElasticResultMetaFromJson(json);
@@ -7289,8 +7285,8 @@ return $default(_that.data,_that.snippets,_that.meta,_that.group,_that.groupKey)
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticResult extends ElasticResult {
    _ElasticResult({final  Map<String, dynamic>? data, final  Map<String, ElasticResultSnippet>? snippets, @JsonKey(name: "_meta") required this.meta, @JsonKey(name: "_group") final  List<ElasticResult>? group, @JsonKey(name: "_group_key") this.groupKey}): _data = data,_snippets = snippets,_group = group,super._();
   factory _ElasticResult.fromJson(Map<String, dynamic> json) => _$ElasticResultFromJson(json);
@@ -7627,8 +7623,8 @@ return $default(_that.fullText,_that.textParts,_that.highlights);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticResultSnippet implements ElasticResultSnippet {
    _ElasticResultSnippet({required this.fullText, required final  List<String> textParts, required final  List<String> highlights}): _textParts = textParts,_highlights = highlights;
   factory _ElasticResultSnippet.fromJson(Map<String, dynamic> json) => _$ElasticResultSnippetFromJson(json);
@@ -7927,8 +7923,8 @@ return $default(_that.documents);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticSuggestionResult extends ElasticSuggestionResult {
    _ElasticSuggestionResult({final  List<ElasticSuggestionDocument>? documents}): _documents = documents,super._();
   factory _ElasticSuggestionResult.fromJson(Map<String, dynamic> json) => _$ElasticSuggestionResultFromJson(json);
@@ -8201,8 +8197,8 @@ return $default(_that.suggestion);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticSuggestionDocument extends ElasticSuggestionDocument {
    _ElasticSuggestionDocument({required this.suggestion}): super._();
   factory _ElasticSuggestionDocument.fromJson(Map<String, dynamic> json) => _$ElasticSuggestionDocumentFromJson(json);
