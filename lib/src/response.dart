@@ -320,3 +320,78 @@ abstract class ElasticEnginesResponse with _$ElasticEnginesResponse {
   factory ElasticEnginesResponse.fromJson(Map<String, dynamic> json) =>
       _$ElasticEnginesResponseFromJson(json);
 }
+
+List<String>? _toNullableStringList(dynamic value) {
+  if (value == null) return null;
+  if (value is! List) return null;
+  return value.map((entry) => entry.toString()).toList();
+}
+
+/// Detailed engine payload returned by engines and meta-engines endpoints.
+class ElasticEngineInfo {
+  const ElasticEngineInfo({
+    required this.name,
+    this.type,
+    this.language,
+    this.documentCount,
+    this.sourceEngines,
+    this.numberOfShards,
+  });
+
+  /// Engine name.
+  final String name;
+
+  /// Engine type (`default` or `meta`).
+  final String? type;
+
+  /// Optional language optimization code.
+  final String? language;
+
+  /// Number of indexed documents when provided by App Search.
+  final int? documentCount;
+
+  /// Source engines for meta engines.
+  final List<String>? sourceEngines;
+
+  /// Optional shard count override for default engines.
+  final int? numberOfShards;
+
+  factory ElasticEngineInfo.fromJson(Map<String, dynamic> json) {
+    final indexSettingsOverride = _asStringDynamicMap(
+      json['index_create_settings_override'],
+    );
+    final sourceEngines = _toNullableStringList(json['source_engines']);
+
+    return ElasticEngineInfo(
+      name: json['name']?.toString() ?? '',
+      type: json['type']?.toString(),
+      language: json['language']?.toString(),
+      documentCount: _toNullableInt(json['document_count']),
+      sourceEngines: sourceEngines == null
+          ? null
+          : List.unmodifiable(sourceEngines),
+      numberOfShards: _toNullableInt(
+        indexSettingsOverride?['number_of_shards'],
+      ),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final json = <String, dynamic>{
+      'name': name,
+      'type': type,
+      'language': language,
+      'document_count': documentCount,
+      'source_engines': sourceEngines,
+    };
+
+    if (numberOfShards != null) {
+      json['index_create_settings_override'] = {
+        'number_of_shards': numberOfShards,
+      };
+    }
+
+    json.removeWhere((key, value) => value == null);
+    return json;
+  }
+}

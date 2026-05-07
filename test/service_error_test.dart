@@ -382,5 +382,108 @@ void main() {
         );
       },
     );
+
+    test(
+      'engine info failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.info(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having((e) => e.operation, 'operation', Operation.engineGet)
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'create engine failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          service.createEngine(name: 'parks'),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having((e) => e.operation, 'operation', Operation.engineCreate)
+                .having((e) => e.engine, 'engine', '<account>')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'delete engine failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.delete(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having((e) => e.operation, 'operation', Operation.engineDelete)
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'add source engines failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.addSourceEngines(const ['source-a']),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.sourceEnginesAdd,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/source_engines',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'remove source engines failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.removeSourceEngines(const ['source-a']),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.sourceEnginesRemove,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/source_engines',
+                ),
+          ),
+        );
+      },
+    );
   });
 }

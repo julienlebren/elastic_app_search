@@ -73,6 +73,12 @@ class ElasticAppSearch {
 
   static const String _accountScope = '<account>';
   static const String _errorMessage = "Unable to get response from API server";
+  static const Set<String> _reservedEngineNames = {
+    'new',
+    'collection',
+    'create_engine',
+    'engine_limit',
+  };
   static const Set<String> _reservedSchemaFieldNames = {
     '_boost',
     '_explanation',
@@ -103,8 +109,10 @@ class ElasticAppSearch {
       ? _endPoint.substring(0, _endPoint.length - 1)
       : _endPoint;
 
-  String _engineApiPath(String engine, String path) =>
-      '/api/as/v1/engines/$engine/$path';
+  String _engineApiPath(String engine, String path) {
+    if (path.isEmpty) return '/api/as/v1/engines/$engine';
+    return '/api/as/v1/engines/$engine/$path';
+  }
 
   String _accountApiPath(String path) => '/api/as/v1/$path';
 
@@ -607,6 +615,65 @@ class ElasticAppSearch {
     }
   }
 
+  String _validateEngineName(
+    String name, {
+    String parameter = 'name',
+    String context = 'Engine',
+  }) {
+    final trimmed = name.trim();
+    if (trimmed.isEmpty) {
+      throw ArgumentError.value(
+        name,
+        parameter,
+        '$context name must be a non-empty string.',
+      );
+    }
+
+    if (!RegExp(r'^[a-z0-9-]+$').hasMatch(trimmed)) {
+      throw ArgumentError.value(
+        name,
+        parameter,
+        '$context name can only contain lowercase letters, numbers, and hyphens.',
+      );
+    }
+
+    if (_reservedEngineNames.contains(trimmed)) {
+      throw ArgumentError.value(
+        name,
+        parameter,
+        '$context name "$trimmed" is reserved.',
+      );
+    }
+
+    return trimmed;
+  }
+
+  List<String> _validateSourceEngines(
+    List<String> sourceEngines, {
+    String parameter = 'sourceEngines',
+  }) {
+    if (sourceEngines.isEmpty) {
+      throw ArgumentError.value(
+        sourceEngines,
+        parameter,
+        'You must provide at least one source engine.',
+      );
+    }
+
+    final validated = <String>[];
+    for (var i = 0; i < sourceEngines.length; i++) {
+      validated.add(
+        _validateEngineName(
+          sourceEngines[i],
+          parameter: '$parameter[$i]',
+          context: 'Source engine',
+        ),
+      );
+    }
+
+    return validated;
+  }
+
   /// Executes a request on Elastic App Search and returns a [ElasticResponse] object
   /// An [ElasticQuery] must be provided with the parameters of the query.
   ///
@@ -1041,7 +1108,7 @@ class ElasticAppSearch {
     ElasticPageRequest page = const ElasticPageRequest(current: 1, size: 25),
     CancelToken? cancelToken,
   }) {
-    _validatePageRequest(page: page, context: 'engines page');
+    _validatePageRequest(page: page, maxSize: 25, context: 'engines page');
 
     final url = _operationUrl(_accountScope, Operation.engines);
     return _sendRequest<ElasticEnginesResponse>(
@@ -1056,15 +1123,180 @@ class ElasticAppSearch {
     );
   }
 
-  /// Creates and returns a new [ElasticObject] linked to this instance of service.
-  ElasticEngine engine(String name) {
-    if (name.trim().isEmpty) {
+  /// Retrieves one engine by name.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}`.
+  Future<ElasticEngineInfo> getEngineInfo(
+    String name, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(name);
+    final url = _operationUrl(engineName, Operation.engineGet);
+    return _sendRequest<ElasticEngineInfo>(
+      method: 'GET',
+      url: url,
+      operation: Operation.engineGet,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticEngineInfo.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Creates a new engine.
+  ///
+  /// Uses `POST /api/as/v1/engines`.
+  Future<ElasticEngineInfo> createEngine({
+    required String name,
+    String? language,
+    ElasticEngineType? type,
+    List<String>? sourceEngines,
+    int? numberOfShards,
+    CancelToken? cancelToken,
+  }) {
+    final engineName = _validateEngineName(name);
+    final trimmedLanguage = language?.trim();
+    if (language != null &&
+        (trimmedLanguage == null || trimmedLanguage.isEmpty)) {
       throw ArgumentError.value(
-        name,
-        'name',
-        'An engine name must be a non-empty string.',
+        language,
+        'language',
+        'language must be a non-empty string when provided.',
       );
     }
-    return ElasticEngine(service: this, name: name);
+    if (numberOfShards != null && numberOfShards < 1) {
+      throw RangeError.range(
+        numberOfShards,
+        1,
+        null,
+        'numberOfShards',
+        'numberOfShards must be greater than or equal to 1.',
+      );
+    }
+
+    final validatedSourceEngines = sourceEngines == null
+        ? null
+        : _validateSourceEngines(sourceEngines);
+    final effectiveType =
+        type ??
+        (validatedSourceEngines != null ? ElasticEngineType.meta : null);
+
+    if (effectiveType == ElasticEngineType.defaultEngine &&
+        validatedSourceEngines != null) {
+      throw ArgumentError(
+        'sourceEngines can only be provided when type is ElasticEngineType.meta.',
+      );
+    }
+    if (effectiveType == ElasticEngineType.meta) {
+      if (trimmedLanguage != null) {
+        throw ArgumentError(
+          'language cannot be provided when type is ElasticEngineType.meta.',
+        );
+      }
+      if (numberOfShards != null) {
+        throw ArgumentError(
+          'numberOfShards cannot be provided when type is ElasticEngineType.meta.',
+        );
+      }
+    }
+
+    final payload = <String, dynamic>{'name': engineName};
+    if (trimmedLanguage != null) {
+      payload['language'] = trimmedLanguage;
+    }
+    if (effectiveType != null) {
+      payload['type'] = effectiveType.apiValue;
+    }
+    if (validatedSourceEngines != null) {
+      payload['source_engines'] = validatedSourceEngines;
+    }
+    if (numberOfShards != null) {
+      payload['index_create_settings_override'] = {
+        'number_of_shards': numberOfShards,
+      };
+    }
+
+    final url = _operationUrl(_accountScope, Operation.engineCreate);
+    return _sendRequest<ElasticEngineInfo>(
+      method: 'POST',
+      url: url,
+      operation: Operation.engineCreate,
+      engine: _accountScope,
+      body: payload,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticEngineInfo.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Deletes an engine by name.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}`.
+  Future<bool> deleteEngine(String name, [CancelToken? cancelToken]) {
+    final engineName = _validateEngineName(name);
+    final url = _operationUrl(engineName, Operation.engineDelete);
+    return _sendRequest<bool>(
+      method: 'DELETE',
+      url: url,
+      operation: Operation.engineDelete,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) {
+        final data = _asJsonObject(responseData);
+        return _toBool(data['deleted']);
+      },
+    );
+  }
+
+  /// Adds source engines to a meta engine.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/source_engines`.
+  Future<ElasticEngineInfo> addMetaEngineSourceEngines(
+    String name,
+    List<String> sourceEngines, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(name);
+    final validatedSourceEngines = _validateSourceEngines(sourceEngines);
+    final url = _operationUrl(engineName, Operation.sourceEnginesAdd);
+    return _sendRequest<ElasticEngineInfo>(
+      method: 'POST',
+      url: url,
+      operation: Operation.sourceEnginesAdd,
+      engine: engineName,
+      body: validatedSourceEngines,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticEngineInfo.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Removes source engines from a meta engine.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}/source_engines`.
+  Future<ElasticEngineInfo> removeMetaEngineSourceEngines(
+    String name,
+    List<String> sourceEngines, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(name);
+    final validatedSourceEngines = _validateSourceEngines(sourceEngines);
+    final url = _operationUrl(engineName, Operation.sourceEnginesRemove);
+    return _sendRequest<ElasticEngineInfo>(
+      method: 'DELETE',
+      url: url,
+      operation: Operation.sourceEnginesRemove,
+      engine: engineName,
+      body: validatedSourceEngines,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticEngineInfo.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Creates and returns a new [ElasticObject] linked to this instance of service.
+  ElasticEngine engine(String name) {
+    final engineName = _validateEngineName(name);
+    return ElasticEngine(service: this, name: engineName);
   }
 }

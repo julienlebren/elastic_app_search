@@ -126,4 +126,32 @@ class ElasticEngine {
     page: ElasticPageRequest(current: current, size: size),
     cancelToken: cancelToken,
   );
+
+  /// Retrieves metadata for this engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}`.
+  Future<ElasticEngineInfo> info([CancelToken? cancelToken]) =>
+      service.getEngineInfo(name, cancelToken);
+
+  /// Deletes this engine.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}`.
+  Future<bool> delete([CancelToken? cancelToken]) =>
+      service.deleteEngine(name, cancelToken);
+
+  /// Adds source engines to this meta engine.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/source_engines`.
+  Future<ElasticEngineInfo> addSourceEngines(
+    List<String> sourceEngines, [
+    CancelToken? cancelToken,
+  ]) => service.addMetaEngineSourceEngines(name, sourceEngines, cancelToken);
+
+  /// Removes source engines from this meta engine.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}/source_engines`.
+  Future<ElasticEngineInfo> removeSourceEngines(
+    List<String> sourceEngines, [
+    CancelToken? cancelToken,
+  ]) => service.removeMetaEngineSourceEngines(name, sourceEngines, cancelToken);
 }

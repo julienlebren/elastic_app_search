@@ -690,6 +690,21 @@ void main() {
       expect(response.results.first.documentCount, 12);
     });
 
+    test('engines list validates pagination bounds', () {
+      expect(
+        () => service.listEngines(page: const ElasticPageRequest(current: 0)),
+        throwsRangeError,
+      );
+      expect(
+        () => service.listEngines(page: const ElasticPageRequest(size: 0)),
+        throwsRangeError,
+      );
+      expect(
+        () => service.listEngines(page: const ElasticPageRequest(size: 26)),
+        throwsRangeError,
+      );
+    });
+
     test('engines list errors are mapped', () async {
       handler = (request) async {
         if (request.uri.path == '/api/as/v1/engines') {
@@ -713,6 +728,207 @@ void main() {
               .having((e) => e.statusCode, 'statusCode', 401)
               .having((e) => e.message, 'message', 'Invalid admin key'),
         ),
+      );
+    });
+
+    test('engine info success parses payload', () async {
+      handler = (request) async {
+        if (request.uri.path == '/api/as/v1/engines/parks') {
+          expect(request.method, 'GET');
+          await _writeJson(request, 200, {
+            'name': 'parks',
+            'type': 'default',
+            'language': 'en',
+            'document_count': '42',
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final info = await engine.info();
+
+      expect(info.name, 'parks');
+      expect(info.type, 'default');
+      expect(info.language, 'en');
+      expect(info.documentCount, 42);
+    });
+
+    test('create engine success parses payload with shard override', () async {
+      handler = (request) async {
+        if (request.uri.path == '/api/as/v1/engines') {
+          expect(request.method, 'POST');
+          final body = await _readJson(request);
+          expect(body['name'], 'mountains');
+          expect(body['language'], 'fr');
+          expect(body['type'], isNull);
+          final settings =
+              body['index_create_settings_override'] as Map<String, dynamic>?;
+          expect(settings?['number_of_shards'], 5);
+
+          await _writeJson(request, 200, {
+            'name': 'mountains',
+            'type': 'default',
+            'language': 'fr',
+            'document_count': 0,
+            'index_create_settings_override': {'number_of_shards': 5},
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final created = await service.createEngine(
+        name: 'mountains',
+        language: 'fr',
+        numberOfShards: 5,
+      );
+
+      expect(created.name, 'mountains');
+      expect(created.type, 'default');
+      expect(created.language, 'fr');
+      expect(created.numberOfShards, 5);
+    });
+
+    test('create meta engine infers type from source engines', () async {
+      handler = (request) async {
+        if (request.uri.path == '/api/as/v1/engines') {
+          expect(request.method, 'POST');
+          final body = await _readJson(request);
+          expect(body['name'], 'global-parks');
+          expect(body['type'], 'meta');
+          expect(body['source_engines'], orderedEquals(['parks', 'trails']));
+          expect(body['language'], isNull);
+          expect(body['index_create_settings_override'], isNull);
+
+          await _writeJson(request, 200, {
+            'name': 'global-parks',
+            'type': 'meta',
+            'source_engines': ['parks', 'trails'],
+            'document_count': 12,
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final created = await service.createEngine(
+        name: 'global-parks',
+        sourceEngines: const ['parks', 'trails'],
+      );
+
+      expect(created.name, 'global-parks');
+      expect(created.type, 'meta');
+      expect(created.sourceEngines, orderedEquals(['parks', 'trails']));
+      expect(created.documentCount, 12);
+    });
+
+    test('delete engine success returns deleted flag', () async {
+      handler = (request) async {
+        if (request.uri.path == '/api/as/v1/engines/parks') {
+          expect(request.method, 'DELETE');
+          await _writeJson(request, 200, {'deleted': true});
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final deleted = await engine.delete();
+      expect(deleted, isTrue);
+    });
+
+    test('meta engine source endpoints parse payload', () async {
+      handler = (request) async {
+        if (request.uri.path == '/api/as/v1/engines/parks/source_engines') {
+          final body = await _readJson(request);
+          expect(body, orderedEquals(['east', 'west']));
+
+          if (request.method == 'POST') {
+            await _writeJson(request, 200, {
+              'name': 'parks',
+              'type': 'meta',
+              'source_engines': ['north', 'east', 'west'],
+            });
+            return;
+          }
+
+          if (request.method == 'DELETE') {
+            await _writeJson(request, 200, {
+              'name': 'parks',
+              'type': 'meta',
+              'source_engines': ['north'],
+            });
+            return;
+          }
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final added = await engine.addSourceEngines(const ['east', 'west']);
+      final removed = await engine.removeSourceEngines(const ['east', 'west']);
+
+      expect(added.type, 'meta');
+      expect(added.sourceEngines, orderedEquals(['north', 'east', 'west']));
+      expect(removed.sourceEngines, orderedEquals(['north']));
+    });
+
+    test('engine APIs validate create payload constraints', () {
+      expect(
+        () => service.createEngine(name: 'InvalidName'),
+        throwsArgumentError,
+      );
+      expect(() => service.createEngine(name: 'new'), throwsArgumentError);
+      expect(
+        () => service.createEngine(name: 'parks', language: '   '),
+        throwsArgumentError,
+      );
+      expect(
+        () => service.createEngine(name: 'parks', numberOfShards: 0),
+        throwsRangeError,
+      );
+      expect(
+        () => service.createEngine(
+          name: 'parks',
+          type: ElasticEngineType.defaultEngine,
+          sourceEngines: const ['source-a'],
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => service.createEngine(
+          name: 'parks',
+          type: ElasticEngineType.meta,
+          language: 'en',
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => service.createEngine(
+          name: 'parks',
+          type: ElasticEngineType.meta,
+          numberOfShards: 2,
+        ),
+        throwsArgumentError,
+      );
+      expect(() => engine.addSourceEngines(const []), throwsArgumentError);
+      expect(
+        () => engine.removeSourceEngines(const ['Bad Name']),
+        throwsArgumentError,
       );
     });
 

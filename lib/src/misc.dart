@@ -110,6 +110,11 @@ class _LatLongConverter implements JsonConverter<LatLong?, String?> {
 
 enum Operation {
   engines("engines"),
+  engineGet(""),
+  engineCreate("engines"),
+  engineDelete(""),
+  sourceEnginesAdd("source_engines"),
+  sourceEnginesRemove("source_engines"),
   search("search"),
   multiSearch("multi_search"),
   searchExplain("search_explain"),
@@ -129,6 +134,22 @@ enum Operation {
   const Operation(this.value);
 
   final String value;
+}
+
+/// Supported App Search engine types.
+///
+/// See https://www.elastic.co/guide/en/app-search/current/engines.html
+enum ElasticEngineType { defaultEngine, meta }
+
+extension _ElasticEngineTypeX on ElasticEngineType {
+  String get apiValue {
+    switch (this) {
+      case ElasticEngineType.defaultEngine:
+        return 'default';
+      case ElasticEngineType.meta:
+        return 'meta';
+    }
+  }
 }
 
 /// Allowed App Search field types for schema updates.
