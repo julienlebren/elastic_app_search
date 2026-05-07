@@ -2545,7 +2545,9 @@ mixin _$ElasticQuery {
 /// passed to Elastic and the package concatenates all responses in one response.
 @JsonKey(includeToJson: false) List<String>? get disjunctiveFacets;/// Tags can be used to enrich each query with unique information.
 /// See [https://www.elastic.co/guide/en/app-search/current/tags.html]
- _ElasticAnalytics? get analytics;/// Grouped results based on shared fields
+ _ElasticAnalytics? get analytics;/// If true, generates an analytics query event for the search request.
+/// Defaults to true on the App Search API side.
+@JsonKey(name: "record_analytics") bool? get recordAnalyticsField;/// Grouped results based on shared fields
 @protected@JsonKey(name: "group") _ElasticGroup? get groupBy;/// Object to sort your results in an order other than document score.
 @_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? get sortBy;
 /// Create a copy of ElasticQuery
@@ -2560,16 +2562,16 @@ $ElasticQueryCopyWith<ElasticQuery> get copyWith => _$ElasticQueryCopyWithImpl<E
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticQuery&&(identical(other.engine, engine) || other.engine == engine)&&(identical(other.query, query) || other.query == query)&&(identical(other.precisionTuning, precisionTuning) || other.precisionTuning == precisionTuning)&&(identical(other.searchPage, searchPage) || other.searchPage == searchPage)&&const DeepCollectionEquality().equals(other.filters, filters)&&const DeepCollectionEquality().equals(other.searchFields, searchFields)&&const DeepCollectionEquality().equals(other.resultFields, resultFields)&&const DeepCollectionEquality().equals(other.facets, facets)&&const DeepCollectionEquality().equals(other.disjunctiveFacets, disjunctiveFacets)&&(identical(other.analytics, analytics) || other.analytics == analytics)&&(identical(other.groupBy, groupBy) || other.groupBy == groupBy)&&const DeepCollectionEquality().equals(other.sortBy, sortBy));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticQuery&&(identical(other.engine, engine) || other.engine == engine)&&(identical(other.query, query) || other.query == query)&&(identical(other.precisionTuning, precisionTuning) || other.precisionTuning == precisionTuning)&&(identical(other.searchPage, searchPage) || other.searchPage == searchPage)&&const DeepCollectionEquality().equals(other.filters, filters)&&const DeepCollectionEquality().equals(other.searchFields, searchFields)&&const DeepCollectionEquality().equals(other.resultFields, resultFields)&&const DeepCollectionEquality().equals(other.facets, facets)&&const DeepCollectionEquality().equals(other.disjunctiveFacets, disjunctiveFacets)&&(identical(other.analytics, analytics) || other.analytics == analytics)&&(identical(other.recordAnalyticsField, recordAnalyticsField) || other.recordAnalyticsField == recordAnalyticsField)&&(identical(other.groupBy, groupBy) || other.groupBy == groupBy)&&const DeepCollectionEquality().equals(other.sortBy, sortBy));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,engine,query,precisionTuning,searchPage,const DeepCollectionEquality().hash(filters),const DeepCollectionEquality().hash(searchFields),const DeepCollectionEquality().hash(resultFields),const DeepCollectionEquality().hash(facets),const DeepCollectionEquality().hash(disjunctiveFacets),analytics,groupBy,const DeepCollectionEquality().hash(sortBy));
+int get hashCode => Object.hash(runtimeType,engine,query,precisionTuning,searchPage,const DeepCollectionEquality().hash(filters),const DeepCollectionEquality().hash(searchFields),const DeepCollectionEquality().hash(resultFields),const DeepCollectionEquality().hash(facets),const DeepCollectionEquality().hash(disjunctiveFacets),analytics,recordAnalyticsField,groupBy,const DeepCollectionEquality().hash(sortBy));
 
 @override
 String toString() {
-  return 'ElasticQuery(engine: $engine, query: $query, precisionTuning: $precisionTuning, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, facets: $facets, disjunctiveFacets: $disjunctiveFacets, analytics: $analytics, groupBy: $groupBy, sortBy: $sortBy)';
+  return 'ElasticQuery(engine: $engine, query: $query, precisionTuning: $precisionTuning, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, facets: $facets, disjunctiveFacets: $disjunctiveFacets, analytics: $analytics, recordAnalyticsField: $recordAnalyticsField, groupBy: $groupBy, sortBy: $sortBy)';
 }
 
 
@@ -2580,7 +2582,7 @@ abstract mixin class $ElasticQueryCopyWith<$Res>  {
   factory $ElasticQueryCopyWith(ElasticQuery value, $Res Function(ElasticQuery) _then) = _$ElasticQueryCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(includeToJson: false, includeFromJson: false) ElasticEngine? engine, String query,@protected@JsonKey(name: "precision") int? precisionTuning,@JsonKey(name: "page") _ElasticSearchPage? searchPage,@_ElasticSearchFiltersConverter() List<_ElasticSearchFilter>? filters,@_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") List<_ElasticSearchField>? searchFields,@_ElasticResultFieldsConverter()@JsonKey(name: "result_fields") List<_ElasticResultField>? resultFields,@protected Map<String, _ElasticQueryFacet>? facets,@JsonKey(includeToJson: false) List<String>? disjunctiveFacets, _ElasticAnalytics? analytics,@protected@JsonKey(name: "group") _ElasticGroup? groupBy,@_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? sortBy
+@JsonKey(includeToJson: false, includeFromJson: false) ElasticEngine? engine, String query,@protected@JsonKey(name: "precision") int? precisionTuning,@JsonKey(name: "page") _ElasticSearchPage? searchPage,@_ElasticSearchFiltersConverter() List<_ElasticSearchFilter>? filters,@_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") List<_ElasticSearchField>? searchFields,@_ElasticResultFieldsConverter()@JsonKey(name: "result_fields") List<_ElasticResultField>? resultFields,@protected Map<String, _ElasticQueryFacet>? facets,@JsonKey(includeToJson: false) List<String>? disjunctiveFacets, _ElasticAnalytics? analytics,@JsonKey(name: "record_analytics") bool? recordAnalyticsField,@protected@JsonKey(name: "group") _ElasticGroup? groupBy,@_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? sortBy
 });
 
 
@@ -2597,7 +2599,7 @@ class _$ElasticQueryCopyWithImpl<$Res>
 
 /// Create a copy of ElasticQuery
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? engine = freezed,Object? query = null,Object? precisionTuning = freezed,Object? searchPage = freezed,Object? filters = freezed,Object? searchFields = freezed,Object? resultFields = freezed,Object? facets = freezed,Object? disjunctiveFacets = freezed,Object? analytics = freezed,Object? groupBy = freezed,Object? sortBy = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? engine = freezed,Object? query = null,Object? precisionTuning = freezed,Object? searchPage = freezed,Object? filters = freezed,Object? searchFields = freezed,Object? resultFields = freezed,Object? facets = freezed,Object? disjunctiveFacets = freezed,Object? analytics = freezed,Object? recordAnalyticsField = freezed,Object? groupBy = freezed,Object? sortBy = freezed,}) {
   return _then(_self.copyWith(
 engine: freezed == engine ? _self.engine : engine // ignore: cast_nullable_to_non_nullable
 as ElasticEngine?,query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
@@ -2609,7 +2611,8 @@ as List<_ElasticSearchField>?,resultFields: freezed == resultFields ? _self.resu
 as List<_ElasticResultField>?,facets: freezed == facets ? _self.facets : facets // ignore: cast_nullable_to_non_nullable
 as Map<String, _ElasticQueryFacet>?,disjunctiveFacets: freezed == disjunctiveFacets ? _self.disjunctiveFacets : disjunctiveFacets // ignore: cast_nullable_to_non_nullable
 as List<String>?,analytics: freezed == analytics ? _self.analytics : analytics // ignore: cast_nullable_to_non_nullable
-as _ElasticAnalytics?,groupBy: freezed == groupBy ? _self.groupBy : groupBy // ignore: cast_nullable_to_non_nullable
+as _ElasticAnalytics?,recordAnalyticsField: freezed == recordAnalyticsField ? _self.recordAnalyticsField : recordAnalyticsField // ignore: cast_nullable_to_non_nullable
+as bool?,groupBy: freezed == groupBy ? _self.groupBy : groupBy // ignore: cast_nullable_to_non_nullable
 as _ElasticGroup?,sortBy: freezed == sortBy ? _self.sortBy : sortBy // ignore: cast_nullable_to_non_nullable
 as List<_ElasticSort>?,
   ));
@@ -2732,10 +2735,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @protected@JsonKey(name: "precision")  int? precisionTuning, @JsonKey(name: "page")  _ElasticSearchPage? searchPage, @_ElasticSearchFiltersConverter()  List<_ElasticSearchFilter>? filters, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields")  List<_ElasticSearchField>? searchFields, @_ElasticResultFieldsConverter()@JsonKey(name: "result_fields")  List<_ElasticResultField>? resultFields, @protected  Map<String, _ElasticQueryFacet>? facets, @JsonKey(includeToJson: false)  List<String>? disjunctiveFacets,  _ElasticAnalytics? analytics, @protected@JsonKey(name: "group")  _ElasticGroup? groupBy, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @protected@JsonKey(name: "precision")  int? precisionTuning, @JsonKey(name: "page")  _ElasticSearchPage? searchPage, @_ElasticSearchFiltersConverter()  List<_ElasticSearchFilter>? filters, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields")  List<_ElasticSearchField>? searchFields, @_ElasticResultFieldsConverter()@JsonKey(name: "result_fields")  List<_ElasticResultField>? resultFields, @protected  Map<String, _ElasticQueryFacet>? facets, @JsonKey(includeToJson: false)  List<String>? disjunctiveFacets,  _ElasticAnalytics? analytics, @JsonKey(name: "record_analytics")  bool? recordAnalyticsField, @protected@JsonKey(name: "group")  _ElasticGroup? groupBy, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ElasticQuery() when $default != null:
-return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,_that.filters,_that.searchFields,_that.resultFields,_that.facets,_that.disjunctiveFacets,_that.analytics,_that.groupBy,_that.sortBy);case _:
+return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,_that.filters,_that.searchFields,_that.resultFields,_that.facets,_that.disjunctiveFacets,_that.analytics,_that.recordAnalyticsField,_that.groupBy,_that.sortBy);case _:
   return orElse();
 
 }
@@ -2753,10 +2756,10 @@ return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @protected@JsonKey(name: "precision")  int? precisionTuning, @JsonKey(name: "page")  _ElasticSearchPage? searchPage, @_ElasticSearchFiltersConverter()  List<_ElasticSearchFilter>? filters, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields")  List<_ElasticSearchField>? searchFields, @_ElasticResultFieldsConverter()@JsonKey(name: "result_fields")  List<_ElasticResultField>? resultFields, @protected  Map<String, _ElasticQueryFacet>? facets, @JsonKey(includeToJson: false)  List<String>? disjunctiveFacets,  _ElasticAnalytics? analytics, @protected@JsonKey(name: "group")  _ElasticGroup? groupBy, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @protected@JsonKey(name: "precision")  int? precisionTuning, @JsonKey(name: "page")  _ElasticSearchPage? searchPage, @_ElasticSearchFiltersConverter()  List<_ElasticSearchFilter>? filters, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields")  List<_ElasticSearchField>? searchFields, @_ElasticResultFieldsConverter()@JsonKey(name: "result_fields")  List<_ElasticResultField>? resultFields, @protected  Map<String, _ElasticQueryFacet>? facets, @JsonKey(includeToJson: false)  List<String>? disjunctiveFacets,  _ElasticAnalytics? analytics, @JsonKey(name: "record_analytics")  bool? recordAnalyticsField, @protected@JsonKey(name: "group")  _ElasticGroup? groupBy, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)  $default,) {final _that = this;
 switch (_that) {
 case _ElasticQuery():
-return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,_that.filters,_that.searchFields,_that.resultFields,_that.facets,_that.disjunctiveFacets,_that.analytics,_that.groupBy,_that.sortBy);case _:
+return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,_that.filters,_that.searchFields,_that.resultFields,_that.facets,_that.disjunctiveFacets,_that.analytics,_that.recordAnalyticsField,_that.groupBy,_that.sortBy);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -2773,10 +2776,10 @@ return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @protected@JsonKey(name: "precision")  int? precisionTuning, @JsonKey(name: "page")  _ElasticSearchPage? searchPage, @_ElasticSearchFiltersConverter()  List<_ElasticSearchFilter>? filters, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields")  List<_ElasticSearchField>? searchFields, @_ElasticResultFieldsConverter()@JsonKey(name: "result_fields")  List<_ElasticResultField>? resultFields, @protected  Map<String, _ElasticQueryFacet>? facets, @JsonKey(includeToJson: false)  List<String>? disjunctiveFacets,  _ElasticAnalytics? analytics, @protected@JsonKey(name: "group")  _ElasticGroup? groupBy, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @protected@JsonKey(name: "precision")  int? precisionTuning, @JsonKey(name: "page")  _ElasticSearchPage? searchPage, @_ElasticSearchFiltersConverter()  List<_ElasticSearchFilter>? filters, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields")  List<_ElasticSearchField>? searchFields, @_ElasticResultFieldsConverter()@JsonKey(name: "result_fields")  List<_ElasticResultField>? resultFields, @protected  Map<String, _ElasticQueryFacet>? facets, @JsonKey(includeToJson: false)  List<String>? disjunctiveFacets,  _ElasticAnalytics? analytics, @JsonKey(name: "record_analytics")  bool? recordAnalyticsField, @protected@JsonKey(name: "group")  _ElasticGroup? groupBy, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)?  $default,) {final _that = this;
 switch (_that) {
 case _ElasticQuery() when $default != null:
-return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,_that.filters,_that.searchFields,_that.resultFields,_that.facets,_that.disjunctiveFacets,_that.analytics,_that.groupBy,_that.sortBy);case _:
+return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,_that.filters,_that.searchFields,_that.resultFields,_that.facets,_that.disjunctiveFacets,_that.analytics,_that.recordAnalyticsField,_that.groupBy,_that.sortBy);case _:
   return null;
 
 }
@@ -2788,7 +2791,7 @@ return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticQuery extends ElasticQuery {
-  const _ElasticQuery({@JsonKey(includeToJson: false, includeFromJson: false) this.engine, required this.query, @protected@JsonKey(name: "precision") this.precisionTuning, @JsonKey(name: "page") this.searchPage, @_ElasticSearchFiltersConverter() final  List<_ElasticSearchFilter>? filters, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") final  List<_ElasticSearchField>? searchFields, @_ElasticResultFieldsConverter()@JsonKey(name: "result_fields") final  List<_ElasticResultField>? resultFields, @protected final  Map<String, _ElasticQueryFacet>? facets, @JsonKey(includeToJson: false) final  List<String>? disjunctiveFacets, this.analytics, @protected@JsonKey(name: "group") this.groupBy, @_ElasticSortConverter()@JsonKey(name: "sort") final  List<_ElasticSort>? sortBy}): _filters = filters,_searchFields = searchFields,_resultFields = resultFields,_facets = facets,_disjunctiveFacets = disjunctiveFacets,_sortBy = sortBy,super._();
+  const _ElasticQuery({@JsonKey(includeToJson: false, includeFromJson: false) this.engine, required this.query, @protected@JsonKey(name: "precision") this.precisionTuning, @JsonKey(name: "page") this.searchPage, @_ElasticSearchFiltersConverter() final  List<_ElasticSearchFilter>? filters, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") final  List<_ElasticSearchField>? searchFields, @_ElasticResultFieldsConverter()@JsonKey(name: "result_fields") final  List<_ElasticResultField>? resultFields, @protected final  Map<String, _ElasticQueryFacet>? facets, @JsonKey(includeToJson: false) final  List<String>? disjunctiveFacets, this.analytics, @JsonKey(name: "record_analytics") this.recordAnalyticsField, @protected@JsonKey(name: "group") this.groupBy, @_ElasticSortConverter()@JsonKey(name: "sort") final  List<_ElasticSort>? sortBy}): _filters = filters,_searchFields = searchFields,_resultFields = resultFields,_facets = facets,_disjunctiveFacets = disjunctiveFacets,_sortBy = sortBy,super._();
   factory _ElasticQuery.fromJson(Map<String, dynamic> json) => _$ElasticQueryFromJson(json);
 
 /// An object representing an Elastic engine
@@ -2875,6 +2878,9 @@ class _ElasticQuery extends ElasticQuery {
 /// Tags can be used to enrich each query with unique information.
 /// See [https://www.elastic.co/guide/en/app-search/current/tags.html]
 @override final  _ElasticAnalytics? analytics;
+/// If true, generates an analytics query event for the search request.
+/// Defaults to true on the App Search API side.
+@override@JsonKey(name: "record_analytics") final  bool? recordAnalyticsField;
 /// Grouped results based on shared fields
 @override@protected@JsonKey(name: "group") final  _ElasticGroup? groupBy;
 /// Object to sort your results in an order other than document score.
@@ -2902,16 +2908,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticQuery&&(identical(other.engine, engine) || other.engine == engine)&&(identical(other.query, query) || other.query == query)&&(identical(other.precisionTuning, precisionTuning) || other.precisionTuning == precisionTuning)&&(identical(other.searchPage, searchPage) || other.searchPage == searchPage)&&const DeepCollectionEquality().equals(other._filters, _filters)&&const DeepCollectionEquality().equals(other._searchFields, _searchFields)&&const DeepCollectionEquality().equals(other._resultFields, _resultFields)&&const DeepCollectionEquality().equals(other._facets, _facets)&&const DeepCollectionEquality().equals(other._disjunctiveFacets, _disjunctiveFacets)&&(identical(other.analytics, analytics) || other.analytics == analytics)&&(identical(other.groupBy, groupBy) || other.groupBy == groupBy)&&const DeepCollectionEquality().equals(other._sortBy, _sortBy));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticQuery&&(identical(other.engine, engine) || other.engine == engine)&&(identical(other.query, query) || other.query == query)&&(identical(other.precisionTuning, precisionTuning) || other.precisionTuning == precisionTuning)&&(identical(other.searchPage, searchPage) || other.searchPage == searchPage)&&const DeepCollectionEquality().equals(other._filters, _filters)&&const DeepCollectionEquality().equals(other._searchFields, _searchFields)&&const DeepCollectionEquality().equals(other._resultFields, _resultFields)&&const DeepCollectionEquality().equals(other._facets, _facets)&&const DeepCollectionEquality().equals(other._disjunctiveFacets, _disjunctiveFacets)&&(identical(other.analytics, analytics) || other.analytics == analytics)&&(identical(other.recordAnalyticsField, recordAnalyticsField) || other.recordAnalyticsField == recordAnalyticsField)&&(identical(other.groupBy, groupBy) || other.groupBy == groupBy)&&const DeepCollectionEquality().equals(other._sortBy, _sortBy));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,engine,query,precisionTuning,searchPage,const DeepCollectionEquality().hash(_filters),const DeepCollectionEquality().hash(_searchFields),const DeepCollectionEquality().hash(_resultFields),const DeepCollectionEquality().hash(_facets),const DeepCollectionEquality().hash(_disjunctiveFacets),analytics,groupBy,const DeepCollectionEquality().hash(_sortBy));
+int get hashCode => Object.hash(runtimeType,engine,query,precisionTuning,searchPage,const DeepCollectionEquality().hash(_filters),const DeepCollectionEquality().hash(_searchFields),const DeepCollectionEquality().hash(_resultFields),const DeepCollectionEquality().hash(_facets),const DeepCollectionEquality().hash(_disjunctiveFacets),analytics,recordAnalyticsField,groupBy,const DeepCollectionEquality().hash(_sortBy));
 
 @override
 String toString() {
-  return 'ElasticQuery(engine: $engine, query: $query, precisionTuning: $precisionTuning, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, facets: $facets, disjunctiveFacets: $disjunctiveFacets, analytics: $analytics, groupBy: $groupBy, sortBy: $sortBy)';
+  return 'ElasticQuery(engine: $engine, query: $query, precisionTuning: $precisionTuning, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, facets: $facets, disjunctiveFacets: $disjunctiveFacets, analytics: $analytics, recordAnalyticsField: $recordAnalyticsField, groupBy: $groupBy, sortBy: $sortBy)';
 }
 
 
@@ -2922,7 +2928,7 @@ abstract mixin class _$ElasticQueryCopyWith<$Res> implements $ElasticQueryCopyWi
   factory _$ElasticQueryCopyWith(_ElasticQuery value, $Res Function(_ElasticQuery) _then) = __$ElasticQueryCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(includeToJson: false, includeFromJson: false) ElasticEngine? engine, String query,@protected@JsonKey(name: "precision") int? precisionTuning,@JsonKey(name: "page") _ElasticSearchPage? searchPage,@_ElasticSearchFiltersConverter() List<_ElasticSearchFilter>? filters,@_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") List<_ElasticSearchField>? searchFields,@_ElasticResultFieldsConverter()@JsonKey(name: "result_fields") List<_ElasticResultField>? resultFields,@protected Map<String, _ElasticQueryFacet>? facets,@JsonKey(includeToJson: false) List<String>? disjunctiveFacets, _ElasticAnalytics? analytics,@protected@JsonKey(name: "group") _ElasticGroup? groupBy,@_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? sortBy
+@JsonKey(includeToJson: false, includeFromJson: false) ElasticEngine? engine, String query,@protected@JsonKey(name: "precision") int? precisionTuning,@JsonKey(name: "page") _ElasticSearchPage? searchPage,@_ElasticSearchFiltersConverter() List<_ElasticSearchFilter>? filters,@_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") List<_ElasticSearchField>? searchFields,@_ElasticResultFieldsConverter()@JsonKey(name: "result_fields") List<_ElasticResultField>? resultFields,@protected Map<String, _ElasticQueryFacet>? facets,@JsonKey(includeToJson: false) List<String>? disjunctiveFacets, _ElasticAnalytics? analytics,@JsonKey(name: "record_analytics") bool? recordAnalyticsField,@protected@JsonKey(name: "group") _ElasticGroup? groupBy,@_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? sortBy
 });
 
 
@@ -2939,7 +2945,7 @@ class __$ElasticQueryCopyWithImpl<$Res>
 
 /// Create a copy of ElasticQuery
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? engine = freezed,Object? query = null,Object? precisionTuning = freezed,Object? searchPage = freezed,Object? filters = freezed,Object? searchFields = freezed,Object? resultFields = freezed,Object? facets = freezed,Object? disjunctiveFacets = freezed,Object? analytics = freezed,Object? groupBy = freezed,Object? sortBy = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? engine = freezed,Object? query = null,Object? precisionTuning = freezed,Object? searchPage = freezed,Object? filters = freezed,Object? searchFields = freezed,Object? resultFields = freezed,Object? facets = freezed,Object? disjunctiveFacets = freezed,Object? analytics = freezed,Object? recordAnalyticsField = freezed,Object? groupBy = freezed,Object? sortBy = freezed,}) {
   return _then(_ElasticQuery(
 engine: freezed == engine ? _self.engine : engine // ignore: cast_nullable_to_non_nullable
 as ElasticEngine?,query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
@@ -2951,7 +2957,8 @@ as List<_ElasticSearchField>?,resultFields: freezed == resultFields ? _self._res
 as List<_ElasticResultField>?,facets: freezed == facets ? _self._facets : facets // ignore: cast_nullable_to_non_nullable
 as Map<String, _ElasticQueryFacet>?,disjunctiveFacets: freezed == disjunctiveFacets ? _self._disjunctiveFacets : disjunctiveFacets // ignore: cast_nullable_to_non_nullable
 as List<String>?,analytics: freezed == analytics ? _self.analytics : analytics // ignore: cast_nullable_to_non_nullable
-as _ElasticAnalytics?,groupBy: freezed == groupBy ? _self.groupBy : groupBy // ignore: cast_nullable_to_non_nullable
+as _ElasticAnalytics?,recordAnalyticsField: freezed == recordAnalyticsField ? _self.recordAnalyticsField : recordAnalyticsField // ignore: cast_nullable_to_non_nullable
+as bool?,groupBy: freezed == groupBy ? _self.groupBy : groupBy // ignore: cast_nullable_to_non_nullable
 as _ElasticGroup?,sortBy: freezed == sortBy ? _self._sortBy : sortBy // ignore: cast_nullable_to_non_nullable
 as List<_ElasticSort>?,
   ));
@@ -5550,10 +5557,11 @@ mixin _$ElasticSuggestionsQuery {
 /// An object representing an Elastic engine
 @JsonKey(includeToJson: false, includeFromJson: false) ElasticEngine? get engine;/// String or number to match.
  String get query;/// Number of query suggestions.
-/// Must be greater than or equal to 1 and less than or equal to 1000.
+/// Must be greater than or equal to 1 and less than or equal to 20.
 /// Defaults to 10.
-@JsonKey(name: "size") int? get sizeField;/// Object which restricts a query to search only specific fields.
-@_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") List<_ElasticSearchField>? get searchFields;/// Object to sort your results in an order other than document score.
+@JsonKey(name: "size") int? get sizeField;/// Object which restricts a suggestion query to specific text fields.
+/// Serialized as `types.documents.fields` in App Search.
+@_ElasticSuggestionTypesConverter()@JsonKey(name: "types") List<_ElasticSearchField>? get searchFields;/// Object to sort your results in an order other than document score.
 @_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? get sortBy;
 /// Create a copy of ElasticSuggestionsQuery
 /// with the given fields replaced by the non-null parameter values.
@@ -5587,7 +5595,7 @@ abstract mixin class $ElasticSuggestionsQueryCopyWith<$Res>  {
   factory $ElasticSuggestionsQueryCopyWith(ElasticSuggestionsQuery value, $Res Function(ElasticSuggestionsQuery) _then) = _$ElasticSuggestionsQueryCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(includeToJson: false, includeFromJson: false) ElasticEngine? engine, String query,@JsonKey(name: "size") int? sizeField,@_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") List<_ElasticSearchField>? searchFields,@_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? sortBy
+@JsonKey(includeToJson: false, includeFromJson: false) ElasticEngine? engine, String query,@JsonKey(name: "size") int? sizeField,@_ElasticSuggestionTypesConverter()@JsonKey(name: "types") List<_ElasticSearchField>? searchFields,@_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? sortBy
 });
 
 
@@ -5696,7 +5704,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @JsonKey(name: "size")  int? sizeField, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields")  List<_ElasticSearchField>? searchFields, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @JsonKey(name: "size")  int? sizeField, @_ElasticSuggestionTypesConverter()@JsonKey(name: "types")  List<_ElasticSearchField>? searchFields, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ElasticSuggestionsQuery() when $default != null:
 return $default(_that.engine,_that.query,_that.sizeField,_that.searchFields,_that.sortBy);case _:
@@ -5717,7 +5725,7 @@ return $default(_that.engine,_that.query,_that.sizeField,_that.searchFields,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @JsonKey(name: "size")  int? sizeField, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields")  List<_ElasticSearchField>? searchFields, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @JsonKey(name: "size")  int? sizeField, @_ElasticSuggestionTypesConverter()@JsonKey(name: "types")  List<_ElasticSearchField>? searchFields, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)  $default,) {final _that = this;
 switch (_that) {
 case _ElasticSuggestionsQuery():
 return $default(_that.engine,_that.query,_that.sizeField,_that.searchFields,_that.sortBy);case _:
@@ -5737,7 +5745,7 @@ return $default(_that.engine,_that.query,_that.sizeField,_that.searchFields,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @JsonKey(name: "size")  int? sizeField, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields")  List<_ElasticSearchField>? searchFields, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @JsonKey(name: "size")  int? sizeField, @_ElasticSuggestionTypesConverter()@JsonKey(name: "types")  List<_ElasticSearchField>? searchFields, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)?  $default,) {final _that = this;
 switch (_that) {
 case _ElasticSuggestionsQuery() when $default != null:
 return $default(_that.engine,_that.query,_that.sizeField,_that.searchFields,_that.sortBy);case _:
@@ -5752,7 +5760,7 @@ return $default(_that.engine,_that.query,_that.sizeField,_that.searchFields,_tha
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticSuggestionsQuery extends ElasticSuggestionsQuery {
-  const _ElasticSuggestionsQuery({@JsonKey(includeToJson: false, includeFromJson: false) this.engine, required this.query, @JsonKey(name: "size") this.sizeField = 10, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") final  List<_ElasticSearchField>? searchFields, @_ElasticSortConverter()@JsonKey(name: "sort") final  List<_ElasticSort>? sortBy}): _searchFields = searchFields,_sortBy = sortBy,super._();
+  const _ElasticSuggestionsQuery({@JsonKey(includeToJson: false, includeFromJson: false) this.engine, required this.query, @JsonKey(name: "size") this.sizeField = 10, @_ElasticSuggestionTypesConverter()@JsonKey(name: "types") final  List<_ElasticSearchField>? searchFields, @_ElasticSortConverter()@JsonKey(name: "sort") final  List<_ElasticSort>? sortBy}): _searchFields = searchFields,_sortBy = sortBy,super._();
   factory _ElasticSuggestionsQuery.fromJson(Map<String, dynamic> json) => _$ElasticSuggestionsQueryFromJson(json);
 
 /// An object representing an Elastic engine
@@ -5760,13 +5768,15 @@ class _ElasticSuggestionsQuery extends ElasticSuggestionsQuery {
 /// String or number to match.
 @override final  String query;
 /// Number of query suggestions.
-/// Must be greater than or equal to 1 and less than or equal to 1000.
+/// Must be greater than or equal to 1 and less than or equal to 20.
 /// Defaults to 10.
 @override@JsonKey(name: "size") final  int? sizeField;
-/// Object which restricts a query to search only specific fields.
+/// Object which restricts a suggestion query to specific text fields.
+/// Serialized as `types.documents.fields` in App Search.
  final  List<_ElasticSearchField>? _searchFields;
-/// Object which restricts a query to search only specific fields.
-@override@_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") List<_ElasticSearchField>? get searchFields {
+/// Object which restricts a suggestion query to specific text fields.
+/// Serialized as `types.documents.fields` in App Search.
+@override@_ElasticSuggestionTypesConverter()@JsonKey(name: "types") List<_ElasticSearchField>? get searchFields {
   final value = _searchFields;
   if (value == null) return null;
   if (_searchFields is EqualUnmodifiableListView) return _searchFields;
@@ -5819,7 +5829,7 @@ abstract mixin class _$ElasticSuggestionsQueryCopyWith<$Res> implements $Elastic
   factory _$ElasticSuggestionsQueryCopyWith(_ElasticSuggestionsQuery value, $Res Function(_ElasticSuggestionsQuery) _then) = __$ElasticSuggestionsQueryCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(includeToJson: false, includeFromJson: false) ElasticEngine? engine, String query,@JsonKey(name: "size") int? sizeField,@_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") List<_ElasticSearchField>? searchFields,@_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? sortBy
+@JsonKey(includeToJson: false, includeFromJson: false) ElasticEngine? engine, String query,@JsonKey(name: "size") int? sizeField,@_ElasticSuggestionTypesConverter()@JsonKey(name: "types") List<_ElasticSearchField>? searchFields,@_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? sortBy
 });
 
 
@@ -6788,7 +6798,8 @@ as int,
 mixin _$ElasticQuerySuggestionResponse {
 
 /// Documents containing the suggestions
- ElasticSuggestionResult get results;
+ ElasticSuggestionResult get results;/// Metadata for the query suggestion request.
+ ElasticQuerySuggestionMeta get meta;
 /// Create a copy of ElasticQuerySuggestionResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -6801,16 +6812,16 @@ $ElasticQuerySuggestionResponseCopyWith<ElasticQuerySuggestionResponse> get copy
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticQuerySuggestionResponse&&(identical(other.results, results) || other.results == results));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticQuerySuggestionResponse&&(identical(other.results, results) || other.results == results)&&(identical(other.meta, meta) || other.meta == meta));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,results);
+int get hashCode => Object.hash(runtimeType,results,meta);
 
 @override
 String toString() {
-  return 'ElasticQuerySuggestionResponse(results: $results)';
+  return 'ElasticQuerySuggestionResponse(results: $results, meta: $meta)';
 }
 
 
@@ -6821,11 +6832,11 @@ abstract mixin class $ElasticQuerySuggestionResponseCopyWith<$Res>  {
   factory $ElasticQuerySuggestionResponseCopyWith(ElasticQuerySuggestionResponse value, $Res Function(ElasticQuerySuggestionResponse) _then) = _$ElasticQuerySuggestionResponseCopyWithImpl;
 @useResult
 $Res call({
- ElasticSuggestionResult results
+ ElasticSuggestionResult results, ElasticQuerySuggestionMeta meta
 });
 
 
-$ElasticSuggestionResultCopyWith<$Res> get results;
+$ElasticSuggestionResultCopyWith<$Res> get results;$ElasticQuerySuggestionMetaCopyWith<$Res> get meta;
 
 }
 /// @nodoc
@@ -6838,10 +6849,11 @@ class _$ElasticQuerySuggestionResponseCopyWithImpl<$Res>
 
 /// Create a copy of ElasticQuerySuggestionResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? results = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? results = null,Object? meta = null,}) {
   return _then(_self.copyWith(
 results: null == results ? _self.results : results // ignore: cast_nullable_to_non_nullable
-as ElasticSuggestionResult,
+as ElasticSuggestionResult,meta: null == meta ? _self.meta : meta // ignore: cast_nullable_to_non_nullable
+as ElasticQuerySuggestionMeta,
   ));
 }
 /// Create a copy of ElasticQuerySuggestionResponse
@@ -6852,6 +6864,15 @@ $ElasticSuggestionResultCopyWith<$Res> get results {
   
   return $ElasticSuggestionResultCopyWith<$Res>(_self.results, (value) {
     return _then(_self.copyWith(results: value));
+  });
+}/// Create a copy of ElasticQuerySuggestionResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ElasticQuerySuggestionMetaCopyWith<$Res> get meta {
+  
+  return $ElasticQuerySuggestionMetaCopyWith<$Res>(_self.meta, (value) {
+    return _then(_self.copyWith(meta: value));
   });
 }
 }
@@ -6935,10 +6956,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ElasticSuggestionResult results)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ElasticSuggestionResult results,  ElasticQuerySuggestionMeta meta)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ElasticQuerySuggestionResponse() when $default != null:
-return $default(_that.results);case _:
+return $default(_that.results,_that.meta);case _:
   return orElse();
 
 }
@@ -6956,10 +6977,10 @@ return $default(_that.results);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ElasticSuggestionResult results)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ElasticSuggestionResult results,  ElasticQuerySuggestionMeta meta)  $default,) {final _that = this;
 switch (_that) {
 case _ElasticQuerySuggestionResponse():
-return $default(_that.results);case _:
+return $default(_that.results,_that.meta);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -6976,10 +6997,10 @@ return $default(_that.results);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ElasticSuggestionResult results)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ElasticSuggestionResult results,  ElasticQuerySuggestionMeta meta)?  $default,) {final _that = this;
 switch (_that) {
 case _ElasticQuerySuggestionResponse() when $default != null:
-return $default(_that.results);case _:
+return $default(_that.results,_that.meta);case _:
   return null;
 
 }
@@ -6991,11 +7012,13 @@ return $default(_that.results);case _:
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticQuerySuggestionResponse extends ElasticQuerySuggestionResponse {
-   _ElasticQuerySuggestionResponse({required this.results}): super._();
+   _ElasticQuerySuggestionResponse({required this.results, required this.meta}): super._();
   factory _ElasticQuerySuggestionResponse.fromJson(Map<String, dynamic> json) => _$ElasticQuerySuggestionResponseFromJson(json);
 
 /// Documents containing the suggestions
 @override final  ElasticSuggestionResult results;
+/// Metadata for the query suggestion request.
+@override final  ElasticQuerySuggestionMeta meta;
 
 /// Create a copy of ElasticQuerySuggestionResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -7010,16 +7033,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticQuerySuggestionResponse&&(identical(other.results, results) || other.results == results));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticQuerySuggestionResponse&&(identical(other.results, results) || other.results == results)&&(identical(other.meta, meta) || other.meta == meta));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,results);
+int get hashCode => Object.hash(runtimeType,results,meta);
 
 @override
 String toString() {
-  return 'ElasticQuerySuggestionResponse(results: $results)';
+  return 'ElasticQuerySuggestionResponse(results: $results, meta: $meta)';
 }
 
 
@@ -7030,11 +7053,11 @@ abstract mixin class _$ElasticQuerySuggestionResponseCopyWith<$Res> implements $
   factory _$ElasticQuerySuggestionResponseCopyWith(_ElasticQuerySuggestionResponse value, $Res Function(_ElasticQuerySuggestionResponse) _then) = __$ElasticQuerySuggestionResponseCopyWithImpl;
 @override @useResult
 $Res call({
- ElasticSuggestionResult results
+ ElasticSuggestionResult results, ElasticQuerySuggestionMeta meta
 });
 
 
-@override $ElasticSuggestionResultCopyWith<$Res> get results;
+@override $ElasticSuggestionResultCopyWith<$Res> get results;@override $ElasticQuerySuggestionMetaCopyWith<$Res> get meta;
 
 }
 /// @nodoc
@@ -7047,10 +7070,11 @@ class __$ElasticQuerySuggestionResponseCopyWithImpl<$Res>
 
 /// Create a copy of ElasticQuerySuggestionResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? results = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? results = null,Object? meta = null,}) {
   return _then(_ElasticQuerySuggestionResponse(
 results: null == results ? _self.results : results // ignore: cast_nullable_to_non_nullable
-as ElasticSuggestionResult,
+as ElasticSuggestionResult,meta: null == meta ? _self.meta : meta // ignore: cast_nullable_to_non_nullable
+as ElasticQuerySuggestionMeta,
   ));
 }
 
@@ -7062,6 +7086,1148 @@ $ElasticSuggestionResultCopyWith<$Res> get results {
   
   return $ElasticSuggestionResultCopyWith<$Res>(_self.results, (value) {
     return _then(_self.copyWith(results: value));
+  });
+}/// Create a copy of ElasticQuerySuggestionResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ElasticQuerySuggestionMetaCopyWith<$Res> get meta {
+  
+  return $ElasticQuerySuggestionMetaCopyWith<$Res>(_self.meta, (value) {
+    return _then(_self.copyWith(meta: value));
+  });
+}
+}
+
+
+/// @nodoc
+mixin _$ElasticQuerySuggestionMeta {
+
+@JsonKey(name: "request_id") String get requestId;
+/// Create a copy of ElasticQuerySuggestionMeta
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ElasticQuerySuggestionMetaCopyWith<ElasticQuerySuggestionMeta> get copyWith => _$ElasticQuerySuggestionMetaCopyWithImpl<ElasticQuerySuggestionMeta>(this as ElasticQuerySuggestionMeta, _$identity);
+
+  /// Serializes this ElasticQuerySuggestionMeta to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticQuerySuggestionMeta&&(identical(other.requestId, requestId) || other.requestId == requestId));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,requestId);
+
+@override
+String toString() {
+  return 'ElasticQuerySuggestionMeta(requestId: $requestId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ElasticQuerySuggestionMetaCopyWith<$Res>  {
+  factory $ElasticQuerySuggestionMetaCopyWith(ElasticQuerySuggestionMeta value, $Res Function(ElasticQuerySuggestionMeta) _then) = _$ElasticQuerySuggestionMetaCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: "request_id") String requestId
+});
+
+
+
+
+}
+/// @nodoc
+class _$ElasticQuerySuggestionMetaCopyWithImpl<$Res>
+    implements $ElasticQuerySuggestionMetaCopyWith<$Res> {
+  _$ElasticQuerySuggestionMetaCopyWithImpl(this._self, this._then);
+
+  final ElasticQuerySuggestionMeta _self;
+  final $Res Function(ElasticQuerySuggestionMeta) _then;
+
+/// Create a copy of ElasticQuerySuggestionMeta
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? requestId = null,}) {
+  return _then(_self.copyWith(
+requestId: null == requestId ? _self.requestId : requestId // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ElasticQuerySuggestionMeta].
+extension ElasticQuerySuggestionMetaPatterns on ElasticQuerySuggestionMeta {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ElasticQuerySuggestionMeta value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ElasticQuerySuggestionMeta() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ElasticQuerySuggestionMeta value)  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticQuerySuggestionMeta():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ElasticQuerySuggestionMeta value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticQuerySuggestionMeta() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: "request_id")  String requestId)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ElasticQuerySuggestionMeta() when $default != null:
+return $default(_that.requestId);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: "request_id")  String requestId)  $default,) {final _that = this;
+switch (_that) {
+case _ElasticQuerySuggestionMeta():
+return $default(_that.requestId);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: "request_id")  String requestId)?  $default,) {final _that = this;
+switch (_that) {
+case _ElasticQuerySuggestionMeta() when $default != null:
+return $default(_that.requestId);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _ElasticQuerySuggestionMeta implements ElasticQuerySuggestionMeta {
+   _ElasticQuerySuggestionMeta({@JsonKey(name: "request_id") required this.requestId});
+  factory _ElasticQuerySuggestionMeta.fromJson(Map<String, dynamic> json) => _$ElasticQuerySuggestionMetaFromJson(json);
+
+@override@JsonKey(name: "request_id") final  String requestId;
+
+/// Create a copy of ElasticQuerySuggestionMeta
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ElasticQuerySuggestionMetaCopyWith<_ElasticQuerySuggestionMeta> get copyWith => __$ElasticQuerySuggestionMetaCopyWithImpl<_ElasticQuerySuggestionMeta>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ElasticQuerySuggestionMetaToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticQuerySuggestionMeta&&(identical(other.requestId, requestId) || other.requestId == requestId));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,requestId);
+
+@override
+String toString() {
+  return 'ElasticQuerySuggestionMeta(requestId: $requestId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ElasticQuerySuggestionMetaCopyWith<$Res> implements $ElasticQuerySuggestionMetaCopyWith<$Res> {
+  factory _$ElasticQuerySuggestionMetaCopyWith(_ElasticQuerySuggestionMeta value, $Res Function(_ElasticQuerySuggestionMeta) _then) = __$ElasticQuerySuggestionMetaCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: "request_id") String requestId
+});
+
+
+
+
+}
+/// @nodoc
+class __$ElasticQuerySuggestionMetaCopyWithImpl<$Res>
+    implements _$ElasticQuerySuggestionMetaCopyWith<$Res> {
+  __$ElasticQuerySuggestionMetaCopyWithImpl(this._self, this._then);
+
+  final _ElasticQuerySuggestionMeta _self;
+  final $Res Function(_ElasticQuerySuggestionMeta) _then;
+
+/// Create a copy of ElasticQuerySuggestionMeta
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? requestId = null,}) {
+  return _then(_ElasticQuerySuggestionMeta(
+requestId: null == requestId ? _self.requestId : requestId // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$ElasticSearchExplainEngine {
+
+ String get name; String? get type;
+/// Create a copy of ElasticSearchExplainEngine
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ElasticSearchExplainEngineCopyWith<ElasticSearchExplainEngine> get copyWith => _$ElasticSearchExplainEngineCopyWithImpl<ElasticSearchExplainEngine>(this as ElasticSearchExplainEngine, _$identity);
+
+  /// Serializes this ElasticSearchExplainEngine to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticSearchExplainEngine&&(identical(other.name, name) || other.name == name)&&(identical(other.type, type) || other.type == type));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,name,type);
+
+@override
+String toString() {
+  return 'ElasticSearchExplainEngine(name: $name, type: $type)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ElasticSearchExplainEngineCopyWith<$Res>  {
+  factory $ElasticSearchExplainEngineCopyWith(ElasticSearchExplainEngine value, $Res Function(ElasticSearchExplainEngine) _then) = _$ElasticSearchExplainEngineCopyWithImpl;
+@useResult
+$Res call({
+ String name, String? type
+});
+
+
+
+
+}
+/// @nodoc
+class _$ElasticSearchExplainEngineCopyWithImpl<$Res>
+    implements $ElasticSearchExplainEngineCopyWith<$Res> {
+  _$ElasticSearchExplainEngineCopyWithImpl(this._self, this._then);
+
+  final ElasticSearchExplainEngine _self;
+  final $Res Function(ElasticSearchExplainEngine) _then;
+
+/// Create a copy of ElasticSearchExplainEngine
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? type = freezed,}) {
+  return _then(_self.copyWith(
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ElasticSearchExplainEngine].
+extension ElasticSearchExplainEnginePatterns on ElasticSearchExplainEngine {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ElasticSearchExplainEngine value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ElasticSearchExplainEngine() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ElasticSearchExplainEngine value)  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticSearchExplainEngine():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ElasticSearchExplainEngine value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticSearchExplainEngine() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String? type)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ElasticSearchExplainEngine() when $default != null:
+return $default(_that.name,_that.type);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String? type)  $default,) {final _that = this;
+switch (_that) {
+case _ElasticSearchExplainEngine():
+return $default(_that.name,_that.type);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String? type)?  $default,) {final _that = this;
+switch (_that) {
+case _ElasticSearchExplainEngine() when $default != null:
+return $default(_that.name,_that.type);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _ElasticSearchExplainEngine implements ElasticSearchExplainEngine {
+   _ElasticSearchExplainEngine({required this.name, this.type});
+  factory _ElasticSearchExplainEngine.fromJson(Map<String, dynamic> json) => _$ElasticSearchExplainEngineFromJson(json);
+
+@override final  String name;
+@override final  String? type;
+
+/// Create a copy of ElasticSearchExplainEngine
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ElasticSearchExplainEngineCopyWith<_ElasticSearchExplainEngine> get copyWith => __$ElasticSearchExplainEngineCopyWithImpl<_ElasticSearchExplainEngine>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ElasticSearchExplainEngineToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticSearchExplainEngine&&(identical(other.name, name) || other.name == name)&&(identical(other.type, type) || other.type == type));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,name,type);
+
+@override
+String toString() {
+  return 'ElasticSearchExplainEngine(name: $name, type: $type)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ElasticSearchExplainEngineCopyWith<$Res> implements $ElasticSearchExplainEngineCopyWith<$Res> {
+  factory _$ElasticSearchExplainEngineCopyWith(_ElasticSearchExplainEngine value, $Res Function(_ElasticSearchExplainEngine) _then) = __$ElasticSearchExplainEngineCopyWithImpl;
+@override @useResult
+$Res call({
+ String name, String? type
+});
+
+
+
+
+}
+/// @nodoc
+class __$ElasticSearchExplainEngineCopyWithImpl<$Res>
+    implements _$ElasticSearchExplainEngineCopyWith<$Res> {
+  __$ElasticSearchExplainEngineCopyWithImpl(this._self, this._then);
+
+  final _ElasticSearchExplainEngine _self;
+  final $Res Function(_ElasticSearchExplainEngine) _then;
+
+/// Create a copy of ElasticSearchExplainEngine
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? type = freezed,}) {
+  return _then(_ElasticSearchExplainEngine(
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$ElasticSearchExplainMeta {
+
+@JsonKey(name: "request_id") String get requestId; List<dynamic> get warnings; List<dynamic> get alerts; int? get precision; ElasticSearchExplainEngine? get engine;
+/// Create a copy of ElasticSearchExplainMeta
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ElasticSearchExplainMetaCopyWith<ElasticSearchExplainMeta> get copyWith => _$ElasticSearchExplainMetaCopyWithImpl<ElasticSearchExplainMeta>(this as ElasticSearchExplainMeta, _$identity);
+
+  /// Serializes this ElasticSearchExplainMeta to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticSearchExplainMeta&&(identical(other.requestId, requestId) || other.requestId == requestId)&&const DeepCollectionEquality().equals(other.warnings, warnings)&&const DeepCollectionEquality().equals(other.alerts, alerts)&&(identical(other.precision, precision) || other.precision == precision)&&(identical(other.engine, engine) || other.engine == engine));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,requestId,const DeepCollectionEquality().hash(warnings),const DeepCollectionEquality().hash(alerts),precision,engine);
+
+@override
+String toString() {
+  return 'ElasticSearchExplainMeta(requestId: $requestId, warnings: $warnings, alerts: $alerts, precision: $precision, engine: $engine)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ElasticSearchExplainMetaCopyWith<$Res>  {
+  factory $ElasticSearchExplainMetaCopyWith(ElasticSearchExplainMeta value, $Res Function(ElasticSearchExplainMeta) _then) = _$ElasticSearchExplainMetaCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: "request_id") String requestId, List<dynamic> warnings, List<dynamic> alerts, int? precision, ElasticSearchExplainEngine? engine
+});
+
+
+$ElasticSearchExplainEngineCopyWith<$Res>? get engine;
+
+}
+/// @nodoc
+class _$ElasticSearchExplainMetaCopyWithImpl<$Res>
+    implements $ElasticSearchExplainMetaCopyWith<$Res> {
+  _$ElasticSearchExplainMetaCopyWithImpl(this._self, this._then);
+
+  final ElasticSearchExplainMeta _self;
+  final $Res Function(ElasticSearchExplainMeta) _then;
+
+/// Create a copy of ElasticSearchExplainMeta
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? requestId = null,Object? warnings = null,Object? alerts = null,Object? precision = freezed,Object? engine = freezed,}) {
+  return _then(_self.copyWith(
+requestId: null == requestId ? _self.requestId : requestId // ignore: cast_nullable_to_non_nullable
+as String,warnings: null == warnings ? _self.warnings : warnings // ignore: cast_nullable_to_non_nullable
+as List<dynamic>,alerts: null == alerts ? _self.alerts : alerts // ignore: cast_nullable_to_non_nullable
+as List<dynamic>,precision: freezed == precision ? _self.precision : precision // ignore: cast_nullable_to_non_nullable
+as int?,engine: freezed == engine ? _self.engine : engine // ignore: cast_nullable_to_non_nullable
+as ElasticSearchExplainEngine?,
+  ));
+}
+/// Create a copy of ElasticSearchExplainMeta
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ElasticSearchExplainEngineCopyWith<$Res>? get engine {
+    if (_self.engine == null) {
+    return null;
+  }
+
+  return $ElasticSearchExplainEngineCopyWith<$Res>(_self.engine!, (value) {
+    return _then(_self.copyWith(engine: value));
+  });
+}
+}
+
+
+/// Adds pattern-matching-related methods to [ElasticSearchExplainMeta].
+extension ElasticSearchExplainMetaPatterns on ElasticSearchExplainMeta {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ElasticSearchExplainMeta value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ElasticSearchExplainMeta() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ElasticSearchExplainMeta value)  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticSearchExplainMeta():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ElasticSearchExplainMeta value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticSearchExplainMeta() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: "request_id")  String requestId,  List<dynamic> warnings,  List<dynamic> alerts,  int? precision,  ElasticSearchExplainEngine? engine)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ElasticSearchExplainMeta() when $default != null:
+return $default(_that.requestId,_that.warnings,_that.alerts,_that.precision,_that.engine);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: "request_id")  String requestId,  List<dynamic> warnings,  List<dynamic> alerts,  int? precision,  ElasticSearchExplainEngine? engine)  $default,) {final _that = this;
+switch (_that) {
+case _ElasticSearchExplainMeta():
+return $default(_that.requestId,_that.warnings,_that.alerts,_that.precision,_that.engine);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: "request_id")  String requestId,  List<dynamic> warnings,  List<dynamic> alerts,  int? precision,  ElasticSearchExplainEngine? engine)?  $default,) {final _that = this;
+switch (_that) {
+case _ElasticSearchExplainMeta() when $default != null:
+return $default(_that.requestId,_that.warnings,_that.alerts,_that.precision,_that.engine);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _ElasticSearchExplainMeta implements ElasticSearchExplainMeta {
+   _ElasticSearchExplainMeta({@JsonKey(name: "request_id") required this.requestId, required final  List<dynamic> warnings, required final  List<dynamic> alerts, this.precision, this.engine}): _warnings = warnings,_alerts = alerts;
+  factory _ElasticSearchExplainMeta.fromJson(Map<String, dynamic> json) => _$ElasticSearchExplainMetaFromJson(json);
+
+@override@JsonKey(name: "request_id") final  String requestId;
+ final  List<dynamic> _warnings;
+@override List<dynamic> get warnings {
+  if (_warnings is EqualUnmodifiableListView) return _warnings;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_warnings);
+}
+
+ final  List<dynamic> _alerts;
+@override List<dynamic> get alerts {
+  if (_alerts is EqualUnmodifiableListView) return _alerts;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_alerts);
+}
+
+@override final  int? precision;
+@override final  ElasticSearchExplainEngine? engine;
+
+/// Create a copy of ElasticSearchExplainMeta
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ElasticSearchExplainMetaCopyWith<_ElasticSearchExplainMeta> get copyWith => __$ElasticSearchExplainMetaCopyWithImpl<_ElasticSearchExplainMeta>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ElasticSearchExplainMetaToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticSearchExplainMeta&&(identical(other.requestId, requestId) || other.requestId == requestId)&&const DeepCollectionEquality().equals(other._warnings, _warnings)&&const DeepCollectionEquality().equals(other._alerts, _alerts)&&(identical(other.precision, precision) || other.precision == precision)&&(identical(other.engine, engine) || other.engine == engine));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,requestId,const DeepCollectionEquality().hash(_warnings),const DeepCollectionEquality().hash(_alerts),precision,engine);
+
+@override
+String toString() {
+  return 'ElasticSearchExplainMeta(requestId: $requestId, warnings: $warnings, alerts: $alerts, precision: $precision, engine: $engine)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ElasticSearchExplainMetaCopyWith<$Res> implements $ElasticSearchExplainMetaCopyWith<$Res> {
+  factory _$ElasticSearchExplainMetaCopyWith(_ElasticSearchExplainMeta value, $Res Function(_ElasticSearchExplainMeta) _then) = __$ElasticSearchExplainMetaCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: "request_id") String requestId, List<dynamic> warnings, List<dynamic> alerts, int? precision, ElasticSearchExplainEngine? engine
+});
+
+
+@override $ElasticSearchExplainEngineCopyWith<$Res>? get engine;
+
+}
+/// @nodoc
+class __$ElasticSearchExplainMetaCopyWithImpl<$Res>
+    implements _$ElasticSearchExplainMetaCopyWith<$Res> {
+  __$ElasticSearchExplainMetaCopyWithImpl(this._self, this._then);
+
+  final _ElasticSearchExplainMeta _self;
+  final $Res Function(_ElasticSearchExplainMeta) _then;
+
+/// Create a copy of ElasticSearchExplainMeta
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? requestId = null,Object? warnings = null,Object? alerts = null,Object? precision = freezed,Object? engine = freezed,}) {
+  return _then(_ElasticSearchExplainMeta(
+requestId: null == requestId ? _self.requestId : requestId // ignore: cast_nullable_to_non_nullable
+as String,warnings: null == warnings ? _self._warnings : warnings // ignore: cast_nullable_to_non_nullable
+as List<dynamic>,alerts: null == alerts ? _self._alerts : alerts // ignore: cast_nullable_to_non_nullable
+as List<dynamic>,precision: freezed == precision ? _self.precision : precision // ignore: cast_nullable_to_non_nullable
+as int?,engine: freezed == engine ? _self.engine : engine // ignore: cast_nullable_to_non_nullable
+as ElasticSearchExplainEngine?,
+  ));
+}
+
+/// Create a copy of ElasticSearchExplainMeta
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ElasticSearchExplainEngineCopyWith<$Res>? get engine {
+    if (_self.engine == null) {
+    return null;
+  }
+
+  return $ElasticSearchExplainEngineCopyWith<$Res>(_self.engine!, (value) {
+    return _then(_self.copyWith(engine: value));
+  });
+}
+}
+
+
+/// @nodoc
+mixin _$ElasticSearchExplainResponse {
+
+ ElasticSearchExplainMeta get meta;@JsonKey(name: "query_string") String get queryString;@_StringDynamicMapConverter()@JsonKey(name: "query_body") Map<String, dynamic> get queryBody;
+/// Create a copy of ElasticSearchExplainResponse
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ElasticSearchExplainResponseCopyWith<ElasticSearchExplainResponse> get copyWith => _$ElasticSearchExplainResponseCopyWithImpl<ElasticSearchExplainResponse>(this as ElasticSearchExplainResponse, _$identity);
+
+  /// Serializes this ElasticSearchExplainResponse to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticSearchExplainResponse&&(identical(other.meta, meta) || other.meta == meta)&&(identical(other.queryString, queryString) || other.queryString == queryString)&&const DeepCollectionEquality().equals(other.queryBody, queryBody));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,meta,queryString,const DeepCollectionEquality().hash(queryBody));
+
+@override
+String toString() {
+  return 'ElasticSearchExplainResponse(meta: $meta, queryString: $queryString, queryBody: $queryBody)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ElasticSearchExplainResponseCopyWith<$Res>  {
+  factory $ElasticSearchExplainResponseCopyWith(ElasticSearchExplainResponse value, $Res Function(ElasticSearchExplainResponse) _then) = _$ElasticSearchExplainResponseCopyWithImpl;
+@useResult
+$Res call({
+ ElasticSearchExplainMeta meta,@JsonKey(name: "query_string") String queryString,@_StringDynamicMapConverter()@JsonKey(name: "query_body") Map<String, dynamic> queryBody
+});
+
+
+$ElasticSearchExplainMetaCopyWith<$Res> get meta;
+
+}
+/// @nodoc
+class _$ElasticSearchExplainResponseCopyWithImpl<$Res>
+    implements $ElasticSearchExplainResponseCopyWith<$Res> {
+  _$ElasticSearchExplainResponseCopyWithImpl(this._self, this._then);
+
+  final ElasticSearchExplainResponse _self;
+  final $Res Function(ElasticSearchExplainResponse) _then;
+
+/// Create a copy of ElasticSearchExplainResponse
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? meta = null,Object? queryString = null,Object? queryBody = null,}) {
+  return _then(_self.copyWith(
+meta: null == meta ? _self.meta : meta // ignore: cast_nullable_to_non_nullable
+as ElasticSearchExplainMeta,queryString: null == queryString ? _self.queryString : queryString // ignore: cast_nullable_to_non_nullable
+as String,queryBody: null == queryBody ? _self.queryBody : queryBody // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>,
+  ));
+}
+/// Create a copy of ElasticSearchExplainResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ElasticSearchExplainMetaCopyWith<$Res> get meta {
+  
+  return $ElasticSearchExplainMetaCopyWith<$Res>(_self.meta, (value) {
+    return _then(_self.copyWith(meta: value));
+  });
+}
+}
+
+
+/// Adds pattern-matching-related methods to [ElasticSearchExplainResponse].
+extension ElasticSearchExplainResponsePatterns on ElasticSearchExplainResponse {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ElasticSearchExplainResponse value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ElasticSearchExplainResponse() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ElasticSearchExplainResponse value)  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticSearchExplainResponse():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ElasticSearchExplainResponse value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticSearchExplainResponse() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ElasticSearchExplainMeta meta, @JsonKey(name: "query_string")  String queryString, @_StringDynamicMapConverter()@JsonKey(name: "query_body")  Map<String, dynamic> queryBody)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ElasticSearchExplainResponse() when $default != null:
+return $default(_that.meta,_that.queryString,_that.queryBody);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ElasticSearchExplainMeta meta, @JsonKey(name: "query_string")  String queryString, @_StringDynamicMapConverter()@JsonKey(name: "query_body")  Map<String, dynamic> queryBody)  $default,) {final _that = this;
+switch (_that) {
+case _ElasticSearchExplainResponse():
+return $default(_that.meta,_that.queryString,_that.queryBody);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ElasticSearchExplainMeta meta, @JsonKey(name: "query_string")  String queryString, @_StringDynamicMapConverter()@JsonKey(name: "query_body")  Map<String, dynamic> queryBody)?  $default,) {final _that = this;
+switch (_that) {
+case _ElasticSearchExplainResponse() when $default != null:
+return $default(_that.meta,_that.queryString,_that.queryBody);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _ElasticSearchExplainResponse implements ElasticSearchExplainResponse {
+   _ElasticSearchExplainResponse({required this.meta, @JsonKey(name: "query_string") required this.queryString, @_StringDynamicMapConverter()@JsonKey(name: "query_body") required final  Map<String, dynamic> queryBody}): _queryBody = queryBody;
+  factory _ElasticSearchExplainResponse.fromJson(Map<String, dynamic> json) => _$ElasticSearchExplainResponseFromJson(json);
+
+@override final  ElasticSearchExplainMeta meta;
+@override@JsonKey(name: "query_string") final  String queryString;
+ final  Map<String, dynamic> _queryBody;
+@override@_StringDynamicMapConverter()@JsonKey(name: "query_body") Map<String, dynamic> get queryBody {
+  if (_queryBody is EqualUnmodifiableMapView) return _queryBody;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_queryBody);
+}
+
+
+/// Create a copy of ElasticSearchExplainResponse
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ElasticSearchExplainResponseCopyWith<_ElasticSearchExplainResponse> get copyWith => __$ElasticSearchExplainResponseCopyWithImpl<_ElasticSearchExplainResponse>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ElasticSearchExplainResponseToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticSearchExplainResponse&&(identical(other.meta, meta) || other.meta == meta)&&(identical(other.queryString, queryString) || other.queryString == queryString)&&const DeepCollectionEquality().equals(other._queryBody, _queryBody));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,meta,queryString,const DeepCollectionEquality().hash(_queryBody));
+
+@override
+String toString() {
+  return 'ElasticSearchExplainResponse(meta: $meta, queryString: $queryString, queryBody: $queryBody)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ElasticSearchExplainResponseCopyWith<$Res> implements $ElasticSearchExplainResponseCopyWith<$Res> {
+  factory _$ElasticSearchExplainResponseCopyWith(_ElasticSearchExplainResponse value, $Res Function(_ElasticSearchExplainResponse) _then) = __$ElasticSearchExplainResponseCopyWithImpl;
+@override @useResult
+$Res call({
+ ElasticSearchExplainMeta meta,@JsonKey(name: "query_string") String queryString,@_StringDynamicMapConverter()@JsonKey(name: "query_body") Map<String, dynamic> queryBody
+});
+
+
+@override $ElasticSearchExplainMetaCopyWith<$Res> get meta;
+
+}
+/// @nodoc
+class __$ElasticSearchExplainResponseCopyWithImpl<$Res>
+    implements _$ElasticSearchExplainResponseCopyWith<$Res> {
+  __$ElasticSearchExplainResponseCopyWithImpl(this._self, this._then);
+
+  final _ElasticSearchExplainResponse _self;
+  final $Res Function(_ElasticSearchExplainResponse) _then;
+
+/// Create a copy of ElasticSearchExplainResponse
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? meta = null,Object? queryString = null,Object? queryBody = null,}) {
+  return _then(_ElasticSearchExplainResponse(
+meta: null == meta ? _self.meta : meta // ignore: cast_nullable_to_non_nullable
+as ElasticSearchExplainMeta,queryString: null == queryString ? _self.queryString : queryString // ignore: cast_nullable_to_non_nullable
+as String,queryBody: null == queryBody ? _self._queryBody : queryBody // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>,
+  ));
+}
+
+/// Create a copy of ElasticSearchExplainResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ElasticSearchExplainMetaCopyWith<$Res> get meta {
+  
+  return $ElasticSearchExplainMetaCopyWith<$Res>(_self.meta, (value) {
+    return _then(_self.copyWith(meta: value));
   });
 }
 }

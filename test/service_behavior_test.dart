@@ -23,7 +23,7 @@ Future<Map<String, dynamic>> _readJson(HttpRequest request) async {
 Future<void> _writeJson(
   HttpRequest request,
   int statusCode,
-  Map<String, dynamic> body,
+  Object body,
 ) async {
   request.response.statusCode = statusCode;
   request.response.headers.contentType = ContentType.json;
@@ -160,18 +160,24 @@ void main() {
       expect(response.facet('states')?.countForValue('California'), 3);
     });
 
-    test('query suggestion success parses response payload', () async {
+    test('search explain success parses response payload', () async {
       handler = (request) async {
-        if (request.uri.path.endsWith('/query_suggestion')) {
-          suggestionCalls++;
+        if (request.uri.path.endsWith('/search_explain')) {
           final body = await _readJson(request);
-          expect(body['query'], 'moun');
+          expect(body['query'], 'mountains');
           await _writeJson(request, 200, {
-            'results': {
-              'documents': [
-                {'suggestion': 'mountain'},
-                {'suggestion': 'mountains'},
-              ],
+            'meta': {
+              'request_id': 'req-explain',
+              'warnings': [],
+              'alerts': [],
+              'precision': 2,
+              'engine': {'name': 'parks', 'type': 'default'},
+            },
+            'query_string': 'GET enterprise-search-engine-parks/_search',
+            'query_body': {
+              'query': {
+                'bool': {'must': []},
+              },
             },
           });
           return;
@@ -182,11 +188,89 @@ void main() {
         });
       };
 
-      final response = await engine.suggestionQuery('moun').size(2).get();
+      final response = await engine.query('mountains').explain();
+
+      expect(response.meta.requestId, 'req-explain');
+      expect(response.meta.precision, 2);
+      expect(response.meta.engine?.name, 'parks');
+      expect(
+        response.queryString,
+        'GET enterprise-search-engine-parks/_search',
+      );
+      expect(response.queryBody['query'], isA<Map>());
+    });
+
+    test('multi search success parses response payload', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/multi_search')) {
+          final body = await _readJson(request);
+          expect(body['queries'], isA<List<dynamic>>());
+          final queries = body['queries'] as List<dynamic>;
+          expect(queries, hasLength(2));
+          expect((queries.first as Map<String, dynamic>)['query'], 'mountains');
+          expect((queries.last as Map<String, dynamic>)['query'], 'lakes');
+
+          await _writeJson(request, 200, [
+            _searchResponse(requestId: 'req-multi-1', facetCount: 1),
+            _searchResponse(requestId: 'req-multi-2', facetCount: 2),
+          ]);
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final responses = await engine.multiSearch([
+        engine.query('mountains'),
+        engine.query('lakes'),
+      ]);
+
+      expect(responses, hasLength(2));
+      expect(responses.first.meta.requestId, 'req-multi-1');
+      expect(responses.last.meta.requestId, 'req-multi-2');
+      expect(responses.last.facet('states')?.countForValue('California'), 2);
+    });
+
+    test('query suggestion success parses response payload', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/query_suggestion')) {
+          suggestionCalls++;
+          final body = await _readJson(request);
+          expect(body['query'], 'moun');
+          expect(body['types'], {
+            'documents': {
+              'fields': ['title'],
+            },
+          });
+          await _writeJson(request, 200, {
+            'results': {
+              'documents': [
+                {'suggestion': 'mountain'},
+                {'suggestion': 'mountains'},
+              ],
+            },
+            'meta': {'request_id': 'req-suggest-1'},
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final response = await engine
+          .suggestionQuery('moun')
+          .searchField('title', weight: 4)
+          .size(2)
+          .get();
 
       expect(suggestionCalls, 1);
       expect(response.results.documents?.length, 2);
       expect(response.results.documents?.first.suggestion, 'mountain');
+      expect(response.meta.requestId, 'req-suggest-1');
     });
 
     test('engines list success parses account-level payload', () async {
@@ -259,6 +343,29 @@ void main() {
               .having((e) => e.statusCode, 'statusCode', 401)
               .having((e) => e.message, 'message', 'Invalid admin key'),
         ),
+      );
+    });
+
+    test('multi search validates query count bounds', () {
+      expect(() => engine.multiSearch([]), throwsArgumentError);
+      expect(
+        () => engine.multiSearch(
+          List<ElasticQuery>.generate(11, (i) => engine.query('q$i')),
+        ),
+        throwsRangeError,
+      );
+    });
+
+    test('multi search validates query engine consistency', () {
+      final otherService = ElasticAppSearch(
+        endPoint: 'http://${server.address.address}:${server.port}',
+        searchKey: 'search-key',
+      );
+      final otherEngine = otherService.engine('other');
+
+      expect(
+        () => engine.multiSearch([otherEngine.query('mountains')]),
+        throwsArgumentError,
       );
     });
 
@@ -588,6 +695,76 @@ void main() {
     });
 
     test(
+      'search explain HTTP errors are mapped with status and message',
+      () async {
+        handler = (request) async {
+          if (request.uri.path.endsWith('/search_explain')) {
+            await _writeJson(request, 403, {
+              'errors': ['Explain endpoint forbidden'],
+            });
+            return;
+          }
+
+          await _writeJson(request, 404, {
+            'errors': ['Unexpected path: ${request.uri.path}'],
+          });
+        };
+
+        await expectLater(
+          engine.query('moun').explain(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.searchExplain,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having((e) => e.statusCode, 'statusCode', 403)
+                .having(
+                  (e) => e.message,
+                  'message',
+                  'Explain endpoint forbidden',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'multi search HTTP errors are mapped with status and message',
+      () async {
+        handler = (request) async {
+          if (request.uri.path.endsWith('/multi_search')) {
+            await _writeJson(request, 400, {
+              'errors': ['Invalid multi search payload'],
+            });
+            return;
+          }
+
+          await _writeJson(request, 404, {
+            'errors': ['Unexpected path: ${request.uri.path}'],
+          });
+        };
+
+        await expectLater(
+          engine.multiSearch([engine.query('moun')]),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having((e) => e.operation, 'operation', Operation.multiSearch)
+                .having((e) => e.engine, 'engine', 'parks')
+                .having((e) => e.statusCode, 'statusCode', 400)
+                .having(
+                  (e) => e.message,
+                  'message',
+                  'Invalid multi search payload',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
       'disjunctive secondary request failures bubble as search exception',
       () async {
         handler = (request) async {
@@ -651,6 +828,7 @@ void main() {
                 {'suggestion': 'mountain'},
               ],
             },
+            'meta': {'request_id': 'req-debug-suggest'},
           });
           return;
         }

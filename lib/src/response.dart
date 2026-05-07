@@ -102,10 +102,82 @@ abstract class ElasticQuerySuggestionResponse
   factory ElasticQuerySuggestionResponse({
     /// Documents containing the suggestions
     required ElasticSuggestionResult results,
+
+    /// Metadata for the query suggestion request.
+    required ElasticQuerySuggestionMeta meta,
   }) = _ElasticQuerySuggestionResponse;
 
   factory ElasticQuerySuggestionResponse.fromJson(Map<String, dynamic> json) =>
       _$ElasticQuerySuggestionResponseFromJson(json);
+}
+
+@freezed
+abstract class ElasticQuerySuggestionMeta with _$ElasticQuerySuggestionMeta {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  factory ElasticQuerySuggestionMeta({
+    @JsonKey(name: "request_id") required String requestId,
+  }) = _ElasticQuerySuggestionMeta;
+
+  factory ElasticQuerySuggestionMeta.fromJson(Map<String, dynamic> json) =>
+      _$ElasticQuerySuggestionMetaFromJson(json);
+}
+
+class _StringDynamicMapConverter
+    implements JsonConverter<Map<String, dynamic>, Map<dynamic, dynamic>> {
+  const _StringDynamicMapConverter();
+
+  @override
+  Map<String, dynamic> fromJson(Map<dynamic, dynamic> json) {
+    final mapped = _asStringDynamicMap(json);
+    if (mapped == null) {
+      throw FormatException('Expected a JSON object.');
+    }
+    return mapped;
+  }
+
+  @override
+  Map<String, dynamic> toJson(Map<String, dynamic> object) => object;
+}
+
+@freezed
+abstract class ElasticSearchExplainEngine with _$ElasticSearchExplainEngine {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  factory ElasticSearchExplainEngine({required String name, String? type}) =
+      _ElasticSearchExplainEngine;
+
+  factory ElasticSearchExplainEngine.fromJson(Map<String, dynamic> json) =>
+      _$ElasticSearchExplainEngineFromJson(json);
+}
+
+@freezed
+abstract class ElasticSearchExplainMeta with _$ElasticSearchExplainMeta {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  factory ElasticSearchExplainMeta({
+    @JsonKey(name: "request_id") required String requestId,
+    required List<dynamic> warnings,
+    required List<dynamic> alerts,
+    int? precision,
+    ElasticSearchExplainEngine? engine,
+  }) = _ElasticSearchExplainMeta;
+
+  factory ElasticSearchExplainMeta.fromJson(Map<String, dynamic> json) =>
+      _$ElasticSearchExplainMetaFromJson(json);
+}
+
+@freezed
+abstract class ElasticSearchExplainResponse
+    with _$ElasticSearchExplainResponse {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  factory ElasticSearchExplainResponse({
+    required ElasticSearchExplainMeta meta,
+    @JsonKey(name: "query_string") required String queryString,
+    @_StringDynamicMapConverter()
+    @JsonKey(name: "query_body")
+    required Map<String, dynamic> queryBody,
+  }) = _ElasticSearchExplainResponse;
+
+  factory ElasticSearchExplainResponse.fromJson(Map<String, dynamic> json) =>
+      _$ElasticSearchExplainResponseFromJson(json);
 }
 
 class _StringDynamicMapListConverter

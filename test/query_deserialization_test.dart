@@ -131,7 +131,7 @@ void main() {
   });
 
   group('ElasticSuggestionsQuery.fromJson', () {
-    test('restores search fields and sort', () {
+    test('restores legacy search_fields and serializes to types payload', () {
       final query = ElasticSuggestionsQuery.fromJson({
         'query': 'mount',
         'size': 7,
@@ -147,12 +147,32 @@ void main() {
 
       expect(serialized['query'], 'mount');
       expect(serialized['size'], 7);
-      expect(serialized['search_fields'], {
-        'title': {'weight': 5},
+      expect(serialized['types'], {
+        'documents': {
+          'fields': ['title'],
+        },
       });
       expect(serialized['sort'], [
         {'title': 'asc'},
       ]);
+    });
+
+    test('restores types payload', () {
+      final query = ElasticSuggestionsQuery.fromJson({
+        'query': 'mount',
+        'types': {
+          'documents': {
+            'fields': ['title', 'states'],
+          },
+        },
+      });
+
+      final serialized = query.toJson();
+      expect(serialized['types'], {
+        'documents': {
+          'fields': ['title', 'states'],
+        },
+      });
     });
   });
 }

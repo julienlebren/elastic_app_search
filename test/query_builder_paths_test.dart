@@ -89,6 +89,7 @@ void main() {
           .group('category', size: 2)
           .sort('visitors', descending: true)
           .page(2, size: 20)
+          .recordAnalytics(false)
           .tag('mobile')
           .toJson();
 
@@ -110,6 +111,7 @@ void main() {
       expect(json['analytics'], {
         'tags': ['mobile'],
       });
+      expect(json['record_analytics'], false);
     });
   });
 
@@ -124,8 +126,10 @@ void main() {
 
       expect(json['query'], 'moun');
       expect(json['size'], 7);
-      expect(json['search_fields'], {
-        'title': {'weight': 4},
+      expect(json['types'], {
+        'documents': {
+          'fields': ['title'],
+        },
       });
       expect(json['sort'], [
         {'title': 'asc'},

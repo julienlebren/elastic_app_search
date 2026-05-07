@@ -111,6 +111,8 @@ class _LatLongConverter implements JsonConverter<LatLong?, String?> {
 enum Operation {
   engines("engines"),
   search("search"),
+  multiSearch("multi_search"),
+  searchExplain("search_explain"),
   querySuggestion("query_suggestion"),
   documentsList("documents/list");
 

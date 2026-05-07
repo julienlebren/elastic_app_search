@@ -21,6 +21,18 @@ class ElasticEngine {
   Future<ElasticResponse> get(ElasticQuery query, [CancelToken? cancelToken]) =>
       service.postSearchOperation(query, cancelToken);
 
+  /// Executes multiple queries in a single request on this engine.
+  Future<List<ElasticResponse>> multiSearch(
+    List<ElasticQuery> queries, [
+    CancelToken? cancelToken,
+  ]) => service.postMultiSearchOperation(name, queries, cancelToken);
+
+  /// Executes a Search Explain request for the given query on this engine.
+  Future<ElasticSearchExplainResponse> explain(
+    ElasticQuery query, [
+    CancelToken? cancelToken,
+  ]) => service.postSearchExplainOperation(query, cancelToken);
+
   /// Executes the given query in a query suggestion operation on this engine
   ///
   /// See [https://www.elastic.co/guide/en/app-search/current/query-suggestions-guide.html]

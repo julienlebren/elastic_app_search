@@ -54,6 +54,48 @@ void main() {
     });
 
     test(
+      'search explain failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.query('mountains').explain(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.searchExplain,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/search_explain',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'multi search failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.multiSearch([engine.query('mountains')]),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having((e) => e.operation, 'operation', Operation.multiSearch)
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/multi_search',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
       'suggestion failures are wrapped in ElasticAppSearchException',
       () async {
         await expectLater(

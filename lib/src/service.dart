@@ -240,6 +240,22 @@ class ElasticAppSearch {
     return mapped;
   }
 
+  List<Map<String, dynamic>> _asJsonObjectList(dynamic data) {
+    if (data is! List) {
+      throw FormatException('Response body must be a JSON array.');
+    }
+
+    final objects = <Map<String, dynamic>>[];
+    for (final item in data) {
+      final mapped = _asStringDynamicMap(item);
+      if (mapped == null) {
+        throw FormatException('Response array items must be JSON objects.');
+      }
+      objects.add(mapped);
+    }
+    return objects;
+  }
+
   Future<ElasticResponse> _postSearch(
     String engine,
     Map<String, dynamic> payload, [
@@ -355,6 +371,85 @@ class ElasticAppSearch {
     }
 
     return finalResponse;
+  }
+
+  Future<List<ElasticResponse>> postMultiSearchOperation(
+    String engine,
+    List<ElasticQuery> queries, [
+    CancelToken? cancelToken,
+  ]) {
+    if (queries.isEmpty) {
+      throw ArgumentError.value(
+        queries,
+        'queries',
+        'At least one query is required.',
+      );
+    }
+    if (queries.length > 10) {
+      throw RangeError.range(
+        queries.length,
+        1,
+        10,
+        'queries.length',
+        'The number of queries in a multi_search request must be between 1 and 10.',
+      );
+    }
+
+    for (final query in queries) {
+      final queryEngine = query.engine?.name;
+      if (queryEngine != null && queryEngine != engine) {
+        throw ArgumentError(
+          'All queries passed to multi search must target engine "$engine". '
+          'Found "$queryEngine".',
+        );
+      }
+    }
+
+    final payload = <String, dynamic>{
+      'queries': queries
+          .map((query) => _validateElasticQuery(query).toJson())
+          .toList(),
+    };
+
+    final url = _operationUrl(engine, Operation.multiSearch);
+    return _sendRequest<List<ElasticResponse>>(
+      method: 'POST',
+      url: url,
+      operation: Operation.multiSearch,
+      engine: engine,
+      body: payload,
+      cancelToken: cancelToken,
+      parse: (responseData) => _asJsonObjectList(
+        responseData,
+      ).map(ElasticResponse.fromJson).toList(),
+    );
+  }
+
+  Future<ElasticSearchExplainResponse> postSearchExplainOperation(
+    ElasticQuery query, [
+    CancelToken? cancelToken,
+  ]) {
+    final validatedQuery = _validateElasticQuery(query);
+    final queryEngine = validatedQuery.engine;
+    if (queryEngine == null) {
+      throw StateError(
+        'An engine is required to execute a search explain operation. '
+        'Create the query from ElasticEngine.query(...) or set engine on the query.',
+      );
+    }
+
+    final engine = queryEngine.name;
+    final url = _operationUrl(engine, Operation.searchExplain);
+    return _sendRequest<ElasticSearchExplainResponse>(
+      method: 'POST',
+      url: url,
+      operation: Operation.searchExplain,
+      engine: engine,
+      body: validatedQuery.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticSearchExplainResponse.fromJson(_asJsonObject(responseData)),
+    );
   }
 
   Future<ElasticQuerySuggestionResponse> postSuggestionOperation(

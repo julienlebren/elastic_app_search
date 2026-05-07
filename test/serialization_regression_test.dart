@@ -92,9 +92,11 @@ void main() {
           results: ElasticSuggestionResult(
             documents: [ElasticSuggestionDocument(suggestion: 'mountain')],
           ),
+          meta: ElasticQuerySuggestionMeta(requestId: 'req-suggest'),
         );
 
         final json = response.toJson();
+        expect(json['meta'], isA<Map<String, dynamic>>());
         expect(json['results'], isA<Map<String, dynamic>>());
         final results = json['results'] as Map<String, dynamic>;
         expect(results['documents'], isA<List<dynamic>>());

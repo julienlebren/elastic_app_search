@@ -63,13 +63,13 @@ void _validateGroupSizeValue(int? size) {
 }
 
 void _validateSuggestionSize(int? size) {
-  if (size != null && (size < 1 || size > 1000)) {
+  if (size != null && (size < 1 || size > 20)) {
     throw RangeError.range(
       size,
       1,
-      1000,
+      20,
       'size',
-      'The size of suggestions must be between 1 and 1000.',
+      'The size of suggestions must be between 1 and 20.',
     );
   }
 }
@@ -261,6 +261,10 @@ abstract class ElasticQuery with _$ElasticQuery {
     /// Tags can be used to enrich each query with unique information.
     /// See [https://www.elastic.co/guide/en/app-search/current/tags.html]
     _ElasticAnalytics? analytics,
+
+    /// If true, generates an analytics query event for the search request.
+    /// Defaults to true on the App Search API side.
+    @JsonKey(name: "record_analytics") bool? recordAnalyticsField,
 
     /// Grouped results based on shared fields
     @protected @JsonKey(name: "group") _ElasticGroup? groupBy,
@@ -800,6 +804,11 @@ abstract class ElasticQuery with _$ElasticQuery {
     return copyWith(analytics: _ElasticAnalytics(tags: newTags));
   }
 
+  /// Controls whether this search request should be recorded as an analytics event.
+  ElasticQuery recordAnalytics(bool value) {
+    return copyWith(recordAnalyticsField: value);
+  }
+
   /// Takes a field with an optionnal `size`, creates and returns a new [ElasticQuery]
   /// which will return grouped results based on shared fields.
   ///
@@ -844,6 +853,18 @@ abstract class ElasticQuery with _$ElasticQuery {
       );
     }
     return currentEngine.get(this, cancelToken);
+  }
+
+  /// Fetches the Search Explain payload for this query.
+  Future<ElasticSearchExplainResponse> explain([CancelToken? cancelToken]) {
+    final currentEngine = engine;
+    if (currentEngine == null) {
+      throw StateError(
+        'An engine is required to execute this query explain operation. '
+        'Create the query from ElasticEngine.query(...) or set engine before calling explain().',
+      );
+    }
+    return currentEngine.explain(this, cancelToken);
   }
 
   /// Private method - not intended to be used
@@ -1341,6 +1362,64 @@ class _ElasticSortConverter
   }
 }
 
+class _ElasticSuggestionTypesConverter
+    implements JsonConverter<List<_ElasticSearchField>?, Map?> {
+  const _ElasticSuggestionTypesConverter();
+
+  @override
+  List<_ElasticSearchField>? fromJson(Map? value) {
+    if (value == null) return null;
+
+    final rawDocuments = value['documents'];
+    if (rawDocuments is Map) {
+      final rawFields = rawDocuments['fields'];
+      if (rawFields is List) {
+        final fields = <_ElasticSearchField>[];
+        for (final rawField in rawFields) {
+          final name = rawField.toString();
+          if (name.trim().isEmpty) continue;
+          fields.add(_ElasticSearchField(name: name));
+        }
+        return fields.isEmpty ? null : fields;
+      }
+    }
+
+    // Backward compatibility with previous payload shape:
+    // { "search_fields": { "title": { "weight": 5 } } }
+    return const _ElasticSearchFieldsConverter().fromJson(value);
+  }
+
+  @override
+  Map? toJson(List<_ElasticSearchField>? value) {
+    if (value == null || value.isEmpty) return null;
+
+    final fields = <String>[];
+    for (final searchField in value) {
+      if (searchField.name.trim().isEmpty) continue;
+      fields.add(searchField.name);
+    }
+    if (fields.isEmpty) return null;
+
+    return {
+      'documents': {'fields': fields},
+    };
+  }
+}
+
+Map<String, dynamic> _normalizeSuggestionsQueryJson(Map<String, dynamic> json) {
+  final normalized = <String, dynamic>{...json};
+
+  final hasTypes = normalized['types'] != null;
+  final legacySearchFields = normalized['search_fields'];
+
+  if (!hasTypes && legacySearchFields is Map) {
+    // Keep the legacy payload map so weight validation keeps working.
+    normalized['types'] = legacySearchFields;
+  }
+
+  return normalized;
+}
+
 /// An object containing all the settings to execute a suggestion query
 ///
 /// See https://www.elastic.co/guide/en/app-search/current/query-suggestions-guide.html
@@ -1359,13 +1438,14 @@ abstract class ElasticSuggestionsQuery with _$ElasticSuggestionsQuery {
     required String query,
 
     /// Number of query suggestions.
-    /// Must be greater than or equal to 1 and less than or equal to 1000.
+    /// Must be greater than or equal to 1 and less than or equal to 20.
     /// Defaults to 10.
     @JsonKey(name: "size") @Default(10) int? sizeField,
 
-    /// Object which restricts a query to search only specific fields.
-    @_ElasticSearchFieldsConverter()
-    @JsonKey(name: "search_fields")
+    /// Object which restricts a suggestion query to specific text fields.
+    /// Serialized as `types.documents.fields` in App Search.
+    @_ElasticSuggestionTypesConverter()
+    @JsonKey(name: "types")
     List<_ElasticSearchField>? searchFields,
 
     /// Object to sort your results in an order other than document score.
@@ -1373,7 +1453,9 @@ abstract class ElasticSuggestionsQuery with _$ElasticSuggestionsQuery {
   }) = _ElasticSuggestionsQuery;
 
   factory ElasticSuggestionsQuery.fromJson(Map<String, dynamic> json) =>
-      _validateElasticSuggestionsQuery(_$ElasticSuggestionsQueryFromJson(json));
+      _validateElasticSuggestionsQuery(
+        _$ElasticSuggestionsQueryFromJson(_normalizeSuggestionsQueryJson(json)),
+      );
 
   /// Takes a field with an optional `weight`, creates and returns a new [ElasticSuggestionsQuery]
   ///

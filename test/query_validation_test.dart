@@ -203,10 +203,7 @@ void main() {
 
     test('size validates range', () {
       expect(() => engine.suggestionQuery('mount').size(0), throwsRangeError);
-      expect(
-        () => engine.suggestionQuery('mount').size(1001),
-        throwsRangeError,
-      );
+      expect(() => engine.suggestionQuery('mount').size(21), throwsRangeError);
     });
   });
 
@@ -214,6 +211,11 @@ void main() {
     test('search query requires an engine at execution time', () {
       final query = ElasticQuery.fromJson({'query': 'mountains'});
       expect(() => query.get(), throwsStateError);
+    });
+
+    test('search explain query requires an engine at execution time', () {
+      final query = ElasticQuery.fromJson({'query': 'mountains'});
+      expect(() => query.explain(), throwsStateError);
     });
 
     test('suggestion query requires an engine at execution time', () {
@@ -401,6 +403,10 @@ void main() {
     test('suggestion query validates size at runtime', () {
       expect(
         () => ElasticSuggestionsQuery.fromJson({'query': 'mount', 'size': 0}),
+        throwsRangeError,
+      );
+      expect(
+        () => ElasticSuggestionsQuery.fromJson({'query': 'mount', 'size': 21}),
         throwsRangeError,
       );
     });

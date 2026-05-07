@@ -174,6 +174,7 @@ _ElasticQuery _$ElasticQueryFromJson(Map<String, dynamic> json) =>
           : _ElasticAnalytics.fromJson(
               json['analytics'] as Map<String, dynamic>,
             ),
+      recordAnalyticsField: json['record_analytics'] as bool?,
       groupBy: json['group'] == null
           ? null
           : _ElasticGroup.fromJson(json['group'] as Map<String, dynamic>),
@@ -197,6 +198,7 @@ Map<String, dynamic> _$ElasticQueryToJson(
   ),
   'facets': ?instance.facets?.map((k, e) => MapEntry(k, e.toJson())),
   'analytics': ?instance.analytics?.toJson(),
+  'record_analytics': ?instance.recordAnalyticsField,
   'group': ?instance.groupBy?.toJson(),
   'sort': ?const _ElasticSortConverter().toJson(instance.sortBy),
 };
@@ -333,8 +335,8 @@ _ElasticSuggestionsQuery _$ElasticSuggestionsQueryFromJson(
 ) => _ElasticSuggestionsQuery(
   query: json['query'] as String,
   sizeField: (json['size'] as num?)?.toInt() ?? 10,
-  searchFields: const _ElasticSearchFieldsConverter().fromJson(
-    json['search_fields'] as Map?,
+  searchFields: const _ElasticSuggestionTypesConverter().fromJson(
+    json['types'] as Map?,
   ),
   sortBy: const _ElasticSortConverter().fromJson(
     json['sort'] as List<Map<dynamic, dynamic>>?,
@@ -346,7 +348,7 @@ Map<String, dynamic> _$ElasticSuggestionsQueryToJson(
 ) => <String, dynamic>{
   'query': instance.query,
   'size': ?instance.sizeField,
-  'search_fields': ?const _ElasticSearchFieldsConverter().toJson(
+  'types': ?const _ElasticSuggestionTypesConverter().toJson(
     instance.searchFields,
   ),
   'sort': ?const _ElasticSortConverter().toJson(instance.sortBy),
@@ -420,11 +422,78 @@ _ElasticQuerySuggestionResponse _$ElasticQuerySuggestionResponseFromJson(
   results: ElasticSuggestionResult.fromJson(
     json['results'] as Map<String, dynamic>,
   ),
+  meta: ElasticQuerySuggestionMeta.fromJson(
+    json['meta'] as Map<String, dynamic>,
+  ),
 );
 
 Map<String, dynamic> _$ElasticQuerySuggestionResponseToJson(
   _ElasticQuerySuggestionResponse instance,
-) => <String, dynamic>{'results': instance.results.toJson()};
+) => <String, dynamic>{
+  'results': instance.results.toJson(),
+  'meta': instance.meta.toJson(),
+};
+
+_ElasticQuerySuggestionMeta _$ElasticQuerySuggestionMetaFromJson(
+  Map<String, dynamic> json,
+) => _ElasticQuerySuggestionMeta(requestId: json['request_id'] as String);
+
+Map<String, dynamic> _$ElasticQuerySuggestionMetaToJson(
+  _ElasticQuerySuggestionMeta instance,
+) => <String, dynamic>{'request_id': instance.requestId};
+
+_ElasticSearchExplainEngine _$ElasticSearchExplainEngineFromJson(
+  Map<String, dynamic> json,
+) => _ElasticSearchExplainEngine(
+  name: json['name'] as String,
+  type: json['type'] as String?,
+);
+
+Map<String, dynamic> _$ElasticSearchExplainEngineToJson(
+  _ElasticSearchExplainEngine instance,
+) => <String, dynamic>{'name': instance.name, 'type': ?instance.type};
+
+_ElasticSearchExplainMeta _$ElasticSearchExplainMetaFromJson(
+  Map<String, dynamic> json,
+) => _ElasticSearchExplainMeta(
+  requestId: json['request_id'] as String,
+  warnings: json['warnings'] as List<dynamic>,
+  alerts: json['alerts'] as List<dynamic>,
+  precision: (json['precision'] as num?)?.toInt(),
+  engine: json['engine'] == null
+      ? null
+      : ElasticSearchExplainEngine.fromJson(
+          json['engine'] as Map<String, dynamic>,
+        ),
+);
+
+Map<String, dynamic> _$ElasticSearchExplainMetaToJson(
+  _ElasticSearchExplainMeta instance,
+) => <String, dynamic>{
+  'request_id': instance.requestId,
+  'warnings': instance.warnings,
+  'alerts': instance.alerts,
+  'precision': ?instance.precision,
+  'engine': ?instance.engine?.toJson(),
+};
+
+_ElasticSearchExplainResponse _$ElasticSearchExplainResponseFromJson(
+  Map<String, dynamic> json,
+) => _ElasticSearchExplainResponse(
+  meta: ElasticSearchExplainMeta.fromJson(json['meta'] as Map<String, dynamic>),
+  queryString: json['query_string'] as String,
+  queryBody: const _StringDynamicMapConverter().fromJson(
+    json['query_body'] as Map,
+  ),
+);
+
+Map<String, dynamic> _$ElasticSearchExplainResponseToJson(
+  _ElasticSearchExplainResponse instance,
+) => <String, dynamic>{
+  'meta': instance.meta.toJson(),
+  'query_string': instance.queryString,
+  'query_body': const _StringDynamicMapConverter().toJson(instance.queryBody),
+};
 
 _ElasticDocumentsListMeta _$ElasticDocumentsListMetaFromJson(
   Map<String, dynamic> json,
