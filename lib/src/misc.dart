@@ -114,6 +114,8 @@ enum Operation {
   multiSearch("multi_search"),
   searchExplain("search_explain"),
   querySuggestion("query_suggestion"),
+  schemaGet("schema"),
+  schemaUpdate("schema"),
   documentsCreateOrUpdate("documents"),
   documentsGet("documents"),
   documentsDelete("documents"),
@@ -127,6 +129,70 @@ enum Operation {
   const Operation(this.value);
 
   final String value;
+}
+
+enum ElasticSchemaFieldType { text, number, date, geolocation }
+
+extension _ElasticSchemaFieldTypeX on ElasticSchemaFieldType {
+  String get apiValue {
+    switch (this) {
+      case ElasticSchemaFieldType.text:
+        return 'text';
+      case ElasticSchemaFieldType.number:
+        return 'number';
+      case ElasticSchemaFieldType.date:
+        return 'date';
+      case ElasticSchemaFieldType.geolocation:
+        return 'geolocation';
+    }
+  }
+}
+
+ElasticSchemaFieldType _schemaFieldTypeFromApiValue(String value) {
+  switch (value) {
+    case 'text':
+      return ElasticSchemaFieldType.text;
+    case 'number':
+      return ElasticSchemaFieldType.number;
+    case 'date':
+      return ElasticSchemaFieldType.date;
+    case 'geolocation':
+      return ElasticSchemaFieldType.geolocation;
+  }
+
+  throw FormatException(
+    'Invalid schema field type "$value". Expected one of: text, number, date, geolocation.',
+  );
+}
+
+class ElasticSchema {
+  ElasticSchema(Map<String, ElasticSchemaFieldType> fields)
+    : fields = Map.unmodifiable(fields);
+
+  final Map<String, ElasticSchemaFieldType> fields;
+
+  factory ElasticSchema.fromJson(Map<String, dynamic> json) {
+    final fields = <String, ElasticSchemaFieldType>{};
+
+    for (final entry in json.entries) {
+      final name = entry.key.toString();
+      final rawType = entry.value;
+      if (rawType == null) {
+        throw FormatException(
+          'Invalid schema payload: type for "$name" cannot be null.',
+        );
+      }
+      final type = _schemaFieldTypeFromApiValue(rawType.toString());
+      fields[name] = type;
+    }
+
+    return ElasticSchema(fields);
+  }
+
+  Map<String, dynamic> toJson() =>
+      fields.map((key, value) => MapEntry(key, value.apiValue));
+
+  ElasticSchemaFieldType? operator [](String field) => fields[field];
 }
 
 @freezed

@@ -100,6 +100,20 @@ class ElasticEngine {
     CancelToken? cancelToken,
   ]) => service.deleteDocuments(name, ids, cancelToken);
 
+  /// Retrieves the schema of this engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/schema`.
+  Future<ElasticSchema> getSchema([CancelToken? cancelToken]) =>
+      service.getSchema(name, cancelToken);
+
+  /// Updates one or more schema fields for this engine.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/schema`.
+  Future<ElasticSchema> updateSchema(
+    Map<String, ElasticSchemaFieldType> fields, [
+    CancelToken? cancelToken,
+  ]) => service.updateSchema(name, fields, cancelToken);
+
   /// Lists engine documents with pagination.
   ///
   /// Uses `GET /api/as/v1/engines/{engine}/documents/list`.

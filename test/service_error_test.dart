@@ -212,6 +212,44 @@ void main() {
     );
 
     test(
+      'get schema failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.getSchema(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having((e) => e.operation, 'operation', Operation.schemaGet)
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/schema',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'update schema failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.updateSchema({'title': ElasticSchemaFieldType.text}),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having((e) => e.operation, 'operation', Operation.schemaUpdate)
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/schema',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
       'index documents failures are wrapped in ElasticAppSearchException',
       () async {
         await expectLater(

@@ -73,6 +73,24 @@ class ElasticAppSearch {
 
   static const String _accountScope = '<account>';
   static const String _errorMessage = "Unable to get response from API server";
+  static const Set<String> _reservedSchemaFieldNames = {
+    '_boost',
+    '_explanation',
+    '_id',
+    '_index',
+    '_score',
+    '_type',
+    '_version',
+    'all',
+    'and',
+    'any',
+    'engine_id',
+    'external_id',
+    'highlight',
+    'none',
+    'not',
+    'or',
+  };
 
   /// Returns an instance for the specified `endPoint` and `searchKey`.
   ElasticAppSearch get instance => ElasticAppSearch._(
@@ -512,6 +530,83 @@ class ElasticAppSearch {
     }
   }
 
+  void _validateSchemaUpdateFields(Map<String, ElasticSchemaFieldType> fields) {
+    if (fields.isEmpty) {
+      throw ArgumentError.value(
+        fields,
+        'fields',
+        'Schema update requires at least one field.',
+      );
+    }
+    if (fields.length > 64) {
+      throw RangeError.range(
+        fields.length,
+        1,
+        64,
+        'fields.length',
+        'Schema update can include at most 64 fields.',
+      );
+    }
+
+    final whitespace = RegExp(r'\s');
+    final validCharacters = RegExp(r'^[a-z0-9_]+$');
+    final hasLowercase = RegExp(r'[a-z]');
+
+    for (final field in fields.keys) {
+      if (field.isEmpty) {
+        throw ArgumentError.value(
+          field,
+          'fields',
+          'Schema field name must be a non-empty string.',
+        );
+      }
+      if (whitespace.hasMatch(field)) {
+        throw ArgumentError.value(
+          field,
+          'fields',
+          'Schema field name cannot contain whitespace.',
+        );
+      }
+      if (field.startsWith('_')) {
+        throw ArgumentError.value(
+          field,
+          'fields',
+          'Schema field name cannot have a leading underscore.',
+        );
+      }
+      if (field.length > 64) {
+        throw RangeError.range(
+          field.length,
+          1,
+          64,
+          'fields["$field"].length',
+          'Schema field name cannot contain more than 64 characters.',
+        );
+      }
+      if (_reservedSchemaFieldNames.contains(field)) {
+        throw ArgumentError.value(
+          field,
+          'fields',
+          'Schema field name "$field" is reserved.',
+        );
+      }
+      if (!validCharacters.hasMatch(field)) {
+        throw ArgumentError.value(
+          field,
+          'fields',
+          'Schema field name can only contain lowercase letters, numbers, and underscores.',
+        );
+      }
+      if (!hasLowercase.hasMatch(field)) {
+        throw ArgumentError.value(
+          field,
+          'fields',
+          'Schema field name must contain at least one lowercase letter.',
+        );
+      }
+    }
+  }
+
   /// Executes a request on Elastic App Search and returns a [ElasticResponse] object
   /// An [ElasticQuery] must be provided with the parameters of the query.
   ///
@@ -761,6 +856,40 @@ class ElasticAppSearch {
       cancelToken: cancelToken,
       parse: (responseData) =>
           ElasticAnalyticsCountsResponse.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  Future<ElasticSchema> getSchema(String engine, [CancelToken? cancelToken]) {
+    final url = _operationUrl(engine, Operation.schemaGet);
+    return _sendRequest<ElasticSchema>(
+      method: 'GET',
+      url: url,
+      operation: Operation.schemaGet,
+      engine: engine,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticSchema.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  Future<ElasticSchema> updateSchema(
+    String engine,
+    Map<String, ElasticSchemaFieldType> fields, [
+    CancelToken? cancelToken,
+  ]) {
+    _validateSchemaUpdateFields(fields);
+
+    final payload = fields.map((key, value) => MapEntry(key, value.apiValue));
+    final url = _operationUrl(engine, Operation.schemaUpdate);
+    return _sendRequest<ElasticSchema>(
+      method: 'POST',
+      url: url,
+      operation: Operation.schemaUpdate,
+      engine: engine,
+      body: payload,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticSchema.fromJson(_asJsonObject(responseData)),
     );
   }
 

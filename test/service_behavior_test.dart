@@ -456,6 +456,60 @@ void main() {
       expect(response.results.first.to, '2018-07-05T13:00:00+00:00');
     });
 
+    test('schema get success parses response payload', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/schema') && request.method == 'GET') {
+          await _writeJson(request, 200, {
+            'title': 'text',
+            'visitors': 'number',
+            'date_established': 'date',
+            'location': 'geolocation',
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final schema = await engine.getSchema();
+
+      expect(schema.fields, hasLength(4));
+      expect(schema['title'], ElasticSchemaFieldType.text);
+      expect(schema['visitors'], ElasticSchemaFieldType.number);
+      expect(schema['date_established'], ElasticSchemaFieldType.date);
+      expect(schema['location'], ElasticSchemaFieldType.geolocation);
+    });
+
+    test('schema update success parses response payload', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/schema') && request.method == 'POST') {
+          final body = await _readJson(request);
+          expect(body, {'title': 'text', 'visitors': 'number'});
+
+          await _writeJson(request, 200, {
+            'title': 'text',
+            'visitors': 'number',
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final schema = await engine.updateSchema({
+        'title': ElasticSchemaFieldType.text,
+        'visitors': ElasticSchemaFieldType.number,
+      });
+
+      expect(schema.fields, hasLength(2));
+      expect(schema['title'], ElasticSchemaFieldType.text);
+      expect(schema['visitors'], ElasticSchemaFieldType.number);
+    });
+
     test('index documents success parses response payload', () async {
       handler = (request) async {
         if (request.uri.path.endsWith('/documents') &&
@@ -755,6 +809,49 @@ void main() {
       );
     });
 
+    test('schema API validates field names and payload', () {
+      expect(() => engine.updateSchema({}), throwsArgumentError);
+      expect(
+        () => engine.updateSchema({'Title': ElasticSchemaFieldType.text}),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.updateSchema({'_title': ElasticSchemaFieldType.text}),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.updateSchema({'engine_id': ElasticSchemaFieldType.text}),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.updateSchema({'123': ElasticSchemaFieldType.number}),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.updateSchema({'bad-name': ElasticSchemaFieldType.text}),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.updateSchema({'has space': ElasticSchemaFieldType.text}),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.updateSchema({'x' * 65: ElasticSchemaFieldType.text}),
+        throwsRangeError,
+      );
+      expect(
+        () => engine.updateSchema(
+          Map<String, ElasticSchemaFieldType>.fromEntries(
+            List.generate(
+              65,
+              (i) => MapEntry('field_$i', ElasticSchemaFieldType.text),
+            ),
+          ),
+        ),
+        throwsRangeError,
+      );
+    });
+
     test('documents list errors are mapped', () async {
       handler = (request) async {
         if (request.uri.path.endsWith('/documents/list')) {
@@ -781,6 +878,62 @@ void main() {
                 'message',
                 'Invalid key for documents access',
               ),
+        ),
+      );
+    });
+
+    test('schema get HTTP errors are mapped', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/schema') && request.method == 'GET') {
+          await _writeJson(request, 401, {
+            'errors': ['Schema access unauthorized'],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      await expectLater(
+        engine.getSchema(),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having((e) => e.operation, 'operation', Operation.schemaGet)
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 401)
+              .having(
+                (e) => e.message,
+                'message',
+                'Schema access unauthorized',
+              ),
+        ),
+      );
+    });
+
+    test('schema update HTTP errors are mapped', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/schema') && request.method == 'POST') {
+          await _writeJson(request, 400, {
+            'errors': ['Schema payload invalid'],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      await expectLater(
+        engine.updateSchema({'title': ElasticSchemaFieldType.text}),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having((e) => e.operation, 'operation', Operation.schemaUpdate)
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 400)
+              .having((e) => e.message, 'message', 'Schema payload invalid'),
         ),
       );
     });
