@@ -80,6 +80,71 @@ void main() {
       expect(location['from'], 5.0);
     });
 
+    test('boost methods serialize expected payload', () {
+      final recencyCenter = DateTime.utc(2024, 1, 1, 12, 0, 0);
+      final json = engine
+          .query('parks')
+          .boostValue(
+            'world_heritage_site',
+            value: 'true',
+            operation: BoostOperation.multiply,
+            factor: 10,
+          )
+          .boostValue('world_heritage_site', value: ['national', 'state'])
+          .boostFunctional(
+            'visitors',
+            function: BoostFunction.logarithmic,
+            operation: BoostOperation.multiply,
+            factor: 2,
+          )
+          .boostProximity(
+            'location',
+            center: const LatLong(37.7749, -122.4194),
+            function: BoostFunction.linear,
+            factor: 8,
+          )
+          .boostRecency(
+            'date_established',
+            center: recencyCenter,
+            function: BoostFunction.linear,
+            factor: 6,
+          )
+          .toJson();
+
+      expect(json['boosts'], {
+        'world_heritage_site': [
+          {
+            'type': 'value',
+            'value': 'true',
+            'operation': 'multiply',
+            'factor': 10.0,
+          },
+          {
+            'type': 'value',
+            'value': ['national', 'state'],
+          },
+        ],
+        'visitors': {
+          'type': 'functional',
+          'function': 'logarithmic',
+          'operation': 'multiply',
+          'factor': 2.0,
+        },
+        'location': {
+          'type': 'proximity',
+          'function': 'linear',
+          'center': '37.7749, -122.4194',
+          'factor': 8.0,
+        },
+        'date_established': {
+          'type': 'proximity',
+          'function': 'linear',
+          'center': recencyCenter.toUtc().toIso8601String(),
+          'factor': 6.0,
+        },
+      });
+    });
+
     test('core query builder methods serialize expected payload sections', () {
       final json = engine
           .query('mountains')

@@ -119,6 +119,99 @@ void main() {
     );
 
     test(
+      'clickthrough failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.clickthrough(
+            const ElasticClickthroughRequest(
+              query: 'everglade',
+              documentId: 'park_zion',
+            ),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having((e) => e.operation, 'operation', Operation.click)
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/click',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'analytics queries failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.analyticsQueries(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.analyticsQueries,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/analytics/queries',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'analytics clicks failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.analyticsClicks(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.analyticsClicks,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/analytics/clicks',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'analytics counts failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.analyticsCounts(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.analyticsCounts,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/analytics/counts',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
       'documents list failures are wrapped in ElasticAppSearchException',
       () async {
         await expectLater(

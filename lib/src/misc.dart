@@ -114,7 +114,11 @@ enum Operation {
   multiSearch("multi_search"),
   searchExplain("search_explain"),
   querySuggestion("query_suggestion"),
-  documentsList("documents/list");
+  documentsList("documents/list"),
+  click("click"),
+  analyticsQueries("analytics/queries"),
+  analyticsClicks("analytics/clicks"),
+  analyticsCounts("analytics/counts");
 
   const Operation(this.value);
 

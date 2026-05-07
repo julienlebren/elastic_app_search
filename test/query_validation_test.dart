@@ -187,6 +187,40 @@ void main() {
         throwsRangeError,
       );
     });
+
+    test('boost validates factor range', () {
+      expect(
+        () => engine
+            .query('mountains')
+            .boostValue('title', value: 'x', factor: -1),
+        throwsRangeError,
+      );
+      expect(
+        () => engine
+            .query('mountains')
+            .boostValue('title', value: 'x', factor: 11),
+        throwsRangeError,
+      );
+    });
+
+    test('boost validates function/type compatibility', () {
+      expect(
+        () => engine
+            .query('mountains')
+            .boostFunctional('visitors', function: BoostFunction.gaussian),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine
+            .query('mountains')
+            .boostProximity(
+              'location',
+              center: const LatLong(37.7749, -122.4194),
+              function: BoostFunction.logarithmic,
+            ),
+        throwsArgumentError,
+      );
+    });
   });
 
   group('ElasticSuggestionsQuery validation', () {
@@ -202,8 +236,14 @@ void main() {
     });
 
     test('size validates range', () {
-      expect(() => engine.suggestionQuery('mount').withSize(0), throwsRangeError);
-      expect(() => engine.suggestionQuery('mount').withSize(21), throwsRangeError);
+      expect(
+        () => engine.suggestionQuery('mount').withSize(0),
+        throwsRangeError,
+      );
+      expect(
+        () => engine.suggestionQuery('mount').withSize(21),
+        throwsRangeError,
+      );
     });
   });
 
@@ -397,6 +437,38 @@ void main() {
           'disjunctiveFacets': ['category'],
         }),
         throwsStateError,
+      );
+    });
+
+    test('search query validates boosts payload at runtime', () {
+      expect(
+        () => ElasticQuery.fromJson({
+          'query': 'mountains',
+          'boosts': {
+            'title': {'type': 'value'},
+          },
+        }),
+        throwsArgumentError,
+      );
+
+      expect(
+        () => ElasticQuery.fromJson({
+          'query': 'mountains',
+          'boosts': {
+            'visitors': {'type': 'functional', 'function': 'gaussian'},
+          },
+        }),
+        throwsArgumentError,
+      );
+
+      expect(
+        () => ElasticQuery.fromJson({
+          'query': 'mountains',
+          'boosts': {
+            'location': {'type': 'proximity', 'function': 'linear'},
+          },
+        }),
+        throwsArgumentError,
       );
     });
 

@@ -16,19 +16,262 @@ Map<String, dynamic> _$ElasticAnalyticsImplToJson(
   _ElasticAnalyticsImpl instance,
 ) => <String, dynamic>{'tags': instance.tags};
 
-_ElasticBoostImpl _$ElasticBoostImplFromJson(
+_ElasticClickthroughRequest _$ElasticClickthroughRequestFromJson(
   Map<String, dynamic> json,
-) => _ElasticBoostImpl(
-  type: $enumDecode(_$BoostTypeEnumMap, json['type']),
-  value: (json['value'] as List<dynamic>?)?.map((e) => e as String).toList(),
-  operation: $enumDecodeNullable(_$BoostOperationEnumMap, json['operation']),
-  factor: (json['factor'] as num?)?.toDouble(),
+) => _ElasticClickthroughRequest(
+  query: json['query'] as String,
+  documentId: json['document_id'] as String,
+  requestId: json['request_id'] as String?,
+  tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList(),
 );
+
+Map<String, dynamic> _$ElasticClickthroughRequestToJson(
+  _ElasticClickthroughRequest instance,
+) => <String, dynamic>{
+  'query': instance.query,
+  'document_id': instance.documentId,
+  'request_id': ?instance.requestId,
+  'tags': ?instance.tags,
+};
+
+_ElasticAnalyticsDateFilter _$ElasticAnalyticsDateFilterFromJson(
+  Map<String, dynamic> json,
+) => _ElasticAnalyticsDateFilter(
+  from: json['from'] as String?,
+  to: json['to'] as String?,
+);
+
+Map<String, dynamic> _$ElasticAnalyticsDateFilterToJson(
+  _ElasticAnalyticsDateFilter instance,
+) => <String, dynamic>{'from': ?instance.from, 'to': ?instance.to};
+
+_ElasticAnalyticsFilter _$ElasticAnalyticsFilterFromJson(
+  Map<String, dynamic> json,
+) => _ElasticAnalyticsFilter(
+  query: json['query'] as String?,
+  clicks: json['clicks'] as bool?,
+  results: json['results'] as bool?,
+  documentId: json['document_id'],
+  tag: const _AnalyticsTagFilterConverter().fromJson(json['tag']),
+  date: json['date'] == null
+      ? null
+      : ElasticAnalyticsDateFilter.fromJson(
+          json['date'] as Map<String, dynamic>,
+        ),
+  all: (json['all'] as List<dynamic>?)
+      ?.map((e) => ElasticAnalyticsFilter.fromJson(e as Map<String, dynamic>))
+      .toList(),
+);
+
+Map<String, dynamic> _$ElasticAnalyticsFilterToJson(
+  _ElasticAnalyticsFilter instance,
+) => <String, dynamic>{
+  'query': ?instance.query,
+  'clicks': ?instance.clicks,
+  'results': ?instance.results,
+  'document_id': ?instance.documentId,
+  'tag': ?const _AnalyticsTagFilterConverter().toJson(instance.tag),
+  'date': ?instance.date?.toJson(),
+  'all': ?instance.all?.map((e) => e.toJson()).toList(),
+};
+
+_ElasticAnalyticsQueriesRequest _$ElasticAnalyticsQueriesRequestFromJson(
+  Map<String, dynamic> json,
+) => _ElasticAnalyticsQueriesRequest(
+  page: json['page'] == null
+      ? null
+      : ElasticPageRequest.fromJson(json['page'] as Map<String, dynamic>),
+  filters: json['filters'] == null
+      ? null
+      : ElasticAnalyticsFilter.fromJson(
+          json['filters'] as Map<String, dynamic>,
+        ),
+);
+
+Map<String, dynamic> _$ElasticAnalyticsQueriesRequestToJson(
+  _ElasticAnalyticsQueriesRequest instance,
+) => <String, dynamic>{
+  'page': ?instance.page?.toJson(),
+  'filters': ?instance.filters?.toJson(),
+};
+
+_ElasticAnalyticsClicksRequest _$ElasticAnalyticsClicksRequestFromJson(
+  Map<String, dynamic> json,
+) => _ElasticAnalyticsClicksRequest(
+  query: json['query'] as String?,
+  page: json['page'] == null
+      ? null
+      : ElasticPageRequest.fromJson(json['page'] as Map<String, dynamic>),
+  filters: json['filters'] == null
+      ? null
+      : ElasticAnalyticsFilter.fromJson(
+          json['filters'] as Map<String, dynamic>,
+        ),
+);
+
+Map<String, dynamic> _$ElasticAnalyticsClicksRequestToJson(
+  _ElasticAnalyticsClicksRequest instance,
+) => <String, dynamic>{
+  'query': ?instance.query,
+  'page': ?instance.page?.toJson(),
+  'filters': ?instance.filters?.toJson(),
+};
+
+_ElasticAnalyticsCountsRequest _$ElasticAnalyticsCountsRequestFromJson(
+  Map<String, dynamic> json,
+) => _ElasticAnalyticsCountsRequest(
+  filters: json['filters'] == null
+      ? null
+      : ElasticAnalyticsFilter.fromJson(
+          json['filters'] as Map<String, dynamic>,
+        ),
+  interval: $enumDecodeNullable(
+    _$ElasticAnalyticsIntervalEnumMap,
+    json['interval'],
+  ),
+);
+
+Map<String, dynamic> _$ElasticAnalyticsCountsRequestToJson(
+  _ElasticAnalyticsCountsRequest instance,
+) => <String, dynamic>{
+  'filters': ?instance.filters?.toJson(),
+  'interval': ?_$ElasticAnalyticsIntervalEnumMap[instance.interval],
+};
+
+const _$ElasticAnalyticsIntervalEnumMap = {
+  ElasticAnalyticsInterval.hour: 'hour',
+  ElasticAnalyticsInterval.day: 'day',
+};
+
+_ElasticAnalyticsMeta _$ElasticAnalyticsMetaFromJson(
+  Map<String, dynamic> json,
+) => _ElasticAnalyticsMeta(
+  page: ElasticPageRequest.fromJson(json['page'] as Map<String, dynamic>),
+);
+
+Map<String, dynamic> _$ElasticAnalyticsMetaToJson(
+  _ElasticAnalyticsMeta instance,
+) => <String, dynamic>{'page': instance.page.toJson()};
+
+_ElasticAnalyticsQueryResult _$ElasticAnalyticsQueryResultFromJson(
+  Map<String, dynamic> json,
+) => _ElasticAnalyticsQueryResult(
+  term: json['term'] as String,
+  clicks: (json['clicks'] as num).toInt(),
+  queries: (json['queries'] as num).toInt(),
+);
+
+Map<String, dynamic> _$ElasticAnalyticsQueryResultToJson(
+  _ElasticAnalyticsQueryResult instance,
+) => <String, dynamic>{
+  'term': instance.term,
+  'clicks': instance.clicks,
+  'queries': instance.queries,
+};
+
+_ElasticAnalyticsQueriesResponse _$ElasticAnalyticsQueriesResponseFromJson(
+  Map<String, dynamic> json,
+) => _ElasticAnalyticsQueriesResponse(
+  meta: ElasticAnalyticsMeta.fromJson(json['meta'] as Map<String, dynamic>),
+  results: (json['results'] as List<dynamic>)
+      .map(
+        (e) => ElasticAnalyticsQueryResult.fromJson(e as Map<String, dynamic>),
+      )
+      .toList(),
+);
+
+Map<String, dynamic> _$ElasticAnalyticsQueriesResponseToJson(
+  _ElasticAnalyticsQueriesResponse instance,
+) => <String, dynamic>{
+  'meta': instance.meta.toJson(),
+  'results': instance.results.map((e) => e.toJson()).toList(),
+};
+
+_ElasticAnalyticsClickResult _$ElasticAnalyticsClickResultFromJson(
+  Map<String, dynamic> json,
+) => _ElasticAnalyticsClickResult(
+  documentId: json['document_id'] as String,
+  clicks: (json['clicks'] as num).toInt(),
+);
+
+Map<String, dynamic> _$ElasticAnalyticsClickResultToJson(
+  _ElasticAnalyticsClickResult instance,
+) => <String, dynamic>{
+  'document_id': instance.documentId,
+  'clicks': instance.clicks,
+};
+
+_ElasticAnalyticsClicksResponse _$ElasticAnalyticsClicksResponseFromJson(
+  Map<String, dynamic> json,
+) => _ElasticAnalyticsClicksResponse(
+  meta: ElasticAnalyticsMeta.fromJson(json['meta'] as Map<String, dynamic>),
+  results: (json['results'] as List<dynamic>)
+      .map(
+        (e) => ElasticAnalyticsClickResult.fromJson(e as Map<String, dynamic>),
+      )
+      .toList(),
+);
+
+Map<String, dynamic> _$ElasticAnalyticsClicksResponseToJson(
+  _ElasticAnalyticsClicksResponse instance,
+) => <String, dynamic>{
+  'meta': instance.meta.toJson(),
+  'results': instance.results.map((e) => e.toJson()).toList(),
+};
+
+_ElasticAnalyticsCountResult _$ElasticAnalyticsCountResultFromJson(
+  Map<String, dynamic> json,
+) => _ElasticAnalyticsCountResult(
+  clicks: (json['clicks'] as num).toInt(),
+  queries: (json['queries'] as num).toInt(),
+  from: json['from'] as String,
+  to: json['to'] as String,
+);
+
+Map<String, dynamic> _$ElasticAnalyticsCountResultToJson(
+  _ElasticAnalyticsCountResult instance,
+) => <String, dynamic>{
+  'clicks': instance.clicks,
+  'queries': instance.queries,
+  'from': instance.from,
+  'to': instance.to,
+};
+
+_ElasticAnalyticsCountsResponse _$ElasticAnalyticsCountsResponseFromJson(
+  Map<String, dynamic> json,
+) => _ElasticAnalyticsCountsResponse(
+  results: (json['results'] as List<dynamic>)
+      .map(
+        (e) => ElasticAnalyticsCountResult.fromJson(e as Map<String, dynamic>),
+      )
+      .toList(),
+);
+
+Map<String, dynamic> _$ElasticAnalyticsCountsResponseToJson(
+  _ElasticAnalyticsCountsResponse instance,
+) => <String, dynamic>{
+  'results': instance.results.map((e) => e.toJson()).toList(),
+};
+
+_ElasticBoostImpl _$ElasticBoostImplFromJson(Map<String, dynamic> json) =>
+    _ElasticBoostImpl(
+      type: $enumDecode(_$BoostTypeEnumMap, json['type']),
+      value: json['value'],
+      function: $enumDecodeNullable(_$BoostFunctionEnumMap, json['function']),
+      center: json['center'],
+      operation: $enumDecodeNullable(
+        _$BoostOperationEnumMap,
+        json['operation'],
+      ),
+      factor: (json['factor'] as num?)?.toDouble(),
+    );
 
 Map<String, dynamic> _$ElasticBoostImplToJson(_ElasticBoostImpl instance) =>
     <String, dynamic>{
       'type': _$BoostTypeEnumMap[instance.type]!,
       'value': ?instance.value,
+      'function': ?_$BoostFunctionEnumMap[instance.function],
+      'center': ?instance.center,
       'operation': ?_$BoostOperationEnumMap[instance.operation],
       'factor': ?instance.factor,
     };
@@ -38,6 +281,13 @@ const _$BoostTypeEnumMap = {
   BoostType.functional: 'functional',
   BoostType.proximity: 'proximity',
   BoostType.recency: 'recency',
+};
+
+const _$BoostFunctionEnumMap = {
+  BoostFunction.linear: 'linear',
+  BoostFunction.exponential: 'exponential',
+  BoostFunction.gaussian: 'gaussian',
+  BoostFunction.logarithmic: 'logarithmic',
 };
 
 const _$BoostOperationEnumMap = {
@@ -159,6 +409,7 @@ _ElasticQuery _$ElasticQueryFromJson(Map<String, dynamic> json) =>
       searchFields: const _ElasticSearchFieldsConverter().fromJson(
         json['search_fields'] as Map?,
       ),
+      boosts: const _ElasticBoostsConverter().fromJson(json['boosts'] as Map?),
       resultFields: const _ElasticResultFieldsConverter().fromJson(
         json['result_fields'] as Map?,
       ),
@@ -193,6 +444,7 @@ Map<String, dynamic> _$ElasticQueryToJson(
   'search_fields': ?const _ElasticSearchFieldsConverter().toJson(
     instance.searchFields,
   ),
+  'boosts': ?const _ElasticBoostsConverter().toJson(instance.boosts),
   'result_fields': ?const _ElasticResultFieldsConverter().toJson(
     instance.resultFields,
   ),

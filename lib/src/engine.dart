@@ -41,6 +41,33 @@ class ElasticEngine {
     CancelToken? cancelToken,
   ]) => service.postSuggestionOperation(query, cancelToken);
 
+  /// Sends a clickthrough event for this engine.
+  Future<void> clickthrough(
+    ElasticClickthroughRequest request, [
+    CancelToken? cancelToken,
+  ]) => service.postClickOperation(name, request, cancelToken);
+
+  /// Retrieves analytics queries for this engine.
+  Future<ElasticAnalyticsQueriesResponse> analyticsQueries({
+    ElasticAnalyticsQueriesRequest request =
+        const ElasticAnalyticsQueriesRequest(),
+    CancelToken? cancelToken,
+  }) => service.postAnalyticsQueriesOperation(name, request, cancelToken);
+
+  /// Retrieves analytics clicks for this engine.
+  Future<ElasticAnalyticsClicksResponse> analyticsClicks({
+    ElasticAnalyticsClicksRequest request =
+        const ElasticAnalyticsClicksRequest(),
+    CancelToken? cancelToken,
+  }) => service.postAnalyticsClicksOperation(name, request, cancelToken);
+
+  /// Retrieves analytics counts for this engine.
+  Future<ElasticAnalyticsCountsResponse> analyticsCounts({
+    ElasticAnalyticsCountsRequest request =
+        const ElasticAnalyticsCountsRequest(),
+    CancelToken? cancelToken,
+  }) => service.postAnalyticsCountsOperation(name, request, cancelToken);
+
   /// Lists engine documents with pagination.
   ///
   /// Uses `GET /api/as/v1/engines/{engine}/documents/list`.

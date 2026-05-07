@@ -37,6 +37,62 @@ void _validateWeightValue(int? weight) {
   }
 }
 
+void _validateBoost(String field, _ElasticBoost boost) {
+  _validateFieldNameValue(field, 'boost');
+  _validateBoostFactor(boost.factor);
+
+  switch (boost.type) {
+    case BoostType.value:
+      final value = boost.value;
+      if (value == null) {
+        throw ArgumentError.value(
+          value,
+          'value',
+          'Value boost requires a non-null `value`.',
+        );
+      }
+      if (value is String && value.trim().isEmpty) {
+        throw ArgumentError.value(
+          value,
+          'value',
+          'Value boost requires a non-empty string when using string value.',
+        );
+      }
+      if (value is List && value.isEmpty) {
+        throw ArgumentError.value(
+          value,
+          'value',
+          'Value boost list cannot be empty.',
+        );
+      }
+      break;
+    case BoostType.functional:
+      final function = boost.function;
+      if (function == null) {
+        throw ArgumentError.value(
+          function,
+          'function',
+          'Functional boost requires a `function`.',
+        );
+      }
+      _validateBoostFunctionForType(type: boost.type, function: function);
+      break;
+    case BoostType.proximity:
+    case BoostType.recency:
+      final function = boost.function;
+      if (function == null) {
+        throw ArgumentError.value(
+          function,
+          'function',
+          'Proximity/recency boost requires a `function`.',
+        );
+      }
+      _validateBoostFunctionForType(type: boost.type, function: function);
+      _validateBoostCenter(boost.center);
+      break;
+  }
+}
+
 void _validateResultSizesValue({int? rawSize, int? snippetSize}) {
   if (rawSize != null && rawSize < 20) {
     throw RangeError.value(rawSize, 'rawSize', 'Raw size must be at least 20.');
@@ -128,6 +184,15 @@ ElasticQuery _validateElasticQuery(ElasticQuery query) {
       in query.searchFields ?? const <_ElasticSearchField>[]) {
     _validateFieldNameValue(searchField.name, 'searchField');
     _validateWeightValue(searchField.weight);
+  }
+
+  final boosts = query.boosts;
+  if (boosts != null) {
+    for (final entry in boosts.entries) {
+      for (final boost in entry.value) {
+        _validateBoost(entry.key, boost);
+      }
+    }
   }
 
   for (final resultField
@@ -241,6 +306,11 @@ abstract class ElasticQuery with _$ElasticQuery {
     @_ElasticSearchFieldsConverter()
     @JsonKey(name: "search_fields")
     List<_ElasticSearchField>? searchFields,
+
+    /// Object used to boost documents according to specific field values.
+    @_ElasticBoostsConverter()
+    @JsonKey(name: "boosts")
+    Map<String, List<_ElasticBoost>>? boosts,
 
     /// Object to define the fields which appear in search results and how their values are rendered.
     @_ElasticResultFieldsConverter()
@@ -644,6 +714,105 @@ abstract class ElasticQuery with _$ElasticQuery {
         ...?searchFields,
         _ElasticSearchField(name: field, weight: weight),
       ],
+    );
+  }
+
+  ElasticQuery _withBoost(String field, _ElasticBoost boost) {
+    _validateBoost(field, boost);
+
+    final nextBoosts = boosts != null
+        ? {...boosts!}
+        : <String, List<_ElasticBoost>>{};
+    final fieldBoosts = [...?(nextBoosts[field]), boost];
+    nextBoosts[field] = fieldBoosts;
+    return copyWith(boosts: nextBoosts);
+  }
+
+  /// Applies a value boost on a field.
+  ///
+  /// See [https://www.elastic.co/guide/en/app-search/current/boosts.html]
+  ElasticQuery boostValue(
+    String field, {
+    required Object value,
+    BoostOperation? operation,
+    num? factor,
+  }) {
+    return _withBoost(
+      field,
+      _ElasticBoost(
+        type: BoostType.value,
+        value: value,
+        operation: operation,
+        factor: factor?.toDouble(),
+      ),
+    );
+  }
+
+  /// Applies a functional boost on a number field.
+  ///
+  /// See [https://www.elastic.co/guide/en/app-search/current/boosts.html]
+  ElasticQuery boostFunctional(
+    String field, {
+    required BoostFunction function,
+    BoostOperation? operation,
+    num? factor,
+  }) {
+    return _withBoost(
+      field,
+      _ElasticBoost(
+        type: BoostType.functional,
+        function: function,
+        operation: operation,
+        factor: factor?.toDouble(),
+      ),
+    );
+  }
+
+  /// Applies a proximity boost on a number/geolocation field.
+  ///
+  /// See [https://www.elastic.co/guide/en/app-search/current/boosts.html]
+  ElasticQuery boostProximity(
+    String field, {
+    required Object center,
+    required BoostFunction function,
+    num? factor,
+  }) {
+    final normalizedCenter = center is LatLong
+        ? const _LatLongConverter().toJson(center)
+        : center;
+
+    return _withBoost(
+      field,
+      _ElasticBoost(
+        type: BoostType.proximity,
+        center: normalizedCenter,
+        function: function,
+        factor: factor?.toDouble(),
+      ),
+    );
+  }
+
+  /// Applies a recency boost on a date field.
+  ///
+  /// App Search uses `type: proximity` for recency boosts.
+  ///
+  /// See [https://www.elastic.co/guide/en/app-search/current/boosts.html]
+  ElasticQuery boostRecency(
+    String field, {
+    required Object center,
+    required BoostFunction function,
+    num? factor,
+  }) {
+    final normalizedCenter = center is DateTime ? center.toUTCString() : center;
+
+    return _withBoost(
+      field,
+      _ElasticBoost(
+        type: BoostType.proximity,
+        center: normalizedCenter,
+        function: function,
+        factor: factor?.toDouble(),
+      ),
     );
   }
 

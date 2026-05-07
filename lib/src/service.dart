@@ -188,6 +188,7 @@ class ElasticAppSearch {
     dynamic body,
     Map<String, dynamic>? queryParameters,
     CancelToken? cancelToken,
+    bool acceptEmptyResponse = false,
   }) async {
     _debugRequest(
       method: method,
@@ -207,7 +208,8 @@ class ElasticAppSearch {
 
       _debugResponse(response);
 
-      if (response.statusCode == 200 && response.data != null) {
+      if (response.statusCode == 200 &&
+          (response.data != null || acceptEmptyResponse)) {
         return parse(response.data);
       }
 
@@ -306,6 +308,69 @@ class ElasticAppSearch {
         '${context ?? "page"} size must be between 1 and $maxSize.',
       );
     }
+  }
+
+  void _validateClickthroughRequest(ElasticClickthroughRequest request) {
+    if (request.query.trim().isEmpty) {
+      throw ArgumentError.value(
+        request.query,
+        'query',
+        'Clickthrough query must be a non-empty string.',
+      );
+    }
+
+    if (request.documentId.trim().isEmpty) {
+      throw ArgumentError.value(
+        request.documentId,
+        'documentId',
+        'Clickthrough documentId must be a non-empty string.',
+      );
+    }
+
+    final requestId = request.requestId;
+    if (requestId != null && requestId.trim().isEmpty) {
+      throw ArgumentError.value(
+        requestId,
+        'requestId',
+        'Clickthrough requestId must be a non-empty string when provided.',
+      );
+    }
+
+    final tags = request.tags;
+    if (tags != null) {
+      _validateAnalyticsTags(tags);
+    }
+  }
+
+  void _validateAnalyticsQueriesRequest(
+    ElasticAnalyticsQueriesRequest request,
+  ) {
+    final page = request.page;
+    if (page != null) {
+      _validatePageRequest(page: page, context: 'analytics queries page');
+    }
+    _validateAnalyticsFilter(request.filters);
+  }
+
+  void _validateAnalyticsClicksRequest(ElasticAnalyticsClicksRequest request) {
+    final query = request.query;
+    if (query != null && query.trim().isEmpty) {
+      throw ArgumentError.value(
+        query,
+        'query',
+        'Analytics clicks query must be a non-empty string when provided.',
+      );
+    }
+
+    final page = request.page;
+    if (page != null) {
+      _validatePageRequest(page: page, context: 'analytics clicks page');
+    }
+    _validateAnalyticsFilter(request.filters);
+  }
+
+  void _validateAnalyticsCountsRequest(ElasticAnalyticsCountsRequest request) {
+    _validateAnalyticsFilter(request.filters);
   }
 
   /// Executes a request on Elastic App Search and returns a [ElasticResponse] object
@@ -477,6 +542,86 @@ class ElasticAppSearch {
       cancelToken: cancelToken,
       parse: (responseData) =>
           ElasticQuerySuggestionResponse.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  Future<void> postClickOperation(
+    String engine,
+    ElasticClickthroughRequest request, [
+    CancelToken? cancelToken,
+  ]) async {
+    _validateClickthroughRequest(request);
+
+    final url = _operationUrl(engine, Operation.click);
+    await _sendRequest<void>(
+      method: 'POST',
+      url: url,
+      operation: Operation.click,
+      engine: engine,
+      body: request.toJson(),
+      cancelToken: cancelToken,
+      acceptEmptyResponse: true,
+      parse: (_) {},
+    );
+  }
+
+  Future<ElasticAnalyticsQueriesResponse> postAnalyticsQueriesOperation(
+    String engine,
+    ElasticAnalyticsQueriesRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    _validateAnalyticsQueriesRequest(request);
+
+    final url = _operationUrl(engine, Operation.analyticsQueries);
+    return _sendRequest<ElasticAnalyticsQueriesResponse>(
+      method: 'POST',
+      url: url,
+      operation: Operation.analyticsQueries,
+      engine: engine,
+      body: request.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticAnalyticsQueriesResponse.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  Future<ElasticAnalyticsClicksResponse> postAnalyticsClicksOperation(
+    String engine,
+    ElasticAnalyticsClicksRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    _validateAnalyticsClicksRequest(request);
+
+    final url = _operationUrl(engine, Operation.analyticsClicks);
+    return _sendRequest<ElasticAnalyticsClicksResponse>(
+      method: 'POST',
+      url: url,
+      operation: Operation.analyticsClicks,
+      engine: engine,
+      body: request.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticAnalyticsClicksResponse.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  Future<ElasticAnalyticsCountsResponse> postAnalyticsCountsOperation(
+    String engine,
+    ElasticAnalyticsCountsRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    _validateAnalyticsCountsRequest(request);
+
+    final url = _operationUrl(engine, Operation.analyticsCounts);
+    return _sendRequest<ElasticAnalyticsCountsResponse>(
+      method: 'POST',
+      url: url,
+      operation: Operation.analyticsCounts,
+      engine: engine,
+      body: request.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticAnalyticsCountsResponse.fromJson(_asJsonObject(responseData)),
     );
   }
 

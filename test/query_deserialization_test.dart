@@ -25,6 +25,21 @@ void main() {
           'title': {'weight': 8},
           'description': {},
         },
+        'boosts': {
+          'world_heritage_site': [
+            {
+              'type': 'value',
+              'value': 'true',
+              'operation': 'multiply',
+              'factor': 10,
+            },
+          ],
+          'visitors': {
+            'type': 'functional',
+            'function': 'logarithmic',
+            'factor': 2,
+          },
+        },
         'result_fields': {
           'title': {
             'raw': {'size': 50},
@@ -72,6 +87,19 @@ void main() {
       final searchFields = serialized['search_fields'] as Map;
       expect(searchFields['title'], {'weight': 8});
       expect(searchFields['description'], {});
+
+      final boosts = serialized['boosts'] as Map;
+      expect(boosts['world_heritage_site'], {
+        'type': 'value',
+        'value': 'true',
+        'operation': 'multiply',
+        'factor': 10.0,
+      });
+      expect(boosts['visitors'], {
+        'type': 'functional',
+        'function': 'logarithmic',
+        'factor': 2.0,
+      });
 
       final resultFields = serialized['result_fields'] as Map;
       expect(resultFields['title'], {

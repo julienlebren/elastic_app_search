@@ -273,6 +273,188 @@ void main() {
       expect(response.meta.requestId, 'req-suggest-1');
     });
 
+    test('clickthrough success accepts empty response body', () async {
+      var clickCalls = 0;
+
+      handler = (request) async {
+        if (request.uri.path.endsWith('/click')) {
+          clickCalls++;
+          expect(request.method, 'POST');
+          final body = await _readJson(request);
+          expect(body['query'], 'everglade');
+          expect(body['document_id'], 'park_zion');
+          expect(body['request_id'], 'req-123');
+          expect(body['tags'], ['web', 'mobile']);
+
+          request.response.statusCode = 200;
+          await request.response.close();
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      await engine.clickthrough(
+        const ElasticClickthroughRequest(
+          query: 'everglade',
+          documentId: 'park_zion',
+          requestId: 'req-123',
+          tags: ['web', 'mobile'],
+        ),
+      );
+
+      expect(clickCalls, 1);
+    });
+
+    test('analytics queries success parses response payload', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/analytics/queries')) {
+          expect(request.method, 'POST');
+          final body = await _readJson(request);
+
+          final page = body['page'] as Map<String, dynamic>?;
+          expect(page?['size'], 5);
+          final filters = body['filters'] as Map<String, dynamic>?;
+          expect(filters?['clicks'], true);
+          expect(filters?['tag'], 'mobile');
+
+          await _writeJson(request, 200, {
+            'meta': {
+              'page': {'current': 1, 'size': 1},
+            },
+            'results': [
+              {'term': 'everglade', 'clicks': 12, 'queries': 40},
+            ],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final response = await engine.analyticsQueries(
+        request: ElasticAnalyticsQueriesRequest(
+          page: const ElasticPageRequest(size: 5),
+          filters: const ElasticAnalyticsFilter(clicks: true, tag: ['mobile']),
+        ),
+      );
+
+      expect(response.meta.page.current, 1);
+      expect(response.meta.page.size, 1);
+      expect(response.results, hasLength(1));
+      expect(response.results.first.term, 'everglade');
+      expect(response.results.first.clicks, 12);
+      expect(response.results.first.queries, 40);
+    });
+
+    test('analytics clicks success parses response payload', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/analytics/clicks')) {
+          expect(request.method, 'POST');
+          final body = await _readJson(request);
+
+          expect(body['query'], 'everglade');
+          final page = body['page'] as Map<String, dynamic>?;
+          expect(page?['size'], 4);
+          final filters = body['filters'] as Map<String, dynamic>?;
+          expect(filters?['tag'], ['web', 'mobile']);
+
+          await _writeJson(request, 200, {
+            'meta': {
+              'page': {'current': 1, 'size': 2},
+            },
+            'results': [
+              {'document_id': '5209', 'clicks': 3},
+              {'document_id': '6879', 'clicks': 2},
+            ],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final response = await engine.analyticsClicks(
+        request: ElasticAnalyticsClicksRequest(
+          query: 'everglade',
+          page: const ElasticPageRequest(size: 4),
+          filters: const ElasticAnalyticsFilter(tag: ['web', 'mobile']),
+        ),
+      );
+
+      expect(response.meta.page.current, 1);
+      expect(response.meta.page.size, 2);
+      expect(response.results, hasLength(2));
+      expect(response.results.first.documentId, '5209');
+      expect(response.results.first.clicks, 3);
+    });
+
+    test('analytics counts success parses response payload', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/analytics/counts')) {
+          expect(request.method, 'POST');
+          final body = await _readJson(request);
+
+          expect(body['interval'], 'hour');
+          final filters = body['filters'] as Map<String, dynamic>?;
+          expect(filters?['query'], 'rails');
+          expect(filters?['document_id'], '163');
+          expect(filters?['date'], {
+            'from': '2018-07-05T12:00:00+00:00',
+            'to': '2018-07-05T14:00:00+00:00',
+          });
+
+          await _writeJson(request, 200, {
+            'results': [
+              {
+                'clicks': 1,
+                'queries': 139,
+                'from': '2018-07-05T12:00:00+00:00',
+                'to': '2018-07-05T13:00:00+00:00',
+              },
+              {
+                'clicks': 0,
+                'queries': 59,
+                'from': '2018-07-05T13:00:00+00:00',
+                'to': '2018-07-05T14:00:00+00:00',
+              },
+            ],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final response = await engine.analyticsCounts(
+        request: const ElasticAnalyticsCountsRequest(
+          interval: ElasticAnalyticsInterval.hour,
+          filters: ElasticAnalyticsFilter(
+            query: 'rails',
+            documentId: '163',
+            date: ElasticAnalyticsDateFilter(
+              from: '2018-07-05T12:00:00+00:00',
+              to: '2018-07-05T14:00:00+00:00',
+            ),
+          ),
+        ),
+      );
+
+      expect(response.results, hasLength(2));
+      expect(response.results.first.clicks, 1);
+      expect(response.results.first.queries, 139);
+      expect(response.results.first.from, '2018-07-05T12:00:00+00:00');
+      expect(response.results.first.to, '2018-07-05T13:00:00+00:00');
+    });
+
     test('engines list success parses account-level payload', () async {
       handler = (request) async {
         if (request.uri.path == '/api/as/v1/engines') {
@@ -443,6 +625,61 @@ void main() {
                 'Invalid key for documents access',
               ),
         ),
+      );
+    });
+
+    test('clickthrough validates required fields and tags', () {
+      expect(
+        () => engine.clickthrough(
+          const ElasticClickthroughRequest(query: '', documentId: 'doc-1'),
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.clickthrough(
+          const ElasticClickthroughRequest(query: 'everglade', documentId: ''),
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.clickthrough(
+          ElasticClickthroughRequest(
+            query: 'everglade',
+            documentId: 'doc-1',
+            tags: List.generate(17, (i) => 'tag-$i'),
+          ),
+        ),
+        throwsRangeError,
+      );
+    });
+
+    test('analytics requests validate filters and pagination', () {
+      expect(
+        () => engine.analyticsQueries(
+          request: ElasticAnalyticsQueriesRequest(
+            page: const ElasticPageRequest(current: 0, size: 10),
+          ),
+        ),
+        throwsRangeError,
+      );
+
+      expect(
+        () => engine.analyticsClicks(
+          request: const ElasticAnalyticsClicksRequest(
+            query: '   ',
+            page: ElasticPageRequest(current: 1, size: 0),
+          ),
+        ),
+        throwsArgumentError,
+      );
+
+      expect(
+        () => engine.analyticsCounts(
+          request: const ElasticAnalyticsCountsRequest(
+            filters: ElasticAnalyticsFilter(tag: ['']),
+          ),
+        ),
+        throwsArgumentError,
       );
     });
 
@@ -689,6 +926,138 @@ void main() {
                 (e) => e.message,
                 'message',
                 'Suggestion endpoint failed',
+              ),
+        ),
+      );
+    });
+
+    test(
+      'clickthrough HTTP errors are mapped with status and message',
+      () async {
+        handler = (request) async {
+          if (request.uri.path.endsWith('/click')) {
+            await _writeJson(request, 400, {
+              'errors': ['Click payload invalid'],
+            });
+            return;
+          }
+
+          await _writeJson(request, 404, {
+            'errors': ['Unexpected path: ${request.uri.path}'],
+          });
+        };
+
+        await expectLater(
+          engine.clickthrough(
+            const ElasticClickthroughRequest(
+              query: 'everglade',
+              documentId: 'park_zion',
+            ),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having((e) => e.operation, 'operation', Operation.click)
+                .having((e) => e.engine, 'engine', 'parks')
+                .having((e) => e.statusCode, 'statusCode', 400)
+                .having((e) => e.message, 'message', 'Click payload invalid'),
+          ),
+        );
+      },
+    );
+
+    test('analytics queries HTTP errors are mapped', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/analytics/queries')) {
+          await _writeJson(request, 401, {
+            'errors': ['Unauthorized analytics access'],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      await expectLater(
+        engine.analyticsQueries(),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.analyticsQueries,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 401)
+              .having(
+                (e) => e.message,
+                'message',
+                'Unauthorized analytics access',
+              ),
+        ),
+      );
+    });
+
+    test('analytics clicks HTTP errors are mapped', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/analytics/clicks')) {
+          await _writeJson(request, 500, {
+            'errors': ['Analytics clicks failed'],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      await expectLater(
+        engine.analyticsClicks(),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.analyticsClicks,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 500)
+              .having((e) => e.message, 'message', 'Analytics clicks failed'),
+        ),
+      );
+    });
+
+    test('analytics counts HTTP errors are mapped', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/analytics/counts')) {
+          await _writeJson(request, 502, {
+            'errors': ['Analytics counts unavailable'],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      await expectLater(
+        engine.analyticsCounts(),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.analyticsCounts,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 502)
+              .having(
+                (e) => e.message,
+                'message',
+                'Analytics counts unavailable',
               ),
         ),
       );
