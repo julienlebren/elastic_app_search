@@ -68,6 +68,38 @@ class ElasticEngine {
     CancelToken? cancelToken,
   }) => service.postAnalyticsCountsOperation(name, request, cancelToken);
 
+  /// Creates or updates documents in bulk.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/documents`.
+  Future<List<ElasticDocumentIndexResult>> indexDocuments(
+    List<Map<String, dynamic>> documents, [
+    CancelToken? cancelToken,
+  ]) => service.indexDocuments(name, documents, cancelToken);
+
+  /// Applies partial updates to documents in bulk.
+  ///
+  /// Uses `PATCH /api/as/v1/engines/{engine}/documents`.
+  Future<List<ElasticDocumentIndexResult>> updateDocuments(
+    List<Map<String, dynamic>> documents, [
+    CancelToken? cancelToken,
+  ]) => service.updateDocuments(name, documents, cancelToken);
+
+  /// Retrieves documents by id.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/documents`.
+  Future<List<Map<String, dynamic>?>> getDocuments(
+    List<String> ids, [
+    CancelToken? cancelToken,
+  ]) => service.getDocuments(name, ids, cancelToken);
+
+  /// Deletes documents by id.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}/documents`.
+  Future<List<ElasticDocumentDeleteResult>> deleteDocuments(
+    List<String> ids, [
+    CancelToken? cancelToken,
+  ]) => service.deleteDocuments(name, ids, cancelToken);
+
   /// Lists engine documents with pagination.
   ///
   /// Uses `GET /api/as/v1/engines/{engine}/documents/list`.

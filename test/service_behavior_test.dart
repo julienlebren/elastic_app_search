@@ -8,7 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 typedef _RequestHandler = Future<void> Function(HttpRequest request);
 
-Future<Map<String, dynamic>> _readJson(HttpRequest request) async {
+Future<dynamic> _readJson(HttpRequest request) async {
   final body = await utf8.decoder.bind(request).join();
   if (body.trim().isEmpty) return <String, dynamic>{};
 
@@ -17,7 +17,8 @@ Future<Map<String, dynamic>> _readJson(HttpRequest request) async {
   if (decoded is Map) {
     return decoded.map((key, value) => MapEntry(key.toString(), value));
   }
-  throw FormatException('Request body must be a JSON object.');
+  if (decoded is List) return decoded;
+  throw FormatException('Request body must be a JSON object or JSON array.');
 }
 
 Future<void> _writeJson(
@@ -455,6 +456,139 @@ void main() {
       expect(response.results.first.to, '2018-07-05T13:00:00+00:00');
     });
 
+    test('index documents success parses response payload', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/documents') &&
+            request.method == 'POST') {
+          final body = await _readJson(request);
+          expect(body, isA<List<dynamic>>());
+          final documents = body as List<dynamic>;
+          expect(documents, hasLength(2));
+          expect((documents.first as Map<String, dynamic>)['id'], 'park_zion');
+
+          await _writeJson(request, 200, [
+            {'id': 'park_zion', 'errors': []},
+            {
+              'id': 'park_missing',
+              'errors': ['Missing required key "title"'],
+            },
+          ]);
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final results = await engine.indexDocuments([
+        {'id': 'park_zion', 'title': 'Zion'},
+        {'id': 'park_missing'},
+      ]);
+
+      expect(results, hasLength(2));
+      expect(results.first.id, 'park_zion');
+      expect(results.first.errors, isEmpty);
+      expect(results.first.accepted, isTrue);
+      expect(results.last.id, 'park_missing');
+      expect(results.last.errors, contains('Missing required key "title"'));
+      expect(results.last.accepted, isFalse);
+    });
+
+    test('partial update documents success parses response payload', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/documents') &&
+            request.method == 'PATCH') {
+          final body = await _readJson(request);
+          expect(body, isA<List<dynamic>>());
+          final documents = body as List<dynamic>;
+          expect((documents.first as Map<String, dynamic>)['id'], 'park_zion');
+          expect(
+            (documents.first as Map<String, dynamic>)['title'],
+            'Zion Canyon',
+          );
+
+          await _writeJson(request, 200, [
+            {'id': 'park_zion', 'errors': []},
+          ]);
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final results = await engine.updateDocuments([
+        {'id': 'park_zion', 'title': 'Zion Canyon'},
+      ]);
+
+      expect(results, hasLength(1));
+      expect(results.first.id, 'park_zion');
+      expect(results.first.accepted, isTrue);
+    });
+
+    test('get documents success parses response payload', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/documents') &&
+            request.method == 'GET') {
+          final body = await _readJson(request);
+          expect(body, ['park_zion', 'does_not_exist']);
+
+          await _writeJson(request, 200, [
+            {'id': 'park_zion', 'title': 'Zion'},
+            null,
+          ]);
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final results = await engine.getDocuments([
+        'park_zion',
+        'does_not_exist',
+      ]);
+
+      expect(results, hasLength(2));
+      expect(results.first?['id'], 'park_zion');
+      expect(results.first?['title'], 'Zion');
+      expect(results.last, isNull);
+    });
+
+    test('delete documents success parses response payload', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/documents') &&
+            request.method == 'DELETE') {
+          final body = await _readJson(request);
+          expect(body, ['park_zion', 'does_not_exist']);
+
+          await _writeJson(request, 200, [
+            {'id': 'park_zion', 'deleted': true},
+            {'id': 'does_not_exist', 'deleted': false},
+          ]);
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final results = await engine.deleteDocuments([
+        'park_zion',
+        'does_not_exist',
+      ]);
+
+      expect(results, hasLength(2));
+      expect(results.first.id, 'park_zion');
+      expect(results.first.deleted, isTrue);
+      expect(results.last.id, 'does_not_exist');
+      expect(results.last.deleted, isFalse);
+    });
+
     test('engines list success parses account-level payload', () async {
       handler = (request) async {
         if (request.uri.path == '/api/as/v1/engines') {
@@ -598,6 +732,29 @@ void main() {
       expect(() => engine.listDocuments(size: 101), throwsRangeError);
     });
 
+    test('documents APIs validate request bounds', () {
+      expect(() => engine.indexDocuments([]), throwsArgumentError);
+      expect(
+        () => engine.indexDocuments(
+          List.generate(101, (i) => {'id': 'doc-$i', 'title': 'Doc $i'}),
+        ),
+        throwsRangeError,
+      );
+      expect(
+        () => engine.updateDocuments([
+          {'title': 'Missing id'},
+        ]),
+        throwsArgumentError,
+      );
+      expect(() => engine.getDocuments([]), throwsArgumentError);
+      expect(() => engine.getDocuments(['']), throwsArgumentError);
+      expect(
+        () =>
+            engine.deleteDocuments(List<String>.generate(101, (i) => 'doc-$i')),
+        throwsRangeError,
+      );
+    });
+
     test('documents list errors are mapped', () async {
       handler = (request) async {
         if (request.uri.path.endsWith('/documents/list')) {
@@ -624,6 +781,134 @@ void main() {
                 'message',
                 'Invalid key for documents access',
               ),
+        ),
+      );
+    });
+
+    test('index documents HTTP errors are mapped', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/documents') &&
+            request.method == 'POST') {
+          await _writeJson(request, 422, {
+            'errors': ['Documents payload invalid'],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      await expectLater(
+        engine.indexDocuments([
+          {'id': 'park_zion', 'title': 'Zion'},
+        ]),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.documentsCreateOrUpdate,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 422)
+              .having((e) => e.message, 'message', 'Documents payload invalid'),
+        ),
+      );
+    });
+
+    test('partial update documents HTTP errors are mapped', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/documents') &&
+            request.method == 'PATCH') {
+          await _writeJson(request, 400, {
+            'errors': ['Partial update payload invalid'],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      await expectLater(
+        engine.updateDocuments([
+          {'id': 'park_zion', 'title': 'New title'},
+        ]),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.documentsPartialUpdate,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 400)
+              .having(
+                (e) => e.message,
+                'message',
+                'Partial update payload invalid',
+              ),
+        ),
+      );
+    });
+
+    test('get documents HTTP errors are mapped', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/documents') &&
+            request.method == 'GET') {
+          await _writeJson(request, 403, {
+            'errors': ['Get documents forbidden'],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      await expectLater(
+        engine.getDocuments(['park_zion']),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having((e) => e.operation, 'operation', Operation.documentsGet)
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 403)
+              .having((e) => e.message, 'message', 'Get documents forbidden'),
+        ),
+      );
+    });
+
+    test('delete documents HTTP errors are mapped', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/documents') &&
+            request.method == 'DELETE') {
+          await _writeJson(request, 500, {
+            'errors': ['Delete documents failed'],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      await expectLater(
+        engine.deleteDocuments(['park_zion']),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.documentsDelete,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 500)
+              .having((e) => e.message, 'message', 'Delete documents failed'),
         ),
       );
     });

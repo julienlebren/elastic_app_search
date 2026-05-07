@@ -258,6 +258,29 @@ class ElasticAppSearch {
     return objects;
   }
 
+  List<Map<String, dynamic>?> _asNullableJsonObjectList(dynamic data) {
+    if (data is! List) {
+      throw FormatException('Response body must be a JSON array.');
+    }
+
+    final objects = <Map<String, dynamic>?>[];
+    for (final item in data) {
+      if (item == null) {
+        objects.add(null);
+        continue;
+      }
+
+      final mapped = _asStringDynamicMap(item);
+      if (mapped == null) {
+        throw FormatException(
+          'Response array items must be JSON objects or null.',
+        );
+      }
+      objects.add(mapped);
+    }
+    return objects;
+  }
+
   Future<ElasticResponse> _postSearch(
     String engine,
     Map<String, dynamic> payload, [
@@ -371,6 +394,122 @@ class ElasticAppSearch {
 
   void _validateAnalyticsCountsRequest(ElasticAnalyticsCountsRequest request) {
     _validateAnalyticsFilter(request.filters);
+  }
+
+  void _validateDocumentIds(
+    List<String> ids, {
+    required String parameter,
+    required String context,
+  }) {
+    if (ids.isEmpty) {
+      throw ArgumentError.value(
+        ids,
+        parameter,
+        '$context requires at least one document id.',
+      );
+    }
+    if (ids.length > 100) {
+      throw RangeError.range(
+        ids.length,
+        1,
+        100,
+        '$parameter.length',
+        '$context supports between 1 and 100 document ids per request.',
+      );
+    }
+
+    for (var i = 0; i < ids.length; i++) {
+      final id = ids[i].trim();
+      if (id.isEmpty) {
+        throw ArgumentError.value(
+          ids[i],
+          '$parameter[$i]',
+          'Document id must be a non-empty string.',
+        );
+      }
+      if (id.length > 800) {
+        throw RangeError.range(
+          id.length,
+          1,
+          800,
+          '$parameter[$i].length',
+          'Document id must be 800 characters or less.',
+        );
+      }
+    }
+  }
+
+  void _validateDocumentBatch(
+    List<Map<String, dynamic>> documents, {
+    required bool requireId,
+    required String context,
+  }) {
+    if (documents.isEmpty) {
+      throw ArgumentError.value(
+        documents,
+        'documents',
+        '$context requires at least one document.',
+      );
+    }
+    if (documents.length > 100) {
+      throw RangeError.range(
+        documents.length,
+        1,
+        100,
+        'documents.length',
+        '$context supports between 1 and 100 documents per request.',
+      );
+    }
+
+    for (var i = 0; i < documents.length; i++) {
+      final document = documents[i];
+      if (document.isEmpty) {
+        throw ArgumentError.value(
+          document,
+          'documents[$i]',
+          'Document payload cannot be empty.',
+        );
+      }
+      if (document.length > 64) {
+        throw RangeError.range(
+          document.length,
+          1,
+          64,
+          'documents[$i].length',
+          'Each document can contain at most 64 key-value pairs.',
+        );
+      }
+
+      final hasId = document.containsKey('id');
+      if (!requireId && !hasId) continue;
+
+      final rawId = document['id'];
+      if (rawId == null) {
+        throw ArgumentError.value(
+          rawId,
+          'documents[$i].id',
+          'Document id is required and must be a non-empty string.',
+        );
+      }
+
+      final id = rawId.toString().trim();
+      if (id.isEmpty) {
+        throw ArgumentError.value(
+          rawId,
+          'documents[$i].id',
+          'Document id must be a non-empty string.',
+        );
+      }
+      if (id.length > 800) {
+        throw RangeError.range(
+          id.length,
+          1,
+          800,
+          'documents[$i].id.length',
+          'Document id must be 800 characters or less.',
+        );
+      }
+    }
   }
 
   /// Executes a request on Elastic App Search and returns a [ElasticResponse] object
@@ -622,6 +761,96 @@ class ElasticAppSearch {
       cancelToken: cancelToken,
       parse: (responseData) =>
           ElasticAnalyticsCountsResponse.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  Future<List<ElasticDocumentIndexResult>> indexDocuments(
+    String engine,
+    List<Map<String, dynamic>> documents, [
+    CancelToken? cancelToken,
+  ]) {
+    _validateDocumentBatch(
+      documents,
+      requireId: false,
+      context: 'Index documents',
+    );
+
+    final url = _operationUrl(engine, Operation.documentsCreateOrUpdate);
+    return _sendRequest<List<ElasticDocumentIndexResult>>(
+      method: 'POST',
+      url: url,
+      operation: Operation.documentsCreateOrUpdate,
+      engine: engine,
+      body: documents,
+      cancelToken: cancelToken,
+      parse: (responseData) => _asJsonObjectList(
+        responseData,
+      ).map(ElasticDocumentIndexResult.fromJson).toList(),
+    );
+  }
+
+  Future<List<ElasticDocumentIndexResult>> updateDocuments(
+    String engine,
+    List<Map<String, dynamic>> documents, [
+    CancelToken? cancelToken,
+  ]) {
+    _validateDocumentBatch(
+      documents,
+      requireId: true,
+      context: 'Partial update documents',
+    );
+
+    final url = _operationUrl(engine, Operation.documentsPartialUpdate);
+    return _sendRequest<List<ElasticDocumentIndexResult>>(
+      method: 'PATCH',
+      url: url,
+      operation: Operation.documentsPartialUpdate,
+      engine: engine,
+      body: documents,
+      cancelToken: cancelToken,
+      parse: (responseData) => _asJsonObjectList(
+        responseData,
+      ).map(ElasticDocumentIndexResult.fromJson).toList(),
+    );
+  }
+
+  Future<List<Map<String, dynamic>?>> getDocuments(
+    String engine,
+    List<String> ids, [
+    CancelToken? cancelToken,
+  ]) {
+    _validateDocumentIds(ids, parameter: 'ids', context: 'Get documents');
+
+    final url = _operationUrl(engine, Operation.documentsGet);
+    return _sendRequest<List<Map<String, dynamic>?>>(
+      method: 'GET',
+      url: url,
+      operation: Operation.documentsGet,
+      engine: engine,
+      body: ids,
+      cancelToken: cancelToken,
+      parse: _asNullableJsonObjectList,
+    );
+  }
+
+  Future<List<ElasticDocumentDeleteResult>> deleteDocuments(
+    String engine,
+    List<String> ids, [
+    CancelToken? cancelToken,
+  ]) {
+    _validateDocumentIds(ids, parameter: 'ids', context: 'Delete documents');
+
+    final url = _operationUrl(engine, Operation.documentsDelete);
+    return _sendRequest<List<ElasticDocumentDeleteResult>>(
+      method: 'DELETE',
+      url: url,
+      operation: Operation.documentsDelete,
+      engine: engine,
+      body: ids,
+      cancelToken: cancelToken,
+      parse: (responseData) => _asJsonObjectList(
+        responseData,
+      ).map(ElasticDocumentDeleteResult.fromJson).toList(),
     );
   }
 

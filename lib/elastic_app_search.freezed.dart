@@ -11968,6 +11968,544 @@ $ElasticSearchExplainMetaCopyWith<$Res> get meta {
 
 
 /// @nodoc
+mixin _$ElasticDocumentIndexResult {
+
+@JsonKey(fromJson: _toStringOrEmpty) String get id;@JsonKey(fromJson: _toStringList) List<String> get errors;
+/// Create a copy of ElasticDocumentIndexResult
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ElasticDocumentIndexResultCopyWith<ElasticDocumentIndexResult> get copyWith => _$ElasticDocumentIndexResultCopyWithImpl<ElasticDocumentIndexResult>(this as ElasticDocumentIndexResult, _$identity);
+
+  /// Serializes this ElasticDocumentIndexResult to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticDocumentIndexResult&&(identical(other.id, id) || other.id == id)&&const DeepCollectionEquality().equals(other.errors, errors));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,const DeepCollectionEquality().hash(errors));
+
+@override
+String toString() {
+  return 'ElasticDocumentIndexResult(id: $id, errors: $errors)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ElasticDocumentIndexResultCopyWith<$Res>  {
+  factory $ElasticDocumentIndexResultCopyWith(ElasticDocumentIndexResult value, $Res Function(ElasticDocumentIndexResult) _then) = _$ElasticDocumentIndexResultCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(fromJson: _toStringOrEmpty) String id,@JsonKey(fromJson: _toStringList) List<String> errors
+});
+
+
+
+
+}
+/// @nodoc
+class _$ElasticDocumentIndexResultCopyWithImpl<$Res>
+    implements $ElasticDocumentIndexResultCopyWith<$Res> {
+  _$ElasticDocumentIndexResultCopyWithImpl(this._self, this._then);
+
+  final ElasticDocumentIndexResult _self;
+  final $Res Function(ElasticDocumentIndexResult) _then;
+
+/// Create a copy of ElasticDocumentIndexResult
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? errors = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,errors: null == errors ? _self.errors : errors // ignore: cast_nullable_to_non_nullable
+as List<String>,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ElasticDocumentIndexResult].
+extension ElasticDocumentIndexResultPatterns on ElasticDocumentIndexResult {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ElasticDocumentIndexResult value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ElasticDocumentIndexResult() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ElasticDocumentIndexResult value)  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticDocumentIndexResult():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ElasticDocumentIndexResult value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticDocumentIndexResult() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _toStringOrEmpty)  String id, @JsonKey(fromJson: _toStringList)  List<String> errors)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ElasticDocumentIndexResult() when $default != null:
+return $default(_that.id,_that.errors);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _toStringOrEmpty)  String id, @JsonKey(fromJson: _toStringList)  List<String> errors)  $default,) {final _that = this;
+switch (_that) {
+case _ElasticDocumentIndexResult():
+return $default(_that.id,_that.errors);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: _toStringOrEmpty)  String id, @JsonKey(fromJson: _toStringList)  List<String> errors)?  $default,) {final _that = this;
+switch (_that) {
+case _ElasticDocumentIndexResult() when $default != null:
+return $default(_that.id,_that.errors);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _ElasticDocumentIndexResult extends ElasticDocumentIndexResult {
+   _ElasticDocumentIndexResult({@JsonKey(fromJson: _toStringOrEmpty) required this.id, @JsonKey(fromJson: _toStringList) final  List<String> errors = const <String>[]}): _errors = errors,super._();
+  factory _ElasticDocumentIndexResult.fromJson(Map<String, dynamic> json) => _$ElasticDocumentIndexResultFromJson(json);
+
+@override@JsonKey(fromJson: _toStringOrEmpty) final  String id;
+ final  List<String> _errors;
+@override@JsonKey(fromJson: _toStringList) List<String> get errors {
+  if (_errors is EqualUnmodifiableListView) return _errors;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_errors);
+}
+
+
+/// Create a copy of ElasticDocumentIndexResult
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ElasticDocumentIndexResultCopyWith<_ElasticDocumentIndexResult> get copyWith => __$ElasticDocumentIndexResultCopyWithImpl<_ElasticDocumentIndexResult>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ElasticDocumentIndexResultToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticDocumentIndexResult&&(identical(other.id, id) || other.id == id)&&const DeepCollectionEquality().equals(other._errors, _errors));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,const DeepCollectionEquality().hash(_errors));
+
+@override
+String toString() {
+  return 'ElasticDocumentIndexResult(id: $id, errors: $errors)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ElasticDocumentIndexResultCopyWith<$Res> implements $ElasticDocumentIndexResultCopyWith<$Res> {
+  factory _$ElasticDocumentIndexResultCopyWith(_ElasticDocumentIndexResult value, $Res Function(_ElasticDocumentIndexResult) _then) = __$ElasticDocumentIndexResultCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(fromJson: _toStringOrEmpty) String id,@JsonKey(fromJson: _toStringList) List<String> errors
+});
+
+
+
+
+}
+/// @nodoc
+class __$ElasticDocumentIndexResultCopyWithImpl<$Res>
+    implements _$ElasticDocumentIndexResultCopyWith<$Res> {
+  __$ElasticDocumentIndexResultCopyWithImpl(this._self, this._then);
+
+  final _ElasticDocumentIndexResult _self;
+  final $Res Function(_ElasticDocumentIndexResult) _then;
+
+/// Create a copy of ElasticDocumentIndexResult
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? errors = null,}) {
+  return _then(_ElasticDocumentIndexResult(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,errors: null == errors ? _self._errors : errors // ignore: cast_nullable_to_non_nullable
+as List<String>,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$ElasticDocumentDeleteResult {
+
+@JsonKey(fromJson: _toStringOrEmpty) String get id;@JsonKey(fromJson: _toBool) bool get deleted;
+/// Create a copy of ElasticDocumentDeleteResult
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ElasticDocumentDeleteResultCopyWith<ElasticDocumentDeleteResult> get copyWith => _$ElasticDocumentDeleteResultCopyWithImpl<ElasticDocumentDeleteResult>(this as ElasticDocumentDeleteResult, _$identity);
+
+  /// Serializes this ElasticDocumentDeleteResult to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticDocumentDeleteResult&&(identical(other.id, id) || other.id == id)&&(identical(other.deleted, deleted) || other.deleted == deleted));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,deleted);
+
+@override
+String toString() {
+  return 'ElasticDocumentDeleteResult(id: $id, deleted: $deleted)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ElasticDocumentDeleteResultCopyWith<$Res>  {
+  factory $ElasticDocumentDeleteResultCopyWith(ElasticDocumentDeleteResult value, $Res Function(ElasticDocumentDeleteResult) _then) = _$ElasticDocumentDeleteResultCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(fromJson: _toStringOrEmpty) String id,@JsonKey(fromJson: _toBool) bool deleted
+});
+
+
+
+
+}
+/// @nodoc
+class _$ElasticDocumentDeleteResultCopyWithImpl<$Res>
+    implements $ElasticDocumentDeleteResultCopyWith<$Res> {
+  _$ElasticDocumentDeleteResultCopyWithImpl(this._self, this._then);
+
+  final ElasticDocumentDeleteResult _self;
+  final $Res Function(ElasticDocumentDeleteResult) _then;
+
+/// Create a copy of ElasticDocumentDeleteResult
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? deleted = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ElasticDocumentDeleteResult].
+extension ElasticDocumentDeleteResultPatterns on ElasticDocumentDeleteResult {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ElasticDocumentDeleteResult value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ElasticDocumentDeleteResult() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ElasticDocumentDeleteResult value)  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticDocumentDeleteResult():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ElasticDocumentDeleteResult value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticDocumentDeleteResult() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _toStringOrEmpty)  String id, @JsonKey(fromJson: _toBool)  bool deleted)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ElasticDocumentDeleteResult() when $default != null:
+return $default(_that.id,_that.deleted);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: _toStringOrEmpty)  String id, @JsonKey(fromJson: _toBool)  bool deleted)  $default,) {final _that = this;
+switch (_that) {
+case _ElasticDocumentDeleteResult():
+return $default(_that.id,_that.deleted);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: _toStringOrEmpty)  String id, @JsonKey(fromJson: _toBool)  bool deleted)?  $default,) {final _that = this;
+switch (_that) {
+case _ElasticDocumentDeleteResult() when $default != null:
+return $default(_that.id,_that.deleted);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _ElasticDocumentDeleteResult extends ElasticDocumentDeleteResult {
+   _ElasticDocumentDeleteResult({@JsonKey(fromJson: _toStringOrEmpty) required this.id, @JsonKey(fromJson: _toBool) this.deleted = false}): super._();
+  factory _ElasticDocumentDeleteResult.fromJson(Map<String, dynamic> json) => _$ElasticDocumentDeleteResultFromJson(json);
+
+@override@JsonKey(fromJson: _toStringOrEmpty) final  String id;
+@override@JsonKey(fromJson: _toBool) final  bool deleted;
+
+/// Create a copy of ElasticDocumentDeleteResult
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ElasticDocumentDeleteResultCopyWith<_ElasticDocumentDeleteResult> get copyWith => __$ElasticDocumentDeleteResultCopyWithImpl<_ElasticDocumentDeleteResult>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ElasticDocumentDeleteResultToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticDocumentDeleteResult&&(identical(other.id, id) || other.id == id)&&(identical(other.deleted, deleted) || other.deleted == deleted));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,deleted);
+
+@override
+String toString() {
+  return 'ElasticDocumentDeleteResult(id: $id, deleted: $deleted)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ElasticDocumentDeleteResultCopyWith<$Res> implements $ElasticDocumentDeleteResultCopyWith<$Res> {
+  factory _$ElasticDocumentDeleteResultCopyWith(_ElasticDocumentDeleteResult value, $Res Function(_ElasticDocumentDeleteResult) _then) = __$ElasticDocumentDeleteResultCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(fromJson: _toStringOrEmpty) String id,@JsonKey(fromJson: _toBool) bool deleted
+});
+
+
+
+
+}
+/// @nodoc
+class __$ElasticDocumentDeleteResultCopyWithImpl<$Res>
+    implements _$ElasticDocumentDeleteResultCopyWith<$Res> {
+  __$ElasticDocumentDeleteResultCopyWithImpl(this._self, this._then);
+
+  final _ElasticDocumentDeleteResult _self;
+  final $Res Function(_ElasticDocumentDeleteResult) _then;
+
+/// Create a copy of ElasticDocumentDeleteResult
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? deleted = null,}) {
+  return _then(_ElasticDocumentDeleteResult(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,deleted: null == deleted ? _self.deleted : deleted // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
 mixin _$ElasticDocumentsListMeta {
 
  ElasticResponseMetaPage get page;

@@ -200,6 +200,54 @@ class _StringDynamicMapListConverter
   List<Map<String, dynamic>> toJson(List<Map<String, dynamic>> value) => value;
 }
 
+List<String> _toStringList(dynamic value) {
+  if (value is! List) return const <String>[];
+  return value.map((entry) => entry.toString()).toList();
+}
+
+String _toStringOrEmpty(dynamic value) => value?.toString() ?? '';
+
+bool _toBool(dynamic value) {
+  if (value is bool) return value;
+  if (value is num) return value != 0;
+  if (value is String) {
+    final normalized = value.trim().toLowerCase();
+    if (normalized == 'true') return true;
+    if (normalized == 'false') return false;
+  }
+  return false;
+}
+
+@freezed
+abstract class ElasticDocumentIndexResult with _$ElasticDocumentIndexResult {
+  const ElasticDocumentIndexResult._();
+
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  factory ElasticDocumentIndexResult({
+    @JsonKey(fromJson: _toStringOrEmpty) required String id,
+    @JsonKey(fromJson: _toStringList) @Default(<String>[]) List<String> errors,
+  }) = _ElasticDocumentIndexResult;
+
+  factory ElasticDocumentIndexResult.fromJson(Map<String, dynamic> json) =>
+      _$ElasticDocumentIndexResultFromJson(json);
+
+  bool get accepted => errors.isEmpty;
+}
+
+@freezed
+abstract class ElasticDocumentDeleteResult with _$ElasticDocumentDeleteResult {
+  const ElasticDocumentDeleteResult._();
+
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  factory ElasticDocumentDeleteResult({
+    @JsonKey(fromJson: _toStringOrEmpty) required String id,
+    @JsonKey(fromJson: _toBool) @Default(false) bool deleted,
+  }) = _ElasticDocumentDeleteResult;
+
+  factory ElasticDocumentDeleteResult.fromJson(Map<String, dynamic> json) =>
+      _$ElasticDocumentDeleteResultFromJson(json);
+}
+
 @freezed
 abstract class ElasticDocumentsListMeta with _$ElasticDocumentsListMeta {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)

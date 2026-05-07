@@ -212,6 +212,98 @@ void main() {
     );
 
     test(
+      'index documents failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.indexDocuments([
+            {'id': 'park_zion', 'title': 'Zion'},
+          ]),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.documentsCreateOrUpdate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/documents',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'partial update documents failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.updateDocuments([
+            {'id': 'park_zion', 'title': 'Zion Canyon'},
+          ]),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.documentsPartialUpdate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/documents',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'get documents failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.getDocuments(['park_zion']),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having((e) => e.operation, 'operation', Operation.documentsGet)
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/documents',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'delete documents failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.deleteDocuments(['park_zion']),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.documentsDelete,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/documents',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
       'documents list failures are wrapped in ElasticAppSearchException',
       () async {
         await expectLater(

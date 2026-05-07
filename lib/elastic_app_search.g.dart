@@ -747,6 +747,30 @@ Map<String, dynamic> _$ElasticSearchExplainResponseToJson(
   'query_body': const _StringDynamicMapConverter().toJson(instance.queryBody),
 };
 
+_ElasticDocumentIndexResult _$ElasticDocumentIndexResultFromJson(
+  Map<String, dynamic> json,
+) => _ElasticDocumentIndexResult(
+  id: _toStringOrEmpty(json['id']),
+  errors: json['errors'] == null
+      ? const <String>[]
+      : _toStringList(json['errors']),
+);
+
+Map<String, dynamic> _$ElasticDocumentIndexResultToJson(
+  _ElasticDocumentIndexResult instance,
+) => <String, dynamic>{'id': instance.id, 'errors': instance.errors};
+
+_ElasticDocumentDeleteResult _$ElasticDocumentDeleteResultFromJson(
+  Map<String, dynamic> json,
+) => _ElasticDocumentDeleteResult(
+  id: _toStringOrEmpty(json['id']),
+  deleted: json['deleted'] == null ? false : _toBool(json['deleted']),
+);
+
+Map<String, dynamic> _$ElasticDocumentDeleteResultToJson(
+  _ElasticDocumentDeleteResult instance,
+) => <String, dynamic>{'id': instance.id, 'deleted': instance.deleted};
+
 _ElasticDocumentsListMeta _$ElasticDocumentsListMetaFromJson(
   Map<String, dynamic> json,
 ) => _ElasticDocumentsListMeta(
