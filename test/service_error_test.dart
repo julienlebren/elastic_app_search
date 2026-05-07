@@ -75,5 +75,47 @@ void main() {
         );
       },
     );
+
+    test(
+      'documents list failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.listDocuments(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.documentsList,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/documents/list',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'engines list failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          service.listEngines(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having((e) => e.operation, 'operation', Operation.engines)
+                .having((e) => e.engine, 'engine', '<account>')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines',
+                ),
+          ),
+        );
+      },
+    );
   });
 }

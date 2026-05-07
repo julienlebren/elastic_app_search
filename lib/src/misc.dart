@@ -109,10 +109,33 @@ class _LatLongConverter implements JsonConverter<LatLong?, String?> {
 }
 
 enum Operation {
+  engines("engines"),
   search("search"),
-  querySuggestion("query_suggestion");
+  querySuggestion("query_suggestion"),
+  documentsList("documents/list");
 
   const Operation(this.value);
 
   final String value;
+}
+
+@freezed
+abstract class ElasticPageRequest with _$ElasticPageRequest {
+  const ElasticPageRequest._();
+
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  const factory ElasticPageRequest({
+    @Default(1) int current,
+    @Default(10) int size,
+  }) = _ElasticPageRequest;
+
+  factory ElasticPageRequest.fromJson(Map<String, dynamic> json) =>
+      _$ElasticPageRequestFromJson(json);
+
+  Map<String, dynamic> toBody() => {'page': toJson()};
+
+  Map<String, dynamic> toQueryParameters() => {
+    'page[current]': current,
+    'page[size]': size,
+  };
 }

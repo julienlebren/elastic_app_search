@@ -2254,6 +2254,272 @@ as double,
 
 
 /// @nodoc
+mixin _$ElasticPageRequest {
+
+ int get current; int get size;
+/// Create a copy of ElasticPageRequest
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ElasticPageRequestCopyWith<ElasticPageRequest> get copyWith => _$ElasticPageRequestCopyWithImpl<ElasticPageRequest>(this as ElasticPageRequest, _$identity);
+
+  /// Serializes this ElasticPageRequest to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticPageRequest&&(identical(other.current, current) || other.current == current)&&(identical(other.size, size) || other.size == size));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,current,size);
+
+@override
+String toString() {
+  return 'ElasticPageRequest(current: $current, size: $size)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ElasticPageRequestCopyWith<$Res>  {
+  factory $ElasticPageRequestCopyWith(ElasticPageRequest value, $Res Function(ElasticPageRequest) _then) = _$ElasticPageRequestCopyWithImpl;
+@useResult
+$Res call({
+ int current, int size
+});
+
+
+
+
+}
+/// @nodoc
+class _$ElasticPageRequestCopyWithImpl<$Res>
+    implements $ElasticPageRequestCopyWith<$Res> {
+  _$ElasticPageRequestCopyWithImpl(this._self, this._then);
+
+  final ElasticPageRequest _self;
+  final $Res Function(ElasticPageRequest) _then;
+
+/// Create a copy of ElasticPageRequest
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? current = null,Object? size = null,}) {
+  return _then(_self.copyWith(
+current: null == current ? _self.current : current // ignore: cast_nullable_to_non_nullable
+as int,size: null == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ElasticPageRequest].
+extension ElasticPageRequestPatterns on ElasticPageRequest {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ElasticPageRequest value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ElasticPageRequest() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ElasticPageRequest value)  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticPageRequest():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ElasticPageRequest value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticPageRequest() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int current,  int size)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ElasticPageRequest() when $default != null:
+return $default(_that.current,_that.size);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int current,  int size)  $default,) {final _that = this;
+switch (_that) {
+case _ElasticPageRequest():
+return $default(_that.current,_that.size);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int current,  int size)?  $default,) {final _that = this;
+switch (_that) {
+case _ElasticPageRequest() when $default != null:
+return $default(_that.current,_that.size);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _ElasticPageRequest extends ElasticPageRequest {
+  const _ElasticPageRequest({this.current = 1, this.size = 10}): super._();
+  factory _ElasticPageRequest.fromJson(Map<String, dynamic> json) => _$ElasticPageRequestFromJson(json);
+
+@override@JsonKey() final  int current;
+@override@JsonKey() final  int size;
+
+/// Create a copy of ElasticPageRequest
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ElasticPageRequestCopyWith<_ElasticPageRequest> get copyWith => __$ElasticPageRequestCopyWithImpl<_ElasticPageRequest>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ElasticPageRequestToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticPageRequest&&(identical(other.current, current) || other.current == current)&&(identical(other.size, size) || other.size == size));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,current,size);
+
+@override
+String toString() {
+  return 'ElasticPageRequest(current: $current, size: $size)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ElasticPageRequestCopyWith<$Res> implements $ElasticPageRequestCopyWith<$Res> {
+  factory _$ElasticPageRequestCopyWith(_ElasticPageRequest value, $Res Function(_ElasticPageRequest) _then) = __$ElasticPageRequestCopyWithImpl;
+@override @useResult
+$Res call({
+ int current, int size
+});
+
+
+
+
+}
+/// @nodoc
+class __$ElasticPageRequestCopyWithImpl<$Res>
+    implements _$ElasticPageRequestCopyWith<$Res> {
+  __$ElasticPageRequestCopyWithImpl(this._self, this._then);
+
+  final _ElasticPageRequest _self;
+  final $Res Function(_ElasticPageRequest) _then;
+
+/// Create a copy of ElasticPageRequest
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? current = null,Object? size = null,}) {
+  return _then(_ElasticPageRequest(
+current: null == current ? _self.current : current // ignore: cast_nullable_to_non_nullable
+as int,size: null == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
 mixin _$ElasticQuery {
 
 /// An object representing an Elastic engine
@@ -6796,6 +7062,1139 @@ $ElasticSuggestionResultCopyWith<$Res> get results {
   
   return $ElasticSuggestionResultCopyWith<$Res>(_self.results, (value) {
     return _then(_self.copyWith(results: value));
+  });
+}
+}
+
+
+/// @nodoc
+mixin _$ElasticDocumentsListMeta {
+
+ ElasticResponseMetaPage get page;
+/// Create a copy of ElasticDocumentsListMeta
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ElasticDocumentsListMetaCopyWith<ElasticDocumentsListMeta> get copyWith => _$ElasticDocumentsListMetaCopyWithImpl<ElasticDocumentsListMeta>(this as ElasticDocumentsListMeta, _$identity);
+
+  /// Serializes this ElasticDocumentsListMeta to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticDocumentsListMeta&&(identical(other.page, page) || other.page == page));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,page);
+
+@override
+String toString() {
+  return 'ElasticDocumentsListMeta(page: $page)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ElasticDocumentsListMetaCopyWith<$Res>  {
+  factory $ElasticDocumentsListMetaCopyWith(ElasticDocumentsListMeta value, $Res Function(ElasticDocumentsListMeta) _then) = _$ElasticDocumentsListMetaCopyWithImpl;
+@useResult
+$Res call({
+ ElasticResponseMetaPage page
+});
+
+
+$ElasticResponseMetaPageCopyWith<$Res> get page;
+
+}
+/// @nodoc
+class _$ElasticDocumentsListMetaCopyWithImpl<$Res>
+    implements $ElasticDocumentsListMetaCopyWith<$Res> {
+  _$ElasticDocumentsListMetaCopyWithImpl(this._self, this._then);
+
+  final ElasticDocumentsListMeta _self;
+  final $Res Function(ElasticDocumentsListMeta) _then;
+
+/// Create a copy of ElasticDocumentsListMeta
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? page = null,}) {
+  return _then(_self.copyWith(
+page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
+as ElasticResponseMetaPage,
+  ));
+}
+/// Create a copy of ElasticDocumentsListMeta
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ElasticResponseMetaPageCopyWith<$Res> get page {
+  
+  return $ElasticResponseMetaPageCopyWith<$Res>(_self.page, (value) {
+    return _then(_self.copyWith(page: value));
+  });
+}
+}
+
+
+/// Adds pattern-matching-related methods to [ElasticDocumentsListMeta].
+extension ElasticDocumentsListMetaPatterns on ElasticDocumentsListMeta {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ElasticDocumentsListMeta value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ElasticDocumentsListMeta() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ElasticDocumentsListMeta value)  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticDocumentsListMeta():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ElasticDocumentsListMeta value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticDocumentsListMeta() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ElasticResponseMetaPage page)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ElasticDocumentsListMeta() when $default != null:
+return $default(_that.page);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ElasticResponseMetaPage page)  $default,) {final _that = this;
+switch (_that) {
+case _ElasticDocumentsListMeta():
+return $default(_that.page);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ElasticResponseMetaPage page)?  $default,) {final _that = this;
+switch (_that) {
+case _ElasticDocumentsListMeta() when $default != null:
+return $default(_that.page);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _ElasticDocumentsListMeta implements ElasticDocumentsListMeta {
+   _ElasticDocumentsListMeta({required this.page});
+  factory _ElasticDocumentsListMeta.fromJson(Map<String, dynamic> json) => _$ElasticDocumentsListMetaFromJson(json);
+
+@override final  ElasticResponseMetaPage page;
+
+/// Create a copy of ElasticDocumentsListMeta
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ElasticDocumentsListMetaCopyWith<_ElasticDocumentsListMeta> get copyWith => __$ElasticDocumentsListMetaCopyWithImpl<_ElasticDocumentsListMeta>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ElasticDocumentsListMetaToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticDocumentsListMeta&&(identical(other.page, page) || other.page == page));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,page);
+
+@override
+String toString() {
+  return 'ElasticDocumentsListMeta(page: $page)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ElasticDocumentsListMetaCopyWith<$Res> implements $ElasticDocumentsListMetaCopyWith<$Res> {
+  factory _$ElasticDocumentsListMetaCopyWith(_ElasticDocumentsListMeta value, $Res Function(_ElasticDocumentsListMeta) _then) = __$ElasticDocumentsListMetaCopyWithImpl;
+@override @useResult
+$Res call({
+ ElasticResponseMetaPage page
+});
+
+
+@override $ElasticResponseMetaPageCopyWith<$Res> get page;
+
+}
+/// @nodoc
+class __$ElasticDocumentsListMetaCopyWithImpl<$Res>
+    implements _$ElasticDocumentsListMetaCopyWith<$Res> {
+  __$ElasticDocumentsListMetaCopyWithImpl(this._self, this._then);
+
+  final _ElasticDocumentsListMeta _self;
+  final $Res Function(_ElasticDocumentsListMeta) _then;
+
+/// Create a copy of ElasticDocumentsListMeta
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? page = null,}) {
+  return _then(_ElasticDocumentsListMeta(
+page: null == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
+as ElasticResponseMetaPage,
+  ));
+}
+
+/// Create a copy of ElasticDocumentsListMeta
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ElasticResponseMetaPageCopyWith<$Res> get page {
+  
+  return $ElasticResponseMetaPageCopyWith<$Res>(_self.page, (value) {
+    return _then(_self.copyWith(page: value));
+  });
+}
+}
+
+
+/// @nodoc
+mixin _$ElasticDocumentsListResponse {
+
+ ElasticDocumentsListMeta get meta;@_StringDynamicMapListConverter() List<Map<String, dynamic>> get results;
+/// Create a copy of ElasticDocumentsListResponse
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ElasticDocumentsListResponseCopyWith<ElasticDocumentsListResponse> get copyWith => _$ElasticDocumentsListResponseCopyWithImpl<ElasticDocumentsListResponse>(this as ElasticDocumentsListResponse, _$identity);
+
+  /// Serializes this ElasticDocumentsListResponse to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticDocumentsListResponse&&(identical(other.meta, meta) || other.meta == meta)&&const DeepCollectionEquality().equals(other.results, results));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,meta,const DeepCollectionEquality().hash(results));
+
+@override
+String toString() {
+  return 'ElasticDocumentsListResponse(meta: $meta, results: $results)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ElasticDocumentsListResponseCopyWith<$Res>  {
+  factory $ElasticDocumentsListResponseCopyWith(ElasticDocumentsListResponse value, $Res Function(ElasticDocumentsListResponse) _then) = _$ElasticDocumentsListResponseCopyWithImpl;
+@useResult
+$Res call({
+ ElasticDocumentsListMeta meta,@_StringDynamicMapListConverter() List<Map<String, dynamic>> results
+});
+
+
+$ElasticDocumentsListMetaCopyWith<$Res> get meta;
+
+}
+/// @nodoc
+class _$ElasticDocumentsListResponseCopyWithImpl<$Res>
+    implements $ElasticDocumentsListResponseCopyWith<$Res> {
+  _$ElasticDocumentsListResponseCopyWithImpl(this._self, this._then);
+
+  final ElasticDocumentsListResponse _self;
+  final $Res Function(ElasticDocumentsListResponse) _then;
+
+/// Create a copy of ElasticDocumentsListResponse
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? meta = null,Object? results = null,}) {
+  return _then(_self.copyWith(
+meta: null == meta ? _self.meta : meta // ignore: cast_nullable_to_non_nullable
+as ElasticDocumentsListMeta,results: null == results ? _self.results : results // ignore: cast_nullable_to_non_nullable
+as List<Map<String, dynamic>>,
+  ));
+}
+/// Create a copy of ElasticDocumentsListResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ElasticDocumentsListMetaCopyWith<$Res> get meta {
+  
+  return $ElasticDocumentsListMetaCopyWith<$Res>(_self.meta, (value) {
+    return _then(_self.copyWith(meta: value));
+  });
+}
+}
+
+
+/// Adds pattern-matching-related methods to [ElasticDocumentsListResponse].
+extension ElasticDocumentsListResponsePatterns on ElasticDocumentsListResponse {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ElasticDocumentsListResponse value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ElasticDocumentsListResponse() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ElasticDocumentsListResponse value)  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticDocumentsListResponse():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ElasticDocumentsListResponse value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticDocumentsListResponse() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ElasticDocumentsListMeta meta, @_StringDynamicMapListConverter()  List<Map<String, dynamic>> results)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ElasticDocumentsListResponse() when $default != null:
+return $default(_that.meta,_that.results);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ElasticDocumentsListMeta meta, @_StringDynamicMapListConverter()  List<Map<String, dynamic>> results)  $default,) {final _that = this;
+switch (_that) {
+case _ElasticDocumentsListResponse():
+return $default(_that.meta,_that.results);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ElasticDocumentsListMeta meta, @_StringDynamicMapListConverter()  List<Map<String, dynamic>> results)?  $default,) {final _that = this;
+switch (_that) {
+case _ElasticDocumentsListResponse() when $default != null:
+return $default(_that.meta,_that.results);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _ElasticDocumentsListResponse extends ElasticDocumentsListResponse {
+   _ElasticDocumentsListResponse({required this.meta, @_StringDynamicMapListConverter() required final  List<Map<String, dynamic>> results}): _results = results,super._();
+  factory _ElasticDocumentsListResponse.fromJson(Map<String, dynamic> json) => _$ElasticDocumentsListResponseFromJson(json);
+
+@override final  ElasticDocumentsListMeta meta;
+ final  List<Map<String, dynamic>> _results;
+@override@_StringDynamicMapListConverter() List<Map<String, dynamic>> get results {
+  if (_results is EqualUnmodifiableListView) return _results;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_results);
+}
+
+
+/// Create a copy of ElasticDocumentsListResponse
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ElasticDocumentsListResponseCopyWith<_ElasticDocumentsListResponse> get copyWith => __$ElasticDocumentsListResponseCopyWithImpl<_ElasticDocumentsListResponse>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ElasticDocumentsListResponseToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticDocumentsListResponse&&(identical(other.meta, meta) || other.meta == meta)&&const DeepCollectionEquality().equals(other._results, _results));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,meta,const DeepCollectionEquality().hash(_results));
+
+@override
+String toString() {
+  return 'ElasticDocumentsListResponse(meta: $meta, results: $results)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ElasticDocumentsListResponseCopyWith<$Res> implements $ElasticDocumentsListResponseCopyWith<$Res> {
+  factory _$ElasticDocumentsListResponseCopyWith(_ElasticDocumentsListResponse value, $Res Function(_ElasticDocumentsListResponse) _then) = __$ElasticDocumentsListResponseCopyWithImpl;
+@override @useResult
+$Res call({
+ ElasticDocumentsListMeta meta,@_StringDynamicMapListConverter() List<Map<String, dynamic>> results
+});
+
+
+@override $ElasticDocumentsListMetaCopyWith<$Res> get meta;
+
+}
+/// @nodoc
+class __$ElasticDocumentsListResponseCopyWithImpl<$Res>
+    implements _$ElasticDocumentsListResponseCopyWith<$Res> {
+  __$ElasticDocumentsListResponseCopyWithImpl(this._self, this._then);
+
+  final _ElasticDocumentsListResponse _self;
+  final $Res Function(_ElasticDocumentsListResponse) _then;
+
+/// Create a copy of ElasticDocumentsListResponse
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? meta = null,Object? results = null,}) {
+  return _then(_ElasticDocumentsListResponse(
+meta: null == meta ? _self.meta : meta // ignore: cast_nullable_to_non_nullable
+as ElasticDocumentsListMeta,results: null == results ? _self._results : results // ignore: cast_nullable_to_non_nullable
+as List<Map<String, dynamic>>,
+  ));
+}
+
+/// Create a copy of ElasticDocumentsListResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ElasticDocumentsListMetaCopyWith<$Res> get meta {
+  
+  return $ElasticDocumentsListMetaCopyWith<$Res>(_self.meta, (value) {
+    return _then(_self.copyWith(meta: value));
+  });
+}
+}
+
+
+/// @nodoc
+mixin _$ElasticEngineSummary {
+
+ String get name; String? get type; String? get language;@JsonKey(name: "document_count", fromJson: _toNullableInt) int? get documentCount;
+/// Create a copy of ElasticEngineSummary
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ElasticEngineSummaryCopyWith<ElasticEngineSummary> get copyWith => _$ElasticEngineSummaryCopyWithImpl<ElasticEngineSummary>(this as ElasticEngineSummary, _$identity);
+
+  /// Serializes this ElasticEngineSummary to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticEngineSummary&&(identical(other.name, name) || other.name == name)&&(identical(other.type, type) || other.type == type)&&(identical(other.language, language) || other.language == language)&&(identical(other.documentCount, documentCount) || other.documentCount == documentCount));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,name,type,language,documentCount);
+
+@override
+String toString() {
+  return 'ElasticEngineSummary(name: $name, type: $type, language: $language, documentCount: $documentCount)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ElasticEngineSummaryCopyWith<$Res>  {
+  factory $ElasticEngineSummaryCopyWith(ElasticEngineSummary value, $Res Function(ElasticEngineSummary) _then) = _$ElasticEngineSummaryCopyWithImpl;
+@useResult
+$Res call({
+ String name, String? type, String? language,@JsonKey(name: "document_count", fromJson: _toNullableInt) int? documentCount
+});
+
+
+
+
+}
+/// @nodoc
+class _$ElasticEngineSummaryCopyWithImpl<$Res>
+    implements $ElasticEngineSummaryCopyWith<$Res> {
+  _$ElasticEngineSummaryCopyWithImpl(this._self, this._then);
+
+  final ElasticEngineSummary _self;
+  final $Res Function(ElasticEngineSummary) _then;
+
+/// Create a copy of ElasticEngineSummary
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? type = freezed,Object? language = freezed,Object? documentCount = freezed,}) {
+  return _then(_self.copyWith(
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String?,language: freezed == language ? _self.language : language // ignore: cast_nullable_to_non_nullable
+as String?,documentCount: freezed == documentCount ? _self.documentCount : documentCount // ignore: cast_nullable_to_non_nullable
+as int?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ElasticEngineSummary].
+extension ElasticEngineSummaryPatterns on ElasticEngineSummary {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ElasticEngineSummary value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ElasticEngineSummary() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ElasticEngineSummary value)  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticEngineSummary():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ElasticEngineSummary value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticEngineSummary() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String? type,  String? language, @JsonKey(name: "document_count", fromJson: _toNullableInt)  int? documentCount)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ElasticEngineSummary() when $default != null:
+return $default(_that.name,_that.type,_that.language,_that.documentCount);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String? type,  String? language, @JsonKey(name: "document_count", fromJson: _toNullableInt)  int? documentCount)  $default,) {final _that = this;
+switch (_that) {
+case _ElasticEngineSummary():
+return $default(_that.name,_that.type,_that.language,_that.documentCount);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String? type,  String? language, @JsonKey(name: "document_count", fromJson: _toNullableInt)  int? documentCount)?  $default,) {final _that = this;
+switch (_that) {
+case _ElasticEngineSummary() when $default != null:
+return $default(_that.name,_that.type,_that.language,_that.documentCount);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _ElasticEngineSummary implements ElasticEngineSummary {
+   _ElasticEngineSummary({required this.name, this.type, this.language, @JsonKey(name: "document_count", fromJson: _toNullableInt) this.documentCount});
+  factory _ElasticEngineSummary.fromJson(Map<String, dynamic> json) => _$ElasticEngineSummaryFromJson(json);
+
+@override final  String name;
+@override final  String? type;
+@override final  String? language;
+@override@JsonKey(name: "document_count", fromJson: _toNullableInt) final  int? documentCount;
+
+/// Create a copy of ElasticEngineSummary
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ElasticEngineSummaryCopyWith<_ElasticEngineSummary> get copyWith => __$ElasticEngineSummaryCopyWithImpl<_ElasticEngineSummary>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ElasticEngineSummaryToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticEngineSummary&&(identical(other.name, name) || other.name == name)&&(identical(other.type, type) || other.type == type)&&(identical(other.language, language) || other.language == language)&&(identical(other.documentCount, documentCount) || other.documentCount == documentCount));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,name,type,language,documentCount);
+
+@override
+String toString() {
+  return 'ElasticEngineSummary(name: $name, type: $type, language: $language, documentCount: $documentCount)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ElasticEngineSummaryCopyWith<$Res> implements $ElasticEngineSummaryCopyWith<$Res> {
+  factory _$ElasticEngineSummaryCopyWith(_ElasticEngineSummary value, $Res Function(_ElasticEngineSummary) _then) = __$ElasticEngineSummaryCopyWithImpl;
+@override @useResult
+$Res call({
+ String name, String? type, String? language,@JsonKey(name: "document_count", fromJson: _toNullableInt) int? documentCount
+});
+
+
+
+
+}
+/// @nodoc
+class __$ElasticEngineSummaryCopyWithImpl<$Res>
+    implements _$ElasticEngineSummaryCopyWith<$Res> {
+  __$ElasticEngineSummaryCopyWithImpl(this._self, this._then);
+
+  final _ElasticEngineSummary _self;
+  final $Res Function(_ElasticEngineSummary) _then;
+
+/// Create a copy of ElasticEngineSummary
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? type = freezed,Object? language = freezed,Object? documentCount = freezed,}) {
+  return _then(_ElasticEngineSummary(
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as String?,language: freezed == language ? _self.language : language // ignore: cast_nullable_to_non_nullable
+as String?,documentCount: freezed == documentCount ? _self.documentCount : documentCount // ignore: cast_nullable_to_non_nullable
+as int?,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$ElasticEnginesResponse {
+
+ ElasticDocumentsListMeta get meta; List<ElasticEngineSummary> get results;
+/// Create a copy of ElasticEnginesResponse
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ElasticEnginesResponseCopyWith<ElasticEnginesResponse> get copyWith => _$ElasticEnginesResponseCopyWithImpl<ElasticEnginesResponse>(this as ElasticEnginesResponse, _$identity);
+
+  /// Serializes this ElasticEnginesResponse to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticEnginesResponse&&(identical(other.meta, meta) || other.meta == meta)&&const DeepCollectionEquality().equals(other.results, results));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,meta,const DeepCollectionEquality().hash(results));
+
+@override
+String toString() {
+  return 'ElasticEnginesResponse(meta: $meta, results: $results)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ElasticEnginesResponseCopyWith<$Res>  {
+  factory $ElasticEnginesResponseCopyWith(ElasticEnginesResponse value, $Res Function(ElasticEnginesResponse) _then) = _$ElasticEnginesResponseCopyWithImpl;
+@useResult
+$Res call({
+ ElasticDocumentsListMeta meta, List<ElasticEngineSummary> results
+});
+
+
+$ElasticDocumentsListMetaCopyWith<$Res> get meta;
+
+}
+/// @nodoc
+class _$ElasticEnginesResponseCopyWithImpl<$Res>
+    implements $ElasticEnginesResponseCopyWith<$Res> {
+  _$ElasticEnginesResponseCopyWithImpl(this._self, this._then);
+
+  final ElasticEnginesResponse _self;
+  final $Res Function(ElasticEnginesResponse) _then;
+
+/// Create a copy of ElasticEnginesResponse
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? meta = null,Object? results = null,}) {
+  return _then(_self.copyWith(
+meta: null == meta ? _self.meta : meta // ignore: cast_nullable_to_non_nullable
+as ElasticDocumentsListMeta,results: null == results ? _self.results : results // ignore: cast_nullable_to_non_nullable
+as List<ElasticEngineSummary>,
+  ));
+}
+/// Create a copy of ElasticEnginesResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ElasticDocumentsListMetaCopyWith<$Res> get meta {
+  
+  return $ElasticDocumentsListMetaCopyWith<$Res>(_self.meta, (value) {
+    return _then(_self.copyWith(meta: value));
+  });
+}
+}
+
+
+/// Adds pattern-matching-related methods to [ElasticEnginesResponse].
+extension ElasticEnginesResponsePatterns on ElasticEnginesResponse {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ElasticEnginesResponse value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ElasticEnginesResponse() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ElasticEnginesResponse value)  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticEnginesResponse():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ElasticEnginesResponse value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ElasticEnginesResponse() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ElasticDocumentsListMeta meta,  List<ElasticEngineSummary> results)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ElasticEnginesResponse() when $default != null:
+return $default(_that.meta,_that.results);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ElasticDocumentsListMeta meta,  List<ElasticEngineSummary> results)  $default,) {final _that = this;
+switch (_that) {
+case _ElasticEnginesResponse():
+return $default(_that.meta,_that.results);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ElasticDocumentsListMeta meta,  List<ElasticEngineSummary> results)?  $default,) {final _that = this;
+switch (_that) {
+case _ElasticEnginesResponse() when $default != null:
+return $default(_that.meta,_that.results);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
+class _ElasticEnginesResponse extends ElasticEnginesResponse {
+   _ElasticEnginesResponse({required this.meta, required final  List<ElasticEngineSummary> results}): _results = results,super._();
+  factory _ElasticEnginesResponse.fromJson(Map<String, dynamic> json) => _$ElasticEnginesResponseFromJson(json);
+
+@override final  ElasticDocumentsListMeta meta;
+ final  List<ElasticEngineSummary> _results;
+@override List<ElasticEngineSummary> get results {
+  if (_results is EqualUnmodifiableListView) return _results;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_results);
+}
+
+
+/// Create a copy of ElasticEnginesResponse
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ElasticEnginesResponseCopyWith<_ElasticEnginesResponse> get copyWith => __$ElasticEnginesResponseCopyWithImpl<_ElasticEnginesResponse>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ElasticEnginesResponseToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticEnginesResponse&&(identical(other.meta, meta) || other.meta == meta)&&const DeepCollectionEquality().equals(other._results, _results));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,meta,const DeepCollectionEquality().hash(_results));
+
+@override
+String toString() {
+  return 'ElasticEnginesResponse(meta: $meta, results: $results)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ElasticEnginesResponseCopyWith<$Res> implements $ElasticEnginesResponseCopyWith<$Res> {
+  factory _$ElasticEnginesResponseCopyWith(_ElasticEnginesResponse value, $Res Function(_ElasticEnginesResponse) _then) = __$ElasticEnginesResponseCopyWithImpl;
+@override @useResult
+$Res call({
+ ElasticDocumentsListMeta meta, List<ElasticEngineSummary> results
+});
+
+
+@override $ElasticDocumentsListMetaCopyWith<$Res> get meta;
+
+}
+/// @nodoc
+class __$ElasticEnginesResponseCopyWithImpl<$Res>
+    implements _$ElasticEnginesResponseCopyWith<$Res> {
+  __$ElasticEnginesResponseCopyWithImpl(this._self, this._then);
+
+  final _ElasticEnginesResponse _self;
+  final $Res Function(_ElasticEnginesResponse) _then;
+
+/// Create a copy of ElasticEnginesResponse
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? meta = null,Object? results = null,}) {
+  return _then(_ElasticEnginesResponse(
+meta: null == meta ? _self.meta : meta // ignore: cast_nullable_to_non_nullable
+as ElasticDocumentsListMeta,results: null == results ? _self._results : results // ignore: cast_nullable_to_non_nullable
+as List<ElasticEngineSummary>,
+  ));
+}
+
+/// Create a copy of ElasticEnginesResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ElasticDocumentsListMetaCopyWith<$Res> get meta {
+  
+  return $ElasticDocumentsListMetaCopyWith<$Res>(_self.meta, (value) {
+    return _then(_self.copyWith(meta: value));
   });
 }
 }

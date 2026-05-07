@@ -107,3 +107,85 @@ abstract class ElasticQuerySuggestionResponse
   factory ElasticQuerySuggestionResponse.fromJson(Map<String, dynamic> json) =>
       _$ElasticQuerySuggestionResponseFromJson(json);
 }
+
+class _StringDynamicMapListConverter
+    implements JsonConverter<List<Map<String, dynamic>>, List<dynamic>> {
+  const _StringDynamicMapListConverter();
+
+  @override
+  List<Map<String, dynamic>> fromJson(List<dynamic> value) {
+    final maps = <Map<String, dynamic>>[];
+    for (final item in value) {
+      final mapped = _asStringDynamicMap(item);
+      if (mapped != null) {
+        maps.add(mapped);
+      }
+    }
+    return maps;
+  }
+
+  @override
+  List<Map<String, dynamic>> toJson(List<Map<String, dynamic>> value) => value;
+}
+
+@freezed
+abstract class ElasticDocumentsListMeta with _$ElasticDocumentsListMeta {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  factory ElasticDocumentsListMeta({required ElasticResponseMetaPage page}) =
+      _ElasticDocumentsListMeta;
+
+  factory ElasticDocumentsListMeta.fromJson(Map<String, dynamic> json) =>
+      _$ElasticDocumentsListMetaFromJson(json);
+}
+
+@freezed
+abstract class ElasticDocumentsListResponse
+    with _$ElasticDocumentsListResponse {
+  const ElasticDocumentsListResponse._();
+
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  factory ElasticDocumentsListResponse({
+    required ElasticDocumentsListMeta meta,
+    @_StringDynamicMapListConverter()
+    required List<Map<String, dynamic>> results,
+  }) = _ElasticDocumentsListResponse;
+
+  factory ElasticDocumentsListResponse.fromJson(Map<String, dynamic> json) =>
+      _$ElasticDocumentsListResponseFromJson(json);
+}
+
+int? _toNullableInt(dynamic value) {
+  if (value is int) return value;
+  if (value is num) return value.toInt();
+  if (value is String) return int.tryParse(value);
+  return null;
+}
+
+@freezed
+abstract class ElasticEngineSummary with _$ElasticEngineSummary {
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  factory ElasticEngineSummary({
+    required String name,
+    String? type,
+    String? language,
+    @JsonKey(name: "document_count", fromJson: _toNullableInt)
+    int? documentCount,
+  }) = _ElasticEngineSummary;
+
+  factory ElasticEngineSummary.fromJson(Map<String, dynamic> json) =>
+      _$ElasticEngineSummaryFromJson(json);
+}
+
+@freezed
+abstract class ElasticEnginesResponse with _$ElasticEnginesResponse {
+  const ElasticEnginesResponse._();
+
+  @JsonSerializable(explicitToJson: true, includeIfNull: false)
+  factory ElasticEnginesResponse({
+    required ElasticDocumentsListMeta meta,
+    required List<ElasticEngineSummary> results,
+  }) = _ElasticEnginesResponse;
+
+  factory ElasticEnginesResponse.fromJson(Map<String, dynamic> json) =>
+      _$ElasticEnginesResponseFromJson(json);
+}

@@ -28,4 +28,17 @@ class ElasticEngine {
     ElasticSuggestionsQuery query, [
     CancelToken? cancelToken,
   ]) => service.postSuggestionOperation(query, cancelToken);
+
+  /// Lists engine documents with pagination.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/documents/list`.
+  Future<ElasticDocumentsListResponse> listDocuments({
+    int current = 1,
+    int size = 100,
+    CancelToken? cancelToken,
+  }) => service.listDocuments(
+    name,
+    page: ElasticPageRequest(current: current, size: size),
+    cancelToken: cancelToken,
+  );
 }

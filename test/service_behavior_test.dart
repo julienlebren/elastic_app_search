@@ -189,6 +189,156 @@ void main() {
       expect(response.results.documents?.first.suggestion, 'mountain');
     });
 
+    test('engines list success parses account-level payload', () async {
+      handler = (request) async {
+        if (request.uri.path == '/api/as/v1/engines') {
+          expect(request.method, 'GET');
+          final body = await _readJson(request);
+          final page = body['page'] as Map<String, dynamic>?;
+          expect(page?['current'], 1);
+          expect(page?['size'], 20);
+
+          await _writeJson(request, 200, {
+            'meta': {
+              'page': {
+                'current': 1,
+                'size': 20,
+                'total_pages': 1,
+                'total_results': 1,
+              },
+            },
+            'results': [
+              {
+                'name': 'parks',
+                'type': 'default',
+                'language': null,
+                'document_count': '12',
+              },
+            ],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final response = await service.listEngines(
+        page: const ElasticPageRequest(current: 1, size: 20),
+      );
+
+      expect(response.meta.page.current, 1);
+      expect(response.meta.page.size, 20);
+      expect(response.results, hasLength(1));
+      expect(response.results.first.name, 'parks');
+      expect(response.results.first.type, 'default');
+      expect(response.results.first.documentCount, 12);
+    });
+
+    test('engines list errors are mapped', () async {
+      handler = (request) async {
+        if (request.uri.path == '/api/as/v1/engines') {
+          await _writeJson(request, 401, {
+            'errors': ['Invalid admin key'],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      await expectLater(
+        service.listEngines(),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having((e) => e.operation, 'operation', Operation.engines)
+              .having((e) => e.engine, 'engine', '<account>')
+              .having((e) => e.statusCode, 'statusCode', 401)
+              .having((e) => e.message, 'message', 'Invalid admin key'),
+        ),
+      );
+    });
+
+    test('documents list success parses payload with pagination', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/documents/list')) {
+          expect(request.method, 'GET');
+          final body = await _readJson(request);
+          final page = body['page'] as Map<String, dynamic>?;
+          expect(page?['current'], 2);
+          expect(page?['size'], 15);
+
+          await _writeJson(request, 200, {
+            'meta': {
+              'page': {
+                'current': 2,
+                'size': 15,
+                'total_pages': 4,
+                'total_results': 59,
+              },
+            },
+            'results': [
+              {'id': 'park_yosemite', 'title': 'Yosemite'},
+            ],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final response = await engine.listDocuments(current: 2, size: 15);
+
+      expect(response.meta.page.current, 2);
+      expect(response.meta.page.size, 15);
+      expect(response.meta.page.totalPages, 4);
+      expect(response.meta.page.totalResults, 59);
+      expect(response.results, hasLength(1));
+      expect(response.results.first['id'], 'park_yosemite');
+      expect(response.results.first['title'], 'Yosemite');
+    });
+
+    test('documents list validates pagination bounds', () {
+      expect(() => engine.listDocuments(current: 0), throwsRangeError);
+      expect(() => engine.listDocuments(size: 0), throwsRangeError);
+      expect(() => engine.listDocuments(size: 101), throwsRangeError);
+    });
+
+    test('documents list errors are mapped', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/documents/list')) {
+          await _writeJson(request, 403, {
+            'errors': ['Invalid key for documents access'],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      await expectLater(
+        engine.listDocuments(),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having((e) => e.operation, 'operation', Operation.documentsList)
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 403)
+              .having(
+                (e) => e.message,
+                'message',
+                'Invalid key for documents access',
+              ),
+        ),
+      );
+    });
+
     test(
       'disjunctive facet executes an extra query and replaces facet bucket',
       () async {

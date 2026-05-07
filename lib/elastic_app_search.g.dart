@@ -137,6 +137,15 @@ Map<String, dynamic> _$ElasticFacetDataToJson(_ElasticFacetData instance) =>
       'count': instance.count,
     };
 
+_ElasticPageRequest _$ElasticPageRequestFromJson(Map<String, dynamic> json) =>
+    _ElasticPageRequest(
+      current: (json['current'] as num?)?.toInt() ?? 1,
+      size: (json['size'] as num?)?.toInt() ?? 10,
+    );
+
+Map<String, dynamic> _$ElasticPageRequestToJson(_ElasticPageRequest instance) =>
+    <String, dynamic>{'current': instance.current, 'size': instance.size};
+
 _ElasticQuery _$ElasticQueryFromJson(Map<String, dynamic> json) =>
     _ElasticQuery(
       query: json['query'] as String,
@@ -416,6 +425,66 @@ _ElasticQuerySuggestionResponse _$ElasticQuerySuggestionResponseFromJson(
 Map<String, dynamic> _$ElasticQuerySuggestionResponseToJson(
   _ElasticQuerySuggestionResponse instance,
 ) => <String, dynamic>{'results': instance.results.toJson()};
+
+_ElasticDocumentsListMeta _$ElasticDocumentsListMetaFromJson(
+  Map<String, dynamic> json,
+) => _ElasticDocumentsListMeta(
+  page: ElasticResponseMetaPage.fromJson(json['page'] as Map<String, dynamic>),
+);
+
+Map<String, dynamic> _$ElasticDocumentsListMetaToJson(
+  _ElasticDocumentsListMeta instance,
+) => <String, dynamic>{'page': instance.page.toJson()};
+
+_ElasticDocumentsListResponse _$ElasticDocumentsListResponseFromJson(
+  Map<String, dynamic> json,
+) => _ElasticDocumentsListResponse(
+  meta: ElasticDocumentsListMeta.fromJson(json['meta'] as Map<String, dynamic>),
+  results: const _StringDynamicMapListConverter().fromJson(
+    json['results'] as List,
+  ),
+);
+
+Map<String, dynamic> _$ElasticDocumentsListResponseToJson(
+  _ElasticDocumentsListResponse instance,
+) => <String, dynamic>{
+  'meta': instance.meta.toJson(),
+  'results': const _StringDynamicMapListConverter().toJson(instance.results),
+};
+
+_ElasticEngineSummary _$ElasticEngineSummaryFromJson(
+  Map<String, dynamic> json,
+) => _ElasticEngineSummary(
+  name: json['name'] as String,
+  type: json['type'] as String?,
+  language: json['language'] as String?,
+  documentCount: _toNullableInt(json['document_count']),
+);
+
+Map<String, dynamic> _$ElasticEngineSummaryToJson(
+  _ElasticEngineSummary instance,
+) => <String, dynamic>{
+  'name': instance.name,
+  'type': ?instance.type,
+  'language': ?instance.language,
+  'document_count': ?instance.documentCount,
+};
+
+_ElasticEnginesResponse _$ElasticEnginesResponseFromJson(
+  Map<String, dynamic> json,
+) => _ElasticEnginesResponse(
+  meta: ElasticDocumentsListMeta.fromJson(json['meta'] as Map<String, dynamic>),
+  results: (json['results'] as List<dynamic>)
+      .map((e) => ElasticEngineSummary.fromJson(e as Map<String, dynamic>))
+      .toList(),
+);
+
+Map<String, dynamic> _$ElasticEnginesResponseToJson(
+  _ElasticEnginesResponse instance,
+) => <String, dynamic>{
+  'meta': instance.meta.toJson(),
+  'results': instance.results.map((e) => e.toJson()).toList(),
+};
 
 _ElasticResultMeta _$ElasticResultMetaFromJson(Map<String, dynamic> json) =>
     _ElasticResultMeta(score: (json['score'] as num?)?.toDouble());

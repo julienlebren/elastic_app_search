@@ -71,6 +71,7 @@ class ElasticAppSearch {
   final bool _debug;
   final _dio = Dio();
 
+  static const String _accountScope = '<account>';
   static const String _errorMessage = "Unable to get response from API server";
 
   /// Returns an instance for the specified `endPoint` and `searchKey`.
@@ -80,8 +81,27 @@ class ElasticAppSearch {
     debug: _debug,
   );
 
-  String _apiUrl(String engine, Operation operation) =>
-      '$_endPoint/api/as/v1/engines/$engine/${operation.value}';
+  String get _normalizedEndPoint => _endPoint.endsWith('/')
+      ? _endPoint.substring(0, _endPoint.length - 1)
+      : _endPoint;
+
+  String _engineApiPath(String engine, String path) =>
+      '/api/as/v1/engines/$engine/$path';
+
+  String _accountApiPath(String path) => '/api/as/v1/$path';
+
+  String _engineApiUrl(String engine, String path) =>
+      '$_normalizedEndPoint${_engineApiPath(engine, path)}';
+
+  String _accountApiUrl(String path) =>
+      '$_normalizedEndPoint${_accountApiPath(path)}';
+
+  String _operationUrl(String engine, Operation operation) {
+    if (engine == _accountScope) {
+      return _accountApiUrl(operation.value);
+    }
+    return _engineApiUrl(engine, operation.value);
+  }
 
   Options get _requestOptions => Options(
     headers: {
@@ -107,6 +127,7 @@ class ElasticAppSearch {
   ElasticAppSearchException _buildException({
     required Operation operation,
     required String engine,
+    required String url,
     Response<dynamic>? response,
     Object? cause,
   }) {
@@ -116,9 +137,159 @@ class ElasticAppSearch {
       engine: engine,
       statusCode: response?.statusCode,
       responseData: response?.data,
-      url: _apiUrl(engine, operation),
+      url: url,
       cause: cause,
     );
+  }
+
+  Future<Response<dynamic>> _request({
+    required String method,
+    required String url,
+    dynamic body,
+    Map<String, dynamic>? queryParameters,
+    CancelToken? cancelToken,
+  }) {
+    return _dio.request<dynamic>(
+      url,
+      data: body,
+      queryParameters: queryParameters,
+      cancelToken: cancelToken,
+      options: _requestOptions.copyWith(method: method),
+    );
+  }
+
+  void _debugRequest({
+    required String method,
+    required String url,
+    dynamic body,
+    Map<String, dynamic>? queryParameters,
+  }) {
+    if (!_debug) return;
+    print("====== Query ======");
+    print(body ?? queryParameters ?? '<empty>');
+    print("====== Method ======");
+    print(method);
+    print("====== Url ======");
+    print(url);
+  }
+
+  void _debugResponse(Response<dynamic> response) {
+    if (!_debug) return;
+    print("====== Response ======");
+    print(response);
+  }
+
+  Future<T> _sendRequest<T>({
+    required String method,
+    required String url,
+    required Operation operation,
+    required String engine,
+    required T Function(dynamic responseData) parse,
+    dynamic body,
+    Map<String, dynamic>? queryParameters,
+    CancelToken? cancelToken,
+  }) async {
+    _debugRequest(
+      method: method,
+      url: url,
+      body: body,
+      queryParameters: queryParameters,
+    );
+
+    try {
+      final response = await _request(
+        method: method,
+        url: url,
+        body: body,
+        queryParameters: queryParameters,
+        cancelToken: cancelToken,
+      );
+
+      _debugResponse(response);
+
+      if (response.statusCode == 200 && response.data != null) {
+        return parse(response.data);
+      }
+
+      throw _buildException(
+        operation: operation,
+        engine: engine,
+        url: url,
+        response: response,
+      );
+    } on DioException catch (error, stackTrace) {
+      if (error.type == DioExceptionType.cancel) rethrow;
+      Error.throwWithStackTrace(
+        _buildException(
+          operation: operation,
+          engine: engine,
+          url: url,
+          response: error.response,
+          cause: error,
+        ),
+        stackTrace,
+      );
+    }
+  }
+
+  Map<String, dynamic> _asJsonObject(dynamic data) {
+    final mapped = _asStringDynamicMap(data);
+    if (mapped == null) {
+      throw FormatException('Response body must be a JSON object.');
+    }
+    return mapped;
+  }
+
+  Future<ElasticResponse> _postSearch(
+    String engine,
+    Map<String, dynamic> payload, [
+    CancelToken? cancelToken,
+  ]) {
+    final url = _operationUrl(engine, Operation.search);
+    return _sendRequest<ElasticResponse>(
+      method: 'POST',
+      url: url,
+      operation: Operation.search,
+      engine: engine,
+      body: payload,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticResponse.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  void _validatePageRequest({
+    required ElasticPageRequest page,
+    int? maxSize,
+    String? context,
+  }) {
+    if (page.current < 1) {
+      throw RangeError.range(
+        page.current,
+        1,
+        null,
+        'current',
+        '${context ?? "page"} current value must be greater than or equal to 1.',
+      );
+    }
+    if (page.size < 1) {
+      throw RangeError.range(
+        page.size,
+        1,
+        maxSize,
+        'size',
+        '${context ?? "page"} size must be greater than or equal to 1.',
+      );
+    }
+    if (maxSize != null && page.size > maxSize) {
+      throw RangeError.range(
+        page.size,
+        1,
+        maxSize,
+        'size',
+        '${context ?? "page"} size must be between 1 and $maxSize.',
+      );
+    }
   }
 
   /// Executes a request on Elastic App Search and returns a [ElasticResponse] object
@@ -140,111 +311,50 @@ class ElasticAppSearch {
     }
 
     final engine = queryEngine.name;
-    final url = _apiUrl(engine, Operation.search);
-    if (_debug) {
-      print("====== Query ======");
-      print(validatedQuery.toJson());
-      print("====== Url ======");
-      print(url);
-    }
+    ElasticResponse finalResponse = await _postSearch(
+      engine,
+      validatedQuery.toJson(),
+      cancelToken,
+    );
 
-    try {
-      final response = await _dio.post<Map>(
-        url,
-        options: _requestOptions,
-        data: validatedQuery.toJson(),
-        cancelToken: cancelToken,
-      );
+    final disjunctiveQueries = validatedQuery._disjunctives;
+    if (disjunctiveQueries == null) return finalResponse;
 
+    for (final disjunctiveQuery in disjunctiveQueries) {
       if (_debug) {
-        print("====== Response ======");
-        print(response);
+        print("====== Disjunctive query ======");
+        print(disjunctiveQuery.toJson());
       }
 
-      if (response.statusCode == 200 && response.data != null) {
-        ElasticResponse finalResponse = ElasticResponse.fromJson(
-          response.data as Map<String, dynamic>,
-        );
-
-        final disjunctiveQueries = validatedQuery._disjunctives;
-        if (disjunctiveQueries == null) return finalResponse;
-
-        for (final disjunctiveQuery in disjunctiveQueries) {
-          if (_debug) {
-            print("====== Disjunctive query ======");
-            print(disjunctiveQuery.toJson());
-          }
-
-          final disjunctiveResponse = await _dio.post<Map>(
-            url,
-            options: _requestOptions,
-            data: disjunctiveQuery.toJson(),
-            cancelToken: cancelToken,
-          );
-
-          if (_debug) {
-            print("====== Disjunctive Response ======");
-            print(disjunctiveResponse);
-          }
-
-          if (disjunctiveResponse.statusCode == 200 &&
-              disjunctiveResponse.data != null) {
-            final disjunctiveParsedResponse = ElasticResponse.fromJson(
-              disjunctiveResponse.data as Map<String, dynamic>,
-            );
-
-            Map<String, List<ElasticFacet>>? rawFacets =
-                finalResponse.rawFacets != null
-                ? {...finalResponse.rawFacets!}
-                : {};
-
-            for (String field in validatedQuery.disjunctiveFacets ?? []) {
-              final filters = validatedQuery.filters
-                  ?.where((e) => e.name == field)
-                  .toList();
-              if (filters != null && filters.isNotEmpty) {
-                final replacedFacets =
-                    disjunctiveParsedResponse.rawFacets?[field];
-                if (replacedFacets != null) {
-                  rawFacets[field] = replacedFacets;
-                }
-              }
-            }
-            finalResponse = finalResponse.copyWith(rawFacets: rawFacets);
-          } else {
-            throw _buildException(
-              operation: Operation.search,
-              engine: engine,
-              response: disjunctiveResponse,
-            );
-          }
-        }
-
-        if (_debug) {
-          print("====== Final Response ======");
-          print(finalResponse);
-        }
-
-        return finalResponse;
-      } else {
-        throw _buildException(
-          operation: Operation.search,
-          engine: engine,
-          response: response,
-        );
-      }
-    } on DioException catch (error, stackTrace) {
-      if (error.type == DioExceptionType.cancel) rethrow;
-      Error.throwWithStackTrace(
-        _buildException(
-          operation: Operation.search,
-          engine: engine,
-          response: error.response,
-          cause: error,
-        ),
-        stackTrace,
+      final disjunctiveParsedResponse = await _postSearch(
+        engine,
+        disjunctiveQuery.toJson(),
+        cancelToken,
       );
+
+      Map<String, List<ElasticFacet>>? rawFacets =
+          finalResponse.rawFacets != null ? {...finalResponse.rawFacets!} : {};
+
+      for (String field in validatedQuery.disjunctiveFacets ?? []) {
+        final filters = validatedQuery.filters
+            ?.where((e) => e.name == field)
+            .toList();
+        if (filters != null && filters.isNotEmpty) {
+          final replacedFacets = disjunctiveParsedResponse.rawFacets?[field];
+          if (replacedFacets != null) {
+            rawFacets[field] = replacedFacets;
+          }
+        }
+      }
+      finalResponse = finalResponse.copyWith(rawFacets: rawFacets);
     }
+
+    if (_debug) {
+      print("====== Final Response ======");
+      print(finalResponse);
+    }
+
+    return finalResponse;
   }
 
   Future<ElasticQuerySuggestionResponse> postSuggestionOperation(
@@ -261,52 +371,61 @@ class ElasticAppSearch {
     }
 
     final engine = queryEngine.name;
-    final url = _apiUrl(engine, Operation.querySuggestion);
-    if (_debug) {
-      print("====== Query ======");
-      print(validatedQuery.toJson());
-      print("====== Url ======");
-      print(url);
-    }
+    final url = _operationUrl(engine, Operation.querySuggestion);
 
-    try {
-      final response = await _dio.post<Map>(
-        url,
-        options: _requestOptions,
-        data: validatedQuery.toJson(),
-        cancelToken: cancelToken,
-      );
+    return _sendRequest<ElasticQuerySuggestionResponse>(
+      method: 'POST',
+      url: url,
+      operation: Operation.querySuggestion,
+      engine: engine,
+      body: validatedQuery.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticQuerySuggestionResponse.fromJson(_asJsonObject(responseData)),
+    );
+  }
 
-      if (_debug) {
-        print("====== Response ======");
-        print(response);
-      }
+  Future<ElasticDocumentsListResponse> listDocuments(
+    String engine, {
+    ElasticPageRequest page = const ElasticPageRequest(current: 1, size: 100),
+    CancelToken? cancelToken,
+  }) {
+    _validatePageRequest(
+      page: page,
+      maxSize: 100,
+      context: 'documents/list page',
+    );
 
-      if (response.statusCode == 200 && response.data != null) {
-        ElasticQuerySuggestionResponse finalResponse =
-            ElasticQuerySuggestionResponse.fromJson(
-              response.data as Map<String, dynamic>,
-            );
-        return finalResponse;
-      } else {
-        throw _buildException(
-          operation: Operation.querySuggestion,
-          engine: engine,
-          response: response,
-        );
-      }
-    } on DioException catch (error, stackTrace) {
-      if (error.type == DioExceptionType.cancel) rethrow;
-      Error.throwWithStackTrace(
-        _buildException(
-          operation: Operation.querySuggestion,
-          engine: engine,
-          response: error.response,
-          cause: error,
-        ),
-        stackTrace,
-      );
-    }
+    final url = _operationUrl(engine, Operation.documentsList);
+    return _sendRequest<ElasticDocumentsListResponse>(
+      method: 'GET',
+      url: url,
+      operation: Operation.documentsList,
+      engine: engine,
+      body: <String, dynamic>{'page': page.toJson()},
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticDocumentsListResponse.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  Future<ElasticEnginesResponse> listEngines({
+    ElasticPageRequest page = const ElasticPageRequest(current: 1, size: 25),
+    CancelToken? cancelToken,
+  }) {
+    _validatePageRequest(page: page, context: 'engines page');
+
+    final url = _operationUrl(_accountScope, Operation.engines);
+    return _sendRequest<ElasticEnginesResponse>(
+      method: 'GET',
+      url: url,
+      operation: Operation.engines,
+      engine: _accountScope,
+      body: page.toBody(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticEnginesResponse.fromJson(_asJsonObject(responseData)),
+    );
   }
 
   /// Creates and returns a new [ElasticObject] linked to this instance of service.
