@@ -268,6 +268,205 @@ void main() {
     );
 
     test(
+      'adaptive relevance list failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.listAdaptiveRelevanceSuggestions(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.adaptiveRelevanceSuggestionsList,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v0/engines/parks/adaptive_relevance/suggestions',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'adaptive relevance query failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.queryAdaptiveRelevanceSuggestions(
+            const ElasticAdaptiveRelevanceSuggestionsRequest(),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.adaptiveRelevanceSuggestionsQuery,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v0/engines/parks/adaptive_relevance/suggestions',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'adaptive relevance by-query list failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.listAdaptiveRelevanceSuggestionsByQuery('green tea'),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.adaptiveRelevanceSuggestionsByQueryList,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v0/engines/parks/adaptive_relevance/suggestions/green%20tea',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'adaptive relevance by-query query failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.queryAdaptiveRelevanceSuggestionsByQuery(
+            'green tea',
+            const ElasticAdaptiveRelevanceSuggestionsRequest(),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.adaptiveRelevanceSuggestionsByQueryQuery,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v0/engines/parks/adaptive_relevance/suggestions/green%20tea',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'adaptive relevance update failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.updateAdaptiveRelevanceSuggestions([
+            const ElasticAdaptiveRelevanceSuggestionUpdate(
+              query: 'green tea',
+              type: ElasticAdaptiveRelevanceSuggestionType.curation,
+              status: ElasticAdaptiveRelevanceSuggestionStatus.applied,
+            ),
+          ]),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.adaptiveRelevanceSuggestionsUpdate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v0/engines/parks/adaptive_relevance/suggestions',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'adaptive relevance settings failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.getAdaptiveRelevanceSettings(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.adaptiveRelevanceSettingsGet,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v0/engines/parks/adaptive_relevance/settings',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'adaptive relevance settings update failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.updateAdaptiveRelevanceSettings(
+            const ElasticAdaptiveRelevanceSettings(
+              curation: ElasticAdaptiveRelevanceCurationSettings(enabled: true),
+            ),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.adaptiveRelevanceSettingsUpdate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v0/engines/parks/adaptive_relevance/settings',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'adaptive relevance refresh failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.refreshAdaptiveRelevanceSuggestions(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.adaptiveRelevanceRefresh,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v0/engines/parks/adaptive_relevance/update_process',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
       'get schema failures are wrapped in ElasticAppSearchException',
       () async {
         await expectLater(

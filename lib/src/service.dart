@@ -109,12 +109,19 @@ class ElasticAppSearch {
       ? _endPoint.substring(0, _endPoint.length - 1)
       : _endPoint;
 
+  String _engineApiPathWithVersion(String version, String engine, String path) {
+    if (path.isEmpty) return '/api/as/$version/engines/$engine';
+    return '/api/as/$version/engines/$engine/$path';
+  }
+
   String _engineApiPath(String engine, String path) {
-    if (path.isEmpty) return '/api/as/v1/engines/$engine';
-    return '/api/as/v1/engines/$engine/$path';
+    return _engineApiPathWithVersion('v1', engine, path);
   }
 
   String _accountApiPath(String path) => '/api/as/v1/$path';
+
+  String _engineApiUrlWithVersion(String version, String engine, String path) =>
+      '$_normalizedEndPoint${_engineApiPathWithVersion(version, engine, path)}';
 
   String _engineApiUrl(String engine, String path) =>
       '$_normalizedEndPoint${_engineApiPath(engine, path)}';
@@ -484,6 +491,149 @@ class ElasticAppSearch {
     }
     return payload;
   }
+
+  void _validateAdaptiveRelevanceSuggestionsRequest(
+    ElasticAdaptiveRelevanceSuggestionsRequest request,
+  ) {
+    final filter = request.filters;
+    if (filter == null) return;
+
+    final statuses = filter.status;
+    if (statuses != null && statuses.isEmpty) {
+      throw ArgumentError.value(
+        statuses,
+        'filters.status',
+        'Adaptive relevance filters.status cannot be empty when provided.',
+      );
+    }
+  }
+
+  String _validateAdaptiveRelevanceQuery(
+    String query, {
+    String parameter = 'query',
+  }) {
+    final trimmed = query.trim();
+    if (trimmed.isEmpty) {
+      throw ArgumentError.value(
+        query,
+        parameter,
+        'Adaptive relevance query must be a non-empty string.',
+      );
+    }
+    return trimmed;
+  }
+
+  void _validateAdaptiveRelevanceSuggestionUpdates(
+    List<ElasticAdaptiveRelevanceSuggestionUpdate> suggestions,
+  ) {
+    if (suggestions.isEmpty) {
+      throw ArgumentError.value(
+        suggestions,
+        'suggestions',
+        'At least one adaptive relevance suggestion update is required.',
+      );
+    }
+
+    for (var i = 0; i < suggestions.length; i++) {
+      _validateAdaptiveRelevanceQuery(
+        suggestions[i].query,
+        parameter: 'suggestions[$i].query',
+      );
+    }
+  }
+
+  void _validateAdaptiveRelevanceSettingsUpdate(
+    ElasticAdaptiveRelevanceSettings settings,
+  ) {
+    final curation = settings.curation;
+    final hasField =
+        curation.enabled != null ||
+        curation.mode != null ||
+        curation.timeframe != null ||
+        curation.maxSize != null ||
+        curation.minClicks != null ||
+        curation.scheduleFrequency != null ||
+        curation.scheduleUnit != null;
+    if (!hasField) {
+      throw ArgumentError(
+        'Adaptive relevance settings update requires at least one curation field.',
+      );
+    }
+
+    final timeframe = curation.timeframe;
+    if (timeframe != null && timeframe < 1) {
+      throw RangeError.range(
+        timeframe,
+        1,
+        null,
+        'settings.curation.timeframe',
+        'Adaptive relevance curation timeframe must be greater than or equal to 1.',
+      );
+    }
+
+    final maxSize = curation.maxSize;
+    if (maxSize != null && maxSize < 1) {
+      throw RangeError.range(
+        maxSize,
+        1,
+        null,
+        'settings.curation.maxSize',
+        'Adaptive relevance curation maxSize must be greater than or equal to 1.',
+      );
+    }
+
+    final minClicks = curation.minClicks;
+    if (minClicks != null && minClicks < 1) {
+      throw RangeError.range(
+        minClicks,
+        1,
+        null,
+        'settings.curation.minClicks',
+        'Adaptive relevance curation minClicks must be greater than or equal to 1.',
+      );
+    }
+
+    final scheduleFrequency = curation.scheduleFrequency;
+    if (scheduleFrequency != null && scheduleFrequency < 1) {
+      throw RangeError.range(
+        scheduleFrequency,
+        1,
+        null,
+        'settings.curation.scheduleFrequency',
+        'Adaptive relevance curation scheduleFrequency must be greater than or equal to 1.',
+      );
+    }
+  }
+
+  String _adaptiveRelevanceSuggestionsUrl(String engine) =>
+      _engineApiUrlWithVersion(
+        'v0',
+        engine,
+        Operation.adaptiveRelevanceSuggestionsList.value,
+      );
+
+  String _adaptiveRelevanceSuggestionsByQueryUrl(String engine, String query) {
+    final encodedQuery = Uri.encodeComponent(query);
+    return _engineApiUrlWithVersion(
+      'v0',
+      engine,
+      '${Operation.adaptiveRelevanceSuggestionsList.value}/$encodedQuery',
+    );
+  }
+
+  String _adaptiveRelevanceSettingsUrl(String engine) =>
+      _engineApiUrlWithVersion(
+        'v0',
+        engine,
+        Operation.adaptiveRelevanceSettingsGet.value,
+      );
+
+  String _adaptiveRelevanceRefreshUrl(String engine) =>
+      _engineApiUrlWithVersion(
+        'v0',
+        engine,
+        Operation.adaptiveRelevanceRefresh.value,
+      );
 
   void _validateDocumentIds(
     List<String> ids, {
@@ -1283,6 +1433,263 @@ class ElasticAppSearch {
       cancelToken: cancelToken,
       parse: (responseData) =>
           ElasticApiLogsResponse.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Lists adaptive relevance suggestions for an engine.
+  ///
+  /// Uses `GET /api/as/v0/engines/{engine}/adaptive_relevance/suggestions`.
+  Future<ElasticAdaptiveRelevanceSuggestionsResponse>
+  listAdaptiveRelevanceSuggestions(
+    String engine, [
+    ElasticAdaptiveRelevanceSuggestionsRequest request =
+        const ElasticAdaptiveRelevanceSuggestionsRequest(),
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    _validateAdaptiveRelevanceSuggestionsRequest(request);
+
+    final payload = request.toJson();
+    final url = _adaptiveRelevanceSuggestionsUrl(engineName);
+    return _sendRequest<ElasticAdaptiveRelevanceSuggestionsResponse>(
+      method: 'GET',
+      url: url,
+      operation: Operation.adaptiveRelevanceSuggestionsList,
+      engine: engineName,
+      body: payload.isEmpty ? null : payload,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticAdaptiveRelevanceSuggestionsResponse.fromJson(
+            _asJsonObject(responseData),
+          ),
+    );
+  }
+
+  /// Lists adaptive relevance suggestions for an engine with custom filters.
+  ///
+  /// Uses `POST /api/as/v0/engines/{engine}/adaptive_relevance/suggestions`.
+  Future<ElasticAdaptiveRelevanceSuggestionsResponse>
+  queryAdaptiveRelevanceSuggestions(
+    String engine,
+    ElasticAdaptiveRelevanceSuggestionsRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    _validateAdaptiveRelevanceSuggestionsRequest(request);
+
+    final url = _adaptiveRelevanceSuggestionsUrl(engineName);
+    return _sendRequest<ElasticAdaptiveRelevanceSuggestionsResponse>(
+      method: 'POST',
+      url: url,
+      operation: Operation.adaptiveRelevanceSuggestionsQuery,
+      engine: engineName,
+      body: request.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticAdaptiveRelevanceSuggestionsResponse.fromJson(
+            _asJsonObject(responseData),
+          ),
+    );
+  }
+
+  /// Lists adaptive relevance suggestions for one query.
+  ///
+  /// Uses `GET /api/as/v0/engines/{engine}/adaptive_relevance/suggestions/{query}`.
+  Future<ElasticAdaptiveRelevanceSuggestionsResponse>
+  listAdaptiveRelevanceSuggestionsByQuery(
+    String engine,
+    String query, [
+    ElasticAdaptiveRelevanceSuggestionsRequest request =
+        const ElasticAdaptiveRelevanceSuggestionsRequest(),
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedQuery = _validateAdaptiveRelevanceQuery(query);
+    _validateAdaptiveRelevanceSuggestionsRequest(request);
+
+    final payload = request.toJson();
+    final url = _adaptiveRelevanceSuggestionsByQueryUrl(
+      engineName,
+      validatedQuery,
+    );
+    return _sendRequest<ElasticAdaptiveRelevanceSuggestionsResponse>(
+      method: 'GET',
+      url: url,
+      operation: Operation.adaptiveRelevanceSuggestionsByQueryList,
+      engine: engineName,
+      body: payload.isEmpty ? null : payload,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticAdaptiveRelevanceSuggestionsResponse.fromJson(
+            _asJsonObject(responseData),
+          ),
+    );
+  }
+
+  /// Lists adaptive relevance suggestions for one query with custom filters.
+  ///
+  /// Uses `POST /api/as/v0/engines/{engine}/adaptive_relevance/suggestions/{query}`.
+  Future<ElasticAdaptiveRelevanceSuggestionsResponse>
+  queryAdaptiveRelevanceSuggestionsByQuery(
+    String engine,
+    String query,
+    ElasticAdaptiveRelevanceSuggestionsRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedQuery = _validateAdaptiveRelevanceQuery(query);
+    _validateAdaptiveRelevanceSuggestionsRequest(request);
+
+    final url = _adaptiveRelevanceSuggestionsByQueryUrl(
+      engineName,
+      validatedQuery,
+    );
+    return _sendRequest<ElasticAdaptiveRelevanceSuggestionsResponse>(
+      method: 'POST',
+      url: url,
+      operation: Operation.adaptiveRelevanceSuggestionsByQueryQuery,
+      engine: engineName,
+      body: request.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticAdaptiveRelevanceSuggestionsResponse.fromJson(
+            _asJsonObject(responseData),
+          ),
+    );
+  }
+
+  /// Updates one or more adaptive relevance suggestions.
+  ///
+  /// Uses `PUT /api/as/v0/engines/{engine}/adaptive_relevance/suggestions`.
+  Future<ElasticAdaptiveRelevanceSuggestionsUpdateResponse>
+  updateAdaptiveRelevanceSuggestions(
+    String engine,
+    List<ElasticAdaptiveRelevanceSuggestionUpdate> suggestions, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    _validateAdaptiveRelevanceSuggestionUpdates(suggestions);
+
+    final url = _adaptiveRelevanceSuggestionsUrl(engineName);
+    final payload = {
+      'suggestions': suggestions
+          .map((suggestion) => suggestion.toJson())
+          .toList(),
+    };
+
+    return _sendRequest<ElasticAdaptiveRelevanceSuggestionsUpdateResponse>(
+      method: 'PUT',
+      url: url,
+      operation: Operation.adaptiveRelevanceSuggestionsUpdate,
+      engine: engineName,
+      body: payload,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticAdaptiveRelevanceSuggestionsUpdateResponse.fromJson(
+            _asJsonObject(responseData),
+          ),
+    );
+  }
+
+  /// Retrieves adaptive relevance settings for an engine.
+  ///
+  /// Uses `GET /api/as/v0/engines/{engine}/adaptive_relevance/settings`.
+  Future<ElasticAdaptiveRelevanceSettings> getAdaptiveRelevanceSettings(
+    String engine, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final url = _adaptiveRelevanceSettingsUrl(engineName);
+
+    return _sendRequest<ElasticAdaptiveRelevanceSettings>(
+      method: 'GET',
+      url: url,
+      operation: Operation.adaptiveRelevanceSettingsGet,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) => ElasticAdaptiveRelevanceSettings.fromJson(
+        _asJsonObject(responseData),
+      ),
+    );
+  }
+
+  /// Updates adaptive relevance settings for an engine.
+  ///
+  /// Uses `PUT /api/as/v0/engines/{engine}/adaptive_relevance/settings`.
+  Future<ElasticAdaptiveRelevanceSettings> updateAdaptiveRelevanceSettings(
+    String engine,
+    ElasticAdaptiveRelevanceSettings settings, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    _validateAdaptiveRelevanceSettingsUpdate(settings);
+
+    final url = _adaptiveRelevanceSettingsUrl(engineName);
+    return _sendRequest<ElasticAdaptiveRelevanceSettings>(
+      method: 'PUT',
+      url: url,
+      operation: Operation.adaptiveRelevanceSettingsUpdate,
+      engine: engineName,
+      body: settings.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) => ElasticAdaptiveRelevanceSettings.fromJson(
+        _asJsonObject(responseData),
+      ),
+    );
+  }
+
+  /// Triggers adaptive relevance process refresh.
+  ///
+  /// Uses `POST /api/as/v0/engines/{engine}/adaptive_relevance/update_process`.
+  Future<void> refreshAdaptiveRelevanceSuggestions(
+    String engine, {
+    ElasticAdaptiveRelevanceSuggestionType type =
+        ElasticAdaptiveRelevanceSuggestionType.curation,
+    CancelToken? cancelToken,
+  }) async {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final url = _adaptiveRelevanceRefreshUrl(engineName);
+    await _sendRequest<void>(
+      method: 'POST',
+      url: url,
+      operation: Operation.adaptiveRelevanceRefresh,
+      engine: engineName,
+      body: {'suggestion_type': type.apiValue},
+      cancelToken: cancelToken,
+      acceptEmptyResponse: true,
+      parse: (_) {},
     );
   }
 

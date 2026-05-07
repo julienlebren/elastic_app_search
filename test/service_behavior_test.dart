@@ -539,6 +539,248 @@ void main() {
       expect(postResponse.meta.filters?.method, ElasticApiLogsHttpMethod.post);
     });
 
+    test('adaptive relevance endpoints parse payloads', () async {
+      final filterRequest = ElasticAdaptiveRelevanceSuggestionsRequest(
+        filters: const ElasticAdaptiveRelevanceSuggestionsFilter(
+          type: ElasticAdaptiveRelevanceSuggestionType.curation,
+          status: [
+            ElasticAdaptiveRelevanceSuggestionStatus.pending,
+            ElasticAdaptiveRelevanceSuggestionStatus.automated,
+          ],
+        ),
+      );
+
+      final settingsUpdate = ElasticAdaptiveRelevanceSettings(
+        curation: const ElasticAdaptiveRelevanceCurationSettings(
+          enabled: true,
+          mode: ElasticAdaptiveRelevanceMode.manual,
+          timeframe: 10,
+          maxSize: 25,
+          minClicks: 5,
+          scheduleFrequency: 2,
+          scheduleUnit: ElasticAdaptiveRelevanceScheduleUnit.hour,
+        ),
+      );
+
+      handler = (request) async {
+        if (request.uri.path ==
+            '/api/as/v0/engines/parks/adaptive_relevance/suggestions') {
+          if (request.method == 'GET' || request.method == 'POST') {
+            final body = await _readJson(request);
+            final filters = body['filters'] as Map<String, dynamic>?;
+            expect(filters?['type'], 'curation');
+            expect(filters?['status'], ['pending', 'automated']);
+
+            await _writeJson(request, 200, {
+              'meta': {
+                'page': {
+                  'current': 1,
+                  'size': 25,
+                  'total_pages': 1,
+                  'total_results': 1,
+                },
+              },
+              'results': [
+                {
+                  'query': 'green tea',
+                  'type': 'curation',
+                  'status': 'pending',
+                  'operation': 'create',
+                  'promoted': ['doc-1'],
+                  'curation_id': 'cur-123',
+                  'override_manual_curation': false,
+                },
+              ],
+            });
+            return;
+          }
+
+          if (request.method == 'PUT') {
+            final body = await _readJson(request);
+            final suggestions = body['suggestions'] as List<dynamic>?;
+            expect(suggestions, hasLength(1));
+            expect(
+              (suggestions!.first as Map<String, dynamic>)['query'],
+              'green tea',
+            );
+            expect(
+              (suggestions.first as Map<String, dynamic>)['type'],
+              'curation',
+            );
+            expect(
+              (suggestions.first as Map<String, dynamic>)['status'],
+              'applied',
+            );
+
+            await _writeJson(request, 200, {
+              'results': [
+                {
+                  'query': 'green tea',
+                  'type': 'curation',
+                  'status': 'applied',
+                  'operation': 'update',
+                  'promoted': ['doc-1'],
+                  'errors': [],
+                },
+              ],
+            });
+            return;
+          }
+        }
+
+        if (request.uri.path ==
+            '/api/as/v0/engines/parks/adaptive_relevance/suggestions/chill%20query') {
+          if (request.method == 'GET' || request.method == 'POST') {
+            final body = await _readJson(request);
+            final filters = body['filters'] as Map<String, dynamic>?;
+            expect(filters?['type'], 'curation');
+            expect(filters?['status'], ['pending', 'automated']);
+
+            await _writeJson(request, 200, {
+              'meta': {
+                'page': {
+                  'current': 1,
+                  'size': 25,
+                  'total_pages': 1,
+                  'total_results': 1,
+                },
+              },
+              'results': [
+                {
+                  'query': 'chill query',
+                  'type': 'curation',
+                  'status': 'automated',
+                  'operation': 'update',
+                  'promoted': ['doc-2'],
+                },
+              ],
+            });
+            return;
+          }
+        }
+
+        if (request.uri.path ==
+            '/api/as/v0/engines/parks/adaptive_relevance/settings') {
+          if (request.method == 'GET') {
+            await _writeJson(request, 200, {
+              'curation': {
+                'enabled': true,
+                'mode': 'automatic',
+                'timeframe': 30,
+                'max_size': 10,
+                'min_clicks': 20,
+                'schedule_frequency': 1,
+                'schedule_unit': 'hour',
+              },
+            });
+            return;
+          }
+
+          if (request.method == 'PUT') {
+            final body = await _readJson(request);
+            final curation = body['curation'] as Map<String, dynamic>?;
+            expect(curation?['enabled'], true);
+            expect(curation?['mode'], 'manual');
+            expect(curation?['timeframe'], 10);
+            expect(curation?['max_size'], 25);
+            expect(curation?['min_clicks'], 5);
+            expect(curation?['schedule_frequency'], 2);
+            expect(curation?['schedule_unit'], 'hour');
+
+            await _writeJson(request, 200, {
+              'curation': {
+                'enabled': true,
+                'mode': 'manual',
+                'timeframe': 10,
+                'max_size': 25,
+                'min_clicks': 5,
+                'schedule_frequency': 2,
+                'schedule_unit': 'hour',
+              },
+            });
+            return;
+          }
+        }
+
+        if (request.uri.path ==
+                '/api/as/v0/engines/parks/adaptive_relevance/update_process' &&
+            request.method == 'POST') {
+          final body = await _readJson(request);
+          expect(body['suggestion_type'], 'curation');
+          request.response.statusCode = 200;
+          await request.response.close();
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final listed = await engine.listAdaptiveRelevanceSuggestions(
+        filterRequest,
+      );
+      final queried = await engine.queryAdaptiveRelevanceSuggestions(
+        filterRequest,
+      );
+      final byQueryListed = await engine
+          .listAdaptiveRelevanceSuggestionsByQuery(
+            'chill query',
+            filterRequest,
+          );
+      final byQueryQueried = await engine
+          .queryAdaptiveRelevanceSuggestionsByQuery(
+            'chill query',
+            filterRequest,
+          );
+      final updatedSuggestions = await engine
+          .updateAdaptiveRelevanceSuggestions([
+            const ElasticAdaptiveRelevanceSuggestionUpdate(
+              query: 'green tea',
+              type: ElasticAdaptiveRelevanceSuggestionType.curation,
+              status: ElasticAdaptiveRelevanceSuggestionStatus.applied,
+            ),
+          ]);
+      final currentSettings = await engine.getAdaptiveRelevanceSettings();
+      final updatedSettings = await engine.updateAdaptiveRelevanceSettings(
+        settingsUpdate,
+      );
+      await engine.refreshAdaptiveRelevanceSuggestions();
+
+      expect(listed.results, hasLength(1));
+      expect(
+        listed.results.first.type,
+        ElasticAdaptiveRelevanceSuggestionType.curation,
+      );
+      expect(
+        listed.results.first.status,
+        ElasticAdaptiveRelevanceSuggestionStatus.pending,
+      );
+      expect(queried.meta.page.totalResults, 1);
+      expect(byQueryListed.results.first.query, 'chill query');
+      expect(
+        byQueryQueried.results.first.status,
+        ElasticAdaptiveRelevanceSuggestionStatus.automated,
+      );
+      expect(updatedSuggestions.results, hasLength(1));
+      expect(
+        updatedSuggestions.results.first.status,
+        ElasticAdaptiveRelevanceSuggestionStatus.applied,
+      );
+      expect(
+        currentSettings.curation.mode,
+        ElasticAdaptiveRelevanceMode.automatic,
+      );
+      expect(
+        updatedSettings.curation.mode,
+        ElasticAdaptiveRelevanceMode.manual,
+      );
+      expect(
+        updatedSettings.curation.scheduleUnit,
+        ElasticAdaptiveRelevanceScheduleUnit.hour,
+      );
+    });
+
     test('schema get success parses response payload', () async {
       handler = (request) async {
         if (request.uri.path.endsWith('/schema') && request.method == 'GET') {
@@ -1930,6 +2172,60 @@ void main() {
       expect(() => service.patchLogSettings(), throwsArgumentError);
     });
 
+    test('adaptive relevance APIs validate payload', () {
+      expect(
+        () => engine.listAdaptiveRelevanceSuggestionsByQuery(' '),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.queryAdaptiveRelevanceSuggestionsByQuery(
+          '',
+          const ElasticAdaptiveRelevanceSuggestionsRequest(),
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.updateAdaptiveRelevanceSuggestions(const []),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.updateAdaptiveRelevanceSuggestions([
+          const ElasticAdaptiveRelevanceSuggestionUpdate(
+            query: '',
+            type: ElasticAdaptiveRelevanceSuggestionType.curation,
+            status: ElasticAdaptiveRelevanceSuggestionStatus.applied,
+          ),
+        ]),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.updateAdaptiveRelevanceSettings(
+          const ElasticAdaptiveRelevanceSettings(
+            curation: ElasticAdaptiveRelevanceCurationSettings(),
+          ),
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.updateAdaptiveRelevanceSettings(
+          const ElasticAdaptiveRelevanceSettings(
+            curation: ElasticAdaptiveRelevanceCurationSettings(timeframe: 0),
+          ),
+        ),
+        throwsRangeError,
+      );
+      expect(
+        () => engine.updateAdaptiveRelevanceSettings(
+          const ElasticAdaptiveRelevanceSettings(
+            curation: ElasticAdaptiveRelevanceCurationSettings(
+              scheduleFrequency: 0,
+            ),
+          ),
+        ),
+        throwsRangeError,
+      );
+    });
+
     test('documents list errors are mapped', () async {
       handler = (request) async {
         if (request.uri.path.endsWith('/documents/list')) {
@@ -2749,6 +3045,240 @@ void main() {
                 'message',
                 'Log settings service unavailable',
               ),
+        ),
+      );
+    });
+
+    test('adaptive relevance HTTP errors are mapped', () async {
+      handler = (request) async {
+        if (request.uri.path ==
+            '/api/as/v0/engines/parks/adaptive_relevance/suggestions') {
+          if (request.method == 'GET') {
+            await _writeJson(request, 500, {
+              'errors': ['Adaptive suggestions list failed'],
+            });
+            return;
+          }
+          if (request.method == 'POST') {
+            await _writeJson(request, 502, {
+              'errors': ['Adaptive suggestions query failed'],
+            });
+            return;
+          }
+          if (request.method == 'PUT') {
+            await _writeJson(request, 422, {
+              'errors': ['Adaptive suggestions update failed'],
+            });
+            return;
+          }
+        }
+
+        if (request.uri.path ==
+            '/api/as/v0/engines/parks/adaptive_relevance/suggestions/chill%20query') {
+          if (request.method == 'GET') {
+            await _writeJson(request, 401, {
+              'errors': ['Adaptive suggestions by-query list failed'],
+            });
+            return;
+          }
+          if (request.method == 'POST') {
+            await _writeJson(request, 403, {
+              'errors': ['Adaptive suggestions by-query query failed'],
+            });
+            return;
+          }
+        }
+
+        if (request.uri.path ==
+            '/api/as/v0/engines/parks/adaptive_relevance/settings') {
+          if (request.method == 'GET') {
+            await _writeJson(request, 429, {
+              'errors': ['Adaptive settings get failed'],
+            });
+            return;
+          }
+          if (request.method == 'PUT') {
+            await _writeJson(request, 400, {
+              'errors': ['Adaptive settings update failed'],
+            });
+            return;
+          }
+        }
+
+        if (request.uri.path ==
+                '/api/as/v0/engines/parks/adaptive_relevance/update_process' &&
+            request.method == 'POST') {
+          await _writeJson(request, 503, {
+            'errors': ['Adaptive refresh failed'],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      await expectLater(
+        engine.listAdaptiveRelevanceSuggestions(),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.adaptiveRelevanceSuggestionsList,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 500)
+              .having(
+                (e) => e.message,
+                'message',
+                'Adaptive suggestions list failed',
+              ),
+        ),
+      );
+
+      await expectLater(
+        engine.queryAdaptiveRelevanceSuggestions(
+          const ElasticAdaptiveRelevanceSuggestionsRequest(),
+        ),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.adaptiveRelevanceSuggestionsQuery,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 502)
+              .having(
+                (e) => e.message,
+                'message',
+                'Adaptive suggestions query failed',
+              ),
+        ),
+      );
+
+      await expectLater(
+        engine.listAdaptiveRelevanceSuggestionsByQuery('chill query'),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.adaptiveRelevanceSuggestionsByQueryList,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 401)
+              .having(
+                (e) => e.message,
+                'message',
+                'Adaptive suggestions by-query list failed',
+              ),
+        ),
+      );
+
+      await expectLater(
+        engine.queryAdaptiveRelevanceSuggestionsByQuery(
+          'chill query',
+          const ElasticAdaptiveRelevanceSuggestionsRequest(),
+        ),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.adaptiveRelevanceSuggestionsByQueryQuery,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 403)
+              .having(
+                (e) => e.message,
+                'message',
+                'Adaptive suggestions by-query query failed',
+              ),
+        ),
+      );
+
+      await expectLater(
+        engine.updateAdaptiveRelevanceSuggestions([
+          const ElasticAdaptiveRelevanceSuggestionUpdate(
+            query: 'green tea',
+            type: ElasticAdaptiveRelevanceSuggestionType.curation,
+            status: ElasticAdaptiveRelevanceSuggestionStatus.applied,
+          ),
+        ]),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.adaptiveRelevanceSuggestionsUpdate,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 422)
+              .having(
+                (e) => e.message,
+                'message',
+                'Adaptive suggestions update failed',
+              ),
+        ),
+      );
+
+      await expectLater(
+        engine.getAdaptiveRelevanceSettings(),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.adaptiveRelevanceSettingsGet,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 429)
+              .having(
+                (e) => e.message,
+                'message',
+                'Adaptive settings get failed',
+              ),
+        ),
+      );
+
+      await expectLater(
+        engine.updateAdaptiveRelevanceSettings(
+          const ElasticAdaptiveRelevanceSettings(
+            curation: ElasticAdaptiveRelevanceCurationSettings(enabled: true),
+          ),
+        ),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.adaptiveRelevanceSettingsUpdate,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 400)
+              .having(
+                (e) => e.message,
+                'message',
+                'Adaptive settings update failed',
+              ),
+        ),
+      );
+
+      await expectLater(
+        engine.refreshAdaptiveRelevanceSuggestions(),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.adaptiveRelevanceRefresh,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 503)
+              .having((e) => e.message, 'message', 'Adaptive refresh failed'),
         ),
       );
     });

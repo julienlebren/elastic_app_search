@@ -84,6 +84,97 @@ class ElasticEngine {
     CancelToken? cancelToken,
   ]) => service.queryApiLogs(name, request, cancelToken);
 
+  /// Lists adaptive relevance suggestions for this engine.
+  ///
+  /// Uses `GET /api/as/v0/engines/{engine}/adaptive_relevance/suggestions`.
+  Future<ElasticAdaptiveRelevanceSuggestionsResponse>
+  listAdaptiveRelevanceSuggestions([
+    ElasticAdaptiveRelevanceSuggestionsRequest request =
+        const ElasticAdaptiveRelevanceSuggestionsRequest(),
+    CancelToken? cancelToken,
+  ]) => service.listAdaptiveRelevanceSuggestions(name, request, cancelToken);
+
+  /// Lists adaptive relevance suggestions for this engine using filters.
+  ///
+  /// Uses `POST /api/as/v0/engines/{engine}/adaptive_relevance/suggestions`.
+  Future<ElasticAdaptiveRelevanceSuggestionsResponse>
+  queryAdaptiveRelevanceSuggestions(
+    ElasticAdaptiveRelevanceSuggestionsRequest request, [
+    CancelToken? cancelToken,
+  ]) => service.queryAdaptiveRelevanceSuggestions(name, request, cancelToken);
+
+  /// Lists adaptive relevance suggestions scoped to one query.
+  ///
+  /// Uses `GET /api/as/v0/engines/{engine}/adaptive_relevance/suggestions/{query}`.
+  Future<ElasticAdaptiveRelevanceSuggestionsResponse>
+  listAdaptiveRelevanceSuggestionsByQuery(
+    String query, [
+    ElasticAdaptiveRelevanceSuggestionsRequest request =
+        const ElasticAdaptiveRelevanceSuggestionsRequest(),
+    CancelToken? cancelToken,
+  ]) => service.listAdaptiveRelevanceSuggestionsByQuery(
+    name,
+    query,
+    request,
+    cancelToken,
+  );
+
+  /// Lists adaptive relevance suggestions for one query using filters.
+  ///
+  /// Uses `POST /api/as/v0/engines/{engine}/adaptive_relevance/suggestions/{query}`.
+  Future<ElasticAdaptiveRelevanceSuggestionsResponse>
+  queryAdaptiveRelevanceSuggestionsByQuery(
+    String query,
+    ElasticAdaptiveRelevanceSuggestionsRequest request, [
+    CancelToken? cancelToken,
+  ]) => service.queryAdaptiveRelevanceSuggestionsByQuery(
+    name,
+    query,
+    request,
+    cancelToken,
+  );
+
+  /// Updates one or more adaptive relevance suggestions.
+  ///
+  /// Uses `PUT /api/as/v0/engines/{engine}/adaptive_relevance/suggestions`.
+  Future<ElasticAdaptiveRelevanceSuggestionsUpdateResponse>
+  updateAdaptiveRelevanceSuggestions(
+    List<ElasticAdaptiveRelevanceSuggestionUpdate> suggestions, [
+    CancelToken? cancelToken,
+  ]) => service.updateAdaptiveRelevanceSuggestions(
+    name,
+    suggestions,
+    cancelToken,
+  );
+
+  /// Retrieves adaptive relevance settings for this engine.
+  ///
+  /// Uses `GET /api/as/v0/engines/{engine}/adaptive_relevance/settings`.
+  Future<ElasticAdaptiveRelevanceSettings> getAdaptiveRelevanceSettings([
+    CancelToken? cancelToken,
+  ]) => service.getAdaptiveRelevanceSettings(name, cancelToken);
+
+  /// Updates adaptive relevance settings for this engine.
+  ///
+  /// Uses `PUT /api/as/v0/engines/{engine}/adaptive_relevance/settings`.
+  Future<ElasticAdaptiveRelevanceSettings> updateAdaptiveRelevanceSettings(
+    ElasticAdaptiveRelevanceSettings settings, [
+    CancelToken? cancelToken,
+  ]) => service.updateAdaptiveRelevanceSettings(name, settings, cancelToken);
+
+  /// Refreshes adaptive relevance suggestions for this engine.
+  ///
+  /// Uses `POST /api/as/v0/engines/{engine}/adaptive_relevance/update_process`.
+  Future<void> refreshAdaptiveRelevanceSuggestions([
+    ElasticAdaptiveRelevanceSuggestionType type =
+        ElasticAdaptiveRelevanceSuggestionType.curation,
+    CancelToken? cancelToken,
+  ]) => service.refreshAdaptiveRelevanceSuggestions(
+    name,
+    type: type,
+    cancelToken: cancelToken,
+  );
+
   /// Creates or updates documents in bulk.
   ///
   /// Uses `POST /api/as/v1/engines/{engine}/documents`.
