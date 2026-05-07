@@ -98,15 +98,25 @@ abstract class _ElasticAnalytics with _$ElasticAnalytics {
       _$ElasticAnalyticsFromJson(json);
 }
 
+/// Payload for `POST /click`.
+///
+/// See https://www.elastic.co/guide/en/app-search/current/clickthrough.html
 @freezed
 abstract class ElasticClickthroughRequest with _$ElasticClickthroughRequest {
   const ElasticClickthroughRequest._();
 
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory ElasticClickthroughRequest({
+    /// Query term that produced the clicked result.
     required String query,
+
+    /// Identifier of the clicked document.
     @JsonKey(name: "document_id") required String documentId,
+
+    /// Optional request id from a previous search response.
     @JsonKey(name: "request_id") String? requestId,
+
+    /// Optional analytics tags.
     List<String>? tags,
   }) = _ElasticClickthroughRequest;
 
@@ -140,6 +150,7 @@ class _AnalyticsTagFilterConverter
   }
 }
 
+/// Date range filter used by analytics endpoints.
 @freezed
 abstract class ElasticAnalyticsDateFilter with _$ElasticAnalyticsDateFilter {
   const ElasticAnalyticsDateFilter._();
@@ -152,6 +163,7 @@ abstract class ElasticAnalyticsDateFilter with _$ElasticAnalyticsDateFilter {
       _$ElasticAnalyticsDateFilterFromJson(json);
 }
 
+/// Filter object shared by App Search analytics endpoints.
 @freezed
 abstract class ElasticAnalyticsFilter with _$ElasticAnalyticsFilter {
   const ElasticAnalyticsFilter._();
@@ -171,6 +183,7 @@ abstract class ElasticAnalyticsFilter with _$ElasticAnalyticsFilter {
       _$ElasticAnalyticsFilterFromJson(json);
 }
 
+/// Bucket interval used by analytics counts endpoint.
 enum ElasticAnalyticsInterval {
   @JsonValue("hour")
   hour,
@@ -178,6 +191,7 @@ enum ElasticAnalyticsInterval {
   day,
 }
 
+/// Request payload for analytics queries endpoint.
 @freezed
 abstract class ElasticAnalyticsQueriesRequest
     with _$ElasticAnalyticsQueriesRequest {
@@ -193,6 +207,7 @@ abstract class ElasticAnalyticsQueriesRequest
       _$ElasticAnalyticsQueriesRequestFromJson(json);
 }
 
+/// Request payload for analytics clicks endpoint.
 @freezed
 abstract class ElasticAnalyticsClicksRequest
     with _$ElasticAnalyticsClicksRequest {
@@ -209,6 +224,7 @@ abstract class ElasticAnalyticsClicksRequest
       _$ElasticAnalyticsClicksRequestFromJson(json);
 }
 
+/// Request payload for analytics counts endpoint.
 @freezed
 abstract class ElasticAnalyticsCountsRequest
     with _$ElasticAnalyticsCountsRequest {
@@ -224,6 +240,7 @@ abstract class ElasticAnalyticsCountsRequest
       _$ElasticAnalyticsCountsRequestFromJson(json);
 }
 
+/// Pagination metadata returned by analytics endpoints.
 @freezed
 abstract class ElasticAnalyticsMeta with _$ElasticAnalyticsMeta {
   const ElasticAnalyticsMeta._();
@@ -236,6 +253,7 @@ abstract class ElasticAnalyticsMeta with _$ElasticAnalyticsMeta {
       _$ElasticAnalyticsMetaFromJson(json);
 }
 
+/// Single row returned by analytics queries endpoint.
 @freezed
 abstract class ElasticAnalyticsQueryResult with _$ElasticAnalyticsQueryResult {
   const ElasticAnalyticsQueryResult._();
@@ -251,6 +269,7 @@ abstract class ElasticAnalyticsQueryResult with _$ElasticAnalyticsQueryResult {
       _$ElasticAnalyticsQueryResultFromJson(json);
 }
 
+/// Response payload returned by analytics queries endpoint.
 @freezed
 abstract class ElasticAnalyticsQueriesResponse
     with _$ElasticAnalyticsQueriesResponse {
@@ -266,6 +285,7 @@ abstract class ElasticAnalyticsQueriesResponse
       _$ElasticAnalyticsQueriesResponseFromJson(json);
 }
 
+/// Single row returned by analytics clicks endpoint.
 @freezed
 abstract class ElasticAnalyticsClickResult with _$ElasticAnalyticsClickResult {
   const ElasticAnalyticsClickResult._();
@@ -280,6 +300,7 @@ abstract class ElasticAnalyticsClickResult with _$ElasticAnalyticsClickResult {
       _$ElasticAnalyticsClickResultFromJson(json);
 }
 
+/// Response payload returned by analytics clicks endpoint.
 @freezed
 abstract class ElasticAnalyticsClicksResponse
     with _$ElasticAnalyticsClicksResponse {
@@ -295,6 +316,7 @@ abstract class ElasticAnalyticsClicksResponse
       _$ElasticAnalyticsClicksResponseFromJson(json);
 }
 
+/// Single bucket returned by analytics counts endpoint.
 @freezed
 abstract class ElasticAnalyticsCountResult with _$ElasticAnalyticsCountResult {
   const ElasticAnalyticsCountResult._();
@@ -311,6 +333,7 @@ abstract class ElasticAnalyticsCountResult with _$ElasticAnalyticsCountResult {
       _$ElasticAnalyticsCountResultFromJson(json);
 }
 
+/// Response payload returned by analytics counts endpoint.
 @freezed
 abstract class ElasticAnalyticsCountsResponse
     with _$ElasticAnalyticsCountsResponse {

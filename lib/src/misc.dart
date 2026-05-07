@@ -131,6 +131,9 @@ enum Operation {
   final String value;
 }
 
+/// Allowed App Search field types for schema updates.
+///
+/// See https://www.elastic.co/guide/en/app-search/current/schema.html
 enum ElasticSchemaFieldType { text, number, date, geolocation }
 
 extension _ElasticSchemaFieldTypeX on ElasticSchemaFieldType {
@@ -165,12 +168,18 @@ ElasticSchemaFieldType _schemaFieldTypeFromApiValue(String value) {
   );
 }
 
+/// A typed representation of an engine schema.
+///
+/// The schema is a map of field names to App Search field types.
 class ElasticSchema {
+  /// Creates a schema object from field/type pairs.
   ElasticSchema(Map<String, ElasticSchemaFieldType> fields)
     : fields = Map.unmodifiable(fields);
 
+  /// Immutable map of schema fields by name.
   final Map<String, ElasticSchemaFieldType> fields;
 
+  /// Parses a schema payload returned by App Search.
   factory ElasticSchema.fromJson(Map<String, dynamic> json) {
     final fields = <String, ElasticSchemaFieldType>{};
 
@@ -192,6 +201,7 @@ class ElasticSchema {
   Map<String, dynamic> toJson() =>
       fields.map((key, value) => MapEntry(key, value.apiValue));
 
+  /// Returns the type of a specific field, or `null` when absent.
   ElasticSchemaFieldType? operator [](String field) => fields[field];
 }
 

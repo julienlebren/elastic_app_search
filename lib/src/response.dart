@@ -218,29 +218,40 @@ bool _toBool(dynamic value) {
   return false;
 }
 
+/// Result entry returned by documents index/create/update operations.
 @freezed
 abstract class ElasticDocumentIndexResult with _$ElasticDocumentIndexResult {
   const ElasticDocumentIndexResult._();
 
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   factory ElasticDocumentIndexResult({
+    /// Document identifier returned by App Search for the batch entry.
     @JsonKey(fromJson: _toStringOrEmpty) required String id,
+
+    /// Per-document indexing errors returned by App Search.
+    ///
+    /// Empty means the document was accepted.
     @JsonKey(fromJson: _toStringList) @Default(<String>[]) List<String> errors,
   }) = _ElasticDocumentIndexResult;
 
   factory ElasticDocumentIndexResult.fromJson(Map<String, dynamic> json) =>
       _$ElasticDocumentIndexResultFromJson(json);
 
+  /// Whether the document was accepted for indexing.
   bool get accepted => errors.isEmpty;
 }
 
+/// Result entry returned by the documents delete endpoint.
 @freezed
 abstract class ElasticDocumentDeleteResult with _$ElasticDocumentDeleteResult {
   const ElasticDocumentDeleteResult._();
 
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   factory ElasticDocumentDeleteResult({
+    /// Document identifier.
     @JsonKey(fromJson: _toStringOrEmpty) required String id,
+
+    /// `true` when the document was deleted, otherwise `false`.
     @JsonKey(fromJson: _toBool) @Default(false) bool deleted,
   }) = _ElasticDocumentDeleteResult;
 

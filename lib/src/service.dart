@@ -779,6 +779,9 @@ class ElasticAppSearch {
     );
   }
 
+  /// Sends a clickthrough event.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/click`.
   Future<void> postClickOperation(
     String engine,
     ElasticClickthroughRequest request, [
@@ -799,6 +802,9 @@ class ElasticAppSearch {
     );
   }
 
+  /// Retrieves analytics queries for an engine.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/analytics/queries`.
   Future<ElasticAnalyticsQueriesResponse> postAnalyticsQueriesOperation(
     String engine,
     ElasticAnalyticsQueriesRequest request, [
@@ -819,6 +825,9 @@ class ElasticAppSearch {
     );
   }
 
+  /// Retrieves analytics clicks for an engine.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/analytics/clicks`.
   Future<ElasticAnalyticsClicksResponse> postAnalyticsClicksOperation(
     String engine,
     ElasticAnalyticsClicksRequest request, [
@@ -839,6 +848,9 @@ class ElasticAppSearch {
     );
   }
 
+  /// Retrieves analytics counts for an engine.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/analytics/counts`.
   Future<ElasticAnalyticsCountsResponse> postAnalyticsCountsOperation(
     String engine,
     ElasticAnalyticsCountsRequest request, [
@@ -859,6 +871,9 @@ class ElasticAppSearch {
     );
   }
 
+  /// Retrieves the schema for an engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/schema`.
   Future<ElasticSchema> getSchema(String engine, [CancelToken? cancelToken]) {
     final url = _operationUrl(engine, Operation.schemaGet);
     return _sendRequest<ElasticSchema>(
@@ -872,6 +887,9 @@ class ElasticAppSearch {
     );
   }
 
+  /// Updates schema fields for an engine.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/schema`.
   Future<ElasticSchema> updateSchema(
     String engine,
     Map<String, ElasticSchemaFieldType> fields, [
@@ -893,6 +911,9 @@ class ElasticAppSearch {
     );
   }
 
+  /// Creates or updates documents in bulk.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/documents`.
   Future<List<ElasticDocumentIndexResult>> indexDocuments(
     String engine,
     List<Map<String, dynamic>> documents, [
@@ -918,6 +939,9 @@ class ElasticAppSearch {
     );
   }
 
+  /// Applies partial updates to documents in bulk.
+  ///
+  /// Uses `PATCH /api/as/v1/engines/{engine}/documents`.
   Future<List<ElasticDocumentIndexResult>> updateDocuments(
     String engine,
     List<Map<String, dynamic>> documents, [
@@ -943,6 +967,9 @@ class ElasticAppSearch {
     );
   }
 
+  /// Retrieves documents by id.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/documents`.
   Future<List<Map<String, dynamic>?>> getDocuments(
     String engine,
     List<String> ids, [
@@ -962,6 +989,9 @@ class ElasticAppSearch {
     );
   }
 
+  /// Deletes documents by id.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}/documents`.
   Future<List<ElasticDocumentDeleteResult>> deleteDocuments(
     String engine,
     List<String> ids, [
