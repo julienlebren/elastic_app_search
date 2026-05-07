@@ -212,6 +212,62 @@ void main() {
     );
 
     test(
+      'api logs GET failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.getApiLogs(
+            const ElasticApiLogsRequest(
+              filters: ElasticApiLogsFilter(
+                date: ElasticApiLogsDateFilter(
+                  from: '2018-10-15T00:00:00+00:00',
+                  to: '2018-10-16T00:00:00+00:00',
+                ),
+              ),
+            ),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having((e) => e.operation, 'operation', Operation.apiLogsGet)
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/logs/api',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'api logs POST failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.queryApiLogs(
+            const ElasticApiLogsRequest(
+              filters: ElasticApiLogsFilter(
+                date: ElasticApiLogsDateFilter(
+                  from: '2018-10-15T00:00:00+00:00',
+                  to: '2018-10-16T00:00:00+00:00',
+                ),
+              ),
+            ),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having((e) => e.operation, 'operation', Operation.apiLogsQuery)
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/logs/api',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
       'get schema failures are wrapped in ElasticAppSearchException',
       () async {
         await expectLater(
@@ -894,6 +950,98 @@ void main() {
                   (e) => e.url,
                   'url',
                   'http://127.0.0.1:1/api/as/v1/credentials/my-private-key',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'get log settings failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          service.getLogSettings(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.logSettingsGet,
+                )
+                .having((e) => e.engine, 'engine', '<account>')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/log_settings',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'update log settings failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          service.updateLogSettings(apiEnabled: true),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.logSettingsPut,
+                )
+                .having((e) => e.engine, 'engine', '<account>')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/log_settings',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'patch log settings failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          service.patchLogSettings(analyticsEnabled: true),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.logSettingsPatch,
+                )
+                .having((e) => e.engine, 'engine', '<account>')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/log_settings',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'reset log settings failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          service.resetLogSettings(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.logSettingsDelete,
+                )
+                .having((e) => e.engine, 'engine', '<account>')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/log_settings',
                 ),
           ),
         );

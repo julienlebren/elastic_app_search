@@ -422,6 +422,69 @@ class ElasticAppSearch {
     _validateAnalyticsFilter(request.filters);
   }
 
+  void _validateApiLogsRequest(ElasticApiLogsRequest request) {
+    final date = request.filters.date;
+    if (date.from.trim().isEmpty) {
+      throw ArgumentError.value(
+        date.from,
+        'filters.date.from',
+        'API logs date.from must be a non-empty RFC3339 value.',
+      );
+    }
+    if (date.to.trim().isEmpty) {
+      throw ArgumentError.value(
+        date.to,
+        'filters.date.to',
+        'API logs date.to must be a non-empty RFC3339 value.',
+      );
+    }
+
+    final status = request.filters.status;
+    if (status != null && status < 100) {
+      throw RangeError.range(
+        status,
+        100,
+        null,
+        'filters.status',
+        'API logs status filter must be a valid HTTP status code.',
+      );
+    }
+
+    final query = request.query;
+    if (query != null && query.trim().isEmpty) {
+      throw ArgumentError.value(
+        query,
+        'query',
+        'API logs query must be a non-empty string when provided.',
+      );
+    }
+
+    final page = request.page;
+    if (page != null) {
+      _validatePageRequest(page: page, context: 'api logs page');
+    }
+  }
+
+  Map<String, dynamic> _validateLogSettingsPayload({
+    bool? apiEnabled,
+    bool? analyticsEnabled,
+    required String operation,
+  }) {
+    final payload = <String, dynamic>{};
+    if (apiEnabled != null) {
+      payload['api'] = {'enabled': apiEnabled};
+    }
+    if (analyticsEnabled != null) {
+      payload['analytics'] = {'enabled': analyticsEnabled};
+    }
+    if (payload.isEmpty) {
+      throw ArgumentError(
+        '$operation requires at least one setting (apiEnabled or analyticsEnabled).',
+      );
+    }
+    return payload;
+  }
+
   void _validateDocumentIds(
     List<String> ids, {
     required String parameter,
@@ -1164,6 +1227,62 @@ class ElasticAppSearch {
       cancelToken: cancelToken,
       parse: (responseData) =>
           ElasticAnalyticsCountsResponse.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Retrieves API logs for an engine with a `GET` request.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/logs/api`.
+  Future<ElasticApiLogsResponse> getApiLogs(
+    String engine,
+    ElasticApiLogsRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    _validateApiLogsRequest(request);
+
+    final url = _operationUrl(engineName, Operation.apiLogsGet);
+    return _sendRequest<ElasticApiLogsResponse>(
+      method: 'GET',
+      url: url,
+      operation: Operation.apiLogsGet,
+      engine: engineName,
+      body: request.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticApiLogsResponse.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Retrieves API logs for an engine with a `POST` request.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/logs/api`.
+  Future<ElasticApiLogsResponse> queryApiLogs(
+    String engine,
+    ElasticApiLogsRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    _validateApiLogsRequest(request);
+
+    final url = _operationUrl(engineName, Operation.apiLogsQuery);
+    return _sendRequest<ElasticApiLogsResponse>(
+      method: 'POST',
+      url: url,
+      operation: Operation.apiLogsQuery,
+      engine: engineName,
+      body: request.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticApiLogsResponse.fromJson(_asJsonObject(responseData)),
     );
   }
 
@@ -2028,6 +2147,92 @@ class ElasticAppSearch {
         final data = _asJsonObject(responseData);
         return _toBool(data['deleted']);
       },
+    );
+  }
+
+  /// Retrieves account-level log settings.
+  ///
+  /// Uses `GET /api/as/v1/log_settings`.
+  Future<ElasticLogSettings> getLogSettings([CancelToken? cancelToken]) {
+    final url = _operationUrl(_accountScope, Operation.logSettingsGet);
+    return _sendRequest<ElasticLogSettings>(
+      method: 'GET',
+      url: url,
+      operation: Operation.logSettingsGet,
+      engine: _accountScope,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticLogSettings.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Updates account-level log settings.
+  ///
+  /// Uses `PUT /api/as/v1/log_settings`.
+  Future<ElasticLogSettings> updateLogSettings({
+    bool? apiEnabled,
+    bool? analyticsEnabled,
+    CancelToken? cancelToken,
+  }) {
+    final payload = _validateLogSettingsPayload(
+      apiEnabled: apiEnabled,
+      analyticsEnabled: analyticsEnabled,
+      operation: 'updateLogSettings',
+    );
+
+    final url = _operationUrl(_accountScope, Operation.logSettingsPut);
+    return _sendRequest<ElasticLogSettings>(
+      method: 'PUT',
+      url: url,
+      operation: Operation.logSettingsPut,
+      engine: _accountScope,
+      body: payload,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticLogSettings.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Partially updates account-level log settings.
+  ///
+  /// Uses `PATCH /api/as/v1/log_settings`.
+  Future<ElasticLogSettings> patchLogSettings({
+    bool? apiEnabled,
+    bool? analyticsEnabled,
+    CancelToken? cancelToken,
+  }) {
+    final payload = _validateLogSettingsPayload(
+      apiEnabled: apiEnabled,
+      analyticsEnabled: analyticsEnabled,
+      operation: 'patchLogSettings',
+    );
+
+    final url = _operationUrl(_accountScope, Operation.logSettingsPatch);
+    return _sendRequest<ElasticLogSettings>(
+      method: 'PATCH',
+      url: url,
+      operation: Operation.logSettingsPatch,
+      engine: _accountScope,
+      body: payload,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticLogSettings.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Resets log settings to default values.
+  ///
+  /// Uses `DELETE /api/as/v1/log_settings`.
+  Future<ElasticLogSettings> resetLogSettings([CancelToken? cancelToken]) {
+    final url = _operationUrl(_accountScope, Operation.logSettingsDelete);
+    return _sendRequest<ElasticLogSettings>(
+      method: 'DELETE',
+      url: url,
+      operation: Operation.logSettingsDelete,
+      engine: _accountScope,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticLogSettings.fromJson(_asJsonObject(responseData)),
     );
   }
 

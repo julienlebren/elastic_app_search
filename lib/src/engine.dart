@@ -68,6 +68,22 @@ class ElasticEngine {
     CancelToken? cancelToken,
   }) => service.postAnalyticsCountsOperation(name, request, cancelToken);
 
+  /// Retrieves API logs for this engine with a `GET` request.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/logs/api`.
+  Future<ElasticApiLogsResponse> getApiLogs(
+    ElasticApiLogsRequest request, [
+    CancelToken? cancelToken,
+  ]) => service.getApiLogs(name, request, cancelToken);
+
+  /// Retrieves API logs for this engine with a `POST` request.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/logs/api`.
+  Future<ElasticApiLogsResponse> queryApiLogs(
+    ElasticApiLogsRequest request, [
+    CancelToken? cancelToken,
+  ]) => service.queryApiLogs(name, request, cancelToken);
+
   /// Creates or updates documents in bulk.
   ///
   /// Uses `POST /api/as/v1/engines/{engine}/documents`.

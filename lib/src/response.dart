@@ -837,3 +837,387 @@ class ElasticCredentialsResponse {
     'results': results.map((item) => item.toJson()).toList(),
   };
 }
+
+/// Sort direction supported by App Search API Logs.
+enum ElasticApiLogsSortDirection { asc, desc }
+
+extension _ElasticApiLogsSortDirectionX on ElasticApiLogsSortDirection {
+  String get apiValue {
+    switch (this) {
+      case ElasticApiLogsSortDirection.asc:
+        return 'asc';
+      case ElasticApiLogsSortDirection.desc:
+        return 'desc';
+    }
+  }
+}
+
+ElasticApiLogsSortDirection _apiLogsSortDirectionFromApiValue(String value) {
+  switch (value.toLowerCase()) {
+    case 'asc':
+      return ElasticApiLogsSortDirection.asc;
+    case 'desc':
+      return ElasticApiLogsSortDirection.desc;
+  }
+
+  throw FormatException(
+    'Invalid API logs sort direction "$value". Expected asc or desc.',
+  );
+}
+
+/// HTTP methods accepted by API Logs method filter.
+enum ElasticApiLogsHttpMethod { get, post, put, patch, delete }
+
+extension _ElasticApiLogsHttpMethodX on ElasticApiLogsHttpMethod {
+  String get apiValue {
+    switch (this) {
+      case ElasticApiLogsHttpMethod.get:
+        return 'GET';
+      case ElasticApiLogsHttpMethod.post:
+        return 'POST';
+      case ElasticApiLogsHttpMethod.put:
+        return 'PUT';
+      case ElasticApiLogsHttpMethod.patch:
+        return 'PATCH';
+      case ElasticApiLogsHttpMethod.delete:
+        return 'DELETE';
+    }
+  }
+}
+
+ElasticApiLogsHttpMethod _apiLogsHttpMethodFromApiValue(String value) {
+  switch (value.toUpperCase()) {
+    case 'GET':
+      return ElasticApiLogsHttpMethod.get;
+    case 'POST':
+      return ElasticApiLogsHttpMethod.post;
+    case 'PUT':
+      return ElasticApiLogsHttpMethod.put;
+    case 'PATCH':
+      return ElasticApiLogsHttpMethod.patch;
+    case 'DELETE':
+      return ElasticApiLogsHttpMethod.delete;
+  }
+
+  throw FormatException(
+    'Invalid API logs method "$value". Expected GET, POST, PUT, PATCH, or DELETE.',
+  );
+}
+
+/// Date range filter used by the API Logs endpoint.
+class ElasticApiLogsDateFilter {
+  const ElasticApiLogsDateFilter({required this.from, required this.to});
+
+  /// RFC3339 lower bound (inclusive).
+  final String from;
+
+  /// RFC3339 upper bound (inclusive).
+  final String to;
+
+  factory ElasticApiLogsDateFilter.fromJson(Map<String, dynamic> json) {
+    return ElasticApiLogsDateFilter(
+      from: _toStringOrEmpty(json['from']),
+      to: _toStringOrEmpty(json['to']),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {'from': from, 'to': to};
+}
+
+/// Filter object accepted by API Logs search endpoints.
+class ElasticApiLogsFilter {
+  const ElasticApiLogsFilter({required this.date, this.status, this.method});
+
+  /// Required date range.
+  final ElasticApiLogsDateFilter date;
+
+  /// Optional HTTP status code filter.
+  final int? status;
+
+  /// Optional HTTP method filter.
+  final ElasticApiLogsHttpMethod? method;
+
+  factory ElasticApiLogsFilter.fromJson(Map<String, dynamic> json) {
+    final dateJson = _asJsonObjectStrict(json['date'], context: 'filters.date');
+    final rawMethod = json['method']?.toString();
+    ElasticApiLogsHttpMethod? method;
+    if (rawMethod != null && rawMethod.isNotEmpty) {
+      try {
+        method = _apiLogsHttpMethodFromApiValue(rawMethod);
+      } on FormatException {
+        method = null;
+      }
+    }
+
+    return ElasticApiLogsFilter(
+      date: ElasticApiLogsDateFilter.fromJson(dateJson),
+      status: _toNullableInt(json['status']),
+      method: method,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final json = <String, dynamic>{
+      'date': date.toJson(),
+      'status': status,
+      'method': method?.apiValue,
+    };
+    json.removeWhere((key, value) => value == null);
+    return json;
+  }
+}
+
+/// Request body accepted by `GET/POST /logs/api`.
+class ElasticApiLogsRequest {
+  const ElasticApiLogsRequest({
+    required this.filters,
+    this.query,
+    this.sortDirection,
+    this.page,
+  });
+
+  /// Required filters object. A date range is mandatory in App Search.
+  final ElasticApiLogsFilter filters;
+
+  /// Optional full request path matcher.
+  final String? query;
+
+  /// Optional chronological sort direction.
+  final ElasticApiLogsSortDirection? sortDirection;
+
+  /// Optional pagination settings.
+  final ElasticPageRequest? page;
+
+  factory ElasticApiLogsRequest.fromJson(Map<String, dynamic> json) {
+    final filtersJson = _asJsonObjectStrict(
+      json['filters'],
+      context: 'filters',
+    );
+    final pageJson = _asStringDynamicMap(json['page']);
+    final rawSortDirection = json['sort_direction']?.toString();
+
+    ElasticApiLogsSortDirection? sortDirection;
+    if (rawSortDirection != null && rawSortDirection.isNotEmpty) {
+      try {
+        sortDirection = _apiLogsSortDirectionFromApiValue(rawSortDirection);
+      } on FormatException {
+        sortDirection = null;
+      }
+    }
+
+    return ElasticApiLogsRequest(
+      filters: ElasticApiLogsFilter.fromJson(filtersJson),
+      query: json['query']?.toString(),
+      sortDirection: sortDirection,
+      page: pageJson == null ? null : ElasticPageRequest.fromJson(pageJson),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final json = <String, dynamic>{
+      'filters': filters.toJson(),
+      'query': query,
+      'sort_direction': sortDirection?.apiValue,
+      'page': page?.toJson(),
+    };
+    json.removeWhere((key, value) => value == null);
+    return json;
+  }
+}
+
+/// A single API log entry returned by App Search.
+class ElasticApiLogEntry {
+  const ElasticApiLogEntry({
+    this.timestamp,
+    this.httpMethod,
+    this.path,
+    this.fullRequestPath,
+    this.status,
+    this.requestBody,
+    this.responseBody,
+    this.userAgent,
+  });
+
+  /// Event timestamp.
+  final String? timestamp;
+
+  /// HTTP method for the logged request.
+  final String? httpMethod;
+
+  /// Relative endpoint path.
+  final String? path;
+
+  /// Full request path captured by App Search.
+  final String? fullRequestPath;
+
+  /// HTTP status code returned by the request.
+  final int? status;
+
+  /// Serialized request body captured by App Search.
+  final String? requestBody;
+
+  /// Serialized response body captured by App Search.
+  final String? responseBody;
+
+  /// User-Agent string.
+  final String? userAgent;
+
+  factory ElasticApiLogEntry.fromJson(Map<String, dynamic> json) {
+    return ElasticApiLogEntry(
+      timestamp: json['timestamp']?.toString(),
+      httpMethod: json['http_method']?.toString(),
+      path: json['path']?.toString(),
+      fullRequestPath: json['full_request_path']?.toString(),
+      status: _toNullableInt(json['status']),
+      requestBody: json['request_body']?.toString(),
+      responseBody: json['response_body']?.toString(),
+      userAgent: json['user_agent']?.toString(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final json = <String, dynamic>{
+      'timestamp': timestamp,
+      'http_method': httpMethod,
+      'path': path,
+      'full_request_path': fullRequestPath,
+      'status': status,
+      'request_body': requestBody,
+      'response_body': responseBody,
+      'user_agent': userAgent,
+    };
+    json.removeWhere((key, value) => value == null);
+    return json;
+  }
+}
+
+/// Metadata returned by API Logs queries.
+class ElasticApiLogsMeta {
+  const ElasticApiLogsMeta({
+    this.query,
+    this.filters,
+    this.sortDirection,
+    required this.page,
+  });
+
+  /// Request path query string used for filtering when provided.
+  final String? query;
+
+  /// Effective filters returned by App Search.
+  final ElasticApiLogsFilter? filters;
+
+  /// Effective sort direction returned by App Search.
+  final ElasticApiLogsSortDirection? sortDirection;
+
+  /// Pagination metadata.
+  final ElasticResponseMetaPage page;
+
+  factory ElasticApiLogsMeta.fromJson(Map<String, dynamic> json) {
+    final pageJson = _asJsonObjectStrict(json['page'], context: 'meta.page');
+    final filterJson = _asStringDynamicMap(json['filters']);
+    final rawSortDirection = json['sort_direction']?.toString();
+
+    ElasticApiLogsSortDirection? sortDirection;
+    if (rawSortDirection != null && rawSortDirection.isNotEmpty) {
+      try {
+        sortDirection = _apiLogsSortDirectionFromApiValue(rawSortDirection);
+      } on FormatException {
+        sortDirection = null;
+      }
+    }
+
+    return ElasticApiLogsMeta(
+      query: json['query']?.toString(),
+      filters: filterJson == null
+          ? null
+          : ElasticApiLogsFilter.fromJson(filterJson),
+      sortDirection: sortDirection,
+      page: ElasticResponseMetaPage.fromJson(pageJson),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final json = <String, dynamic>{
+      'query': query,
+      'filters': filters?.toJson(),
+      'sort_direction': sortDirection?.apiValue,
+      'page': page.toJson(),
+    };
+    json.removeWhere((key, value) => value == null);
+    return json;
+  }
+}
+
+/// Response payload for `GET/POST /logs/api`.
+class ElasticApiLogsResponse {
+  const ElasticApiLogsResponse({required this.meta, required this.results});
+
+  /// Pagination and filter metadata.
+  final ElasticApiLogsMeta meta;
+
+  /// Log entries in the current page.
+  final List<ElasticApiLogEntry> results;
+
+  factory ElasticApiLogsResponse.fromJson(Map<String, dynamic> json) {
+    final metaJson = _asJsonObjectStrict(json['meta'], context: 'meta');
+    final resultItems = _asJsonObjectListStrict(
+      json['results'],
+      context: 'results',
+    );
+
+    return ElasticApiLogsResponse(
+      meta: ElasticApiLogsMeta.fromJson(metaJson),
+      results: List.unmodifiable(
+        resultItems.map(ElasticApiLogEntry.fromJson).toList(),
+      ),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'meta': meta.toJson(),
+    'results': results.map((item) => item.toJson()).toList(),
+  };
+}
+
+/// Value object for one logging channel setting.
+class ElasticLogSettingChannel {
+  const ElasticLogSettingChannel({required this.enabled});
+
+  /// Whether the channel is enabled.
+  final bool enabled;
+
+  factory ElasticLogSettingChannel.fromJson(Map<String, dynamic> json) {
+    return ElasticLogSettingChannel(enabled: _toBool(json['enabled']));
+  }
+
+  Map<String, dynamic> toJson() => {'enabled': enabled};
+}
+
+/// Account-level App Search logging configuration.
+class ElasticLogSettings {
+  const ElasticLogSettings({required this.api, required this.analytics});
+
+  /// API events logging settings.
+  final ElasticLogSettingChannel api;
+
+  /// Analytics events logging settings.
+  final ElasticLogSettingChannel analytics;
+
+  factory ElasticLogSettings.fromJson(Map<String, dynamic> json) {
+    final apiJson = _asJsonObjectStrict(json['api'], context: 'api');
+    final analyticsJson = _asJsonObjectStrict(
+      json['analytics'],
+      context: 'analytics',
+    );
+
+    return ElasticLogSettings(
+      api: ElasticLogSettingChannel.fromJson(apiJson),
+      analytics: ElasticLogSettingChannel.fromJson(analyticsJson),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'api': api.toJson(),
+    'analytics': analytics.toJson(),
+  };
+}

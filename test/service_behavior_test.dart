@@ -456,6 +456,89 @@ void main() {
       expect(response.results.first.to, '2018-07-05T13:00:00+00:00');
     });
 
+    test('api logs GET and POST endpoints parse payloads', () async {
+      final apiLogsRequest = ElasticApiLogsRequest(
+        filters: const ElasticApiLogsFilter(
+          date: ElasticApiLogsDateFilter(
+            from: '2018-10-15T00:00:00+00:00',
+            to: '2018-10-16T00:00:00+00:00',
+          ),
+          status: 200,
+          method: ElasticApiLogsHttpMethod.post,
+        ),
+        query: '/api/as/v1/engines/parks/search',
+        sortDirection: ElasticApiLogsSortDirection.desc,
+        page: const ElasticPageRequest(size: 20),
+      );
+
+      handler = (request) async {
+        if (request.uri.path.endsWith('/logs/api')) {
+          final body = await _readJson(request);
+          final filters = body['filters'] as Map<String, dynamic>?;
+          final date = filters?['date'] as Map<String, dynamic>?;
+          final page = body['page'] as Map<String, dynamic>?;
+
+          expect(date?['from'], '2018-10-15T00:00:00+00:00');
+          expect(date?['to'], '2018-10-16T00:00:00+00:00');
+          expect(filters?['status'], 200);
+          expect(filters?['method'], 'POST');
+          expect(body['query'], '/api/as/v1/engines/parks/search');
+          expect(body['sort_direction'], 'desc');
+          expect(page?['size'], 20);
+
+          await _writeJson(request, 200, {
+            'results': [
+              {
+                'timestamp': '2018-10-15T20:42:14Z',
+                'http_method': 'POST',
+                'path': '/api/as/v1/engines/parks/search',
+                'full_request_path': '/api/as/v1/engines/parks/search',
+                'status': 200,
+                'request_body': '{"query":"everglade"}',
+                'response_body': '{"meta":{"request_id":"req-1"}}',
+                'user_agent': 'curl/7.54.0',
+              },
+            ],
+            'meta': {
+              'query': '/api/as/v1/engines/parks/search',
+              'filters': {
+                'date': {
+                  'from': '2018-10-15T00:00:00+00:00',
+                  'to': '2018-10-16T00:00:00+00:00',
+                },
+                'status': 200,
+                'method': 'POST',
+              },
+              'sort_direction': 'desc',
+              'page': {
+                'current': 1,
+                'size': 20,
+                'total_pages': 1,
+                'total_results': 1,
+              },
+            },
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final getResponse = await engine.getApiLogs(apiLogsRequest);
+      final postResponse = await engine.queryApiLogs(apiLogsRequest);
+
+      expect(getResponse.results, hasLength(1));
+      expect(getResponse.results.first.httpMethod, 'POST');
+      expect(getResponse.results.first.status, 200);
+      expect(getResponse.meta.sortDirection, ElasticApiLogsSortDirection.desc);
+      expect(getResponse.meta.page.totalResults, 1);
+      expect(postResponse.results, hasLength(1));
+      expect(postResponse.meta.page.current, 1);
+      expect(postResponse.meta.filters?.method, ElasticApiLogsHttpMethod.post);
+    });
+
     test('schema get success parses response payload', () async {
       handler = (request) async {
         if (request.uri.path.endsWith('/schema') && request.method == 'GET') {
@@ -1021,6 +1104,70 @@ void main() {
       expect(updated.name, 'reading-private-key-v2');
       expect(updated.accessAllEngines, isTrue);
       expect(deleted, isTrue);
+    });
+
+    test('log settings endpoints parse payloads', () async {
+      handler = (request) async {
+        if (request.uri.path == '/api/as/v1/log_settings') {
+          if (request.method == 'GET') {
+            await _writeJson(request, 200, {
+              'api': {'enabled': true},
+              'analytics': {'enabled': true},
+            });
+            return;
+          }
+
+          if (request.method == 'PUT') {
+            final body = await _readJson(request);
+            expect(body, {
+              'api': {'enabled': false},
+            });
+            await _writeJson(request, 200, {
+              'api': {'enabled': false},
+              'analytics': {'enabled': true},
+            });
+            return;
+          }
+
+          if (request.method == 'PATCH') {
+            final body = await _readJson(request);
+            expect(body, {
+              'analytics': {'enabled': false},
+            });
+            await _writeJson(request, 200, {
+              'api': {'enabled': false},
+              'analytics': {'enabled': false},
+            });
+            return;
+          }
+
+          if (request.method == 'DELETE') {
+            await _writeJson(request, 200, {
+              'api': {'enabled': true},
+              'analytics': {'enabled': true},
+            });
+            return;
+          }
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final current = await service.getLogSettings();
+      final updated = await service.updateLogSettings(apiEnabled: false);
+      final patched = await service.patchLogSettings(analyticsEnabled: false);
+      final reset = await service.resetLogSettings();
+
+      expect(current.api.enabled, isTrue);
+      expect(current.analytics.enabled, isTrue);
+      expect(updated.api.enabled, isFalse);
+      expect(updated.analytics.enabled, isTrue);
+      expect(patched.api.enabled, isFalse);
+      expect(patched.analytics.enabled, isFalse);
+      expect(reset.api.enabled, isTrue);
+      expect(reset.analytics.enabled, isTrue);
     });
 
     test('engine info success parses payload', () async {
@@ -1722,6 +1869,67 @@ void main() {
       );
     });
 
+    test('api logs API validates filters and pagination', () {
+      expect(
+        () => engine.getApiLogs(
+          const ElasticApiLogsRequest(
+            filters: ElasticApiLogsFilter(
+              date: ElasticApiLogsDateFilter(from: '', to: 'x'),
+            ),
+          ),
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.getApiLogs(
+          const ElasticApiLogsRequest(
+            filters: ElasticApiLogsFilter(
+              date: ElasticApiLogsDateFilter(from: 'x', to: ''),
+            ),
+          ),
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.getApiLogs(
+          const ElasticApiLogsRequest(
+            filters: ElasticApiLogsFilter(
+              date: ElasticApiLogsDateFilter(from: 'x', to: 'y'),
+              status: 99,
+            ),
+          ),
+        ),
+        throwsRangeError,
+      );
+      expect(
+        () => engine.queryApiLogs(
+          const ElasticApiLogsRequest(
+            filters: ElasticApiLogsFilter(
+              date: ElasticApiLogsDateFilter(from: 'x', to: 'y'),
+            ),
+            query: ' ',
+          ),
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.queryApiLogs(
+          const ElasticApiLogsRequest(
+            filters: ElasticApiLogsFilter(
+              date: ElasticApiLogsDateFilter(from: 'x', to: 'y'),
+            ),
+            page: ElasticPageRequest(current: 0),
+          ),
+        ),
+        throwsRangeError,
+      );
+    });
+
+    test('log settings API validates payload', () {
+      expect(() => service.updateLogSettings(), throwsArgumentError);
+      expect(() => service.patchLogSettings(), throwsArgumentError);
+    });
+
     test('documents list errors are mapped', () async {
       handler = (request) async {
         if (request.uri.path.endsWith('/documents/list')) {
@@ -2366,6 +2574,180 @@ void main() {
                 (e) => e.message,
                 'message',
                 'Analytics counts unavailable',
+              ),
+        ),
+      );
+    });
+
+    test('api logs GET HTTP errors are mapped', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/logs/api') && request.method == 'GET') {
+          await _writeJson(request, 429, {
+            'errors': ['API logs rate limited'],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      await expectLater(
+        engine.getApiLogs(
+          const ElasticApiLogsRequest(
+            filters: ElasticApiLogsFilter(
+              date: ElasticApiLogsDateFilter(
+                from: '2018-10-15T00:00:00+00:00',
+                to: '2018-10-16T00:00:00+00:00',
+              ),
+            ),
+          ),
+        ),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having((e) => e.operation, 'operation', Operation.apiLogsGet)
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 429)
+              .having((e) => e.message, 'message', 'API logs rate limited'),
+        ),
+      );
+    });
+
+    test('api logs POST HTTP errors are mapped', () async {
+      handler = (request) async {
+        if (request.uri.path.endsWith('/logs/api') &&
+            request.method == 'POST') {
+          await _writeJson(request, 500, {
+            'errors': ['API logs backend unavailable'],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      await expectLater(
+        engine.queryApiLogs(
+          const ElasticApiLogsRequest(
+            filters: ElasticApiLogsFilter(
+              date: ElasticApiLogsDateFilter(
+                from: '2018-10-15T00:00:00+00:00',
+                to: '2018-10-16T00:00:00+00:00',
+              ),
+            ),
+          ),
+        ),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having((e) => e.operation, 'operation', Operation.apiLogsQuery)
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 500)
+              .having(
+                (e) => e.message,
+                'message',
+                'API logs backend unavailable',
+              ),
+        ),
+      );
+    });
+
+    test('log settings HTTP errors are mapped', () async {
+      handler = (request) async {
+        if (request.uri.path == '/api/as/v1/log_settings') {
+          if (request.method == 'GET') {
+            await _writeJson(request, 401, {
+              'errors': ['Log settings unauthorized'],
+            });
+            return;
+          }
+          if (request.method == 'PUT') {
+            await _writeJson(request, 400, {
+              'errors': ['Invalid log settings update'],
+            });
+            return;
+          }
+          if (request.method == 'PATCH') {
+            await _writeJson(request, 422, {
+              'errors': ['Invalid log settings patch'],
+            });
+            return;
+          }
+          if (request.method == 'DELETE') {
+            await _writeJson(request, 503, {
+              'errors': ['Log settings service unavailable'],
+            });
+            return;
+          }
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      await expectLater(
+        service.getLogSettings(),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having((e) => e.operation, 'operation', Operation.logSettingsGet)
+              .having((e) => e.engine, 'engine', '<account>')
+              .having((e) => e.statusCode, 'statusCode', 401)
+              .having((e) => e.message, 'message', 'Log settings unauthorized'),
+        ),
+      );
+
+      await expectLater(
+        service.updateLogSettings(apiEnabled: true),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having((e) => e.operation, 'operation', Operation.logSettingsPut)
+              .having((e) => e.engine, 'engine', '<account>')
+              .having((e) => e.statusCode, 'statusCode', 400)
+              .having(
+                (e) => e.message,
+                'message',
+                'Invalid log settings update',
+              ),
+        ),
+      );
+
+      await expectLater(
+        service.patchLogSettings(analyticsEnabled: true),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.logSettingsPatch,
+              )
+              .having((e) => e.engine, 'engine', '<account>')
+              .having((e) => e.statusCode, 'statusCode', 422)
+              .having(
+                (e) => e.message,
+                'message',
+                'Invalid log settings patch',
+              ),
+        ),
+      );
+
+      await expectLater(
+        service.resetLogSettings(),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.logSettingsDelete,
+              )
+              .having((e) => e.engine, 'engine', '<account>')
+              .having((e) => e.statusCode, 'statusCode', 503)
+              .having(
+                (e) => e.message,
+                'message',
+                'Log settings service unavailable',
               ),
         ),
       );
