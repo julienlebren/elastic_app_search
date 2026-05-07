@@ -264,7 +264,7 @@ void main() {
       final response = await engine
           .suggestionQuery('moun')
           .searchField('title', weight: 4)
-          .size(2)
+          .withSize(2)
           .get();
 
       expect(suggestionCalls, 1);

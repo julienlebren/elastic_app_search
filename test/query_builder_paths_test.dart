@@ -89,7 +89,7 @@ void main() {
           .group('category', size: 2)
           .sort('visitors', descending: true)
           .page(2, size: 20)
-          .recordAnalytics(false)
+          .withRecordAnalytics(false)
           .tag('mobile')
           .toJson();
 
@@ -121,7 +121,7 @@ void main() {
           .suggestionQuery('moun')
           .searchField('title', weight: 4)
           .sort('title', descending: false)
-          .size(7)
+          .withSize(7)
           .toJson();
 
       expect(json['query'], 'moun');

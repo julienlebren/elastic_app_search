@@ -186,7 +186,7 @@ ElasticQuery _validateElasticQuery(ElasticQuery query) {
 ElasticSuggestionsQuery _validateElasticSuggestionsQuery(
   ElasticSuggestionsQuery query,
 ) {
-  _validateSuggestionSize(query.sizeField);
+  _validateSuggestionSize(query.size);
 
   for (final searchField
       in query.searchFields ?? const <_ElasticSearchField>[]) {
@@ -264,7 +264,7 @@ abstract class ElasticQuery with _$ElasticQuery {
 
     /// If true, generates an analytics query event for the search request.
     /// Defaults to true on the App Search API side.
-    @JsonKey(name: "record_analytics") bool? recordAnalyticsField,
+    @JsonKey(name: "record_analytics") bool? recordAnalytics,
 
     /// Grouped results based on shared fields
     @protected @JsonKey(name: "group") _ElasticGroup? groupBy,
@@ -805,8 +805,8 @@ abstract class ElasticQuery with _$ElasticQuery {
   }
 
   /// Controls whether this search request should be recorded as an analytics event.
-  ElasticQuery recordAnalytics(bool value) {
-    return copyWith(recordAnalyticsField: value);
+  ElasticQuery withRecordAnalytics(bool value) {
+    return copyWith(recordAnalytics: value);
   }
 
   /// Takes a field with an optionnal `size`, creates and returns a new [ElasticQuery]
@@ -1440,7 +1440,7 @@ abstract class ElasticSuggestionsQuery with _$ElasticSuggestionsQuery {
     /// Number of query suggestions.
     /// Must be greater than or equal to 1 and less than or equal to 20.
     /// Defaults to 10.
-    @JsonKey(name: "size") @Default(10) int? sizeField,
+    @JsonKey(name: "size") @Default(10) int? size,
 
     /// Object which restricts a suggestion query to specific text fields.
     /// Serialized as `types.documents.fields` in App Search.
@@ -1491,10 +1491,10 @@ abstract class ElasticSuggestionsQuery with _$ElasticSuggestionsQuery {
   }
 
   /// Creates and returns a new [ElasticSuggestionsQuery] with new size parameters.
-  ElasticSuggestionsQuery size(int size) {
+  ElasticSuggestionsQuery withSize(int size) {
     _validateSuggestionSize(size);
 
-    return copyWith(sizeField: size);
+    return copyWith(size: size);
   }
 
   /// Fetch the documents for this query.

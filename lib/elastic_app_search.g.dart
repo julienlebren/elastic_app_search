@@ -174,7 +174,7 @@ _ElasticQuery _$ElasticQueryFromJson(Map<String, dynamic> json) =>
           : _ElasticAnalytics.fromJson(
               json['analytics'] as Map<String, dynamic>,
             ),
-      recordAnalyticsField: json['record_analytics'] as bool?,
+      recordAnalytics: json['record_analytics'] as bool?,
       groupBy: json['group'] == null
           ? null
           : _ElasticGroup.fromJson(json['group'] as Map<String, dynamic>),
@@ -198,7 +198,7 @@ Map<String, dynamic> _$ElasticQueryToJson(
   ),
   'facets': ?instance.facets?.map((k, e) => MapEntry(k, e.toJson())),
   'analytics': ?instance.analytics?.toJson(),
-  'record_analytics': ?instance.recordAnalyticsField,
+  'record_analytics': ?instance.recordAnalytics,
   'group': ?instance.groupBy?.toJson(),
   'sort': ?const _ElasticSortConverter().toJson(instance.sortBy),
 };
@@ -334,7 +334,7 @@ _ElasticSuggestionsQuery _$ElasticSuggestionsQueryFromJson(
   Map<String, dynamic> json,
 ) => _ElasticSuggestionsQuery(
   query: json['query'] as String,
-  sizeField: (json['size'] as num?)?.toInt() ?? 10,
+  size: (json['size'] as num?)?.toInt() ?? 10,
   searchFields: const _ElasticSuggestionTypesConverter().fromJson(
     json['types'] as Map?,
   ),
@@ -347,7 +347,7 @@ Map<String, dynamic> _$ElasticSuggestionsQueryToJson(
   _ElasticSuggestionsQuery instance,
 ) => <String, dynamic>{
   'query': instance.query,
-  'size': ?instance.sizeField,
+  'size': ?instance.size,
   'types': ?const _ElasticSuggestionTypesConverter().toJson(
     instance.searchFields,
   ),

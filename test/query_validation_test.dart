@@ -202,8 +202,8 @@ void main() {
     });
 
     test('size validates range', () {
-      expect(() => engine.suggestionQuery('mount').size(0), throwsRangeError);
-      expect(() => engine.suggestionQuery('mount').size(21), throwsRangeError);
+      expect(() => engine.suggestionQuery('mount').withSize(0), throwsRangeError);
+      expect(() => engine.suggestionQuery('mount').withSize(21), throwsRangeError);
     });
   });
 

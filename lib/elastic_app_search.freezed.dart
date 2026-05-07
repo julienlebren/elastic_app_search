@@ -2547,7 +2547,7 @@ mixin _$ElasticQuery {
 /// See [https://www.elastic.co/guide/en/app-search/current/tags.html]
  _ElasticAnalytics? get analytics;/// If true, generates an analytics query event for the search request.
 /// Defaults to true on the App Search API side.
-@JsonKey(name: "record_analytics") bool? get recordAnalyticsField;/// Grouped results based on shared fields
+@JsonKey(name: "record_analytics") bool? get recordAnalytics;/// Grouped results based on shared fields
 @protected@JsonKey(name: "group") _ElasticGroup? get groupBy;/// Object to sort your results in an order other than document score.
 @_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? get sortBy;
 /// Create a copy of ElasticQuery
@@ -2562,16 +2562,16 @@ $ElasticQueryCopyWith<ElasticQuery> get copyWith => _$ElasticQueryCopyWithImpl<E
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticQuery&&(identical(other.engine, engine) || other.engine == engine)&&(identical(other.query, query) || other.query == query)&&(identical(other.precisionTuning, precisionTuning) || other.precisionTuning == precisionTuning)&&(identical(other.searchPage, searchPage) || other.searchPage == searchPage)&&const DeepCollectionEquality().equals(other.filters, filters)&&const DeepCollectionEquality().equals(other.searchFields, searchFields)&&const DeepCollectionEquality().equals(other.resultFields, resultFields)&&const DeepCollectionEquality().equals(other.facets, facets)&&const DeepCollectionEquality().equals(other.disjunctiveFacets, disjunctiveFacets)&&(identical(other.analytics, analytics) || other.analytics == analytics)&&(identical(other.recordAnalyticsField, recordAnalyticsField) || other.recordAnalyticsField == recordAnalyticsField)&&(identical(other.groupBy, groupBy) || other.groupBy == groupBy)&&const DeepCollectionEquality().equals(other.sortBy, sortBy));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticQuery&&(identical(other.engine, engine) || other.engine == engine)&&(identical(other.query, query) || other.query == query)&&(identical(other.precisionTuning, precisionTuning) || other.precisionTuning == precisionTuning)&&(identical(other.searchPage, searchPage) || other.searchPage == searchPage)&&const DeepCollectionEquality().equals(other.filters, filters)&&const DeepCollectionEquality().equals(other.searchFields, searchFields)&&const DeepCollectionEquality().equals(other.resultFields, resultFields)&&const DeepCollectionEquality().equals(other.facets, facets)&&const DeepCollectionEquality().equals(other.disjunctiveFacets, disjunctiveFacets)&&(identical(other.analytics, analytics) || other.analytics == analytics)&&(identical(other.recordAnalytics, recordAnalytics) || other.recordAnalytics == recordAnalytics)&&(identical(other.groupBy, groupBy) || other.groupBy == groupBy)&&const DeepCollectionEquality().equals(other.sortBy, sortBy));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,engine,query,precisionTuning,searchPage,const DeepCollectionEquality().hash(filters),const DeepCollectionEquality().hash(searchFields),const DeepCollectionEquality().hash(resultFields),const DeepCollectionEquality().hash(facets),const DeepCollectionEquality().hash(disjunctiveFacets),analytics,recordAnalyticsField,groupBy,const DeepCollectionEquality().hash(sortBy));
+int get hashCode => Object.hash(runtimeType,engine,query,precisionTuning,searchPage,const DeepCollectionEquality().hash(filters),const DeepCollectionEquality().hash(searchFields),const DeepCollectionEquality().hash(resultFields),const DeepCollectionEquality().hash(facets),const DeepCollectionEquality().hash(disjunctiveFacets),analytics,recordAnalytics,groupBy,const DeepCollectionEquality().hash(sortBy));
 
 @override
 String toString() {
-  return 'ElasticQuery(engine: $engine, query: $query, precisionTuning: $precisionTuning, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, facets: $facets, disjunctiveFacets: $disjunctiveFacets, analytics: $analytics, recordAnalyticsField: $recordAnalyticsField, groupBy: $groupBy, sortBy: $sortBy)';
+  return 'ElasticQuery(engine: $engine, query: $query, precisionTuning: $precisionTuning, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, facets: $facets, disjunctiveFacets: $disjunctiveFacets, analytics: $analytics, recordAnalytics: $recordAnalytics, groupBy: $groupBy, sortBy: $sortBy)';
 }
 
 
@@ -2582,7 +2582,7 @@ abstract mixin class $ElasticQueryCopyWith<$Res>  {
   factory $ElasticQueryCopyWith(ElasticQuery value, $Res Function(ElasticQuery) _then) = _$ElasticQueryCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(includeToJson: false, includeFromJson: false) ElasticEngine? engine, String query,@protected@JsonKey(name: "precision") int? precisionTuning,@JsonKey(name: "page") _ElasticSearchPage? searchPage,@_ElasticSearchFiltersConverter() List<_ElasticSearchFilter>? filters,@_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") List<_ElasticSearchField>? searchFields,@_ElasticResultFieldsConverter()@JsonKey(name: "result_fields") List<_ElasticResultField>? resultFields,@protected Map<String, _ElasticQueryFacet>? facets,@JsonKey(includeToJson: false) List<String>? disjunctiveFacets, _ElasticAnalytics? analytics,@JsonKey(name: "record_analytics") bool? recordAnalyticsField,@protected@JsonKey(name: "group") _ElasticGroup? groupBy,@_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? sortBy
+@JsonKey(includeToJson: false, includeFromJson: false) ElasticEngine? engine, String query,@protected@JsonKey(name: "precision") int? precisionTuning,@JsonKey(name: "page") _ElasticSearchPage? searchPage,@_ElasticSearchFiltersConverter() List<_ElasticSearchFilter>? filters,@_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") List<_ElasticSearchField>? searchFields,@_ElasticResultFieldsConverter()@JsonKey(name: "result_fields") List<_ElasticResultField>? resultFields,@protected Map<String, _ElasticQueryFacet>? facets,@JsonKey(includeToJson: false) List<String>? disjunctiveFacets, _ElasticAnalytics? analytics,@JsonKey(name: "record_analytics") bool? recordAnalytics,@protected@JsonKey(name: "group") _ElasticGroup? groupBy,@_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? sortBy
 });
 
 
@@ -2599,7 +2599,7 @@ class _$ElasticQueryCopyWithImpl<$Res>
 
 /// Create a copy of ElasticQuery
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? engine = freezed,Object? query = null,Object? precisionTuning = freezed,Object? searchPage = freezed,Object? filters = freezed,Object? searchFields = freezed,Object? resultFields = freezed,Object? facets = freezed,Object? disjunctiveFacets = freezed,Object? analytics = freezed,Object? recordAnalyticsField = freezed,Object? groupBy = freezed,Object? sortBy = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? engine = freezed,Object? query = null,Object? precisionTuning = freezed,Object? searchPage = freezed,Object? filters = freezed,Object? searchFields = freezed,Object? resultFields = freezed,Object? facets = freezed,Object? disjunctiveFacets = freezed,Object? analytics = freezed,Object? recordAnalytics = freezed,Object? groupBy = freezed,Object? sortBy = freezed,}) {
   return _then(_self.copyWith(
 engine: freezed == engine ? _self.engine : engine // ignore: cast_nullable_to_non_nullable
 as ElasticEngine?,query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
@@ -2611,7 +2611,7 @@ as List<_ElasticSearchField>?,resultFields: freezed == resultFields ? _self.resu
 as List<_ElasticResultField>?,facets: freezed == facets ? _self.facets : facets // ignore: cast_nullable_to_non_nullable
 as Map<String, _ElasticQueryFacet>?,disjunctiveFacets: freezed == disjunctiveFacets ? _self.disjunctiveFacets : disjunctiveFacets // ignore: cast_nullable_to_non_nullable
 as List<String>?,analytics: freezed == analytics ? _self.analytics : analytics // ignore: cast_nullable_to_non_nullable
-as _ElasticAnalytics?,recordAnalyticsField: freezed == recordAnalyticsField ? _self.recordAnalyticsField : recordAnalyticsField // ignore: cast_nullable_to_non_nullable
+as _ElasticAnalytics?,recordAnalytics: freezed == recordAnalytics ? _self.recordAnalytics : recordAnalytics // ignore: cast_nullable_to_non_nullable
 as bool?,groupBy: freezed == groupBy ? _self.groupBy : groupBy // ignore: cast_nullable_to_non_nullable
 as _ElasticGroup?,sortBy: freezed == sortBy ? _self.sortBy : sortBy // ignore: cast_nullable_to_non_nullable
 as List<_ElasticSort>?,
@@ -2735,10 +2735,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @protected@JsonKey(name: "precision")  int? precisionTuning, @JsonKey(name: "page")  _ElasticSearchPage? searchPage, @_ElasticSearchFiltersConverter()  List<_ElasticSearchFilter>? filters, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields")  List<_ElasticSearchField>? searchFields, @_ElasticResultFieldsConverter()@JsonKey(name: "result_fields")  List<_ElasticResultField>? resultFields, @protected  Map<String, _ElasticQueryFacet>? facets, @JsonKey(includeToJson: false)  List<String>? disjunctiveFacets,  _ElasticAnalytics? analytics, @JsonKey(name: "record_analytics")  bool? recordAnalyticsField, @protected@JsonKey(name: "group")  _ElasticGroup? groupBy, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @protected@JsonKey(name: "precision")  int? precisionTuning, @JsonKey(name: "page")  _ElasticSearchPage? searchPage, @_ElasticSearchFiltersConverter()  List<_ElasticSearchFilter>? filters, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields")  List<_ElasticSearchField>? searchFields, @_ElasticResultFieldsConverter()@JsonKey(name: "result_fields")  List<_ElasticResultField>? resultFields, @protected  Map<String, _ElasticQueryFacet>? facets, @JsonKey(includeToJson: false)  List<String>? disjunctiveFacets,  _ElasticAnalytics? analytics, @JsonKey(name: "record_analytics")  bool? recordAnalytics, @protected@JsonKey(name: "group")  _ElasticGroup? groupBy, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ElasticQuery() when $default != null:
-return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,_that.filters,_that.searchFields,_that.resultFields,_that.facets,_that.disjunctiveFacets,_that.analytics,_that.recordAnalyticsField,_that.groupBy,_that.sortBy);case _:
+return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,_that.filters,_that.searchFields,_that.resultFields,_that.facets,_that.disjunctiveFacets,_that.analytics,_that.recordAnalytics,_that.groupBy,_that.sortBy);case _:
   return orElse();
 
 }
@@ -2756,10 +2756,10 @@ return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @protected@JsonKey(name: "precision")  int? precisionTuning, @JsonKey(name: "page")  _ElasticSearchPage? searchPage, @_ElasticSearchFiltersConverter()  List<_ElasticSearchFilter>? filters, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields")  List<_ElasticSearchField>? searchFields, @_ElasticResultFieldsConverter()@JsonKey(name: "result_fields")  List<_ElasticResultField>? resultFields, @protected  Map<String, _ElasticQueryFacet>? facets, @JsonKey(includeToJson: false)  List<String>? disjunctiveFacets,  _ElasticAnalytics? analytics, @JsonKey(name: "record_analytics")  bool? recordAnalyticsField, @protected@JsonKey(name: "group")  _ElasticGroup? groupBy, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @protected@JsonKey(name: "precision")  int? precisionTuning, @JsonKey(name: "page")  _ElasticSearchPage? searchPage, @_ElasticSearchFiltersConverter()  List<_ElasticSearchFilter>? filters, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields")  List<_ElasticSearchField>? searchFields, @_ElasticResultFieldsConverter()@JsonKey(name: "result_fields")  List<_ElasticResultField>? resultFields, @protected  Map<String, _ElasticQueryFacet>? facets, @JsonKey(includeToJson: false)  List<String>? disjunctiveFacets,  _ElasticAnalytics? analytics, @JsonKey(name: "record_analytics")  bool? recordAnalytics, @protected@JsonKey(name: "group")  _ElasticGroup? groupBy, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)  $default,) {final _that = this;
 switch (_that) {
 case _ElasticQuery():
-return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,_that.filters,_that.searchFields,_that.resultFields,_that.facets,_that.disjunctiveFacets,_that.analytics,_that.recordAnalyticsField,_that.groupBy,_that.sortBy);case _:
+return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,_that.filters,_that.searchFields,_that.resultFields,_that.facets,_that.disjunctiveFacets,_that.analytics,_that.recordAnalytics,_that.groupBy,_that.sortBy);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -2776,10 +2776,10 @@ return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @protected@JsonKey(name: "precision")  int? precisionTuning, @JsonKey(name: "page")  _ElasticSearchPage? searchPage, @_ElasticSearchFiltersConverter()  List<_ElasticSearchFilter>? filters, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields")  List<_ElasticSearchField>? searchFields, @_ElasticResultFieldsConverter()@JsonKey(name: "result_fields")  List<_ElasticResultField>? resultFields, @protected  Map<String, _ElasticQueryFacet>? facets, @JsonKey(includeToJson: false)  List<String>? disjunctiveFacets,  _ElasticAnalytics? analytics, @JsonKey(name: "record_analytics")  bool? recordAnalyticsField, @protected@JsonKey(name: "group")  _ElasticGroup? groupBy, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @protected@JsonKey(name: "precision")  int? precisionTuning, @JsonKey(name: "page")  _ElasticSearchPage? searchPage, @_ElasticSearchFiltersConverter()  List<_ElasticSearchFilter>? filters, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields")  List<_ElasticSearchField>? searchFields, @_ElasticResultFieldsConverter()@JsonKey(name: "result_fields")  List<_ElasticResultField>? resultFields, @protected  Map<String, _ElasticQueryFacet>? facets, @JsonKey(includeToJson: false)  List<String>? disjunctiveFacets,  _ElasticAnalytics? analytics, @JsonKey(name: "record_analytics")  bool? recordAnalytics, @protected@JsonKey(name: "group")  _ElasticGroup? groupBy, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)?  $default,) {final _that = this;
 switch (_that) {
 case _ElasticQuery() when $default != null:
-return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,_that.filters,_that.searchFields,_that.resultFields,_that.facets,_that.disjunctiveFacets,_that.analytics,_that.recordAnalyticsField,_that.groupBy,_that.sortBy);case _:
+return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,_that.filters,_that.searchFields,_that.resultFields,_that.facets,_that.disjunctiveFacets,_that.analytics,_that.recordAnalytics,_that.groupBy,_that.sortBy);case _:
   return null;
 
 }
@@ -2791,7 +2791,7 @@ return $default(_that.engine,_that.query,_that.precisionTuning,_that.searchPage,
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticQuery extends ElasticQuery {
-  const _ElasticQuery({@JsonKey(includeToJson: false, includeFromJson: false) this.engine, required this.query, @protected@JsonKey(name: "precision") this.precisionTuning, @JsonKey(name: "page") this.searchPage, @_ElasticSearchFiltersConverter() final  List<_ElasticSearchFilter>? filters, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") final  List<_ElasticSearchField>? searchFields, @_ElasticResultFieldsConverter()@JsonKey(name: "result_fields") final  List<_ElasticResultField>? resultFields, @protected final  Map<String, _ElasticQueryFacet>? facets, @JsonKey(includeToJson: false) final  List<String>? disjunctiveFacets, this.analytics, @JsonKey(name: "record_analytics") this.recordAnalyticsField, @protected@JsonKey(name: "group") this.groupBy, @_ElasticSortConverter()@JsonKey(name: "sort") final  List<_ElasticSort>? sortBy}): _filters = filters,_searchFields = searchFields,_resultFields = resultFields,_facets = facets,_disjunctiveFacets = disjunctiveFacets,_sortBy = sortBy,super._();
+  const _ElasticQuery({@JsonKey(includeToJson: false, includeFromJson: false) this.engine, required this.query, @protected@JsonKey(name: "precision") this.precisionTuning, @JsonKey(name: "page") this.searchPage, @_ElasticSearchFiltersConverter() final  List<_ElasticSearchFilter>? filters, @_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") final  List<_ElasticSearchField>? searchFields, @_ElasticResultFieldsConverter()@JsonKey(name: "result_fields") final  List<_ElasticResultField>? resultFields, @protected final  Map<String, _ElasticQueryFacet>? facets, @JsonKey(includeToJson: false) final  List<String>? disjunctiveFacets, this.analytics, @JsonKey(name: "record_analytics") this.recordAnalytics, @protected@JsonKey(name: "group") this.groupBy, @_ElasticSortConverter()@JsonKey(name: "sort") final  List<_ElasticSort>? sortBy}): _filters = filters,_searchFields = searchFields,_resultFields = resultFields,_facets = facets,_disjunctiveFacets = disjunctiveFacets,_sortBy = sortBy,super._();
   factory _ElasticQuery.fromJson(Map<String, dynamic> json) => _$ElasticQueryFromJson(json);
 
 /// An object representing an Elastic engine
@@ -2880,7 +2880,7 @@ class _ElasticQuery extends ElasticQuery {
 @override final  _ElasticAnalytics? analytics;
 /// If true, generates an analytics query event for the search request.
 /// Defaults to true on the App Search API side.
-@override@JsonKey(name: "record_analytics") final  bool? recordAnalyticsField;
+@override@JsonKey(name: "record_analytics") final  bool? recordAnalytics;
 /// Grouped results based on shared fields
 @override@protected@JsonKey(name: "group") final  _ElasticGroup? groupBy;
 /// Object to sort your results in an order other than document score.
@@ -2908,16 +2908,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticQuery&&(identical(other.engine, engine) || other.engine == engine)&&(identical(other.query, query) || other.query == query)&&(identical(other.precisionTuning, precisionTuning) || other.precisionTuning == precisionTuning)&&(identical(other.searchPage, searchPage) || other.searchPage == searchPage)&&const DeepCollectionEquality().equals(other._filters, _filters)&&const DeepCollectionEquality().equals(other._searchFields, _searchFields)&&const DeepCollectionEquality().equals(other._resultFields, _resultFields)&&const DeepCollectionEquality().equals(other._facets, _facets)&&const DeepCollectionEquality().equals(other._disjunctiveFacets, _disjunctiveFacets)&&(identical(other.analytics, analytics) || other.analytics == analytics)&&(identical(other.recordAnalyticsField, recordAnalyticsField) || other.recordAnalyticsField == recordAnalyticsField)&&(identical(other.groupBy, groupBy) || other.groupBy == groupBy)&&const DeepCollectionEquality().equals(other._sortBy, _sortBy));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticQuery&&(identical(other.engine, engine) || other.engine == engine)&&(identical(other.query, query) || other.query == query)&&(identical(other.precisionTuning, precisionTuning) || other.precisionTuning == precisionTuning)&&(identical(other.searchPage, searchPage) || other.searchPage == searchPage)&&const DeepCollectionEquality().equals(other._filters, _filters)&&const DeepCollectionEquality().equals(other._searchFields, _searchFields)&&const DeepCollectionEquality().equals(other._resultFields, _resultFields)&&const DeepCollectionEquality().equals(other._facets, _facets)&&const DeepCollectionEquality().equals(other._disjunctiveFacets, _disjunctiveFacets)&&(identical(other.analytics, analytics) || other.analytics == analytics)&&(identical(other.recordAnalytics, recordAnalytics) || other.recordAnalytics == recordAnalytics)&&(identical(other.groupBy, groupBy) || other.groupBy == groupBy)&&const DeepCollectionEquality().equals(other._sortBy, _sortBy));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,engine,query,precisionTuning,searchPage,const DeepCollectionEquality().hash(_filters),const DeepCollectionEquality().hash(_searchFields),const DeepCollectionEquality().hash(_resultFields),const DeepCollectionEquality().hash(_facets),const DeepCollectionEquality().hash(_disjunctiveFacets),analytics,recordAnalyticsField,groupBy,const DeepCollectionEquality().hash(_sortBy));
+int get hashCode => Object.hash(runtimeType,engine,query,precisionTuning,searchPage,const DeepCollectionEquality().hash(_filters),const DeepCollectionEquality().hash(_searchFields),const DeepCollectionEquality().hash(_resultFields),const DeepCollectionEquality().hash(_facets),const DeepCollectionEquality().hash(_disjunctiveFacets),analytics,recordAnalytics,groupBy,const DeepCollectionEquality().hash(_sortBy));
 
 @override
 String toString() {
-  return 'ElasticQuery(engine: $engine, query: $query, precisionTuning: $precisionTuning, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, facets: $facets, disjunctiveFacets: $disjunctiveFacets, analytics: $analytics, recordAnalyticsField: $recordAnalyticsField, groupBy: $groupBy, sortBy: $sortBy)';
+  return 'ElasticQuery(engine: $engine, query: $query, precisionTuning: $precisionTuning, searchPage: $searchPage, filters: $filters, searchFields: $searchFields, resultFields: $resultFields, facets: $facets, disjunctiveFacets: $disjunctiveFacets, analytics: $analytics, recordAnalytics: $recordAnalytics, groupBy: $groupBy, sortBy: $sortBy)';
 }
 
 
@@ -2928,7 +2928,7 @@ abstract mixin class _$ElasticQueryCopyWith<$Res> implements $ElasticQueryCopyWi
   factory _$ElasticQueryCopyWith(_ElasticQuery value, $Res Function(_ElasticQuery) _then) = __$ElasticQueryCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(includeToJson: false, includeFromJson: false) ElasticEngine? engine, String query,@protected@JsonKey(name: "precision") int? precisionTuning,@JsonKey(name: "page") _ElasticSearchPage? searchPage,@_ElasticSearchFiltersConverter() List<_ElasticSearchFilter>? filters,@_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") List<_ElasticSearchField>? searchFields,@_ElasticResultFieldsConverter()@JsonKey(name: "result_fields") List<_ElasticResultField>? resultFields,@protected Map<String, _ElasticQueryFacet>? facets,@JsonKey(includeToJson: false) List<String>? disjunctiveFacets, _ElasticAnalytics? analytics,@JsonKey(name: "record_analytics") bool? recordAnalyticsField,@protected@JsonKey(name: "group") _ElasticGroup? groupBy,@_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? sortBy
+@JsonKey(includeToJson: false, includeFromJson: false) ElasticEngine? engine, String query,@protected@JsonKey(name: "precision") int? precisionTuning,@JsonKey(name: "page") _ElasticSearchPage? searchPage,@_ElasticSearchFiltersConverter() List<_ElasticSearchFilter>? filters,@_ElasticSearchFieldsConverter()@JsonKey(name: "search_fields") List<_ElasticSearchField>? searchFields,@_ElasticResultFieldsConverter()@JsonKey(name: "result_fields") List<_ElasticResultField>? resultFields,@protected Map<String, _ElasticQueryFacet>? facets,@JsonKey(includeToJson: false) List<String>? disjunctiveFacets, _ElasticAnalytics? analytics,@JsonKey(name: "record_analytics") bool? recordAnalytics,@protected@JsonKey(name: "group") _ElasticGroup? groupBy,@_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? sortBy
 });
 
 
@@ -2945,7 +2945,7 @@ class __$ElasticQueryCopyWithImpl<$Res>
 
 /// Create a copy of ElasticQuery
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? engine = freezed,Object? query = null,Object? precisionTuning = freezed,Object? searchPage = freezed,Object? filters = freezed,Object? searchFields = freezed,Object? resultFields = freezed,Object? facets = freezed,Object? disjunctiveFacets = freezed,Object? analytics = freezed,Object? recordAnalyticsField = freezed,Object? groupBy = freezed,Object? sortBy = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? engine = freezed,Object? query = null,Object? precisionTuning = freezed,Object? searchPage = freezed,Object? filters = freezed,Object? searchFields = freezed,Object? resultFields = freezed,Object? facets = freezed,Object? disjunctiveFacets = freezed,Object? analytics = freezed,Object? recordAnalytics = freezed,Object? groupBy = freezed,Object? sortBy = freezed,}) {
   return _then(_ElasticQuery(
 engine: freezed == engine ? _self.engine : engine // ignore: cast_nullable_to_non_nullable
 as ElasticEngine?,query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
@@ -2957,7 +2957,7 @@ as List<_ElasticSearchField>?,resultFields: freezed == resultFields ? _self._res
 as List<_ElasticResultField>?,facets: freezed == facets ? _self._facets : facets // ignore: cast_nullable_to_non_nullable
 as Map<String, _ElasticQueryFacet>?,disjunctiveFacets: freezed == disjunctiveFacets ? _self._disjunctiveFacets : disjunctiveFacets // ignore: cast_nullable_to_non_nullable
 as List<String>?,analytics: freezed == analytics ? _self.analytics : analytics // ignore: cast_nullable_to_non_nullable
-as _ElasticAnalytics?,recordAnalyticsField: freezed == recordAnalyticsField ? _self.recordAnalyticsField : recordAnalyticsField // ignore: cast_nullable_to_non_nullable
+as _ElasticAnalytics?,recordAnalytics: freezed == recordAnalytics ? _self.recordAnalytics : recordAnalytics // ignore: cast_nullable_to_non_nullable
 as bool?,groupBy: freezed == groupBy ? _self.groupBy : groupBy // ignore: cast_nullable_to_non_nullable
 as _ElasticGroup?,sortBy: freezed == sortBy ? _self._sortBy : sortBy // ignore: cast_nullable_to_non_nullable
 as List<_ElasticSort>?,
@@ -5559,7 +5559,7 @@ mixin _$ElasticSuggestionsQuery {
  String get query;/// Number of query suggestions.
 /// Must be greater than or equal to 1 and less than or equal to 20.
 /// Defaults to 10.
-@JsonKey(name: "size") int? get sizeField;/// Object which restricts a suggestion query to specific text fields.
+@JsonKey(name: "size") int? get size;/// Object which restricts a suggestion query to specific text fields.
 /// Serialized as `types.documents.fields` in App Search.
 @_ElasticSuggestionTypesConverter()@JsonKey(name: "types") List<_ElasticSearchField>? get searchFields;/// Object to sort your results in an order other than document score.
 @_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? get sortBy;
@@ -5575,16 +5575,16 @@ $ElasticSuggestionsQueryCopyWith<ElasticSuggestionsQuery> get copyWith => _$Elas
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticSuggestionsQuery&&(identical(other.engine, engine) || other.engine == engine)&&(identical(other.query, query) || other.query == query)&&(identical(other.sizeField, sizeField) || other.sizeField == sizeField)&&const DeepCollectionEquality().equals(other.searchFields, searchFields)&&const DeepCollectionEquality().equals(other.sortBy, sortBy));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticSuggestionsQuery&&(identical(other.engine, engine) || other.engine == engine)&&(identical(other.query, query) || other.query == query)&&(identical(other.size, size) || other.size == size)&&const DeepCollectionEquality().equals(other.searchFields, searchFields)&&const DeepCollectionEquality().equals(other.sortBy, sortBy));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,engine,query,sizeField,const DeepCollectionEquality().hash(searchFields),const DeepCollectionEquality().hash(sortBy));
+int get hashCode => Object.hash(runtimeType,engine,query,size,const DeepCollectionEquality().hash(searchFields),const DeepCollectionEquality().hash(sortBy));
 
 @override
 String toString() {
-  return 'ElasticSuggestionsQuery(engine: $engine, query: $query, sizeField: $sizeField, searchFields: $searchFields, sortBy: $sortBy)';
+  return 'ElasticSuggestionsQuery(engine: $engine, query: $query, size: $size, searchFields: $searchFields, sortBy: $sortBy)';
 }
 
 
@@ -5595,7 +5595,7 @@ abstract mixin class $ElasticSuggestionsQueryCopyWith<$Res>  {
   factory $ElasticSuggestionsQueryCopyWith(ElasticSuggestionsQuery value, $Res Function(ElasticSuggestionsQuery) _then) = _$ElasticSuggestionsQueryCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(includeToJson: false, includeFromJson: false) ElasticEngine? engine, String query,@JsonKey(name: "size") int? sizeField,@_ElasticSuggestionTypesConverter()@JsonKey(name: "types") List<_ElasticSearchField>? searchFields,@_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? sortBy
+@JsonKey(includeToJson: false, includeFromJson: false) ElasticEngine? engine, String query,@JsonKey(name: "size") int? size,@_ElasticSuggestionTypesConverter()@JsonKey(name: "types") List<_ElasticSearchField>? searchFields,@_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? sortBy
 });
 
 
@@ -5612,11 +5612,11 @@ class _$ElasticSuggestionsQueryCopyWithImpl<$Res>
 
 /// Create a copy of ElasticSuggestionsQuery
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? engine = freezed,Object? query = null,Object? sizeField = freezed,Object? searchFields = freezed,Object? sortBy = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? engine = freezed,Object? query = null,Object? size = freezed,Object? searchFields = freezed,Object? sortBy = freezed,}) {
   return _then(_self.copyWith(
 engine: freezed == engine ? _self.engine : engine // ignore: cast_nullable_to_non_nullable
 as ElasticEngine?,query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
-as String,sizeField: freezed == sizeField ? _self.sizeField : sizeField // ignore: cast_nullable_to_non_nullable
+as String,size: freezed == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
 as int?,searchFields: freezed == searchFields ? _self.searchFields : searchFields // ignore: cast_nullable_to_non_nullable
 as List<_ElasticSearchField>?,sortBy: freezed == sortBy ? _self.sortBy : sortBy // ignore: cast_nullable_to_non_nullable
 as List<_ElasticSort>?,
@@ -5704,10 +5704,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @JsonKey(name: "size")  int? sizeField, @_ElasticSuggestionTypesConverter()@JsonKey(name: "types")  List<_ElasticSearchField>? searchFields, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @JsonKey(name: "size")  int? size, @_ElasticSuggestionTypesConverter()@JsonKey(name: "types")  List<_ElasticSearchField>? searchFields, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ElasticSuggestionsQuery() when $default != null:
-return $default(_that.engine,_that.query,_that.sizeField,_that.searchFields,_that.sortBy);case _:
+return $default(_that.engine,_that.query,_that.size,_that.searchFields,_that.sortBy);case _:
   return orElse();
 
 }
@@ -5725,10 +5725,10 @@ return $default(_that.engine,_that.query,_that.sizeField,_that.searchFields,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @JsonKey(name: "size")  int? sizeField, @_ElasticSuggestionTypesConverter()@JsonKey(name: "types")  List<_ElasticSearchField>? searchFields, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @JsonKey(name: "size")  int? size, @_ElasticSuggestionTypesConverter()@JsonKey(name: "types")  List<_ElasticSearchField>? searchFields, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)  $default,) {final _that = this;
 switch (_that) {
 case _ElasticSuggestionsQuery():
-return $default(_that.engine,_that.query,_that.sizeField,_that.searchFields,_that.sortBy);case _:
+return $default(_that.engine,_that.query,_that.size,_that.searchFields,_that.sortBy);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -5745,10 +5745,10 @@ return $default(_that.engine,_that.query,_that.sizeField,_that.searchFields,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @JsonKey(name: "size")  int? sizeField, @_ElasticSuggestionTypesConverter()@JsonKey(name: "types")  List<_ElasticSearchField>? searchFields, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(includeToJson: false, includeFromJson: false)  ElasticEngine? engine,  String query, @JsonKey(name: "size")  int? size, @_ElasticSuggestionTypesConverter()@JsonKey(name: "types")  List<_ElasticSearchField>? searchFields, @_ElasticSortConverter()@JsonKey(name: "sort")  List<_ElasticSort>? sortBy)?  $default,) {final _that = this;
 switch (_that) {
 case _ElasticSuggestionsQuery() when $default != null:
-return $default(_that.engine,_that.query,_that.sizeField,_that.searchFields,_that.sortBy);case _:
+return $default(_that.engine,_that.query,_that.size,_that.searchFields,_that.sortBy);case _:
   return null;
 
 }
@@ -5760,7 +5760,7 @@ return $default(_that.engine,_that.query,_that.sizeField,_that.searchFields,_tha
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticSuggestionsQuery extends ElasticSuggestionsQuery {
-  const _ElasticSuggestionsQuery({@JsonKey(includeToJson: false, includeFromJson: false) this.engine, required this.query, @JsonKey(name: "size") this.sizeField = 10, @_ElasticSuggestionTypesConverter()@JsonKey(name: "types") final  List<_ElasticSearchField>? searchFields, @_ElasticSortConverter()@JsonKey(name: "sort") final  List<_ElasticSort>? sortBy}): _searchFields = searchFields,_sortBy = sortBy,super._();
+  const _ElasticSuggestionsQuery({@JsonKey(includeToJson: false, includeFromJson: false) this.engine, required this.query, @JsonKey(name: "size") this.size = 10, @_ElasticSuggestionTypesConverter()@JsonKey(name: "types") final  List<_ElasticSearchField>? searchFields, @_ElasticSortConverter()@JsonKey(name: "sort") final  List<_ElasticSort>? sortBy}): _searchFields = searchFields,_sortBy = sortBy,super._();
   factory _ElasticSuggestionsQuery.fromJson(Map<String, dynamic> json) => _$ElasticSuggestionsQueryFromJson(json);
 
 /// An object representing an Elastic engine
@@ -5770,7 +5770,7 @@ class _ElasticSuggestionsQuery extends ElasticSuggestionsQuery {
 /// Number of query suggestions.
 /// Must be greater than or equal to 1 and less than or equal to 20.
 /// Defaults to 10.
-@override@JsonKey(name: "size") final  int? sizeField;
+@override@JsonKey(name: "size") final  int? size;
 /// Object which restricts a suggestion query to specific text fields.
 /// Serialized as `types.documents.fields` in App Search.
  final  List<_ElasticSearchField>? _searchFields;
@@ -5809,16 +5809,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticSuggestionsQuery&&(identical(other.engine, engine) || other.engine == engine)&&(identical(other.query, query) || other.query == query)&&(identical(other.sizeField, sizeField) || other.sizeField == sizeField)&&const DeepCollectionEquality().equals(other._searchFields, _searchFields)&&const DeepCollectionEquality().equals(other._sortBy, _sortBy));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticSuggestionsQuery&&(identical(other.engine, engine) || other.engine == engine)&&(identical(other.query, query) || other.query == query)&&(identical(other.size, size) || other.size == size)&&const DeepCollectionEquality().equals(other._searchFields, _searchFields)&&const DeepCollectionEquality().equals(other._sortBy, _sortBy));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,engine,query,sizeField,const DeepCollectionEquality().hash(_searchFields),const DeepCollectionEquality().hash(_sortBy));
+int get hashCode => Object.hash(runtimeType,engine,query,size,const DeepCollectionEquality().hash(_searchFields),const DeepCollectionEquality().hash(_sortBy));
 
 @override
 String toString() {
-  return 'ElasticSuggestionsQuery(engine: $engine, query: $query, sizeField: $sizeField, searchFields: $searchFields, sortBy: $sortBy)';
+  return 'ElasticSuggestionsQuery(engine: $engine, query: $query, size: $size, searchFields: $searchFields, sortBy: $sortBy)';
 }
 
 
@@ -5829,7 +5829,7 @@ abstract mixin class _$ElasticSuggestionsQueryCopyWith<$Res> implements $Elastic
   factory _$ElasticSuggestionsQueryCopyWith(_ElasticSuggestionsQuery value, $Res Function(_ElasticSuggestionsQuery) _then) = __$ElasticSuggestionsQueryCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(includeToJson: false, includeFromJson: false) ElasticEngine? engine, String query,@JsonKey(name: "size") int? sizeField,@_ElasticSuggestionTypesConverter()@JsonKey(name: "types") List<_ElasticSearchField>? searchFields,@_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? sortBy
+@JsonKey(includeToJson: false, includeFromJson: false) ElasticEngine? engine, String query,@JsonKey(name: "size") int? size,@_ElasticSuggestionTypesConverter()@JsonKey(name: "types") List<_ElasticSearchField>? searchFields,@_ElasticSortConverter()@JsonKey(name: "sort") List<_ElasticSort>? sortBy
 });
 
 
@@ -5846,11 +5846,11 @@ class __$ElasticSuggestionsQueryCopyWithImpl<$Res>
 
 /// Create a copy of ElasticSuggestionsQuery
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? engine = freezed,Object? query = null,Object? sizeField = freezed,Object? searchFields = freezed,Object? sortBy = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? engine = freezed,Object? query = null,Object? size = freezed,Object? searchFields = freezed,Object? sortBy = freezed,}) {
   return _then(_ElasticSuggestionsQuery(
 engine: freezed == engine ? _self.engine : engine // ignore: cast_nullable_to_non_nullable
 as ElasticEngine?,query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
-as String,sizeField: freezed == sizeField ? _self.sizeField : sizeField // ignore: cast_nullable_to_non_nullable
+as String,size: freezed == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
 as int?,searchFields: freezed == searchFields ? _self._searchFields : searchFields // ignore: cast_nullable_to_non_nullable
 as List<_ElasticSearchField>?,sortBy: freezed == sortBy ? _self._sortBy : sortBy // ignore: cast_nullable_to_non_nullable
 as List<_ElasticSort>?,
