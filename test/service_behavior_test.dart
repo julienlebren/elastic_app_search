@@ -510,6 +510,127 @@ void main() {
       expect(schema['visitors'], ElasticSchemaFieldType.number);
     });
 
+    test('search settings endpoints parse payloads', () async {
+      handler = (request) async {
+        if (request.uri.path == '/api/as/v1/engines/parks/search_settings') {
+          if (request.method == 'GET') {
+            await _writeJson(request, 200, {
+              'search_fields': {
+                'title': {'weight': 3},
+              },
+              'result_fields': {
+                'title': {'raw': {}},
+              },
+              'boosts': {
+                'visitors': [
+                  {
+                    'type': 'functional',
+                    'function': 'logarithmic',
+                    'factor': 2.5,
+                  },
+                ],
+              },
+              'precision': 3,
+              'precision_enabled': true,
+            });
+            return;
+          }
+
+          if (request.method == 'PUT') {
+            final body = await _readJson(request);
+            expect(body['search_fields'], {
+              'title': {'weight': 6},
+            });
+            expect(body['result_fields'], {
+              'title': {
+                'snippet': {'size': 40, 'fallback': true},
+              },
+            });
+            expect(body['boosts'], {
+              'visitors': [
+                {
+                  'type': 'value',
+                  'factor': 4,
+                  'value': ['10'],
+                },
+              ],
+            });
+            expect(body['precision'], 7);
+
+            await _writeJson(request, 200, {
+              'search_fields': {
+                'title': {'weight': 6},
+              },
+              'result_fields': {
+                'title': {
+                  'snippet': {'size': 40, 'fallback': true},
+                },
+              },
+              'boosts': {
+                'visitors': [
+                  {
+                    'type': 'value',
+                    'factor': 4,
+                    'value': ['10'],
+                  },
+                ],
+              },
+              'precision': 7,
+              'precision_enabled': true,
+            });
+            return;
+          }
+        }
+
+        if (request.uri.path ==
+                '/api/as/v1/engines/parks/search_settings/reset' &&
+            request.method == 'POST') {
+          await _writeJson(request, 200, {
+            'search_fields': {
+              'title': {'weight': 1},
+            },
+            'boosts': {},
+            'precision': 2,
+            'precision_enabled': true,
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final current = await engine.getSearchSettings();
+      final updated = await engine.updateSearchSettings(
+        searchFields: const {
+          'title': {'weight': 6},
+        },
+        resultFields: const {
+          'title': {
+            'snippet': {'size': 40, 'fallback': true},
+          },
+        },
+        boosts: const {
+          'visitors': [
+            {
+              'type': 'value',
+              'factor': 4,
+              'value': ['10'],
+            },
+          ],
+        },
+        precision: 7,
+      );
+      final reset = await engine.resetSearchSettings();
+
+      expect((current.searchFields?['title'] as Map)['weight'], 3);
+      expect((updated.searchFields?['title'] as Map)['weight'], 6);
+      expect(updated.precision, 7);
+      expect(updated.precisionEnabled, isTrue);
+      expect(reset.precision, 2);
+    });
+
     test('index documents success parses response payload', () async {
       handler = (request) async {
         if (request.uri.path.endsWith('/documents') &&
@@ -729,6 +850,177 @@ void main() {
               .having((e) => e.message, 'message', 'Invalid admin key'),
         ),
       );
+    });
+
+    test('credentials endpoints parse payloads', () async {
+      handler = (request) async {
+        if (request.uri.path == '/api/as/v1/credentials') {
+          if (request.method == 'GET') {
+            final body = await _readJson(request);
+            final page = body['page'] as Map<String, dynamic>?;
+            expect(page?['current'], 2);
+            expect(page?['size'], 10);
+
+            await _writeJson(request, 200, {
+              'meta': {
+                'page': {
+                  'current': 2,
+                  'size': 10,
+                  'total_pages': 3,
+                  'total_results': 21,
+                },
+              },
+              'results': [
+                {
+                  'name': 'my-private-key',
+                  'key': 'private-xyz',
+                  'type': 'private',
+                  'read': true,
+                  'write': false,
+                  'access_all_engines': true,
+                },
+              ],
+            });
+            return;
+          }
+
+          if (request.method == 'POST') {
+            final body = await _readJson(request);
+            expect(body['name'], 'reading-private-key');
+            expect(body['type'], 'private');
+            expect(body['read'], true);
+            expect(body['write'], false);
+            expect(body['access_all_engines'], false);
+            expect(body['engines'], orderedEquals(['parks']));
+
+            await _writeJson(request, 200, {
+              'meta': {
+                'page': {
+                  'current': 1,
+                  'size': 25,
+                  'total_pages': 1,
+                  'total_results': 1,
+                },
+              },
+              'results': [
+                {
+                  'name': 'reading-private-key',
+                  'key': 'private-new',
+                  'type': 'private',
+                  'read': true,
+                  'write': false,
+                  'access_all_engines': false,
+                  'engines': ['parks'],
+                },
+              ],
+            });
+            return;
+          }
+        }
+
+        if (request.uri.path == '/api/as/v1/credentials/reading-private-key') {
+          if (request.method == 'GET') {
+            await _writeJson(request, 200, {
+              'meta': {
+                'page': {
+                  'current': 1,
+                  'size': 25,
+                  'total_pages': 1,
+                  'total_results': 1,
+                },
+              },
+              'results': [
+                {
+                  'name': 'reading-private-key',
+                  'key': 'private-old',
+                  'type': 'private',
+                  'read': true,
+                  'write': false,
+                  'access_all_engines': false,
+                  'engines': ['parks'],
+                },
+              ],
+            });
+            return;
+          }
+
+          if (request.method == 'PUT') {
+            final body = await _readJson(request);
+            expect(body['name'], 'reading-private-key-v2');
+            expect(body['type'], 'private');
+            expect(body['read'], true);
+            expect(body['write'], true);
+            expect(body['access_all_engines'], true);
+            expect(body.containsKey('engines'), isFalse);
+
+            await _writeJson(request, 200, {
+              'meta': {
+                'page': {
+                  'current': 1,
+                  'size': 25,
+                  'total_pages': 1,
+                  'total_results': 1,
+                },
+              },
+              'results': [
+                {
+                  'name': 'reading-private-key-v2',
+                  'key': 'private-old',
+                  'type': 'private',
+                  'read': true,
+                  'write': true,
+                  'access_all_engines': true,
+                },
+              ],
+            });
+            return;
+          }
+
+          if (request.method == 'DELETE') {
+            await _writeJson(request, 200, {'deleted': true});
+            return;
+          }
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final listed = await service.listCredentials(
+        page: const ElasticPageRequest(current: 2, size: 10),
+      );
+      final fetched = await service.getCredential('reading-private-key');
+      final created = await service.createCredential(
+        name: 'reading-private-key',
+        type: ElasticCredentialType.privateKey,
+        read: true,
+        write: false,
+        accessAllEngines: false,
+        engines: const ['parks'],
+      );
+      final updated = await service.updateCredential(
+        'reading-private-key',
+        newName: 'reading-private-key-v2',
+        type: ElasticCredentialType.privateKey,
+        read: true,
+        write: true,
+        accessAllEngines: true,
+      );
+      final deleted = await service.deleteCredential('reading-private-key');
+
+      expect(listed.meta.page.current, 2);
+      expect(listed.meta.page.size, 10);
+      expect(listed.meta.page.totalResults, 21);
+      expect(listed.results, hasLength(1));
+      expect(listed.results.first.type, ElasticCredentialType.privateKey);
+      expect(fetched.name, 'reading-private-key');
+      expect(fetched.accessAllEngines, isFalse);
+      expect(created.key, 'private-new');
+      expect(created.engines, orderedEquals(['parks']));
+      expect(updated.name, 'reading-private-key-v2');
+      expect(updated.accessAllEngines, isTrue);
+      expect(deleted, isTrue);
     });
 
     test('engine info success parses payload', () async {
@@ -1358,6 +1650,75 @@ void main() {
           ),
         ),
         throwsRangeError,
+      );
+    });
+
+    test('search settings API validates payload', () {
+      expect(() => engine.updateSearchSettings(), throwsArgumentError);
+      expect(() => engine.updateSearchSettings(precision: 0), throwsRangeError);
+      expect(
+        () => engine.updateSearchSettings(precision: 12),
+        throwsRangeError,
+      );
+      expect(
+        () => engine.updateSearchSettings(
+          searchFields: const {
+            ' ': {'weight': 1},
+          },
+        ),
+        throwsArgumentError,
+      );
+    });
+
+    test('credentials API validates payload and pagination', () {
+      expect(
+        () =>
+            service.listCredentials(page: const ElasticPageRequest(current: 0)),
+        throwsRangeError,
+      );
+      expect(
+        () => service.listCredentials(page: const ElasticPageRequest(size: 0)),
+        throwsRangeError,
+      );
+      expect(
+        () => service.listCredentials(page: const ElasticPageRequest(size: 26)),
+        throwsRangeError,
+      );
+
+      expect(() => service.getCredential(' '), throwsArgumentError);
+      expect(() => service.deleteCredential(' '), throwsArgumentError);
+      expect(
+        () => service.createCredential(
+          name: 'private-key',
+          type: ElasticCredentialType.privateKey,
+          read: true,
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => service.createCredential(
+          name: 'admin-key',
+          type: ElasticCredentialType.admin,
+          accessAllEngines: true,
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => service.createCredential(
+          name: 'search-key',
+          type: ElasticCredentialType.search,
+          accessAllEngines: false,
+        ),
+        throwsArgumentError,
+      );
+      expect(() => service.updateCredential('search-key'), throwsArgumentError);
+      expect(
+        () => service.updateCredential('search-key', read: true),
+        throwsArgumentError,
+      );
+      expect(
+        () => service.updateCredential('search-key', accessAllEngines: false),
+        throwsArgumentError,
       );
     });
 

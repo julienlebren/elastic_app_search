@@ -114,6 +114,37 @@ class ElasticEngine {
     CancelToken? cancelToken,
   ]) => service.updateSchema(name, fields, cancelToken);
 
+  /// Retrieves default search settings for this engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/search_settings`.
+  Future<ElasticSearchSettings> getSearchSettings([CancelToken? cancelToken]) =>
+      service.getSearchSettings(name, cancelToken);
+
+  /// Updates default search settings for this engine.
+  ///
+  /// Uses `PUT /api/as/v1/engines/{engine}/search_settings`.
+  Future<ElasticSearchSettings> updateSearchSettings({
+    Map<String, dynamic>? searchFields,
+    Map<String, dynamic>? resultFields,
+    Map<String, dynamic>? boosts,
+    int? precision,
+    CancelToken? cancelToken,
+  }) => service.updateSearchSettings(
+    name,
+    searchFields: searchFields,
+    resultFields: resultFields,
+    boosts: boosts,
+    precision: precision,
+    cancelToken: cancelToken,
+  );
+
+  /// Resets search settings for this engine.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/search_settings/reset`.
+  Future<ElasticSearchSettings> resetSearchSettings([
+    CancelToken? cancelToken,
+  ]) => service.resetSearchSettings(name, cancelToken);
+
   /// Lists engine documents with pagination.
   ///
   /// Uses `GET /api/as/v1/engines/{engine}/documents/list`.

@@ -795,6 +795,114 @@ class ElasticAppSearch {
     return validated;
   }
 
+  String _validateCredentialName(
+    String name, {
+    String parameter = 'name',
+    String context = 'Credential',
+  }) {
+    final trimmed = name.trim();
+    if (trimmed.isEmpty) {
+      throw ArgumentError.value(
+        name,
+        parameter,
+        '$context name must be a non-empty string.',
+      );
+    }
+    if (trimmed.length > 64) {
+      throw RangeError.range(
+        trimmed.length,
+        1,
+        64,
+        '$parameter.length',
+        '$context name must be 64 characters or less.',
+      );
+    }
+    if (!RegExp(r'^[A-Za-z0-9-]+$').hasMatch(trimmed)) {
+      throw ArgumentError.value(
+        name,
+        parameter,
+        '$context name can only contain letters, numbers, and hyphens.',
+      );
+    }
+    return trimmed;
+  }
+
+  List<String> _validateCredentialEngines(
+    List<String> engines, {
+    String parameter = 'engines',
+  }) {
+    if (engines.isEmpty) {
+      throw ArgumentError.value(
+        engines,
+        parameter,
+        'At least one engine is required when accessAllEngines is false.',
+      );
+    }
+
+    final validated = <String>[];
+    final deduplicated = <String>{};
+    for (var i = 0; i < engines.length; i++) {
+      final validatedEngine = _validateEngineName(
+        engines[i],
+        parameter: '$parameter[$i]',
+        context: 'Credential engine',
+      );
+      if (!deduplicated.add(validatedEngine)) {
+        throw ArgumentError.value(
+          engines[i],
+          '$parameter[$i]',
+          'Credential engines must be unique.',
+        );
+      }
+      validated.add(validatedEngine);
+    }
+
+    return validated;
+  }
+
+  Map<String, dynamic> _validateSearchSettingsFieldMap(
+    Map<String, dynamic> fields, {
+    required String parameter,
+  }) {
+    final normalized = <String, dynamic>{};
+    for (final entry in fields.entries) {
+      final field = entry.key.trim();
+      if (field.isEmpty) {
+        throw ArgumentError.value(
+          entry.key,
+          parameter,
+          'Search settings field names must be non-empty strings.',
+        );
+      }
+
+      if (normalized.containsKey(field)) {
+        throw ArgumentError.value(
+          entry.key,
+          parameter,
+          'Search settings field names must be unique.',
+        );
+      }
+
+      normalized[field] = _mutableJsonValue(entry.value);
+    }
+    return normalized;
+  }
+
+  ElasticCredential _parseSingleCredentialResponse(
+    dynamic responseData, {
+    required String context,
+  }) {
+    final parsed = ElasticCredentialsResponse.fromJson(
+      _asJsonObject(responseData),
+    );
+    if (parsed.results.isEmpty) {
+      throw FormatException(
+        '$context response must contain at least one credential in results.',
+      );
+    }
+    return parsed.results.first;
+  }
+
   /// Executes a request on Elastic App Search and returns a [ElasticResponse] object
   /// An [ElasticQuery] must be provided with the parameters of the query.
   ///
@@ -1096,6 +1204,115 @@ class ElasticAppSearch {
       cancelToken: cancelToken,
       parse: (responseData) =>
           ElasticSchema.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Retrieves search settings for an engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/search_settings`.
+  Future<ElasticSearchSettings> getSearchSettings(
+    String engine, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final url = _operationUrl(engineName, Operation.searchSettingsGet);
+    return _sendRequest<ElasticSearchSettings>(
+      method: 'GET',
+      url: url,
+      operation: Operation.searchSettingsGet,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticSearchSettings.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Updates default search settings for an engine.
+  ///
+  /// Uses `PUT /api/as/v1/engines/{engine}/search_settings`.
+  Future<ElasticSearchSettings> updateSearchSettings(
+    String engine, {
+    Map<String, dynamic>? searchFields,
+    Map<String, dynamic>? resultFields,
+    Map<String, dynamic>? boosts,
+    int? precision,
+    CancelToken? cancelToken,
+  }) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    _validatePrecisionTuning(precision);
+
+    final payload = <String, dynamic>{};
+    if (searchFields != null) {
+      payload['search_fields'] = _validateSearchSettingsFieldMap(
+        searchFields,
+        parameter: 'searchFields',
+      );
+    }
+    if (resultFields != null) {
+      payload['result_fields'] = _validateSearchSettingsFieldMap(
+        resultFields,
+        parameter: 'resultFields',
+      );
+    }
+    if (boosts != null) {
+      payload['boosts'] = _validateSearchSettingsFieldMap(
+        boosts,
+        parameter: 'boosts',
+      );
+    }
+    if (precision != null) {
+      payload['precision'] = precision;
+    }
+
+    if (payload.isEmpty) {
+      throw ArgumentError(
+        'At least one search settings field must be provided '
+        '(searchFields, resultFields, boosts, precision).',
+      );
+    }
+
+    final url = _operationUrl(engineName, Operation.searchSettingsUpdate);
+    return _sendRequest<ElasticSearchSettings>(
+      method: 'PUT',
+      url: url,
+      operation: Operation.searchSettingsUpdate,
+      engine: engineName,
+      body: payload,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticSearchSettings.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Resets search settings for an engine.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/search_settings/reset`.
+  Future<ElasticSearchSettings> resetSearchSettings(
+    String engine, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final url = _operationUrl(engineName, Operation.searchSettingsReset);
+    return _sendRequest<ElasticSearchSettings>(
+      method: 'POST',
+      url: url,
+      operation: Operation.searchSettingsReset,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticSearchSettings.fromJson(_asJsonObject(responseData)),
     );
   }
 
@@ -1571,6 +1788,241 @@ class ElasticAppSearch {
       url: url,
       operation: Operation.curationDelete,
       engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) {
+        final data = _asJsonObject(responseData);
+        return _toBool(data['deleted']);
+      },
+    );
+  }
+
+  /// Lists credentials for the account.
+  ///
+  /// Uses `GET /api/as/v1/credentials`.
+  Future<ElasticCredentialsResponse> listCredentials({
+    ElasticPageRequest page = const ElasticPageRequest(current: 1, size: 25),
+    CancelToken? cancelToken,
+  }) {
+    _validatePageRequest(page: page, maxSize: 25, context: 'credentials page');
+
+    final url = _operationUrl(_accountScope, Operation.credentialsList);
+    return _sendRequest<ElasticCredentialsResponse>(
+      method: 'GET',
+      url: url,
+      operation: Operation.credentialsList,
+      engine: _accountScope,
+      body: page.toBody(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCredentialsResponse.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Retrieves one credential by name.
+  ///
+  /// Uses `GET /api/as/v1/credentials/{name}`.
+  Future<ElasticCredential> getCredential(
+    String name, [
+    CancelToken? cancelToken,
+  ]) {
+    final credentialName = _validateCredentialName(name);
+    final url = _accountApiUrl('credentials/$credentialName');
+
+    return _sendRequest<ElasticCredential>(
+      method: 'GET',
+      url: url,
+      operation: Operation.credentialGet,
+      engine: _accountScope,
+      cancelToken: cancelToken,
+      parse: (responseData) => _parseSingleCredentialResponse(
+        responseData,
+        context: 'Get credential',
+      ),
+    );
+  }
+
+  /// Creates a new credential.
+  ///
+  /// Uses `POST /api/as/v1/credentials`.
+  Future<ElasticCredential> createCredential({
+    required String name,
+    required ElasticCredentialType type,
+    bool? read,
+    bool? write,
+    bool? accessAllEngines,
+    List<String>? engines,
+    CancelToken? cancelToken,
+  }) {
+    final credentialName = _validateCredentialName(name);
+    if (type == ElasticCredentialType.privateKey) {
+      if (read == null || write == null) {
+        throw ArgumentError(
+          'Private credentials require both read and write permissions.',
+        );
+      }
+    } else if (read != null || write != null) {
+      throw ArgumentError(
+        'read/write permissions are only accepted for private credentials.',
+      );
+    }
+
+    final validatedEngines = engines == null
+        ? null
+        : _validateCredentialEngines(engines);
+
+    if (type == ElasticCredentialType.admin) {
+      if (accessAllEngines != null || validatedEngines != null) {
+        throw ArgumentError('Admin credentials cannot be scoped to engines.');
+      }
+    }
+
+    if (accessAllEngines == true && validatedEngines != null) {
+      throw ArgumentError(
+        'engines cannot be provided when accessAllEngines is true.',
+      );
+    }
+
+    if (accessAllEngines == false &&
+        (validatedEngines == null || validatedEngines.isEmpty)) {
+      throw ArgumentError(
+        'engines must be provided when accessAllEngines is false.',
+      );
+    }
+
+    final payload = <String, dynamic>{
+      'name': credentialName,
+      'type': type.apiValue,
+    };
+    if (read != null) payload['read'] = read;
+    if (write != null) payload['write'] = write;
+    if (validatedEngines != null) {
+      payload['access_all_engines'] = accessAllEngines ?? false;
+      payload['engines'] = validatedEngines;
+    } else if (accessAllEngines != null) {
+      payload['access_all_engines'] = accessAllEngines;
+    }
+
+    final url = _operationUrl(_accountScope, Operation.credentialCreate);
+    return _sendRequest<ElasticCredential>(
+      method: 'POST',
+      url: url,
+      operation: Operation.credentialCreate,
+      engine: _accountScope,
+      body: payload,
+      cancelToken: cancelToken,
+      parse: (responseData) => _parseSingleCredentialResponse(
+        responseData,
+        context: 'Create credential',
+      ),
+    );
+  }
+
+  /// Updates an existing credential.
+  ///
+  /// Uses `PUT /api/as/v1/credentials/{name}`.
+  Future<ElasticCredential> updateCredential(
+    String name, {
+    String? newName,
+    ElasticCredentialType? type,
+    bool? read,
+    bool? write,
+    bool? accessAllEngines,
+    List<String>? engines,
+    CancelToken? cancelToken,
+  }) {
+    final credentialName = _validateCredentialName(name);
+    if (newName == null &&
+        type == null &&
+        read == null &&
+        write == null &&
+        accessAllEngines == null &&
+        engines == null) {
+      throw ArgumentError(
+        'At least one field must be provided to update a credential '
+        '(newName, type, read, write, accessAllEngines, engines).',
+      );
+    }
+
+    if ((read == null) != (write == null)) {
+      throw ArgumentError(
+        'read and write must be provided together when updating credential permissions.',
+      );
+    }
+    if (type != null &&
+        type != ElasticCredentialType.privateKey &&
+        (read != null || write != null)) {
+      throw ArgumentError(
+        'read/write permissions are only accepted for private credentials.',
+      );
+    }
+
+    final validatedNewName = newName == null
+        ? null
+        : _validateCredentialName(
+            newName,
+            parameter: 'newName',
+            context: 'Credential',
+          );
+    final validatedEngines = engines == null
+        ? null
+        : _validateCredentialEngines(engines);
+
+    if (accessAllEngines == true && validatedEngines != null) {
+      throw ArgumentError(
+        'engines cannot be provided when accessAllEngines is true.',
+      );
+    }
+
+    if (accessAllEngines == false &&
+        (validatedEngines == null || validatedEngines.isEmpty)) {
+      throw ArgumentError(
+        'engines must be provided when accessAllEngines is false.',
+      );
+    }
+
+    if (type == ElasticCredentialType.admin &&
+        (accessAllEngines != null || validatedEngines != null)) {
+      throw ArgumentError('Admin credentials cannot be scoped to engines.');
+    }
+
+    final payload = <String, dynamic>{};
+    if (validatedNewName != null) payload['name'] = validatedNewName;
+    if (type != null) payload['type'] = type.apiValue;
+    if (read != null) payload['read'] = read;
+    if (write != null) payload['write'] = write;
+    if (validatedEngines != null) {
+      payload['access_all_engines'] = accessAllEngines ?? false;
+      payload['engines'] = validatedEngines;
+    } else if (accessAllEngines != null) {
+      payload['access_all_engines'] = accessAllEngines;
+    }
+
+    final url = _accountApiUrl('credentials/$credentialName');
+    return _sendRequest<ElasticCredential>(
+      method: 'PUT',
+      url: url,
+      operation: Operation.credentialUpdate,
+      engine: _accountScope,
+      body: payload,
+      cancelToken: cancelToken,
+      parse: (responseData) => _parseSingleCredentialResponse(
+        responseData,
+        context: 'Update credential',
+      ),
+    );
+  }
+
+  /// Deletes a credential by name.
+  ///
+  /// Uses `DELETE /api/as/v1/credentials/{name}`.
+  Future<bool> deleteCredential(String name, [CancelToken? cancelToken]) {
+    final credentialName = _validateCredentialName(name);
+    final url = _accountApiUrl('credentials/$credentialName');
+    return _sendRequest<bool>(
+      method: 'DELETE',
+      url: url,
+      operation: Operation.credentialDelete,
+      engine: _accountScope,
       cancelToken: cancelToken,
       parse: (responseData) {
         final data = _asJsonObject(responseData);

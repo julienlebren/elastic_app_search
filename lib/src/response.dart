@@ -218,6 +218,18 @@ bool _toBool(dynamic value) {
   return false;
 }
 
+bool? _toNullableBool(dynamic value) {
+  if (value == null) return null;
+  if (value is bool) return value;
+  if (value is num) return value != 0;
+  if (value is String) {
+    final normalized = value.trim().toLowerCase();
+    if (normalized == 'true') return true;
+    if (normalized == 'false') return false;
+  }
+  return null;
+}
+
 /// Result entry returned by documents index/create/update operations.
 @freezed
 abstract class ElasticDocumentIndexResult with _$ElasticDocumentIndexResult {
@@ -356,6 +368,35 @@ Map<String, dynamic> _asJsonObjectStrict(
     throw FormatException('$context must be a JSON object.');
   }
   return mapped;
+}
+
+dynamic _immutableJsonValue(dynamic value) {
+  if (value is Map) {
+    return Map.unmodifiable(
+      value.map(
+        (key, entryValue) =>
+            MapEntry(key.toString(), _immutableJsonValue(entryValue)),
+      ),
+    );
+  }
+  if (value is List) {
+    return List.unmodifiable(value.map(_immutableJsonValue));
+  }
+  return value;
+}
+
+dynamic _mutableJsonValue(dynamic value) {
+  if (value is Map) {
+    final map = <String, dynamic>{};
+    for (final entry in value.entries) {
+      map[entry.key.toString()] = _mutableJsonValue(entry.value);
+    }
+    return map;
+  }
+  if (value is List) {
+    return value.map(_mutableJsonValue).toList();
+  }
+  return value;
 }
 
 /// Detailed engine payload returned by engines and meta-engines endpoints.
@@ -626,4 +667,173 @@ class ElasticCurationWriteResult {
   }
 
   Map<String, dynamic> toJson() => {'id': id};
+}
+
+Map<String, dynamic>? _immutableJsonObject(dynamic value) {
+  final mapped = _asStringDynamicMap(value);
+  if (mapped == null) return null;
+  return Map.unmodifiable(
+    mapped.map(
+      (key, entryValue) => MapEntry(key, _immutableJsonValue(entryValue)),
+    ),
+  );
+}
+
+/// Search settings payload returned by `search_settings` endpoints.
+class ElasticSearchSettings {
+  const ElasticSearchSettings({
+    this.searchFields,
+    this.resultFields,
+    this.boosts,
+    this.precision,
+    this.precisionEnabled,
+  });
+
+  /// Default `search_fields` map applied by the engine.
+  final Map<String, dynamic>? searchFields;
+
+  /// Default `result_fields` map applied by the engine.
+  final Map<String, dynamic>? resultFields;
+
+  /// Default `boosts` map applied by the engine.
+  final Map<String, dynamic>? boosts;
+
+  /// Default precision value (1-11) when precision tuning is enabled.
+  final int? precision;
+
+  /// Whether precision tuning can be changed for this engine.
+  final bool? precisionEnabled;
+
+  factory ElasticSearchSettings.fromJson(Map<String, dynamic> json) {
+    return ElasticSearchSettings(
+      searchFields: _immutableJsonObject(json['search_fields']),
+      resultFields: _immutableJsonObject(json['result_fields']),
+      boosts: _immutableJsonObject(json['boosts']),
+      precision: _toNullableInt(json['precision']),
+      precisionEnabled: _toNullableBool(json['precision_enabled']),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final json = <String, dynamic>{
+      'search_fields': searchFields == null
+          ? null
+          : _mutableJsonValue(searchFields),
+      'result_fields': resultFields == null
+          ? null
+          : _mutableJsonValue(resultFields),
+      'boosts': boosts == null ? null : _mutableJsonValue(boosts),
+      'precision': precision,
+      'precision_enabled': precisionEnabled,
+    };
+    json.removeWhere((key, value) => value == null);
+    return json;
+  }
+}
+
+/// A single credential returned by the Credentials API.
+class ElasticCredential {
+  const ElasticCredential({
+    required this.name,
+    this.key,
+    this.type,
+    this.typeRaw,
+    this.read,
+    this.write,
+    this.accessAllEngines,
+    this.engines,
+  });
+
+  /// User-defined credential name.
+  final String name;
+
+  /// Actual API key value when present in the response.
+  final String? key;
+
+  /// Parsed credential type when it matches known App Search values.
+  final ElasticCredentialType? type;
+
+  /// Raw credential type value returned by the API.
+  final String? typeRaw;
+
+  /// Read permission flag for private keys.
+  final bool? read;
+
+  /// Write permission flag for private keys.
+  final bool? write;
+
+  /// Whether this key can access all present and future engines.
+  final bool? accessAllEngines;
+
+  /// Engine allow-list when `accessAllEngines` is `false`.
+  final List<String>? engines;
+
+  factory ElasticCredential.fromJson(Map<String, dynamic> json) {
+    final rawType = json['type']?.toString();
+    ElasticCredentialType? parsedType;
+    if (rawType != null && rawType.isNotEmpty) {
+      try {
+        parsedType = _credentialTypeFromApiValue(rawType);
+      } on FormatException {
+        parsedType = null;
+      }
+    }
+
+    final engineList = _toNullableStringList(json['engines']);
+    return ElasticCredential(
+      name: _toStringOrEmpty(json['name']),
+      key: json['key']?.toString(),
+      type: parsedType,
+      typeRaw: rawType,
+      read: _toNullableBool(json['read']),
+      write: _toNullableBool(json['write']),
+      accessAllEngines: _toNullableBool(json['access_all_engines']),
+      engines: engineList == null ? null : List.unmodifiable(engineList),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final json = <String, dynamic>{
+      'name': name,
+      'key': key,
+      'type': type?.apiValue ?? typeRaw,
+      'read': read,
+      'write': write,
+      'access_all_engines': accessAllEngines,
+      'engines': engines,
+    };
+    json.removeWhere((key, value) => value == null);
+    return json;
+  }
+}
+
+/// Paginated response returned by credentials list and single-key endpoints.
+class ElasticCredentialsResponse {
+  const ElasticCredentialsResponse({required this.meta, required this.results});
+
+  /// Pagination metadata.
+  final ElasticDocumentsListMeta meta;
+
+  /// Credentials returned in the current page.
+  final List<ElasticCredential> results;
+
+  factory ElasticCredentialsResponse.fromJson(Map<String, dynamic> json) {
+    final metaJson = _asJsonObjectStrict(json['meta'], context: 'meta');
+    final resultItems = _asJsonObjectListStrict(
+      json['results'],
+      context: 'results',
+    );
+
+    return ElasticCredentialsResponse(
+      meta: ElasticDocumentsListMeta.fromJson(metaJson),
+      results: List.unmodifiable(
+        resultItems.map(ElasticCredential.fromJson).toList(),
+      ),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'meta': meta.toJson(),
+    'results': results.map((item) => item.toJson()).toList(),
+  };
 }

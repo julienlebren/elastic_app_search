@@ -706,5 +706,198 @@ void main() {
         );
       },
     );
+
+    test(
+      'get search settings failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.getSearchSettings(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.searchSettingsGet,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/search_settings',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'update search settings failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.updateSearchSettings(
+            searchFields: const {
+              'title': {'weight': 2},
+            },
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.searchSettingsUpdate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/search_settings',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'reset search settings failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.resetSearchSettings(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.searchSettingsReset,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/search_settings/reset',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'credentials list failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          service.listCredentials(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.credentialsList,
+                )
+                .having((e) => e.engine, 'engine', '<account>')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/credentials',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'get credential failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          service.getCredential('my-private-key'),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.credentialGet,
+                )
+                .having((e) => e.engine, 'engine', '<account>')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/credentials/my-private-key',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'create credential failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          service.createCredential(
+            name: 'my-private-key',
+            type: ElasticCredentialType.privateKey,
+            read: true,
+            write: false,
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.credentialCreate,
+                )
+                .having((e) => e.engine, 'engine', '<account>')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/credentials',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'update credential failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          service.updateCredential('my-private-key', read: true, write: false),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.credentialUpdate,
+                )
+                .having((e) => e.engine, 'engine', '<account>')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/credentials/my-private-key',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'delete credential failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          service.deleteCredential('my-private-key'),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.credentialDelete,
+                )
+                .having((e) => e.engine, 'engine', '<account>')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/credentials/my-private-key',
+                ),
+          ),
+        );
+      },
+    );
   });
 }

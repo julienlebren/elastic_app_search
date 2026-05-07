@@ -131,11 +131,19 @@ enum Operation {
   querySuggestion("query_suggestion"),
   schemaGet("schema"),
   schemaUpdate("schema"),
+  searchSettingsGet("search_settings"),
+  searchSettingsUpdate("search_settings"),
+  searchSettingsReset("search_settings/reset"),
   documentsCreateOrUpdate("documents"),
   documentsGet("documents"),
   documentsDelete("documents"),
   documentsPartialUpdate("documents"),
   documentsList("documents/list"),
+  credentialsList("credentials"),
+  credentialGet("credentials"),
+  credentialCreate("credentials"),
+  credentialUpdate("credentials"),
+  credentialDelete("credentials"),
   click("click"),
   analyticsQueries("analytics/queries"),
   analyticsClicks("analytics/clicks"),
@@ -180,6 +188,39 @@ extension _ElasticSchemaFieldTypeX on ElasticSchemaFieldType {
         return 'geolocation';
     }
   }
+}
+
+/// Supported credential types for the Credentials API.
+///
+/// See https://www.elastic.co/guide/en/app-search/current/credentials.html
+enum ElasticCredentialType { privateKey, search, admin }
+
+extension _ElasticCredentialTypeX on ElasticCredentialType {
+  String get apiValue {
+    switch (this) {
+      case ElasticCredentialType.privateKey:
+        return 'private';
+      case ElasticCredentialType.search:
+        return 'search';
+      case ElasticCredentialType.admin:
+        return 'admin';
+    }
+  }
+}
+
+ElasticCredentialType _credentialTypeFromApiValue(String value) {
+  switch (value) {
+    case 'private':
+      return ElasticCredentialType.privateKey;
+    case 'search':
+      return ElasticCredentialType.search;
+    case 'admin':
+      return ElasticCredentialType.admin;
+  }
+
+  throw FormatException(
+    'Invalid credential type "$value". Expected one of: private, search, admin.',
+  );
 }
 
 ElasticSchemaFieldType _schemaFieldTypeFromApiValue(String value) {
