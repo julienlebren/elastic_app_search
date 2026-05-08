@@ -1412,6 +1412,310 @@ void main() {
       expect(reset.analytics.enabled, isTrue);
     });
 
+    test('crawler endpoints parse payloads', () async {
+      handler = (request) async {
+        if (request.uri.path == '/api/as/v1/engines/parks/crawler') {
+          expect(request.method, 'GET');
+          await _writeJson(request, 200, {
+            'domains': [
+              {
+                'id': 'dom-1',
+                'name': 'https://example.com',
+                'document_count': 12,
+              },
+            ],
+          });
+          return;
+        }
+
+        if (request.uri.path ==
+            '/api/as/v1/engines/parks/crawler/crawl_requests/active') {
+          if (request.method == 'GET') {
+            await _writeJson(request, 200, {
+              'id': 'cr-active',
+              'type': 'full',
+              'status': 'running',
+              'created_at': '2021-02-03T22:20:29Z',
+              'begun_at': '2021-02-03T22:20:31Z',
+              'completed_at': null,
+            });
+            return;
+          }
+        }
+
+        if (request.uri.path ==
+            '/api/as/v1/engines/parks/crawler/crawl_requests/active/cancel') {
+          expect(request.method, 'POST');
+          await _writeJson(request, 200, {
+            'id': 'cr-active',
+            'type': 'full',
+            'status': 'canceling',
+            'created_at': '2021-02-03T22:20:29Z',
+            'begun_at': '2021-02-03T22:20:31Z',
+            'completed_at': null,
+          });
+          return;
+        }
+
+        if (request.uri.path ==
+            '/api/as/v1/engines/parks/crawler/crawl_requests') {
+          if (request.method == 'GET') {
+            final body = await _readJson(request);
+            final page = body['page'] as Map<String, dynamic>?;
+            expect(page?['current'], 1);
+            expect(page?['size'], 10);
+
+            await _writeJson(request, 200, {
+              'meta': {
+                'page': {
+                  'current': 1,
+                  'size': 10,
+                  'total_pages': 1,
+                  'total_results': 1,
+                },
+              },
+              'results': [
+                {
+                  'id': 'cr-1',
+                  'type': 'full',
+                  'status': 'success',
+                  'created_at': '2021-02-01T10:00:00Z',
+                  'begun_at': '2021-02-01T10:00:01Z',
+                  'completed_at': '2021-02-01T10:30:00Z',
+                },
+              ],
+            });
+            return;
+          }
+
+          if (request.method == 'POST') {
+            final body = await _readJson(request);
+            if (body.isEmpty) {
+              await _writeJson(request, 200, {
+                'id': 'cr-new',
+                'type': 'full',
+                'status': 'pending',
+                'created_at': '2021-02-02T10:00:00Z',
+                'begun_at': null,
+                'completed_at': null,
+              });
+              return;
+            }
+
+            expect(body['max_crawl_depth'], 2);
+            expect(body['domain_allowlist'], ['https://example.com']);
+            expect(body['seed_urls'], ['https://example.com/start']);
+            expect(body['sitemap_urls'], ['https://example.com/sitemap.xml']);
+            expect(body['sitemap_discovery_disabled'], true);
+
+            await _writeJson(request, 200, {
+              'id': 'cr-partial',
+              'type': 'partial',
+              'status': 'pending',
+              'created_at': '2021-02-02T11:00:00Z',
+              'begun_at': null,
+              'completed_at': null,
+            });
+            return;
+          }
+        }
+
+        if (request.uri.path ==
+            '/api/as/v1/engines/parks/crawler/crawl_requests/cr-1') {
+          expect(request.method, 'GET');
+          await _writeJson(request, 200, {
+            'id': 'cr-1',
+            'type': 'full',
+            'status': 'success',
+            'created_at': '2021-02-01T10:00:00Z',
+            'begun_at': '2021-02-01T10:00:01Z',
+            'completed_at': '2021-02-01T10:30:00Z',
+          });
+          return;
+        }
+
+        if (request.uri.path ==
+            '/api/as/v1/engines/parks/crawler/crawl_schedule') {
+          if (request.method == 'GET') {
+            await _writeJson(request, 200, {
+              'engine': 'parks',
+              'frequency': 2,
+              'unit': 'week',
+            });
+            return;
+          }
+          if (request.method == 'PUT') {
+            final body = await _readJson(request);
+            expect(body, {'frequency': 12, 'unit': 'hour'});
+            await _writeJson(request, 200, {
+              'engine': 'parks',
+              'frequency': 12,
+              'unit': 'hour',
+            });
+            return;
+          }
+          if (request.method == 'DELETE') {
+            await _writeJson(request, 200, {'deleted': true});
+            return;
+          }
+        }
+
+        if (request.uri.path ==
+            '/api/as/v1/engines/parks/crawler/process_crawls') {
+          if (request.method == 'GET') {
+            final body = await _readJson(request);
+            final page = body['page'] as Map<String, dynamic>?;
+            expect(page?['current'], 1);
+            expect(page?['size'], 10);
+
+            await _writeJson(request, 200, {
+              'meta': {
+                'page': {
+                  'current': 1,
+                  'size': 10,
+                  'total_pages': 1,
+                  'total_results': 1,
+                },
+              },
+              'results': [
+                {
+                  'id': 'pc-1',
+                  'dry_run': true,
+                  'total_url_count': 167,
+                  'denied_url_count': 92,
+                  'domains': ['https://example.com'],
+                  'process_all_domains': false,
+                  'created_at': '2021-09-15T16:31:34Z',
+                  'begun_at': '2021-09-15T16:31:35Z',
+                  'completed_at': '2021-09-15T16:31:52Z',
+                },
+              ],
+            });
+            return;
+          }
+          if (request.method == 'POST') {
+            final body = await _readJson(request);
+            expect(body['dry_run'], true);
+            expect(body['domains'], ['https://example.com']);
+            await _writeJson(request, 200, {
+              'id': 'pc-2',
+              'dry_run': true,
+              'total_url_count': 0,
+              'denied_url_count': 0,
+              'domains': ['https://example.com'],
+              'process_all_domains': false,
+              'created_at': '2021-09-15T17:00:00Z',
+              'begun_at': null,
+              'completed_at': null,
+            });
+            return;
+          }
+        }
+
+        if (request.uri.path ==
+            '/api/as/v1/engines/parks/crawler/process_crawls/pc-1') {
+          expect(request.method, 'GET');
+          await _writeJson(request, 200, {
+            'id': 'pc-1',
+            'dry_run': true,
+            'total_url_count': 167,
+            'denied_url_count': 92,
+            'domains': ['https://example.com'],
+            'process_all_domains': false,
+            'created_at': '2021-09-15T16:31:34Z',
+            'begun_at': '2021-09-15T16:31:35Z',
+            'completed_at': '2021-09-15T16:31:52Z',
+          });
+          return;
+        }
+
+        if (request.uri.path ==
+            '/api/as/v1/engines/parks/crawler/process_crawls/pc-1/denied_urls') {
+          expect(request.method, 'GET');
+          await _writeJson(request, 200, {
+            'total_url_count': 167,
+            'denied_url_count': 92,
+            'sample_size': 2,
+            'denied_urls_sample': [
+              'https://example.com/private',
+              'https://example.com/archive',
+            ],
+          });
+          return;
+        }
+
+        if (request.uri.path == '/api/as/v1/crawler/user_agent') {
+          expect(request.method, 'GET');
+          await _writeJson(request, 200, {
+            'user_agent': 'Elastic Crawler (0.0.1)',
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      final config = await engine.getCrawlerConfiguration();
+      final active = await engine.getActiveCrawlRequest();
+      final canceled = await engine.cancelActiveCrawlRequest();
+      final crawls = await engine.listCrawlRequests(
+        page: const ElasticPageRequest(current: 1, size: 10),
+      );
+      final created = await engine.createCrawlRequest();
+      final partial = await engine.createPartialCrawlRequest(
+        const ElasticCrawlerPartialCrawlRequest(
+          maxCrawlDepth: 2,
+          domainAllowlist: ['https://example.com'],
+          seedUrls: ['https://example.com/start'],
+          sitemapUrls: ['https://example.com/sitemap.xml'],
+          sitemapDiscoveryDisabled: true,
+        ),
+      );
+      final crawlDetail = await engine.getCrawlRequest('cr-1');
+      final schedule = await engine.getCrawlSchedule();
+      final updatedSchedule = await engine.updateCrawlSchedule(
+        const ElasticCrawlerCrawlSchedule(
+          frequency: 12,
+          unit: ElasticCrawlerCrawlScheduleUnit.hour,
+        ),
+      );
+      final deletedSchedule = await engine.deleteCrawlSchedule();
+      final processCrawls = await engine.listProcessCrawls(
+        page: const ElasticPageRequest(current: 1, size: 10),
+      );
+      final processCrawl = await engine.getProcessCrawl('pc-1');
+      final deniedUrls = await engine.getProcessCrawlDeniedUrls('pc-1');
+      final createdProcessCrawl = await engine.createProcessCrawl(
+        request: const ElasticCrawlerProcessCrawlRequest(
+          dryRun: true,
+          domains: ['https://example.com'],
+        ),
+      );
+      final crawlerUserAgent = await service.getCrawlerUserAgent();
+
+      expect(config.domains, hasLength(1));
+      expect(config.domains.first['name'], 'https://example.com');
+      expect(active.status, 'running');
+      expect(canceled.status, 'canceling');
+      expect(crawls.meta.page.totalResults, 1);
+      expect(crawls.results.first.id, 'cr-1');
+      expect(created.type, 'full');
+      expect(partial.type, 'partial');
+      expect(crawlDetail.completedAt, '2021-02-01T10:30:00Z');
+      expect(schedule.frequency, 2);
+      expect(schedule.unit, ElasticCrawlerCrawlScheduleUnit.week);
+      expect(updatedSchedule.frequency, 12);
+      expect(updatedSchedule.unit, ElasticCrawlerCrawlScheduleUnit.hour);
+      expect(deletedSchedule, isTrue);
+      expect(processCrawls.results, hasLength(1));
+      expect(processCrawl.deniedUrlCount, 92);
+      expect(deniedUrls.deniedUrlsSample, hasLength(2));
+      expect(createdProcessCrawl.id, 'pc-2');
+      expect(crawlerUserAgent.userAgent, 'Elastic Crawler (0.0.1)');
+    });
+
     test('engine info success parses payload', () async {
       handler = (request) async {
         if (request.uri.path == '/api/as/v1/engines/parks') {
@@ -2223,6 +2527,51 @@ void main() {
           ),
         ),
         throwsRangeError,
+      );
+    });
+
+    test('crawler APIs validate payload and pagination', () {
+      expect(
+        () => engine.listCrawlRequests(
+          page: const ElasticPageRequest(current: 0, size: 10),
+        ),
+        throwsRangeError,
+      );
+      expect(
+        () => engine.listCrawlRequests(
+          page: const ElasticPageRequest(current: 1, size: 101),
+        ),
+        throwsRangeError,
+      );
+      expect(
+        () => engine.createPartialCrawlRequest(
+          const ElasticCrawlerPartialCrawlRequest(maxCrawlDepth: 0),
+        ),
+        throwsRangeError,
+      );
+      expect(
+        () => engine.createPartialCrawlRequest(
+          const ElasticCrawlerPartialCrawlRequest(domainAllowlist: ['']),
+        ),
+        throwsArgumentError,
+      );
+      expect(() => engine.getCrawlRequest(' '), throwsArgumentError);
+      expect(
+        () => engine.updateCrawlSchedule(
+          const ElasticCrawlerCrawlSchedule(
+            frequency: 0,
+            unit: ElasticCrawlerCrawlScheduleUnit.day,
+          ),
+        ),
+        throwsRangeError,
+      );
+      expect(() => engine.getProcessCrawl(' '), throwsArgumentError);
+      expect(() => engine.getProcessCrawlDeniedUrls(' '), throwsArgumentError);
+      expect(
+        () => engine.createProcessCrawl(
+          request: const ElasticCrawlerProcessCrawlRequest(domains: ['']),
+        ),
+        throwsArgumentError,
       );
     });
 
@@ -3279,6 +3628,142 @@ void main() {
               .having((e) => e.engine, 'engine', 'parks')
               .having((e) => e.statusCode, 'statusCode', 503)
               .having((e) => e.message, 'message', 'Adaptive refresh failed'),
+        ),
+      );
+    });
+
+    test('crawler HTTP errors are mapped', () async {
+      handler = (request) async {
+        if (request.uri.path == '/api/as/v1/engines/parks/crawler') {
+          await _writeJson(request, 503, {
+            'errors': ['Crawler configuration unavailable'],
+          });
+          return;
+        }
+        if (request.uri.path ==
+                '/api/as/v1/engines/parks/crawler/crawl_requests' &&
+            request.method == 'GET') {
+          await _writeJson(request, 401, {
+            'errors': ['Crawler crawl requests unauthorized'],
+          });
+          return;
+        }
+        if (request.uri.path ==
+                '/api/as/v1/engines/parks/crawler/crawl_schedule' &&
+            request.method == 'GET') {
+          await _writeJson(request, 429, {
+            'errors': ['Crawler crawl schedule rate limited'],
+          });
+          return;
+        }
+        if (request.uri.path ==
+                '/api/as/v1/engines/parks/crawler/process_crawls' &&
+            request.method == 'GET') {
+          await _writeJson(request, 502, {
+            'errors': ['Crawler process crawls unavailable'],
+          });
+          return;
+        }
+        if (request.uri.path == '/api/as/v1/crawler/user_agent') {
+          await _writeJson(request, 403, {
+            'errors': ['Crawler user agent forbidden'],
+          });
+          return;
+        }
+
+        await _writeJson(request, 404, {
+          'errors': ['Unexpected path: ${request.uri.path}'],
+        });
+      };
+
+      await expectLater(
+        engine.getCrawlerConfiguration(),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having((e) => e.operation, 'operation', Operation.crawlerGet)
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 503)
+              .having(
+                (e) => e.message,
+                'message',
+                'Crawler configuration unavailable',
+              ),
+        ),
+      );
+
+      await expectLater(
+        engine.listCrawlRequests(),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.crawlerCrawlRequestsList,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 401)
+              .having(
+                (e) => e.message,
+                'message',
+                'Crawler crawl requests unauthorized',
+              ),
+        ),
+      );
+
+      await expectLater(
+        engine.getCrawlSchedule(),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.crawlerCrawlScheduleGet,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 429)
+              .having(
+                (e) => e.message,
+                'message',
+                'Crawler crawl schedule rate limited',
+              ),
+        ),
+      );
+
+      await expectLater(
+        engine.listProcessCrawls(),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.crawlerProcessCrawlsList,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 502)
+              .having(
+                (e) => e.message,
+                'message',
+                'Crawler process crawls unavailable',
+              ),
+        ),
+      );
+
+      await expectLater(
+        service.getCrawlerUserAgent(),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.crawlerUserAgentGet,
+              )
+              .having((e) => e.engine, 'engine', '<account>')
+              .having((e) => e.statusCode, 'statusCode', 403)
+              .having(
+                (e) => e.message,
+                'message',
+                'Crawler user agent forbidden',
+              ),
         ),
       );
     });

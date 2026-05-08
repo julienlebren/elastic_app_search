@@ -175,6 +175,116 @@ class ElasticEngine {
     cancelToken: cancelToken,
   );
 
+  /// Retrieves crawler configuration for this engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler`.
+  Future<ElasticCrawlerConfiguration> getCrawlerConfiguration([
+    CancelToken? cancelToken,
+  ]) => service.getCrawlerConfiguration(name, cancelToken);
+
+  /// Retrieves the currently active crawl request for this engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler/crawl_requests/active`.
+  Future<ElasticCrawlerCrawlRequest> getActiveCrawlRequest([
+    CancelToken? cancelToken,
+  ]) => service.getActiveCrawlRequest(name, cancelToken);
+
+  /// Requests cancellation for the active crawl request.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/crawl_requests/active/cancel`.
+  Future<ElasticCrawlerCrawlRequest> cancelActiveCrawlRequest([
+    CancelToken? cancelToken,
+  ]) => service.cancelActiveCrawlRequest(name, cancelToken);
+
+  /// Lists crawl requests for this engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler/crawl_requests`.
+  Future<ElasticCrawlerCrawlRequestsResponse> listCrawlRequests({
+    ElasticPageRequest page = const ElasticPageRequest(current: 1, size: 25),
+    CancelToken? cancelToken,
+  }) => service.listCrawlRequests(name, page: page, cancelToken: cancelToken);
+
+  /// Creates a new full crawl request.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/crawl_requests`.
+  Future<ElasticCrawlerCrawlRequest> createCrawlRequest([
+    CancelToken? cancelToken,
+  ]) => service.createCrawlRequest(name, cancelToken);
+
+  /// Creates a new partial crawl request.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/crawl_requests`.
+  Future<ElasticCrawlerCrawlRequest> createPartialCrawlRequest(
+    ElasticCrawlerPartialCrawlRequest request, [
+    CancelToken? cancelToken,
+  ]) => service.createPartialCrawlRequest(name, request, cancelToken);
+
+  /// Retrieves one crawl request by identifier.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler/crawl_requests/{crawlRequestId}`.
+  Future<ElasticCrawlerCrawlRequest> getCrawlRequest(
+    String crawlRequestId, [
+    CancelToken? cancelToken,
+  ]) => service.getCrawlRequest(name, crawlRequestId, cancelToken);
+
+  /// Retrieves current crawl schedule for this engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler/crawl_schedule`.
+  Future<ElasticCrawlerCrawlSchedule> getCrawlSchedule([
+    CancelToken? cancelToken,
+  ]) => service.getCrawlSchedule(name, cancelToken);
+
+  /// Creates or updates crawler schedule for this engine.
+  ///
+  /// Uses `PUT /api/as/v1/engines/{engine}/crawler/crawl_schedule`.
+  Future<ElasticCrawlerCrawlSchedule> updateCrawlSchedule(
+    ElasticCrawlerCrawlSchedule schedule, [
+    CancelToken? cancelToken,
+  ]) => service.updateCrawlSchedule(name, schedule, cancelToken);
+
+  /// Deletes crawler schedule for this engine.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}/crawler/crawl_schedule`.
+  Future<bool> deleteCrawlSchedule([CancelToken? cancelToken]) =>
+      service.deleteCrawlSchedule(name, cancelToken);
+
+  /// Lists process crawls for this engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler/process_crawls`.
+  Future<ElasticCrawlerProcessCrawlsResponse> listProcessCrawls({
+    ElasticPageRequest page = const ElasticPageRequest(current: 1, size: 25),
+    CancelToken? cancelToken,
+  }) => service.listProcessCrawls(name, page: page, cancelToken: cancelToken);
+
+  /// Retrieves one process crawl by identifier.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler/process_crawls/{processCrawlId}`.
+  Future<ElasticCrawlerProcessCrawl> getProcessCrawl(
+    String processCrawlId, [
+    CancelToken? cancelToken,
+  ]) => service.getProcessCrawl(name, processCrawlId, cancelToken);
+
+  /// Retrieves denied URLs sample for a process crawl.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler/process_crawls/{processCrawlId}/denied_urls`.
+  Future<ElasticCrawlerProcessCrawlDeniedUrls> getProcessCrawlDeniedUrls(
+    String processCrawlId, [
+    CancelToken? cancelToken,
+  ]) => service.getProcessCrawlDeniedUrls(name, processCrawlId, cancelToken);
+
+  /// Creates a process crawl.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/process_crawls`.
+  Future<ElasticCrawlerProcessCrawl> createProcessCrawl({
+    ElasticCrawlerProcessCrawlRequest request =
+        const ElasticCrawlerProcessCrawlRequest(),
+    CancelToken? cancelToken,
+  }) => service.createProcessCrawl(
+    name,
+    request: request,
+    cancelToken: cancelToken,
+  );
+
   /// Creates or updates documents in bulk.
   ///
   /// Uses `POST /api/as/v1/engines/{engine}/documents`.

@@ -635,6 +635,95 @@ class ElasticAppSearch {
         Operation.adaptiveRelevanceRefresh.value,
       );
 
+  String _crawlerUrl(String engine, [String suffix = '']) {
+    final base = Operation.crawlerGet.value;
+    final path = suffix.isEmpty ? base : '$base/$suffix';
+    return _engineApiUrl(engine, path);
+  }
+
+  String _validateCrawlerId(
+    String value, {
+    required String parameter,
+    required String context,
+  }) {
+    final trimmed = value.trim();
+    if (trimmed.isEmpty) {
+      throw ArgumentError.value(
+        value,
+        parameter,
+        '$context must be a non-empty string.',
+      );
+    }
+    return trimmed;
+  }
+
+  void _validateCrawlerSchedule(ElasticCrawlerCrawlSchedule schedule) {
+    if (schedule.frequency < 1) {
+      throw RangeError.range(
+        schedule.frequency,
+        1,
+        null,
+        'schedule.frequency',
+        'Crawler schedule frequency must be greater than or equal to 1.',
+      );
+    }
+  }
+
+  List<String> _validateCrawlerStringList(
+    List<String>? values, {
+    required String parameter,
+  }) {
+    if (values == null) return const <String>[];
+
+    final validated = <String>[];
+    for (var i = 0; i < values.length; i++) {
+      final trimmed = values[i].trim();
+      if (trimmed.isEmpty) {
+        throw ArgumentError.value(
+          values[i],
+          '$parameter[$i]',
+          '$parameter entries must be non-empty strings.',
+        );
+      }
+      validated.add(trimmed);
+    }
+    return validated;
+  }
+
+  void _validatePartialCrawlRequest(ElasticCrawlerPartialCrawlRequest request) {
+    final maxDepth = request.maxCrawlDepth;
+    if (maxDepth != null && maxDepth < 1) {
+      throw RangeError.range(
+        maxDepth,
+        1,
+        null,
+        'maxCrawlDepth',
+        'maxCrawlDepth must be greater than or equal to 1.',
+      );
+    }
+
+    _validateCrawlerStringList(
+      request.domainAllowlist,
+      parameter: 'domainAllowlist',
+    );
+    _validateCrawlerStringList(request.seedUrls, parameter: 'seedUrls');
+    _validateCrawlerStringList(request.sitemapUrls, parameter: 'sitemapUrls');
+  }
+
+  void _validateProcessCrawlRequest(ElasticCrawlerProcessCrawlRequest request) {
+    final validatedDomains = _validateCrawlerStringList(
+      request.domains,
+      parameter: 'domains',
+    );
+    if (request.domains != null && validatedDomains.isEmpty) {
+      throw ArgumentError.value(
+        request.domains,
+        'domains',
+        'domains cannot be empty when provided.',
+      );
+    }
+  }
+
   void _validateDocumentIds(
     List<String> ids, {
     required String parameter,
@@ -1690,6 +1779,412 @@ class ElasticAppSearch {
       cancelToken: cancelToken,
       acceptEmptyResponse: true,
       parse: (_) {},
+    );
+  }
+
+  /// Retrieves crawler configuration for an engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler`.
+  Future<ElasticCrawlerConfiguration> getCrawlerConfiguration(
+    String engine, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final url = _crawlerUrl(engineName);
+    return _sendRequest<ElasticCrawlerConfiguration>(
+      method: 'GET',
+      url: url,
+      operation: Operation.crawlerGet,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerConfiguration.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Retrieves the active crawl request for an engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler/crawl_requests/active`.
+  Future<ElasticCrawlerCrawlRequest> getActiveCrawlRequest(
+    String engine, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final url = _crawlerUrl(engineName, 'crawl_requests/active');
+    return _sendRequest<ElasticCrawlerCrawlRequest>(
+      method: 'GET',
+      url: url,
+      operation: Operation.crawlerActiveCrawlRequestGet,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerCrawlRequest.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Cancels the active crawl request for an engine.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/crawl_requests/active/cancel`.
+  Future<ElasticCrawlerCrawlRequest> cancelActiveCrawlRequest(
+    String engine, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final url = _crawlerUrl(engineName, 'crawl_requests/active/cancel');
+    return _sendRequest<ElasticCrawlerCrawlRequest>(
+      method: 'POST',
+      url: url,
+      operation: Operation.crawlerActiveCrawlRequestCancel,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerCrawlRequest.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Lists crawl requests for an engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler/crawl_requests`.
+  Future<ElasticCrawlerCrawlRequestsResponse> listCrawlRequests(
+    String engine, {
+    ElasticPageRequest page = const ElasticPageRequest(current: 1, size: 25),
+    CancelToken? cancelToken,
+  }) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    _validatePageRequest(
+      page: page,
+      maxSize: 100,
+      context: 'crawl requests page',
+    );
+
+    final url = _crawlerUrl(engineName, 'crawl_requests');
+    return _sendRequest<ElasticCrawlerCrawlRequestsResponse>(
+      method: 'GET',
+      url: url,
+      operation: Operation.crawlerCrawlRequestsList,
+      engine: engineName,
+      body: page.toBody(),
+      cancelToken: cancelToken,
+      parse: (responseData) => ElasticCrawlerCrawlRequestsResponse.fromJson(
+        _asJsonObject(responseData),
+      ),
+    );
+  }
+
+  /// Creates a new full crawl request.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/crawl_requests`.
+  Future<ElasticCrawlerCrawlRequest> createCrawlRequest(
+    String engine, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final url = _crawlerUrl(engineName, 'crawl_requests');
+    return _sendRequest<ElasticCrawlerCrawlRequest>(
+      method: 'POST',
+      url: url,
+      operation: Operation.crawlerCrawlRequestCreate,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerCrawlRequest.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Creates a new partial crawl request.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/crawl_requests`.
+  Future<ElasticCrawlerCrawlRequest> createPartialCrawlRequest(
+    String engine,
+    ElasticCrawlerPartialCrawlRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    _validatePartialCrawlRequest(request);
+
+    final url = _crawlerUrl(engineName, 'crawl_requests');
+    return _sendRequest<ElasticCrawlerCrawlRequest>(
+      method: 'POST',
+      url: url,
+      operation: Operation.crawlerPartialCrawlRequestCreate,
+      engine: engineName,
+      body: request.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerCrawlRequest.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Retrieves one crawl request by identifier.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler/crawl_requests/{crawlRequestId}`.
+  Future<ElasticCrawlerCrawlRequest> getCrawlRequest(
+    String engine,
+    String crawlRequestId, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final requestId = _validateCrawlerId(
+      crawlRequestId,
+      parameter: 'crawlRequestId',
+      context: 'Crawl request id',
+    );
+
+    final url = _crawlerUrl(engineName, 'crawl_requests/$requestId');
+    return _sendRequest<ElasticCrawlerCrawlRequest>(
+      method: 'GET',
+      url: url,
+      operation: Operation.crawlerCrawlRequestGet,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerCrawlRequest.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Retrieves current crawl schedule for an engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler/crawl_schedule`.
+  Future<ElasticCrawlerCrawlSchedule> getCrawlSchedule(
+    String engine, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final url = _crawlerUrl(engineName, 'crawl_schedule');
+    return _sendRequest<ElasticCrawlerCrawlSchedule>(
+      method: 'GET',
+      url: url,
+      operation: Operation.crawlerCrawlScheduleGet,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerCrawlSchedule.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Creates or updates crawl schedule for an engine.
+  ///
+  /// Uses `PUT /api/as/v1/engines/{engine}/crawler/crawl_schedule`.
+  Future<ElasticCrawlerCrawlSchedule> updateCrawlSchedule(
+    String engine,
+    ElasticCrawlerCrawlSchedule schedule, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    _validateCrawlerSchedule(schedule);
+
+    final url = _crawlerUrl(engineName, 'crawl_schedule');
+    return _sendRequest<ElasticCrawlerCrawlSchedule>(
+      method: 'PUT',
+      url: url,
+      operation: Operation.crawlerCrawlSchedulePut,
+      engine: engineName,
+      body: schedule.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerCrawlSchedule.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Deletes crawl schedule for an engine.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}/crawler/crawl_schedule`.
+  Future<bool> deleteCrawlSchedule(String engine, [CancelToken? cancelToken]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final url = _crawlerUrl(engineName, 'crawl_schedule');
+    return _sendRequest<bool>(
+      method: 'DELETE',
+      url: url,
+      operation: Operation.crawlerCrawlScheduleDelete,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) {
+        final data = _asJsonObject(responseData);
+        return _toBool(data['deleted']);
+      },
+    );
+  }
+
+  /// Lists process crawls for an engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler/process_crawls`.
+  Future<ElasticCrawlerProcessCrawlsResponse> listProcessCrawls(
+    String engine, {
+    ElasticPageRequest page = const ElasticPageRequest(current: 1, size: 25),
+    CancelToken? cancelToken,
+  }) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    _validatePageRequest(
+      page: page,
+      maxSize: 100,
+      context: 'process crawls page',
+    );
+
+    final url = _crawlerUrl(engineName, 'process_crawls');
+    return _sendRequest<ElasticCrawlerProcessCrawlsResponse>(
+      method: 'GET',
+      url: url,
+      operation: Operation.crawlerProcessCrawlsList,
+      engine: engineName,
+      body: page.toBody(),
+      cancelToken: cancelToken,
+      parse: (responseData) => ElasticCrawlerProcessCrawlsResponse.fromJson(
+        _asJsonObject(responseData),
+      ),
+    );
+  }
+
+  /// Retrieves one process crawl by identifier.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler/process_crawls/{processCrawlId}`.
+  Future<ElasticCrawlerProcessCrawl> getProcessCrawl(
+    String engine,
+    String processCrawlId, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final crawlId = _validateCrawlerId(
+      processCrawlId,
+      parameter: 'processCrawlId',
+      context: 'Process crawl id',
+    );
+
+    final url = _crawlerUrl(engineName, 'process_crawls/$crawlId');
+    return _sendRequest<ElasticCrawlerProcessCrawl>(
+      method: 'GET',
+      url: url,
+      operation: Operation.crawlerProcessCrawlGet,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerProcessCrawl.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Retrieves denied URLs sample for a process crawl.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler/process_crawls/{processCrawlId}/denied_urls`.
+  Future<ElasticCrawlerProcessCrawlDeniedUrls> getProcessCrawlDeniedUrls(
+    String engine,
+    String processCrawlId, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final crawlId = _validateCrawlerId(
+      processCrawlId,
+      parameter: 'processCrawlId',
+      context: 'Process crawl id',
+    );
+
+    final url = _crawlerUrl(engineName, 'process_crawls/$crawlId/denied_urls');
+    return _sendRequest<ElasticCrawlerProcessCrawlDeniedUrls>(
+      method: 'GET',
+      url: url,
+      operation: Operation.crawlerProcessCrawlDeniedUrlsGet,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) => ElasticCrawlerProcessCrawlDeniedUrls.fromJson(
+        _asJsonObject(responseData),
+      ),
+    );
+  }
+
+  /// Creates a new process crawl.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/process_crawls`.
+  Future<ElasticCrawlerProcessCrawl> createProcessCrawl(
+    String engine, {
+    ElasticCrawlerProcessCrawlRequest request =
+        const ElasticCrawlerProcessCrawlRequest(),
+    CancelToken? cancelToken,
+  }) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    _validateProcessCrawlRequest(request);
+
+    final url = _crawlerUrl(engineName, 'process_crawls');
+    return _sendRequest<ElasticCrawlerProcessCrawl>(
+      method: 'POST',
+      url: url,
+      operation: Operation.crawlerProcessCrawlCreate,
+      engine: engineName,
+      body: request.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerProcessCrawl.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Retrieves crawler user-agent string.
+  ///
+  /// Uses `GET /api/as/v1/crawler/user_agent`.
+  Future<ElasticCrawlerUserAgent> getCrawlerUserAgent([
+    CancelToken? cancelToken,
+  ]) {
+    final url = _operationUrl(_accountScope, Operation.crawlerUserAgentGet);
+    return _sendRequest<ElasticCrawlerUserAgent>(
+      method: 'GET',
+      url: url,
+      operation: Operation.crawlerUserAgentGet,
+      engine: _accountScope,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerUserAgent.fromJson(_asJsonObject(responseData)),
     );
   }
 

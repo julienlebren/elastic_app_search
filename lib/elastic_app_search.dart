@@ -10,6 +10,7 @@ part 'elastic_app_search.g.dart';
 part 'src/analytics.dart';
 part 'src/adaptive_relevance.dart';
 part 'src/boost.dart';
+part 'src/crawler.dart';
 part 'src/engine.dart';
 part 'src/facet.dart';
 part 'src/misc.dart';

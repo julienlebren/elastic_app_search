@@ -467,6 +467,354 @@ void main() {
     );
 
     test(
+      'crawler configuration failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.getCrawlerConfiguration(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having((e) => e.operation, 'operation', Operation.crawlerGet)
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'active crawl request failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.getActiveCrawlRequest(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerActiveCrawlRequestGet,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/crawl_requests/active',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'cancel active crawl request failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.cancelActiveCrawlRequest(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerActiveCrawlRequestCancel,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/crawl_requests/active/cancel',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'list crawl requests failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.listCrawlRequests(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerCrawlRequestsList,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/crawl_requests',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'create crawl request failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.createCrawlRequest(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerCrawlRequestCreate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/crawl_requests',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'create partial crawl request failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.createPartialCrawlRequest(
+            const ElasticCrawlerPartialCrawlRequest(maxCrawlDepth: 2),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerPartialCrawlRequestCreate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/crawl_requests',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'get crawl request failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.getCrawlRequest('cr-1'),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerCrawlRequestGet,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/crawl_requests/cr-1',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'crawl schedule failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.getCrawlSchedule(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerCrawlScheduleGet,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/crawl_schedule',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'update crawl schedule failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.updateCrawlSchedule(
+            const ElasticCrawlerCrawlSchedule(
+              frequency: 2,
+              unit: ElasticCrawlerCrawlScheduleUnit.week,
+            ),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerCrawlSchedulePut,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/crawl_schedule',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'delete crawl schedule failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.deleteCrawlSchedule(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerCrawlScheduleDelete,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/crawl_schedule',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'process crawls failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.listProcessCrawls(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerProcessCrawlsList,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/process_crawls',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'get process crawl failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.getProcessCrawl('pc-1'),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerProcessCrawlGet,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/process_crawls/pc-1',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'get process crawl denied urls failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.getProcessCrawlDeniedUrls('pc-1'),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerProcessCrawlDeniedUrlsGet,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/process_crawls/pc-1/denied_urls',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'create process crawl failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.createProcessCrawl(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerProcessCrawlCreate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/process_crawls',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'crawler user agent failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          service.getCrawlerUserAgent(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerUserAgentGet,
+                )
+                .having((e) => e.engine, 'engine', '<account>')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/crawler/user_agent',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
       'get schema failures are wrapped in ElasticAppSearchException',
       () async {
         await expectLater(
