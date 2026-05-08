@@ -1,5 +1,7 @@
 ## Unreleased
 
+## 1.0.0 - 2026-05-08
+
 ### Added
 
 - Full endpoint coverage for engine/account APIs:
@@ -21,7 +23,9 @@
 ### Changed
 
 - Expanded test suite with behavior, validation, and HTTP error mapping coverage for newly added APIs.
-- Refreshed README with API coverage status and 1.0.0 roadmap.
+- Added a live Enterprise Search integration smoke test scaffold (env-driven, opt-in).
+- Added a dedicated usage guide and migration notes for `1.0.0`.
+- Refreshed README with API coverage status, docs links, and 1.0.0 roadmap.
 
 ## 0.5.0
 
