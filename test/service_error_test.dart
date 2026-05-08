@@ -792,6 +792,370 @@ void main() {
     );
 
     test(
+      'list crawler domains failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.listCrawlerDomains(),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerDomainsList,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/domains',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'create crawler domain failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.createCrawlerDomain(
+            const ElasticCrawlerDomainCreateRequest(
+              name: 'https://example.com',
+            ),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerDomainCreate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/domains',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'get crawler domain failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.getCrawlerDomain('dom-1'),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerDomainGet,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/domains/dom-1',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'update crawler domain failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.updateCrawlerDomain(
+            'dom-1',
+            const ElasticCrawlerDomainUpdateRequest(
+              name: 'https://updated.example.com',
+            ),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerDomainUpdate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/domains/dom-1',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'delete crawler domain failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.deleteCrawlerDomain('dom-1'),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerDomainDelete,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/domains/dom-1',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'create crawler entry point failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.createCrawlerEntryPoint(
+            'dom-1',
+            const ElasticCrawlerEntryPointRequest(value: '/home'),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerEntryPointCreate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/domains/dom-1/entry_points',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'update crawler entry point failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.updateCrawlerEntryPoint(
+            'dom-1',
+            'ep-1',
+            const ElasticCrawlerEntryPointRequest(value: '/home'),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerEntryPointUpdate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/domains/dom-1/entry_points/ep-1',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'delete crawler entry point failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.deleteCrawlerEntryPoint('dom-1', 'ep-1'),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerEntryPointDelete,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/domains/dom-1/entry_points/ep-1',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'create crawler crawl rule failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.createCrawlerCrawlRule(
+            'dom-1',
+            const ElasticCrawlerCrawlRuleRequest(
+              policy: ElasticCrawlerCrawlRulePolicy.allow,
+              rule: ElasticCrawlerCrawlRuleType.begins,
+              pattern: '/public',
+            ),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerCrawlRuleCreate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/domains/dom-1/crawl_rules',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'update crawler crawl rule failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.updateCrawlerCrawlRule(
+            'dom-1',
+            'cr-1',
+            const ElasticCrawlerCrawlRuleRequest(
+              policy: ElasticCrawlerCrawlRulePolicy.allow,
+              rule: ElasticCrawlerCrawlRuleType.begins,
+              pattern: '/public',
+            ),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerCrawlRuleUpdate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/domains/dom-1/crawl_rules/cr-1',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'delete crawler crawl rule failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.deleteCrawlerCrawlRule('dom-1', 'cr-1'),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerCrawlRuleDelete,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/domains/dom-1/crawl_rules/cr-1',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'create crawler sitemap failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.createCrawlerSitemap(
+            'dom-1',
+            const ElasticCrawlerSitemapRequest(
+              url: 'https://example.com/a.xml',
+            ),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerSitemapCreate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/domains/dom-1/sitemaps',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'update crawler sitemap failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.updateCrawlerSitemap(
+            'dom-1',
+            'sm-1',
+            const ElasticCrawlerSitemapRequest(
+              url: 'https://example.com/a.xml',
+            ),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerSitemapUpdate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/domains/dom-1/sitemaps/sm-1',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'delete crawler sitemap failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.deleteCrawlerSitemap('dom-1', 'sm-1'),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerSitemapDelete,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/domains/dom-1/sitemaps/sm-1',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
       'crawler user agent failures are wrapped in ElasticAppSearchException',
       () async {
         await expectLater(

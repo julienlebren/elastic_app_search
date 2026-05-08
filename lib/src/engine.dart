@@ -285,6 +285,155 @@ class ElasticEngine {
     cancelToken: cancelToken,
   );
 
+  /// Lists crawler domains for this engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler/domains`.
+  Future<ElasticCrawlerDomainsResponse> listCrawlerDomains({
+    ElasticPageRequest page = const ElasticPageRequest(current: 1, size: 25),
+    CancelToken? cancelToken,
+  }) => service.listCrawlerDomains(name, page: page, cancelToken: cancelToken);
+
+  /// Creates one crawler domain.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/domains`.
+  Future<ElasticCrawlerDomain> createCrawlerDomain(
+    ElasticCrawlerDomainCreateRequest request, [
+    CancelToken? cancelToken,
+  ]) => service.createCrawlerDomain(name, request, cancelToken);
+
+  /// Retrieves one crawler domain by identifier.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler/domains/{domainId}`.
+  Future<ElasticCrawlerDomain> getCrawlerDomain(
+    String domainId, [
+    CancelToken? cancelToken,
+  ]) => service.getCrawlerDomain(name, domainId, cancelToken);
+
+  /// Updates one crawler domain by identifier.
+  ///
+  /// Uses `PUT /api/as/v1/engines/{engine}/crawler/domains/{domainId}`.
+  Future<ElasticCrawlerDomain> updateCrawlerDomain(
+    String domainId,
+    ElasticCrawlerDomainUpdateRequest request, [
+    CancelToken? cancelToken,
+  ]) => service.updateCrawlerDomain(name, domainId, request, cancelToken);
+
+  /// Deletes one crawler domain by identifier.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}/crawler/domains/{domainId}`.
+  Future<bool> deleteCrawlerDomain(
+    String domainId, [
+    CancelToken? cancelToken,
+  ]) => service.deleteCrawlerDomain(name, domainId, cancelToken);
+
+  /// Creates one crawler entry point for a domain.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/domains/{domainId}/entry_points`.
+  Future<ElasticCrawlerEntryPoint> createCrawlerEntryPoint(
+    String domainId,
+    ElasticCrawlerEntryPointRequest request, [
+    CancelToken? cancelToken,
+  ]) => service.createCrawlerEntryPoint(name, domainId, request, cancelToken);
+
+  /// Updates one crawler entry point for a domain.
+  ///
+  /// Uses `PUT /api/as/v1/engines/{engine}/crawler/domains/{domainId}/entry_points/{entryPointId}`.
+  Future<ElasticCrawlerEntryPoint> updateCrawlerEntryPoint(
+    String domainId,
+    String entryPointId,
+    ElasticCrawlerEntryPointRequest request, [
+    CancelToken? cancelToken,
+  ]) => service.updateCrawlerEntryPoint(
+    name,
+    domainId,
+    entryPointId,
+    request,
+    cancelToken,
+  );
+
+  /// Deletes one crawler entry point for a domain.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}/crawler/domains/{domainId}/entry_points/{entryPointId}`.
+  Future<bool> deleteCrawlerEntryPoint(
+    String domainId,
+    String entryPointId, [
+    CancelToken? cancelToken,
+  ]) => service.deleteCrawlerEntryPoint(
+    name,
+    domainId,
+    entryPointId,
+    cancelToken,
+  );
+
+  /// Creates one crawler crawl rule for a domain.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/domains/{domainId}/crawl_rules`.
+  Future<ElasticCrawlerCrawlRule> createCrawlerCrawlRule(
+    String domainId,
+    ElasticCrawlerCrawlRuleRequest request, [
+    CancelToken? cancelToken,
+  ]) => service.createCrawlerCrawlRule(name, domainId, request, cancelToken);
+
+  /// Updates one crawler crawl rule for a domain.
+  ///
+  /// Uses `PUT /api/as/v1/engines/{engine}/crawler/domains/{domainId}/crawl_rules/{crawlRuleId}`.
+  Future<ElasticCrawlerCrawlRule> updateCrawlerCrawlRule(
+    String domainId,
+    String crawlRuleId,
+    ElasticCrawlerCrawlRuleRequest request, [
+    CancelToken? cancelToken,
+  ]) => service.updateCrawlerCrawlRule(
+    name,
+    domainId,
+    crawlRuleId,
+    request,
+    cancelToken,
+  );
+
+  /// Deletes one crawler crawl rule for a domain.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}/crawler/domains/{domainId}/crawl_rules/{crawlRuleId}`.
+  Future<bool> deleteCrawlerCrawlRule(
+    String domainId,
+    String crawlRuleId, [
+    CancelToken? cancelToken,
+  ]) =>
+      service.deleteCrawlerCrawlRule(name, domainId, crawlRuleId, cancelToken);
+
+  /// Creates one crawler sitemap for a domain.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/domains/{domainId}/sitemaps`.
+  Future<ElasticCrawlerSitemap> createCrawlerSitemap(
+    String domainId,
+    ElasticCrawlerSitemapRequest request, [
+    CancelToken? cancelToken,
+  ]) => service.createCrawlerSitemap(name, domainId, request, cancelToken);
+
+  /// Updates one crawler sitemap for a domain.
+  ///
+  /// Uses `PUT /api/as/v1/engines/{engine}/crawler/domains/{domainId}/sitemaps/{sitemapId}`.
+  Future<ElasticCrawlerSitemap> updateCrawlerSitemap(
+    String domainId,
+    String sitemapId,
+    ElasticCrawlerSitemapRequest request, [
+    CancelToken? cancelToken,
+  ]) => service.updateCrawlerSitemap(
+    name,
+    domainId,
+    sitemapId,
+    request,
+    cancelToken,
+  );
+
+  /// Deletes one crawler sitemap for a domain.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}/crawler/domains/{domainId}/sitemaps/{sitemapId}`.
+  Future<bool> deleteCrawlerSitemap(
+    String domainId,
+    String sitemapId, [
+    CancelToken? cancelToken,
+  ]) => service.deleteCrawlerSitemap(name, domainId, sitemapId, cancelToken);
+
   /// Creates or updates documents in bulk.
   ///
   /// Uses `POST /api/as/v1/engines/{engine}/documents`.

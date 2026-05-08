@@ -724,6 +724,137 @@ class ElasticAppSearch {
     }
   }
 
+  String _validateCrawlerRequiredString(
+    String value, {
+    required String parameter,
+    required String context,
+  }) {
+    return _validateCrawlerId(value, parameter: parameter, context: context);
+  }
+
+  String? _validateCrawlerOptionalString(
+    String? value, {
+    required String parameter,
+    required String context,
+  }) {
+    if (value == null) return null;
+    return _validateCrawlerId(value, parameter: parameter, context: context);
+  }
+
+  void _validateCrawlerDomainAuthRequest(
+    ElasticCrawlerDomainAuthRequest auth, {
+    required String parameter,
+  }) {
+    switch (auth.type) {
+      case ElasticCrawlerDomainAuthType.basic:
+        _validateCrawlerRequiredString(
+          auth.username ?? '',
+          parameter: '$parameter.username',
+          context: 'Crawler domain auth username',
+        );
+        _validateCrawlerRequiredString(
+          auth.password ?? '',
+          parameter: '$parameter.password',
+          context: 'Crawler domain auth password',
+        );
+        return;
+      case ElasticCrawlerDomainAuthType.raw:
+        _validateCrawlerRequiredString(
+          auth.value ?? '',
+          parameter: '$parameter.value',
+          context: 'Crawler domain auth value',
+        );
+        return;
+    }
+  }
+
+  void _validateCrawlerDomainCreateRequest(
+    ElasticCrawlerDomainCreateRequest request,
+  ) {
+    _validateCrawlerRequiredString(
+      request.name,
+      parameter: 'request.name',
+      context: 'Crawler domain name',
+    );
+    final auth = request.auth;
+    if (auth != null) {
+      _validateCrawlerDomainAuthRequest(auth, parameter: 'request.auth');
+    }
+  }
+
+  void _validateCrawlerDomainUpdateRequest(
+    ElasticCrawlerDomainUpdateRequest request,
+  ) {
+    if (request.name == null && request.auth == null) {
+      throw ArgumentError.value(
+        request,
+        'request',
+        'Crawler domain update requires at least one field.',
+      );
+    }
+
+    _validateCrawlerOptionalString(
+      request.name,
+      parameter: 'request.name',
+      context: 'Crawler domain name',
+    );
+    final auth = request.auth;
+    if (auth != null) {
+      _validateCrawlerDomainAuthRequest(auth, parameter: 'request.auth');
+    }
+  }
+
+  void _validateCrawlerEntryPointRequest(
+    ElasticCrawlerEntryPointRequest request,
+  ) {
+    _validateCrawlerRequiredString(
+      request.value,
+      parameter: 'request.value',
+      context: 'Crawler entry point value',
+    );
+  }
+
+  void _validateCrawlerCrawlRuleRequest(
+    ElasticCrawlerCrawlRuleRequest request,
+  ) {
+    _validateCrawlerRequiredString(
+      request.pattern,
+      parameter: 'request.pattern',
+      context: 'Crawler crawl rule pattern',
+    );
+
+    final order = request.order;
+    if (order != null && order < 0) {
+      throw RangeError.range(
+        order,
+        0,
+        null,
+        'request.order',
+        'Crawler crawl rule order must be greater than or equal to 0.',
+      );
+    }
+  }
+
+  void _validateCrawlerSitemapRequest(ElasticCrawlerSitemapRequest request) {
+    _validateCrawlerRequiredString(
+      request.url,
+      parameter: 'request.url',
+      context: 'Crawler sitemap URL',
+    );
+  }
+
+  Map<String, dynamic> _parseCrawlerDomainJson(dynamic responseData) {
+    final mapped = _asJsonObject(responseData);
+    final maybeResults = mapped['results'];
+    if (maybeResults is List && maybeResults.isNotEmpty) {
+      final first = _asStringDynamicMap(maybeResults.first);
+      if (first != null) {
+        return first;
+      }
+    }
+    return mapped;
+  }
+
   void _validateDocumentIds(
     List<String> ids, {
     required String parameter,
@@ -2167,6 +2298,550 @@ class ElasticAppSearch {
       cancelToken: cancelToken,
       parse: (responseData) =>
           ElasticCrawlerProcessCrawl.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Lists crawler domains for an engine.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler/domains`.
+  Future<ElasticCrawlerDomainsResponse> listCrawlerDomains(
+    String engine, {
+    ElasticPageRequest page = const ElasticPageRequest(current: 1, size: 25),
+    CancelToken? cancelToken,
+  }) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    _validatePageRequest(
+      page: page,
+      maxSize: 100,
+      context: 'crawler domains page',
+    );
+
+    final url = _crawlerUrl(engineName, 'domains');
+    return _sendRequest<ElasticCrawlerDomainsResponse>(
+      method: 'GET',
+      url: url,
+      operation: Operation.crawlerDomainsList,
+      engine: engineName,
+      body: page.toBody(),
+      cancelToken: cancelToken,
+      parse: (responseData) {
+        final data = _asJsonObject(responseData);
+        if (data['meta'] != null && data['results'] is List) {
+          return ElasticCrawlerDomainsResponse.fromJson(data);
+        }
+
+        final resultItems = _asJsonObjectListStrict(
+          data['domains'] ?? data['results'] ?? const <dynamic>[],
+          context: data.containsKey('domains') ? 'domains' : 'results',
+        );
+
+        return ElasticCrawlerDomainsResponse(
+          meta: ElasticDocumentsListMeta.fromJson({
+            'page': {
+              'current': page.current,
+              'size': resultItems.length,
+              'total_pages': 1,
+              'total_results': resultItems.length,
+            },
+          }),
+          results: List.unmodifiable(
+            resultItems.map(ElasticCrawlerDomain.fromJson).toList(),
+          ),
+        );
+      },
+    );
+  }
+
+  /// Creates a crawler domain.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/domains`.
+  Future<ElasticCrawlerDomain> createCrawlerDomain(
+    String engine,
+    ElasticCrawlerDomainCreateRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    _validateCrawlerDomainCreateRequest(request);
+
+    final url = _crawlerUrl(engineName, 'domains');
+    return _sendRequest<ElasticCrawlerDomain>(
+      method: 'POST',
+      url: url,
+      operation: Operation.crawlerDomainCreate,
+      engine: engineName,
+      body: request.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerDomain.fromJson(_parseCrawlerDomainJson(responseData)),
+    );
+  }
+
+  /// Retrieves one crawler domain by identifier.
+  ///
+  /// Uses `GET /api/as/v1/engines/{engine}/crawler/domains/{domainId}`.
+  Future<ElasticCrawlerDomain> getCrawlerDomain(
+    String engine,
+    String domainId, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedDomainId = _validateCrawlerId(
+      domainId,
+      parameter: 'domainId',
+      context: 'Crawler domain id',
+    );
+
+    final url = _crawlerUrl(engineName, 'domains/$validatedDomainId');
+    return _sendRequest<ElasticCrawlerDomain>(
+      method: 'GET',
+      url: url,
+      operation: Operation.crawlerDomainGet,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerDomain.fromJson(_parseCrawlerDomainJson(responseData)),
+    );
+  }
+
+  /// Updates one crawler domain by identifier.
+  ///
+  /// Uses `PUT /api/as/v1/engines/{engine}/crawler/domains/{domainId}`.
+  Future<ElasticCrawlerDomain> updateCrawlerDomain(
+    String engine,
+    String domainId,
+    ElasticCrawlerDomainUpdateRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedDomainId = _validateCrawlerId(
+      domainId,
+      parameter: 'domainId',
+      context: 'Crawler domain id',
+    );
+    _validateCrawlerDomainUpdateRequest(request);
+
+    final url = _crawlerUrl(engineName, 'domains/$validatedDomainId');
+    return _sendRequest<ElasticCrawlerDomain>(
+      method: 'PUT',
+      url: url,
+      operation: Operation.crawlerDomainUpdate,
+      engine: engineName,
+      body: request.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerDomain.fromJson(_parseCrawlerDomainJson(responseData)),
+    );
+  }
+
+  /// Deletes one crawler domain by identifier.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}/crawler/domains/{domainId}`.
+  Future<bool> deleteCrawlerDomain(
+    String engine,
+    String domainId, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedDomainId = _validateCrawlerId(
+      domainId,
+      parameter: 'domainId',
+      context: 'Crawler domain id',
+    );
+
+    final url = _crawlerUrl(engineName, 'domains/$validatedDomainId');
+    return _sendRequest<bool>(
+      method: 'DELETE',
+      url: url,
+      operation: Operation.crawlerDomainDelete,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) {
+        final data = _asJsonObject(responseData);
+        return _toBool(data['deleted']);
+      },
+    );
+  }
+
+  /// Creates one crawler entry point for a domain.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/domains/{domainId}/entry_points`.
+  Future<ElasticCrawlerEntryPoint> createCrawlerEntryPoint(
+    String engine,
+    String domainId,
+    ElasticCrawlerEntryPointRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedDomainId = _validateCrawlerId(
+      domainId,
+      parameter: 'domainId',
+      context: 'Crawler domain id',
+    );
+    _validateCrawlerEntryPointRequest(request);
+
+    final url = _crawlerUrl(
+      engineName,
+      'domains/$validatedDomainId/entry_points',
+    );
+    return _sendRequest<ElasticCrawlerEntryPoint>(
+      method: 'POST',
+      url: url,
+      operation: Operation.crawlerEntryPointCreate,
+      engine: engineName,
+      body: request.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerEntryPoint.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Updates one crawler entry point for a domain.
+  ///
+  /// Uses `PUT /api/as/v1/engines/{engine}/crawler/domains/{domainId}/entry_points/{entryPointId}`.
+  Future<ElasticCrawlerEntryPoint> updateCrawlerEntryPoint(
+    String engine,
+    String domainId,
+    String entryPointId,
+    ElasticCrawlerEntryPointRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedDomainId = _validateCrawlerId(
+      domainId,
+      parameter: 'domainId',
+      context: 'Crawler domain id',
+    );
+    final validatedEntryPointId = _validateCrawlerId(
+      entryPointId,
+      parameter: 'entryPointId',
+      context: 'Crawler entry point id',
+    );
+    _validateCrawlerEntryPointRequest(request);
+
+    final url = _crawlerUrl(
+      engineName,
+      'domains/$validatedDomainId/entry_points/$validatedEntryPointId',
+    );
+    return _sendRequest<ElasticCrawlerEntryPoint>(
+      method: 'PUT',
+      url: url,
+      operation: Operation.crawlerEntryPointUpdate,
+      engine: engineName,
+      body: request.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerEntryPoint.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Deletes one crawler entry point for a domain.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}/crawler/domains/{domainId}/entry_points/{entryPointId}`.
+  Future<bool> deleteCrawlerEntryPoint(
+    String engine,
+    String domainId,
+    String entryPointId, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedDomainId = _validateCrawlerId(
+      domainId,
+      parameter: 'domainId',
+      context: 'Crawler domain id',
+    );
+    final validatedEntryPointId = _validateCrawlerId(
+      entryPointId,
+      parameter: 'entryPointId',
+      context: 'Crawler entry point id',
+    );
+
+    final url = _crawlerUrl(
+      engineName,
+      'domains/$validatedDomainId/entry_points/$validatedEntryPointId',
+    );
+    return _sendRequest<bool>(
+      method: 'DELETE',
+      url: url,
+      operation: Operation.crawlerEntryPointDelete,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) {
+        final data = _asJsonObject(responseData);
+        return _toBool(data['deleted']);
+      },
+    );
+  }
+
+  /// Creates one crawler crawl rule for a domain.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/domains/{domainId}/crawl_rules`.
+  Future<ElasticCrawlerCrawlRule> createCrawlerCrawlRule(
+    String engine,
+    String domainId,
+    ElasticCrawlerCrawlRuleRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedDomainId = _validateCrawlerId(
+      domainId,
+      parameter: 'domainId',
+      context: 'Crawler domain id',
+    );
+    _validateCrawlerCrawlRuleRequest(request);
+
+    final url = _crawlerUrl(
+      engineName,
+      'domains/$validatedDomainId/crawl_rules',
+    );
+    return _sendRequest<ElasticCrawlerCrawlRule>(
+      method: 'POST',
+      url: url,
+      operation: Operation.crawlerCrawlRuleCreate,
+      engine: engineName,
+      body: request.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerCrawlRule.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Updates one crawler crawl rule for a domain.
+  ///
+  /// Uses `PUT /api/as/v1/engines/{engine}/crawler/domains/{domainId}/crawl_rules/{crawlRuleId}`.
+  Future<ElasticCrawlerCrawlRule> updateCrawlerCrawlRule(
+    String engine,
+    String domainId,
+    String crawlRuleId,
+    ElasticCrawlerCrawlRuleRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedDomainId = _validateCrawlerId(
+      domainId,
+      parameter: 'domainId',
+      context: 'Crawler domain id',
+    );
+    final validatedCrawlRuleId = _validateCrawlerId(
+      crawlRuleId,
+      parameter: 'crawlRuleId',
+      context: 'Crawler crawl rule id',
+    );
+    _validateCrawlerCrawlRuleRequest(request);
+
+    final url = _crawlerUrl(
+      engineName,
+      'domains/$validatedDomainId/crawl_rules/$validatedCrawlRuleId',
+    );
+    return _sendRequest<ElasticCrawlerCrawlRule>(
+      method: 'PUT',
+      url: url,
+      operation: Operation.crawlerCrawlRuleUpdate,
+      engine: engineName,
+      body: request.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerCrawlRule.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Deletes one crawler crawl rule for a domain.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}/crawler/domains/{domainId}/crawl_rules/{crawlRuleId}`.
+  Future<bool> deleteCrawlerCrawlRule(
+    String engine,
+    String domainId,
+    String crawlRuleId, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedDomainId = _validateCrawlerId(
+      domainId,
+      parameter: 'domainId',
+      context: 'Crawler domain id',
+    );
+    final validatedCrawlRuleId = _validateCrawlerId(
+      crawlRuleId,
+      parameter: 'crawlRuleId',
+      context: 'Crawler crawl rule id',
+    );
+
+    final url = _crawlerUrl(
+      engineName,
+      'domains/$validatedDomainId/crawl_rules/$validatedCrawlRuleId',
+    );
+    return _sendRequest<bool>(
+      method: 'DELETE',
+      url: url,
+      operation: Operation.crawlerCrawlRuleDelete,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) {
+        final data = _asJsonObject(responseData);
+        return _toBool(data['deleted']);
+      },
+    );
+  }
+
+  /// Creates one crawler sitemap for a domain.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/domains/{domainId}/sitemaps`.
+  Future<ElasticCrawlerSitemap> createCrawlerSitemap(
+    String engine,
+    String domainId,
+    ElasticCrawlerSitemapRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedDomainId = _validateCrawlerId(
+      domainId,
+      parameter: 'domainId',
+      context: 'Crawler domain id',
+    );
+    _validateCrawlerSitemapRequest(request);
+
+    final url = _crawlerUrl(engineName, 'domains/$validatedDomainId/sitemaps');
+    return _sendRequest<ElasticCrawlerSitemap>(
+      method: 'POST',
+      url: url,
+      operation: Operation.crawlerSitemapCreate,
+      engine: engineName,
+      body: request.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerSitemap.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Updates one crawler sitemap for a domain.
+  ///
+  /// Uses `PUT /api/as/v1/engines/{engine}/crawler/domains/{domainId}/sitemaps/{sitemapId}`.
+  Future<ElasticCrawlerSitemap> updateCrawlerSitemap(
+    String engine,
+    String domainId,
+    String sitemapId,
+    ElasticCrawlerSitemapRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedDomainId = _validateCrawlerId(
+      domainId,
+      parameter: 'domainId',
+      context: 'Crawler domain id',
+    );
+    final validatedSitemapId = _validateCrawlerId(
+      sitemapId,
+      parameter: 'sitemapId',
+      context: 'Crawler sitemap id',
+    );
+    _validateCrawlerSitemapRequest(request);
+
+    final url = _crawlerUrl(
+      engineName,
+      'domains/$validatedDomainId/sitemaps/$validatedSitemapId',
+    );
+    return _sendRequest<ElasticCrawlerSitemap>(
+      method: 'PUT',
+      url: url,
+      operation: Operation.crawlerSitemapUpdate,
+      engine: engineName,
+      body: request.toJson(),
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerSitemap.fromJson(_asJsonObject(responseData)),
+    );
+  }
+
+  /// Deletes one crawler sitemap for a domain.
+  ///
+  /// Uses `DELETE /api/as/v1/engines/{engine}/crawler/domains/{domainId}/sitemaps/{sitemapId}`.
+  Future<bool> deleteCrawlerSitemap(
+    String engine,
+    String domainId,
+    String sitemapId, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final validatedDomainId = _validateCrawlerId(
+      domainId,
+      parameter: 'domainId',
+      context: 'Crawler domain id',
+    );
+    final validatedSitemapId = _validateCrawlerId(
+      sitemapId,
+      parameter: 'sitemapId',
+      context: 'Crawler sitemap id',
+    );
+
+    final url = _crawlerUrl(
+      engineName,
+      'domains/$validatedDomainId/sitemaps/$validatedSitemapId',
+    );
+    return _sendRequest<bool>(
+      method: 'DELETE',
+      url: url,
+      operation: Operation.crawlerSitemapDelete,
+      engine: engineName,
+      cancelToken: cancelToken,
+      parse: (responseData) {
+        final data = _asJsonObject(responseData);
+        return _toBool(data['deleted']);
+      },
     );
   }
 

@@ -1644,6 +1644,209 @@ void main() {
           return;
         }
 
+        if (request.uri.path == '/api/as/v1/engines/parks/crawler/domains') {
+          if (request.method == 'GET') {
+            final body = await _readJson(request);
+            final page = body['page'] as Map<String, dynamic>?;
+            expect(page?['current'], 1);
+            expect(page?['size'], 10);
+
+            await _writeJson(request, 200, {
+              'meta': {
+                'page': {
+                  'current': 1,
+                  'size': 10,
+                  'total_pages': 1,
+                  'total_results': 1,
+                },
+              },
+              'results': [
+                {
+                  'id': 'dom-1',
+                  'name': 'https://example.com',
+                  'document_count': 12,
+                  'deduplication_enabled': true,
+                  'deduplication_fields': ['title', 'body'],
+                  'available_deduplication_fields': ['title', 'body', 'url'],
+                  'entry_points': [
+                    {'id': 'ep-1', 'value': '/start'},
+                  ],
+                  'crawl_rules': [
+                    {
+                      'id': 'rule-1',
+                      'order': 0,
+                      'policy': 'allow',
+                      'rule': 'begins',
+                      'pattern': '/public',
+                    },
+                  ],
+                  'default_crawl_rule': {
+                    'id': 'default-1',
+                    'order': 9999,
+                    'policy': 'allow',
+                    'rule': 'regex',
+                    'pattern': '.*',
+                  },
+                  'sitemaps': [
+                    {'id': 'sm-1', 'url': 'https://example.com/sitemap.xml'},
+                  ],
+                },
+              ],
+            });
+            return;
+          }
+
+          if (request.method == 'POST') {
+            final body = await _readJson(request);
+            expect(body['name'], 'https://crawler.example.com');
+            final auth = body['auth'] as Map<String, dynamic>?;
+            expect(auth?['type'], 'basic');
+            expect(auth?['username'], 'crawler-user');
+            expect(auth?['password'], 'crawler-pass');
+
+            await _writeJson(request, 200, {
+              'id': 'dom-new',
+              'name': 'https://crawler.example.com',
+              'entry_points': const [],
+              'crawl_rules': const [],
+              'sitemaps': const [],
+            });
+            return;
+          }
+        }
+
+        if (request.uri.path ==
+            '/api/as/v1/engines/parks/crawler/domains/dom-1') {
+          if (request.method == 'GET') {
+            await _writeJson(request, 200, {
+              'id': 'dom-1',
+              'name': 'https://example.com',
+              'entry_points': const [],
+              'crawl_rules': const [],
+              'sitemaps': const [],
+            });
+            return;
+          }
+
+          if (request.method == 'PUT') {
+            final body = await _readJson(request);
+            expect(body['name'], 'https://updated.example.com');
+            final auth = body['auth'] as Map<String, dynamic>?;
+            expect(auth?['type'], 'raw');
+            expect(auth?['value'], 'Bearer crawler-token');
+            await _writeJson(request, 200, {
+              'id': 'dom-1',
+              'name': 'https://updated.example.com',
+              'auth': {'type': 'raw'},
+              'entry_points': const [],
+              'crawl_rules': const [],
+              'sitemaps': const [],
+            });
+            return;
+          }
+
+          if (request.method == 'DELETE') {
+            await _writeJson(request, 200, {'deleted': true});
+            return;
+          }
+        }
+
+        if (request.uri.path ==
+            '/api/as/v1/engines/parks/crawler/domains/dom-1/entry_points') {
+          expect(request.method, 'POST');
+          final body = await _readJson(request);
+          expect(body['value'], '/start-here');
+          await _writeJson(request, 200, {
+            'id': 'ep-new',
+            'value': '/start-here',
+          });
+          return;
+        }
+
+        if (request.uri.path ==
+            '/api/as/v1/engines/parks/crawler/domains/dom-1/entry_points/ep-1') {
+          if (request.method == 'PUT') {
+            final body = await _readJson(request);
+            expect(body['value'], '/updated');
+            await _writeJson(request, 200, {'id': 'ep-1', 'value': '/updated'});
+            return;
+          }
+          if (request.method == 'DELETE') {
+            await _writeJson(request, 200, {'deleted': true});
+            return;
+          }
+        }
+
+        if (request.uri.path ==
+            '/api/as/v1/engines/parks/crawler/domains/dom-1/crawl_rules') {
+          expect(request.method, 'POST');
+          final body = await _readJson(request);
+          expect(body['policy'], 'deny');
+          expect(body['rule'], 'contains');
+          expect(body['pattern'], '/private');
+          expect(body['order'], 2);
+          await _writeJson(request, 200, {
+            'id': 'cr-new',
+            'order': 2,
+            'policy': 'deny',
+            'rule': 'contains',
+            'pattern': '/private',
+          });
+          return;
+        }
+
+        if (request.uri.path ==
+            '/api/as/v1/engines/parks/crawler/domains/dom-1/crawl_rules/cr-1') {
+          if (request.method == 'PUT') {
+            final body = await _readJson(request);
+            expect(body['policy'], 'allow');
+            expect(body['rule'], 'begins');
+            expect(body['pattern'], '/public');
+            expect(body['order'], 0);
+            await _writeJson(request, 200, {
+              'id': 'cr-1',
+              'order': 0,
+              'policy': 'allow',
+              'rule': 'begins',
+              'pattern': '/public',
+            });
+            return;
+          }
+          if (request.method == 'DELETE') {
+            await _writeJson(request, 200, {'deleted': true});
+            return;
+          }
+        }
+
+        if (request.uri.path ==
+            '/api/as/v1/engines/parks/crawler/domains/dom-1/sitemaps') {
+          expect(request.method, 'POST');
+          final body = await _readJson(request);
+          expect(body['url'], 'https://example.com/sitemap-new.xml');
+          await _writeJson(request, 200, {
+            'id': 'sm-new',
+            'url': 'https://example.com/sitemap-new.xml',
+          });
+          return;
+        }
+
+        if (request.uri.path ==
+            '/api/as/v1/engines/parks/crawler/domains/dom-1/sitemaps/sm-1') {
+          if (request.method == 'PUT') {
+            final body = await _readJson(request);
+            expect(body['url'], 'https://example.com/sitemap-updated.xml');
+            await _writeJson(request, 200, {
+              'id': 'sm-1',
+              'url': 'https://example.com/sitemap-updated.xml',
+            });
+            return;
+          }
+          if (request.method == 'DELETE') {
+            await _writeJson(request, 200, {'deleted': true});
+            return;
+          }
+        }
+
         if (request.uri.path == '/api/as/v1/crawler/user_agent') {
           expect(request.method, 'GET');
           await _writeJson(request, 200, {
@@ -1693,6 +1896,79 @@ void main() {
           domains: ['https://example.com'],
         ),
       );
+      final domains = await engine.listCrawlerDomains(
+        page: const ElasticPageRequest(current: 1, size: 10),
+      );
+      final createdDomain = await engine.createCrawlerDomain(
+        const ElasticCrawlerDomainCreateRequest(
+          name: 'https://crawler.example.com',
+          auth: ElasticCrawlerDomainAuthRequest.basic(
+            username: 'crawler-user',
+            password: 'crawler-pass',
+          ),
+        ),
+      );
+      final domain = await engine.getCrawlerDomain('dom-1');
+      final updatedDomain = await engine.updateCrawlerDomain(
+        'dom-1',
+        const ElasticCrawlerDomainUpdateRequest(
+          name: 'https://updated.example.com',
+          auth: ElasticCrawlerDomainAuthRequest.raw(
+            value: 'Bearer crawler-token',
+          ),
+        ),
+      );
+      final deletedDomain = await engine.deleteCrawlerDomain('dom-1');
+      final createdEntryPoint = await engine.createCrawlerEntryPoint(
+        'dom-1',
+        const ElasticCrawlerEntryPointRequest(value: '/start-here'),
+      );
+      final updatedEntryPoint = await engine.updateCrawlerEntryPoint(
+        'dom-1',
+        'ep-1',
+        const ElasticCrawlerEntryPointRequest(value: '/updated'),
+      );
+      final deletedEntryPoint = await engine.deleteCrawlerEntryPoint(
+        'dom-1',
+        'ep-1',
+      );
+      final createdCrawlRule = await engine.createCrawlerCrawlRule(
+        'dom-1',
+        const ElasticCrawlerCrawlRuleRequest(
+          policy: ElasticCrawlerCrawlRulePolicy.deny,
+          rule: ElasticCrawlerCrawlRuleType.contains,
+          pattern: '/private',
+          order: 2,
+        ),
+      );
+      final updatedCrawlRule = await engine.updateCrawlerCrawlRule(
+        'dom-1',
+        'cr-1',
+        const ElasticCrawlerCrawlRuleRequest(
+          policy: ElasticCrawlerCrawlRulePolicy.allow,
+          rule: ElasticCrawlerCrawlRuleType.begins,
+          pattern: '/public',
+          order: 0,
+        ),
+      );
+      final deletedCrawlRule = await engine.deleteCrawlerCrawlRule(
+        'dom-1',
+        'cr-1',
+      );
+      final createdSitemap = await engine.createCrawlerSitemap(
+        'dom-1',
+        const ElasticCrawlerSitemapRequest(
+          url: 'https://example.com/sitemap-new.xml',
+        ),
+      );
+      final updatedSitemap = await engine.updateCrawlerSitemap(
+        'dom-1',
+        'sm-1',
+        const ElasticCrawlerSitemapRequest(
+          url: 'https://example.com/sitemap-updated.xml',
+        ),
+      );
+      final deletedSitemap = await engine.deleteCrawlerSitemap('dom-1', 'sm-1');
       final crawlerUserAgent = await service.getCrawlerUserAgent();
 
       expect(config.domains, hasLength(1));
@@ -1713,6 +1989,22 @@ void main() {
       expect(processCrawl.deniedUrlCount, 92);
       expect(deniedUrls.deniedUrlsSample, hasLength(2));
       expect(createdProcessCrawl.id, 'pc-2');
+      expect(domains.results, hasLength(1));
+      expect(domains.results.first.entryPoints, hasLength(1));
+      expect(createdDomain.id, 'dom-new');
+      expect(domain.name, 'https://example.com');
+      expect(updatedDomain.name, 'https://updated.example.com');
+      expect(updatedDomain.auth?['type'], 'raw');
+      expect(deletedDomain, isTrue);
+      expect(createdEntryPoint.id, 'ep-new');
+      expect(updatedEntryPoint.value, '/updated');
+      expect(deletedEntryPoint, isTrue);
+      expect(createdCrawlRule.id, 'cr-new');
+      expect(updatedCrawlRule.id, 'cr-1');
+      expect(deletedCrawlRule, isTrue);
+      expect(createdSitemap.id, 'sm-new');
+      expect(updatedSitemap.url, 'https://example.com/sitemap-updated.xml');
+      expect(deletedSitemap, isTrue);
       expect(crawlerUserAgent.userAgent, 'Elastic Crawler (0.0.1)');
     });
 
@@ -2571,6 +2863,105 @@ void main() {
         () => engine.createProcessCrawl(
           request: const ElasticCrawlerProcessCrawlRequest(domains: ['']),
         ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.listCrawlerDomains(
+          page: const ElasticPageRequest(current: 1, size: 101),
+        ),
+        throwsRangeError,
+      );
+      expect(
+        () => engine.createCrawlerDomain(
+          const ElasticCrawlerDomainCreateRequest(name: ' '),
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.createCrawlerDomain(
+          const ElasticCrawlerDomainCreateRequest(
+            name: 'https://example.com',
+            auth: ElasticCrawlerDomainAuthRequest.basic(
+              username: '',
+              password: 'x',
+            ),
+          ),
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.updateCrawlerDomain(
+          'dom-1',
+          const ElasticCrawlerDomainUpdateRequest(),
+        ),
+        throwsArgumentError,
+      );
+      expect(() => engine.getCrawlerDomain(' '), throwsArgumentError);
+      expect(() => engine.deleteCrawlerDomain(' '), throwsArgumentError);
+      expect(
+        () => engine.createCrawlerEntryPoint(
+          'dom-1',
+          const ElasticCrawlerEntryPointRequest(value: ' '),
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.updateCrawlerEntryPoint(
+          ' ',
+          'ep-1',
+          const ElasticCrawlerEntryPointRequest(value: '/start'),
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.deleteCrawlerEntryPoint('dom-1', ' '),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.createCrawlerCrawlRule(
+          'dom-1',
+          const ElasticCrawlerCrawlRuleRequest(
+            policy: ElasticCrawlerCrawlRulePolicy.allow,
+            rule: ElasticCrawlerCrawlRuleType.begins,
+            pattern: '',
+          ),
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.updateCrawlerCrawlRule(
+          'dom-1',
+          'cr-1',
+          const ElasticCrawlerCrawlRuleRequest(
+            policy: ElasticCrawlerCrawlRulePolicy.allow,
+            rule: ElasticCrawlerCrawlRuleType.begins,
+            pattern: '/ok',
+            order: -1,
+          ),
+        ),
+        throwsRangeError,
+      );
+      expect(
+        () => engine.deleteCrawlerCrawlRule('dom-1', ' '),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.createCrawlerSitemap(
+          'dom-1',
+          const ElasticCrawlerSitemapRequest(url: ''),
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.updateCrawlerSitemap(
+          'dom-1',
+          ' ',
+          const ElasticCrawlerSitemapRequest(url: 'https://example.com/a.xml'),
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.deleteCrawlerSitemap(' ', 'sm-1'),
         throwsArgumentError,
       );
     });
@@ -3664,6 +4055,45 @@ void main() {
           });
           return;
         }
+        if (request.uri.path == '/api/as/v1/engines/parks/crawler/domains' &&
+            request.method == 'GET') {
+          await _writeJson(request, 500, {
+            'errors': ['Crawler domains unavailable'],
+          });
+          return;
+        }
+        if (request.uri.path ==
+                '/api/as/v1/engines/parks/crawler/domains/dom-1' &&
+            request.method == 'PUT') {
+          await _writeJson(request, 409, {
+            'errors': ['Crawler domain update conflict'],
+          });
+          return;
+        }
+        if (request.uri.path ==
+                '/api/as/v1/engines/parks/crawler/domains/dom-1/entry_points' &&
+            request.method == 'POST') {
+          await _writeJson(request, 422, {
+            'errors': ['Crawler entry point invalid'],
+          });
+          return;
+        }
+        if (request.uri.path ==
+                '/api/as/v1/engines/parks/crawler/domains/dom-1/crawl_rules/cr-1' &&
+            request.method == 'DELETE') {
+          await _writeJson(request, 410, {
+            'errors': ['Crawler crawl rule missing'],
+          });
+          return;
+        }
+        if (request.uri.path ==
+                '/api/as/v1/engines/parks/crawler/domains/dom-1/sitemaps' &&
+            request.method == 'POST') {
+          await _writeJson(request, 400, {
+            'errors': ['Crawler sitemap invalid'],
+          });
+          return;
+        }
         if (request.uri.path == '/api/as/v1/crawler/user_agent') {
           await _writeJson(request, 403, {
             'errors': ['Crawler user agent forbidden'],
@@ -3745,6 +4175,108 @@ void main() {
                 'message',
                 'Crawler process crawls unavailable',
               ),
+        ),
+      );
+
+      await expectLater(
+        engine.listCrawlerDomains(),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.crawlerDomainsList,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 500)
+              .having(
+                (e) => e.message,
+                'message',
+                'Crawler domains unavailable',
+              ),
+        ),
+      );
+
+      await expectLater(
+        engine.updateCrawlerDomain(
+          'dom-1',
+          const ElasticCrawlerDomainUpdateRequest(
+            name: 'https://updated.example.com',
+          ),
+        ),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.crawlerDomainUpdate,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 409)
+              .having(
+                (e) => e.message,
+                'message',
+                'Crawler domain update conflict',
+              ),
+        ),
+      );
+
+      await expectLater(
+        engine.createCrawlerEntryPoint(
+          'dom-1',
+          const ElasticCrawlerEntryPointRequest(value: '/home'),
+        ),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.crawlerEntryPointCreate,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 422)
+              .having(
+                (e) => e.message,
+                'message',
+                'Crawler entry point invalid',
+              ),
+        ),
+      );
+
+      await expectLater(
+        engine.deleteCrawlerCrawlRule('dom-1', 'cr-1'),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.crawlerCrawlRuleDelete,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 410)
+              .having(
+                (e) => e.message,
+                'message',
+                'Crawler crawl rule missing',
+              ),
+        ),
+      );
+
+      await expectLater(
+        engine.createCrawlerSitemap(
+          'dom-1',
+          const ElasticCrawlerSitemapRequest(url: 'https://example.com/a.xml'),
+        ),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.crawlerSitemapCreate,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 400)
+              .having((e) => e.message, 'message', 'Crawler sitemap invalid'),
         ),
       );
 
