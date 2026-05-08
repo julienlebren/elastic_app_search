@@ -1,3 +1,28 @@
+## Unreleased
+
+### Added
+
+- Full endpoint coverage for engine/account APIs:
+  - documents, schema, search settings
+  - engines and meta-engine source management
+  - synonyms, curations
+  - credentials, log settings, API logs
+  - clickthrough and analytics
+- Adaptive relevance API support (suggestions, settings, refresh).
+- Web crawler API support:
+  - crawler config, crawl requests, crawl schedules
+  - process crawls and denied URLs
+  - domains, entry points, crawl rules, sitemaps
+  - URL/domain validation, URL extraction, URL tracing
+  - crawler user-agent endpoint.
+- Stronger request payload validation across APIs.
+- Consistent `ElasticAppSearchException` mapping with operation/engine/url/status/response payload context.
+
+### Changed
+
+- Expanded test suite with behavior, validation, and HTTP error mapping coverage for newly added APIs.
+- Refreshed README with API coverage status and 1.0.0 roadmap.
+
 ## 0.5.0
 
 * Query suggestion integrated by @Senne021 

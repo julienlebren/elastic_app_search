@@ -356,28 +356,69 @@ fullText | String | The full snippet
 textParts | List\<String\> | The snippet splitted in parts around the matched query
 highlights | List\<String\> | The words matching the query
 
+## API coverage status
+
+The package now covers the App Search public API surface used in production search apps, including:
+
+- Search, multi-search, search explain, query suggestions
+- Documents, schema, search settings
+- Synonyms, curations, engines/meta-engines
+- Clickthrough, analytics, API logs
+- Credentials, log settings
+- Adaptive relevance (beta API)
+- Web crawler API (crawl requests/schedules/process crawls/domains/rules/sitemaps/url validation/url extraction/url tracing)
+
+See the endpoint-by-endpoint matrix in [docs/API_COVERAGE.md](docs/API_COVERAGE.md).
+
+### Crawler debugging example
+
+```dart
+final engine = service.engine("my-engine");
+
+final validation = await engine.validateCrawlerUrl(
+  const ElasticCrawlerUrlValidationRequest(
+    url: "https://example.com/docs",
+    checks: ["url", "domain_access"],
+  ),
+);
+
+final extraction = await engine.extractCrawlerUrl(
+  const ElasticCrawlerUrlRequest(url: "https://example.com/docs"),
+);
+
+final trace = await engine.traceCrawlerUrl(
+  const ElasticCrawlerUrlRequest(url: "https://example.com/docs"),
+);
+
+print(validation.valid);
+print(extraction.results["download"]);
+print(trace.crawlRequests.length);
+```
+
+## 1.0.0 roadmap
+
+- [x] Cover App Search and crawler endpoints exposed by the public API
+- [x] Add robust validation and error mapping per endpoint
+- [x] Add broad behavior/error regression tests
+- [ ] Final docs pass (examples per API family + migration notes)
+- [ ] Integration test pass against a live Enterprise Search deployment
+- [ ] Freeze public Dart API and publish `1.0.0`
+
 ## Third party packages
 
-This app uses some external librairies:
+This package uses external dependencies:
 
 - [x] [freezed](https://pub.dev/packages/freezed) to generate immutable models
-- [x] [dio](https://pub.dev/packages/dio) for http requests
-- [x] [html_unescape](https://pub.dev/packages/html_unescape) to strip html tags from results
-
-## Roadmap for upcoming versions
-
-- [x] Support facets
-- [x] Support geo filters
-- [x] Support boosts
-- [ ] Support nested filters
-- [ ] Pass a converter to query to build response with your own objects from json response
+- [x] [dio](https://pub.dev/packages/dio) for HTTP requests
+- [x] [html_unescape](https://pub.dev/packages/html_unescape) to strip HTML tags from results
 
 ## Credits
 
-This package was originally created for my personnal needs but feel free to use it, it does not covers all the features available in Elastic App Search, but I will try to cover all the features over time.
+This package was originally created for personal needs and then generalized for broader use.
+The objective is full public API coverage with stable, typed Dart ergonomics.
 
 I am not related to Elastic in any way, I am just a developer who needed to use Elastic through a library, so I created this library to do so.
 
 If you have questions, feel free to ask on [Twitter](https://twitter.com/hikeland).
 
-## [LICENSE: MIT](LICENSE.md)
+## [LICENSE: MIT](LICENSE)
