@@ -1156,6 +1156,110 @@ void main() {
     );
 
     test(
+      'crawler domain validation failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          service.validateCrawlerDomain(
+            const ElasticCrawlerUrlValidationRequest(
+              url: 'https://example.com',
+            ),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerDomainValidate,
+                )
+                .having((e) => e.engine, 'engine', '<account>')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/crawler/validate_url',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'crawler URL validation failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.validateCrawlerUrl(
+            const ElasticCrawlerUrlValidationRequest(
+              url: 'https://example.com/docs',
+            ),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerUrlValidate,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/validate_url',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'crawler URL extraction failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.extractCrawlerUrl(
+            const ElasticCrawlerUrlRequest(url: 'https://example.com/docs'),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerUrlExtract,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/extract_url',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
+      'crawler URL tracing failures are wrapped in ElasticAppSearchException',
+      () async {
+        await expectLater(
+          engine.traceCrawlerUrl(
+            const ElasticCrawlerUrlRequest(url: 'https://example.com/docs'),
+          ),
+          throwsA(
+            isA<ElasticAppSearchException>()
+                .having(
+                  (e) => e.operation,
+                  'operation',
+                  Operation.crawlerUrlTrace,
+                )
+                .having((e) => e.engine, 'engine', 'parks')
+                .having(
+                  (e) => e.url,
+                  'url',
+                  'http://127.0.0.1:1/api/as/v1/engines/parks/crawler/trace_url',
+                ),
+          ),
+        );
+      },
+    );
+
+    test(
       'crawler user agent failures are wrapped in ElasticAppSearchException',
       () async {
         await expectLater(

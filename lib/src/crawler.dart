@@ -499,6 +499,213 @@ class ElasticCrawlerDomainsResponse {
   };
 }
 
+/// Request payload for crawler URL/domain validation APIs.
+class ElasticCrawlerUrlValidationRequest {
+  const ElasticCrawlerUrlValidationRequest({required this.url, this.checks});
+
+  /// URL to validate.
+  final String url;
+
+  /// Optional subset of checks to run.
+  final List<String>? checks;
+
+  Map<String, dynamic> toJson() {
+    final json = <String, dynamic>{'url': url, 'checks': checks};
+    json.removeWhere((key, value) => value == null);
+    return json;
+  }
+}
+
+/// One validation check result returned by crawler validation APIs.
+class ElasticCrawlerUrlValidationCheckResult {
+  const ElasticCrawlerUrlValidationCheckResult({
+    required this.result,
+    required this.name,
+    required this.details,
+    this.comment,
+  });
+
+  /// Check outcome (for example `ok`, `warning`, `error`).
+  final String result;
+
+  /// Check identifier.
+  final String name;
+
+  /// Additional details for this check.
+  final Map<String, dynamic> details;
+
+  /// Human-readable check comment when provided.
+  final String? comment;
+
+  factory ElasticCrawlerUrlValidationCheckResult.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    final details =
+        _asStringDynamicMap(json['details']) ?? const <String, dynamic>{};
+    return ElasticCrawlerUrlValidationCheckResult(
+      result: _toStringOrEmpty(json['result']),
+      name: _toStringOrEmpty(json['name']),
+      details: Map.unmodifiable(
+        details.map((key, value) => MapEntry(key, _immutableJsonValue(value))),
+      ),
+      comment: json['comment']?.toString(),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final json = <String, dynamic>{
+      'result': result,
+      'name': name,
+      'details': _mutableJsonValue(details),
+      'comment': comment,
+    };
+    json.removeWhere((key, value) => value == null);
+    return json;
+  }
+}
+
+/// Response payload returned by crawler URL/domain validation APIs.
+class ElasticCrawlerUrlValidationResponse {
+  const ElasticCrawlerUrlValidationResponse({
+    required this.url,
+    required this.normalizedUrl,
+    required this.valid,
+    required this.results,
+  });
+
+  /// Input URL.
+  final String url;
+
+  /// Canonical normalized URL.
+  final String normalizedUrl;
+
+  /// Whether all requested checks were successful.
+  final bool valid;
+
+  /// Ordered check results.
+  final List<ElasticCrawlerUrlValidationCheckResult> results;
+
+  factory ElasticCrawlerUrlValidationResponse.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    final resultItems = _asJsonObjectListStrict(
+      json['results'] ?? const <dynamic>[],
+      context: 'results',
+    );
+    return ElasticCrawlerUrlValidationResponse(
+      url: _toStringOrEmpty(json['url']),
+      normalizedUrl: _toStringOrEmpty(json['normalized_url']),
+      valid: _toBool(json['valid']),
+      results: List.unmodifiable(
+        resultItems
+            .map(ElasticCrawlerUrlValidationCheckResult.fromJson)
+            .toList(),
+      ),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'url': url,
+    'normalized_url': normalizedUrl,
+    'valid': valid,
+    'results': results.map((result) => result.toJson()).toList(),
+  };
+}
+
+/// Request payload for crawler URL extraction and tracing APIs.
+class ElasticCrawlerUrlRequest {
+  const ElasticCrawlerUrlRequest({required this.url});
+
+  /// URL to process.
+  final String url;
+
+  Map<String, dynamic> toJson() => {'url': url};
+}
+
+/// Response payload for crawler URL extraction API.
+class ElasticCrawlerUrlExtractionResponse {
+  const ElasticCrawlerUrlExtractionResponse({
+    required this.url,
+    required this.normalizedUrl,
+    required this.results,
+  });
+
+  /// Input URL.
+  final String url;
+
+  /// Canonical normalized URL.
+  final String normalizedUrl;
+
+  /// Extraction result object returned by App Search.
+  final Map<String, dynamic> results;
+
+  factory ElasticCrawlerUrlExtractionResponse.fromJson(
+    Map<String, dynamic> json,
+  ) {
+    final results =
+        _asStringDynamicMap(json['results']) ?? const <String, dynamic>{};
+    return ElasticCrawlerUrlExtractionResponse(
+      url: _toStringOrEmpty(json['url']),
+      normalizedUrl: _toStringOrEmpty(json['normalized_url']),
+      results: Map.unmodifiable(
+        results.map((key, value) => MapEntry(key, _immutableJsonValue(value))),
+      ),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'url': url,
+    'normalized_url': normalizedUrl,
+    'results': _mutableJsonValue(results),
+  };
+}
+
+/// Response payload for crawler URL tracing API.
+class ElasticCrawlerUrlTraceResponse {
+  const ElasticCrawlerUrlTraceResponse({
+    required this.url,
+    required this.normalizedUrl,
+    required this.crawlRequests,
+  });
+
+  /// Input URL.
+  final String url;
+
+  /// Canonical normalized URL.
+  final String normalizedUrl;
+
+  /// Recent crawl history entries for this URL.
+  final List<Map<String, dynamic>> crawlRequests;
+
+  factory ElasticCrawlerUrlTraceResponse.fromJson(Map<String, dynamic> json) {
+    final requestItems = _asJsonObjectListStrict(
+      json['crawl_requests'] ?? const <dynamic>[],
+      context: 'crawl_requests',
+    );
+    return ElasticCrawlerUrlTraceResponse(
+      url: _toStringOrEmpty(json['url']),
+      normalizedUrl: _toStringOrEmpty(json['normalized_url']),
+      crawlRequests: List.unmodifiable(
+        requestItems.map((entry) {
+          final mapped = <String, dynamic>{};
+          for (final mapEntry in entry.entries) {
+            mapped[mapEntry.key] = _immutableJsonValue(mapEntry.value);
+          }
+          return Map<String, dynamic>.unmodifiable(mapped);
+        }).toList(),
+      ),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'url': url,
+    'normalized_url': normalizedUrl,
+    'crawl_requests': crawlRequests
+        .map((entry) => _mutableJsonValue(entry))
+        .toList(),
+  };
+}
+
 /// Represents a crawler crawl request.
 class ElasticCrawlerCrawlRequest {
   const ElasticCrawlerCrawlRequest({

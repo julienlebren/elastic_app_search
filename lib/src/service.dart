@@ -843,6 +843,68 @@ class ElasticAppSearch {
     );
   }
 
+  List<String>? _validateCrawlerChecks(
+    List<String>? checks, {
+    required String parameter,
+  }) {
+    if (checks == null) return null;
+    if (checks.isEmpty) {
+      throw ArgumentError.value(
+        checks,
+        parameter,
+        '$parameter cannot be empty when provided.',
+      );
+    }
+
+    final validated = <String>[];
+    for (var i = 0; i < checks.length; i++) {
+      final trimmed = checks[i].trim();
+      if (trimmed.isEmpty) {
+        throw ArgumentError.value(
+          checks[i],
+          '$parameter[$i]',
+          '$parameter entries must be non-empty strings.',
+        );
+      }
+      validated.add(trimmed);
+    }
+    return validated;
+  }
+
+  Map<String, dynamic> _crawlerUrlValidationBody(
+    ElasticCrawlerUrlValidationRequest request, {
+    required String urlParameter,
+    required String checksParameter,
+    required String urlContext,
+  }) {
+    final url = _validateCrawlerRequiredString(
+      request.url,
+      parameter: urlParameter,
+      context: urlContext,
+    );
+    final checks = _validateCrawlerChecks(
+      request.checks,
+      parameter: checksParameter,
+    );
+
+    final body = <String, dynamic>{'url': url, 'checks': checks};
+    body.removeWhere((key, value) => value == null);
+    return body;
+  }
+
+  Map<String, dynamic> _crawlerUrlBody(
+    ElasticCrawlerUrlRequest request, {
+    required String urlParameter,
+    required String urlContext,
+  }) {
+    final url = _validateCrawlerRequiredString(
+      request.url,
+      parameter: urlParameter,
+      context: urlContext,
+    );
+    return <String, dynamic>{'url': url};
+  }
+
   Map<String, dynamic> _parseCrawlerDomainJson(dynamic responseData) {
     final mapped = _asJsonObject(responseData);
     final maybeResults = mapped['results'];
@@ -2842,6 +2904,129 @@ class ElasticAppSearch {
         final data = _asJsonObject(responseData);
         return _toBool(data['deleted']);
       },
+    );
+  }
+
+  /// Validates a crawler domain URL outside engine context.
+  ///
+  /// Uses `POST /api/as/v1/crawler/validate_url`.
+  Future<ElasticCrawlerUrlValidationResponse> validateCrawlerDomain(
+    ElasticCrawlerUrlValidationRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    final body = _crawlerUrlValidationBody(
+      request,
+      urlParameter: 'request.url',
+      checksParameter: 'request.checks',
+      urlContext: 'Crawler domain URL',
+    );
+    final url = _operationUrl(_accountScope, Operation.crawlerDomainValidate);
+    return _sendRequest<ElasticCrawlerUrlValidationResponse>(
+      method: 'POST',
+      url: url,
+      operation: Operation.crawlerDomainValidate,
+      engine: _accountScope,
+      body: body,
+      cancelToken: cancelToken,
+      parse: (responseData) => ElasticCrawlerUrlValidationResponse.fromJson(
+        _asJsonObject(responseData),
+      ),
+    );
+  }
+
+  /// Validates one URL from the crawler perspective for an engine.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/validate_url`.
+  Future<ElasticCrawlerUrlValidationResponse> validateCrawlerUrl(
+    String engine,
+    ElasticCrawlerUrlValidationRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final body = _crawlerUrlValidationBody(
+      request,
+      urlParameter: 'request.url',
+      checksParameter: 'request.checks',
+      urlContext: 'Crawler URL',
+    );
+    final url = _operationUrl(engineName, Operation.crawlerUrlValidate);
+    return _sendRequest<ElasticCrawlerUrlValidationResponse>(
+      method: 'POST',
+      url: url,
+      operation: Operation.crawlerUrlValidate,
+      engine: engineName,
+      body: body,
+      cancelToken: cancelToken,
+      parse: (responseData) => ElasticCrawlerUrlValidationResponse.fromJson(
+        _asJsonObject(responseData),
+      ),
+    );
+  }
+
+  /// Extracts content from one URL for an engine without creating a crawl.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/extract_url`.
+  Future<ElasticCrawlerUrlExtractionResponse> extractCrawlerUrl(
+    String engine,
+    ElasticCrawlerUrlRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final body = _crawlerUrlBody(
+      request,
+      urlParameter: 'request.url',
+      urlContext: 'Crawler URL',
+    );
+    final url = _operationUrl(engineName, Operation.crawlerUrlExtract);
+    return _sendRequest<ElasticCrawlerUrlExtractionResponse>(
+      method: 'POST',
+      url: url,
+      operation: Operation.crawlerUrlExtract,
+      engine: engineName,
+      body: body,
+      cancelToken: cancelToken,
+      parse: (responseData) => ElasticCrawlerUrlExtractionResponse.fromJson(
+        _asJsonObject(responseData),
+      ),
+    );
+  }
+
+  /// Traces recent crawl history for one URL on an engine.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/trace_url`.
+  Future<ElasticCrawlerUrlTraceResponse> traceCrawlerUrl(
+    String engine,
+    ElasticCrawlerUrlRequest request, [
+    CancelToken? cancelToken,
+  ]) {
+    final engineName = _validateEngineName(
+      engine,
+      parameter: 'engine',
+      context: 'Engine',
+    );
+    final body = _crawlerUrlBody(
+      request,
+      urlParameter: 'request.url',
+      urlContext: 'Crawler URL',
+    );
+    final url = _operationUrl(engineName, Operation.crawlerUrlTrace);
+    return _sendRequest<ElasticCrawlerUrlTraceResponse>(
+      method: 'POST',
+      url: url,
+      operation: Operation.crawlerUrlTrace,
+      engine: engineName,
+      body: body,
+      cancelToken: cancelToken,
+      parse: (responseData) =>
+          ElasticCrawlerUrlTraceResponse.fromJson(_asJsonObject(responseData)),
     );
   }
 

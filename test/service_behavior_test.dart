@@ -1847,6 +1847,96 @@ void main() {
           }
         }
 
+        if (request.uri.path == '/api/as/v1/crawler/validate_url') {
+          expect(request.method, 'POST');
+          final body = await _readJson(request);
+          expect(body['url'], 'https://example.com');
+          expect(body['checks'], ['dns', 'url']);
+          await _writeJson(request, 200, {
+            'url': 'https://example.com',
+            'normalized_url': 'https://example.com/',
+            'valid': true,
+            'results': [
+              {
+                'result': 'ok',
+                'name': 'url',
+                'details': const {},
+                'comment': 'URL structure looks valid',
+              },
+            ],
+          });
+          return;
+        }
+
+        if (request.uri.path ==
+            '/api/as/v1/engines/parks/crawler/validate_url') {
+          expect(request.method, 'POST');
+          final body = await _readJson(request);
+          expect(body['url'], 'https://example.com/docs');
+          expect(body['checks'], ['url', 'domain_access']);
+          await _writeJson(request, 200, {
+            'url': 'https://example.com/docs',
+            'normalized_url': 'https://example.com/docs',
+            'valid': true,
+            'results': [
+              {
+                'result': 'ok',
+                'name': 'url',
+                'details': const {},
+                'comment': 'URL structure looks valid',
+              },
+              {
+                'result': 'ok',
+                'name': 'domain_access',
+                'details': {'domain': 'https://example.com'},
+                'comment': 'The URL matches one of the domains',
+              },
+            ],
+          });
+          return;
+        }
+
+        if (request.uri.path ==
+            '/api/as/v1/engines/parks/crawler/extract_url') {
+          expect(request.method, 'POST');
+          final body = await _readJson(request);
+          expect(body['url'], 'https://example.com/docs');
+          await _writeJson(request, 200, {
+            'url': 'https://example.com/docs',
+            'normalized_url': 'https://example.com/docs',
+            'results': {
+              'download': {'status_code': 200},
+              'extraction': {
+                'content_hash': 'hash-1',
+                'content_fields': {'title': 'Documentation'},
+              },
+              'indexing': {'document_id': null, 'document_fields': null},
+              'deduplication': {'urls_count': 0, 'urls_sample': const []},
+            },
+          });
+          return;
+        }
+
+        if (request.uri.path == '/api/as/v1/engines/parks/crawler/trace_url') {
+          expect(request.method, 'POST');
+          final body = await _readJson(request);
+          expect(body['url'], 'https://example.com/docs');
+          await _writeJson(request, 200, {
+            'url': 'https://example.com/docs',
+            'normalized_url': 'https://example.com/docs',
+            'crawl_requests': [
+              {
+                'crawl_request': {'id': 'cr-1', 'status': 'success'},
+                'found': true,
+                'discover': const [],
+                'fetch': {'outcome': 'success'},
+                'output': {'outcome': 'success'},
+              },
+            ],
+          });
+          return;
+        }
+
         if (request.uri.path == '/api/as/v1/crawler/user_agent') {
           expect(request.method, 'GET');
           await _writeJson(request, 200, {
@@ -1969,6 +2059,24 @@ void main() {
         ),
       );
       final deletedSitemap = await engine.deleteCrawlerSitemap('dom-1', 'sm-1');
+      final domainValidation = await service.validateCrawlerDomain(
+        const ElasticCrawlerUrlValidationRequest(
+          url: 'https://example.com',
+          checks: ['dns', 'url'],
+        ),
+      );
+      final urlValidation = await engine.validateCrawlerUrl(
+        const ElasticCrawlerUrlValidationRequest(
+          url: 'https://example.com/docs',
+          checks: ['url', 'domain_access'],
+        ),
+      );
+      final extraction = await engine.extractCrawlerUrl(
+        const ElasticCrawlerUrlRequest(url: 'https://example.com/docs'),
+      );
+      final trace = await engine.traceCrawlerUrl(
+        const ElasticCrawlerUrlRequest(url: 'https://example.com/docs'),
+      );
       final crawlerUserAgent = await service.getCrawlerUserAgent();
 
       expect(config.domains, hasLength(1));
@@ -2005,6 +2113,14 @@ void main() {
       expect(createdSitemap.id, 'sm-new');
       expect(updatedSitemap.url, 'https://example.com/sitemap-updated.xml');
       expect(deletedSitemap, isTrue);
+      expect(domainValidation.valid, isTrue);
+      expect(domainValidation.results.first.name, 'url');
+      expect(urlValidation.results, hasLength(2));
+      expect(urlValidation.results[1].name, 'domain_access');
+      final downloadResult = extraction.results['download'] as Map;
+      expect(downloadResult['status_code'], 200);
+      expect(trace.crawlRequests, hasLength(1));
+      expect(trace.crawlRequests.first['found'], isTrue);
       expect(crawlerUserAgent.userAgent, 'Elastic Crawler (0.0.1)');
     });
 
@@ -2962,6 +3078,38 @@ void main() {
       );
       expect(
         () => engine.deleteCrawlerSitemap(' ', 'sm-1'),
+        throwsArgumentError,
+      );
+      expect(
+        () => service.validateCrawlerDomain(
+          const ElasticCrawlerUrlValidationRequest(url: ' '),
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => service.validateCrawlerDomain(
+          const ElasticCrawlerUrlValidationRequest(
+            url: 'https://example.com',
+            checks: [],
+          ),
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.validateCrawlerUrl(
+          const ElasticCrawlerUrlValidationRequest(
+            url: 'https://example.com/docs',
+            checks: [''],
+          ),
+        ),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.extractCrawlerUrl(const ElasticCrawlerUrlRequest(url: '')),
+        throwsArgumentError,
+      );
+      expect(
+        () => engine.traceCrawlerUrl(const ElasticCrawlerUrlRequest(url: ' ')),
         throwsArgumentError,
       );
     });
@@ -4094,6 +4242,36 @@ void main() {
           });
           return;
         }
+        if (request.uri.path == '/api/as/v1/crawler/validate_url' &&
+            request.method == 'POST') {
+          await _writeJson(request, 422, {
+            'errors': ['Crawler domain validation invalid'],
+          });
+          return;
+        }
+        if (request.uri.path ==
+                '/api/as/v1/engines/parks/crawler/validate_url' &&
+            request.method == 'POST') {
+          await _writeJson(request, 401, {
+            'errors': ['Crawler URL validation unauthorized'],
+          });
+          return;
+        }
+        if (request.uri.path ==
+                '/api/as/v1/engines/parks/crawler/extract_url' &&
+            request.method == 'POST') {
+          await _writeJson(request, 500, {
+            'errors': ['Crawler URL extraction failed'],
+          });
+          return;
+        }
+        if (request.uri.path == '/api/as/v1/engines/parks/crawler/trace_url' &&
+            request.method == 'POST') {
+          await _writeJson(request, 503, {
+            'errors': ['Crawler URL trace unavailable'],
+          });
+          return;
+        }
         if (request.uri.path == '/api/as/v1/crawler/user_agent') {
           await _writeJson(request, 403, {
             'errors': ['Crawler user agent forbidden'],
@@ -4277,6 +4455,92 @@ void main() {
               .having((e) => e.engine, 'engine', 'parks')
               .having((e) => e.statusCode, 'statusCode', 400)
               .having((e) => e.message, 'message', 'Crawler sitemap invalid'),
+        ),
+      );
+
+      await expectLater(
+        service.validateCrawlerDomain(
+          const ElasticCrawlerUrlValidationRequest(url: 'https://example.com'),
+        ),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.crawlerDomainValidate,
+              )
+              .having((e) => e.engine, 'engine', '<account>')
+              .having((e) => e.statusCode, 'statusCode', 422)
+              .having(
+                (e) => e.message,
+                'message',
+                'Crawler domain validation invalid',
+              ),
+        ),
+      );
+
+      await expectLater(
+        engine.validateCrawlerUrl(
+          const ElasticCrawlerUrlValidationRequest(
+            url: 'https://example.com/docs',
+          ),
+        ),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.crawlerUrlValidate,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 401)
+              .having(
+                (e) => e.message,
+                'message',
+                'Crawler URL validation unauthorized',
+              ),
+        ),
+      );
+
+      await expectLater(
+        engine.extractCrawlerUrl(
+          const ElasticCrawlerUrlRequest(url: 'https://example.com/docs'),
+        ),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.crawlerUrlExtract,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 500)
+              .having(
+                (e) => e.message,
+                'message',
+                'Crawler URL extraction failed',
+              ),
+        ),
+      );
+
+      await expectLater(
+        engine.traceCrawlerUrl(
+          const ElasticCrawlerUrlRequest(url: 'https://example.com/docs'),
+        ),
+        throwsA(
+          isA<ElasticAppSearchException>()
+              .having(
+                (e) => e.operation,
+                'operation',
+                Operation.crawlerUrlTrace,
+              )
+              .having((e) => e.engine, 'engine', 'parks')
+              .having((e) => e.statusCode, 'statusCode', 503)
+              .having(
+                (e) => e.message,
+                'message',
+                'Crawler URL trace unavailable',
+              ),
         ),
       );
 

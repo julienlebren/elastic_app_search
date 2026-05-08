@@ -434,6 +434,30 @@ class ElasticEngine {
     CancelToken? cancelToken,
   ]) => service.deleteCrawlerSitemap(name, domainId, sitemapId, cancelToken);
 
+  /// Validates one URL from the crawler perspective for this engine.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/validate_url`.
+  Future<ElasticCrawlerUrlValidationResponse> validateCrawlerUrl(
+    ElasticCrawlerUrlValidationRequest request, [
+    CancelToken? cancelToken,
+  ]) => service.validateCrawlerUrl(name, request, cancelToken);
+
+  /// Extracts content from one URL for this engine without creating a crawl.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/extract_url`.
+  Future<ElasticCrawlerUrlExtractionResponse> extractCrawlerUrl(
+    ElasticCrawlerUrlRequest request, [
+    CancelToken? cancelToken,
+  ]) => service.extractCrawlerUrl(name, request, cancelToken);
+
+  /// Traces recent crawl history for one URL on this engine.
+  ///
+  /// Uses `POST /api/as/v1/engines/{engine}/crawler/trace_url`.
+  Future<ElasticCrawlerUrlTraceResponse> traceCrawlerUrl(
+    ElasticCrawlerUrlRequest request, [
+    CancelToken? cancelToken,
+  ]) => service.traceCrawlerUrl(name, request, cancelToken);
+
   /// Creates or updates documents in bulk.
   ///
   /// Uses `POST /api/as/v1/engines/{engine}/documents`.
