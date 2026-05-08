@@ -1,0 +1,59 @@
+name: Live API Tests
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "0 5 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  live-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Tests (live)
+        env:
+          ELASTIC_APP_SEARCH_ENDPOINT: ${{ secrets.ELASTIC_APP_SEARCH_ENDPOINT }}
+          ELASTIC_APP_SEARCH_API_KEY: ${{ secrets.ELASTIC_APP_SEARCH_API_KEY }}
+          ELASTIC_APP_SEARCH_PRIVATE_KEY: ${{ secrets.ELASTIC_APP_SEARCH_PRIVATE_KEY }}
+          ELASTIC_APP_SEARCH_SEARCH_ENGINE: ${{ vars.ELASTIC_APP_SEARCH_SEARCH_ENGINE }}
+        run: |
+          if [ -z "${ELASTIC_APP_SEARCH_ENDPOINT}" ]; then
+            echo "ELASTIC_APP_SEARCH_ENDPOINT is missing; skipping live tests."
+            exit 0
+          fi
+
+          if [ -z "${ELASTIC_APP_SEARCH_API_KEY}" ] && [ -z "${ELASTIC_APP_SEARCH_PRIVATE_KEY}" ]; then
+            echo "No API key configured (ELASTIC_APP_SEARCH_API_KEY / ELASTIC_APP_SEARCH_PRIVATE_KEY); skipping live tests."
+            exit 0
+          fi
+
+          set +e
+          flutter test test/live_enterprise_search_integration_test.dart
+          status=$?
+          set -e
+
+          if [ "${status}" -eq 79 ]; then
+            echo "No live tests discovered; skipping."
+            exit 0
+          fi
+
+          exit "${status}"
