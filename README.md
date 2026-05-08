@@ -13,6 +13,12 @@ This package is a ready-to-use API for Elastic App Search.
 
 This package does not intend to learn you how Elastic App Search is working, it is just intended to help you make queries and manipulate results easily, assuming that you already know Elastic App Search principles.
 
+## Additional documentation
+
+- End-to-end usage examples by API family: [docs/USAGE_GUIDE.md](docs/USAGE_GUIDE.md)
+- Endpoint-by-endpoint API matrix: [docs/API_COVERAGE.md](docs/API_COVERAGE.md)
+- Migration notes for `1.0.0`: [docs/MIGRATION_1_0.md](docs/MIGRATION_1_0.md)
+
 Here is a simple example of how you can query your Elastic engine:
 
 ```dart
@@ -69,6 +75,8 @@ We request the first page, limited to 50 documents.
   * [ElasticResult](#ElasticResult)
     * [ElasticResultMeta](#ElasticResultMeta)
     * [ElasticResultSnippet](#ElasticResultSnippet)
+* [API coverage status](#api-coverage-status)
+* [1.0.0 roadmap](#100-roadmap)
 
 ## ElasticAppSearch
 
@@ -369,6 +377,8 @@ The package now covers the App Search public API surface used in production sear
 - Web crawler API (crawl requests/schedules/process crawls/domains/rules/sitemaps/url validation/url extraction/url tracing)
 
 See the endpoint-by-endpoint matrix in [docs/API_COVERAGE.md](docs/API_COVERAGE.md).
+For complete usage snippets grouped by API family, see [docs/USAGE_GUIDE.md](docs/USAGE_GUIDE.md).
+For upgrade notes toward the stable API, see [docs/MIGRATION_1_0.md](docs/MIGRATION_1_0.md).
 
 ### Crawler debugging example
 
@@ -400,7 +410,7 @@ print(trace.crawlRequests.length);
 - [x] Cover App Search and crawler endpoints exposed by the public API
 - [x] Add robust validation and error mapping per endpoint
 - [x] Add broad behavior/error regression tests
-- [ ] Final docs pass (examples per API family + migration notes)
+- [x] Final docs pass (examples per API family + migration notes)
 - [ ] Integration test pass against a live Enterprise Search deployment
 - [ ] Freeze public Dart API and publish `1.0.0`
 

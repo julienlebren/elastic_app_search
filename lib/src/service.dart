@@ -3998,6 +3998,9 @@ class ElasticAppSearch {
     );
   }
 
+  /// Lists engines for the account.
+  ///
+  /// Uses `GET /api/as/v1/engines`.
   Future<ElasticEnginesResponse> listEngines({
     ElasticPageRequest page = const ElasticPageRequest(current: 1, size: 25),
     CancelToken? cancelToken,
@@ -4188,7 +4191,7 @@ class ElasticAppSearch {
     );
   }
 
-  /// Creates and returns a new [ElasticObject] linked to this instance of service.
+  /// Creates and returns a new [ElasticEngine] linked to this instance.
   ElasticEngine engine(String name) {
     final engineName = _validateEngineName(name);
     return ElasticEngine(service: this, name: engineName);
