@@ -73,5 +73,55 @@ void main() {
       expect(document.suggestion, 'mountain');
       expect(result.documents?.first.suggestion, 'mountain');
     });
+
+    test('parses response meta when request_id is null', () {
+      final response = ElasticResponse.fromJson({
+        'meta': {
+          'request_id': null,
+          'warnings': [],
+          'alerts': [],
+          'page': {
+            'current': 1,
+            'size': 10,
+            'total_pages': 1,
+            'total_results': 0,
+          },
+        },
+        'results': [],
+      });
+
+      expect(response.meta.requestId, isEmpty);
+    });
+
+    test('parses suggestion response when request_id is null', () {
+      final response = ElasticQuerySuggestionResponse.fromJson({
+        'results': {
+          'documents': [
+            {'suggestion': 'mountain'},
+          ],
+        },
+        'meta': {'request_id': null},
+      });
+
+      expect(response.meta.requestId, isEmpty);
+    });
+
+    test('parses search explain response when request_id is null', () {
+      final response = ElasticSearchExplainResponse.fromJson({
+        'meta': {
+          'request_id': null,
+          'warnings': [],
+          'alerts': [],
+          'precision': 2,
+          'engine': {'name': 'parks', 'type': 'default'},
+        },
+        'query_string': 'GET engine/_search',
+        'query_body': {
+          'query': {'bool': {}},
+        },
+      });
+
+      expect(response.meta.requestId, isEmpty);
+    });
   });
 }

@@ -41,7 +41,8 @@ abstract class ElasticResponseMeta with _$ElasticResponseMeta {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   factory ElasticResponseMeta({
     /// String ID representing the request. Guaranteed to be unique.
-    @JsonKey(name: "request_id") required String requestId,
+    @JsonKey(name: "request_id", fromJson: _toStringOrEmpty)
+    required String requestId,
 
     /// Array of warnings for the query.
     ///
@@ -115,7 +116,8 @@ abstract class ElasticQuerySuggestionResponse
 abstract class ElasticQuerySuggestionMeta with _$ElasticQuerySuggestionMeta {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   factory ElasticQuerySuggestionMeta({
-    @JsonKey(name: "request_id") required String requestId,
+    @JsonKey(name: "request_id", fromJson: _toStringOrEmpty)
+    required String requestId,
   }) = _ElasticQuerySuggestionMeta;
 
   factory ElasticQuerySuggestionMeta.fromJson(Map<String, dynamic> json) =>
@@ -153,7 +155,8 @@ abstract class ElasticSearchExplainEngine with _$ElasticSearchExplainEngine {
 abstract class ElasticSearchExplainMeta with _$ElasticSearchExplainMeta {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   factory ElasticSearchExplainMeta({
-    @JsonKey(name: "request_id") required String requestId,
+    @JsonKey(name: "request_id", fromJson: _toStringOrEmpty)
+    required String requestId,
     required List<dynamic> warnings,
     required List<dynamic> alerts,
     int? precision,

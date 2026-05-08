@@ -4,8 +4,10 @@ import 'package:elastic_app_search/elastic_app_search.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 const _endPointEnv = 'ELASTIC_APP_SEARCH_ENDPOINT';
-const _privateKeyEnv = 'ELASTIC_APP_SEARCH_PRIVATE_KEY';
+const _apiKeyEnv = 'ELASTIC_APP_SEARCH_API_KEY';
+const _legacyPrivateKeyEnv = 'ELASTIC_APP_SEARCH_PRIVATE_KEY';
 const _enginePrefixEnv = 'ELASTIC_APP_SEARCH_TEST_ENGINE_PREFIX';
+const _searchEngineEnv = 'ELASTIC_APP_SEARCH_SEARCH_ENGINE';
 
 String? _readRequiredEnv(String key) {
   final value = Platform.environment[key]?.trim();
@@ -44,17 +46,61 @@ Future<T> _retryUntil<T>({
 
 void main() {
   final endpoint = _readRequiredEnv(_endPointEnv);
-  final privateKey = _readRequiredEnv(_privateKeyEnv);
+  final apiKey =
+      _readRequiredEnv(_apiKeyEnv) ?? _readRequiredEnv(_legacyPrivateKeyEnv);
 
-  if (endpoint == null || privateKey == null) {
+  if (endpoint == null || apiKey == null) {
     test(
       'live integration tests are skipped without required environment',
       () {
         expect(endpoint, isNull);
-        expect(privateKey, isNull);
+        expect(apiKey, isNull);
       },
       skip:
-          'Set $_endPointEnv and $_privateKeyEnv to run live Enterprise Search integration tests.',
+          'Set $_endPointEnv and ($_apiKeyEnv or $_legacyPrivateKeyEnv) '
+          'to run live Enterprise Search integration tests.',
+    );
+    return;
+  }
+
+  if (apiKey.startsWith('search-')) {
+    group('Live Enterprise Search integration (search key mode)', () {
+      final searchEngine =
+          _readRequiredEnv(_searchEngineEnv) ?? 'search-ui-examples';
+      final service = ElasticAppSearch(endPoint: endpoint, searchKey: apiKey);
+      final engine = service.engine(searchEngine);
+
+      test('search and suggestions round-trip', () async {
+        final response = await _retryUntil<ElasticResponse>(
+          run: () => engine.query('mountain').page(1, size: 10).get(),
+          accept: (value) => value.results.isNotEmpty,
+        );
+        expect(response.results, isNotEmpty);
+
+        final suggestions = await engine
+            .suggestionQuery('moun')
+            .searchField('title', weight: 8)
+            .withSize(5)
+            .get();
+        expect(suggestions.results.documents, isNotNull);
+
+        final multi = await engine.multiSearch([
+          engine.query('mountain').page(1, size: 5),
+          engine.query('park').page(1, size: 5),
+        ]);
+        expect(multi, hasLength(2));
+      });
+    });
+    return;
+  }
+
+  if (!apiKey.startsWith('private-')) {
+    test(
+      'live integration tests are skipped for unsupported key type',
+      () {
+        expect(apiKey, isNotEmpty);
+      },
+      skip: 'Use a private key (prefix private-) for full integration tests.',
     );
     return;
   }
@@ -65,7 +111,7 @@ void main() {
     late String engineName;
 
     setUpAll(() async {
-      service = ElasticAppSearch(endPoint: endpoint, searchKey: privateKey);
+      service = ElasticAppSearch(endPoint: endpoint, searchKey: apiKey);
       final rawPrefix = Platform.environment[_enginePrefixEnv] ?? 'integration';
       final prefix = _sanitizeEnginePrefix(rawPrefix);
       final suffix = DateTime.now().microsecondsSinceEpoch;

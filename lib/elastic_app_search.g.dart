@@ -633,7 +633,7 @@ Map<String, dynamic> _$ElasticResponseToJson(_ElasticResponse instance) =>
 
 _ElasticResponseMeta _$ElasticResponseMetaFromJson(Map<String, dynamic> json) =>
     _ElasticResponseMeta(
-      requestId: json['request_id'] as String,
+      requestId: _toStringOrEmpty(json['request_id']),
       warnings: json['warnings'] as List<dynamic>,
       alerts: json['alerts'] as List<dynamic>,
       page: ElasticResponseMetaPage.fromJson(
@@ -688,7 +688,9 @@ Map<String, dynamic> _$ElasticQuerySuggestionResponseToJson(
 
 _ElasticQuerySuggestionMeta _$ElasticQuerySuggestionMetaFromJson(
   Map<String, dynamic> json,
-) => _ElasticQuerySuggestionMeta(requestId: json['request_id'] as String);
+) => _ElasticQuerySuggestionMeta(
+  requestId: _toStringOrEmpty(json['request_id']),
+);
 
 Map<String, dynamic> _$ElasticQuerySuggestionMetaToJson(
   _ElasticQuerySuggestionMeta instance,
@@ -708,7 +710,7 @@ Map<String, dynamic> _$ElasticSearchExplainEngineToJson(
 _ElasticSearchExplainMeta _$ElasticSearchExplainMetaFromJson(
   Map<String, dynamic> json,
 ) => _ElasticSearchExplainMeta(
-  requestId: json['request_id'] as String,
+  requestId: _toStringOrEmpty(json['request_id']),
   warnings: json['warnings'] as List<dynamic>,
   alerts: json['alerts'] as List<dynamic>,
   precision: (json['precision'] as num?)?.toInt(),
