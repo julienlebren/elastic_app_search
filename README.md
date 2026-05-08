@@ -18,6 +18,7 @@ This package does not intend to learn you how Elastic App Search is working, it 
 - End-to-end usage examples by API family: [docs/USAGE_GUIDE.md](docs/USAGE_GUIDE.md)
 - Endpoint-by-endpoint API matrix: [docs/API_COVERAGE.md](docs/API_COVERAGE.md)
 - Migration notes for `1.0.0`: [docs/MIGRATION_1_0.md](docs/MIGRATION_1_0.md)
+- Live integration test setup: [docs/INTEGRATION_TESTS.md](docs/INTEGRATION_TESTS.md)
 
 Here is a simple example of how you can query your Elastic engine:
 
@@ -411,7 +412,7 @@ print(trace.crawlRequests.length);
 - [x] Add robust validation and error mapping per endpoint
 - [x] Add broad behavior/error regression tests
 - [x] Final docs pass (examples per API family + migration notes)
-- [ ] Integration test pass against a live Enterprise Search deployment
+- [ ] Integration test pass against a live Enterprise Search deployment ([runbook](docs/INTEGRATION_TESTS.md))
 - [ ] Freeze public Dart API and publish `1.0.0`
 
 ## Third party packages
