@@ -15,10 +15,10 @@ This package does not intend to learn you how Elastic App Search is working, it 
 
 ## Additional documentation
 
-- End-to-end usage examples by API family: [docs/USAGE_GUIDE.md](docs/USAGE_GUIDE.md)
-- Endpoint-by-endpoint API matrix: [docs/API_COVERAGE.md](docs/API_COVERAGE.md)
-- Migration notes for `1.0.0`: [docs/MIGRATION_1_0.md](docs/MIGRATION_1_0.md)
-- Live integration test setup: [docs/INTEGRATION_TESTS.md](docs/INTEGRATION_TESTS.md)
+- End-to-end usage examples by API family: [USAGE_GUIDE.md](USAGE_GUIDE.md)
+- Endpoint-by-endpoint API matrix: [API_COVERAGE.md](API_COVERAGE.md)
+- Migration notes for `1.0.0`: [MIGRATION_1_0.md](MIGRATION_1_0.md)
+- Live integration test setup: [INTEGRATION_TESTS.md](INTEGRATION_TESTS.md)
 
 Here is a simple example of how you can query your Elastic engine:
 
@@ -381,9 +381,9 @@ The package now covers the App Search-native public API surface used in producti
 
 The Elasticsearch `_search` passthrough endpoint is intentionally out of scope for `1.0.0`: it accepts Elasticsearch Query DSL and returns raw Elasticsearch responses rather than App Search request/response objects.
 
-See the endpoint-by-endpoint matrix in [docs/API_COVERAGE.md](docs/API_COVERAGE.md).
-For complete usage snippets grouped by API family, see [docs/USAGE_GUIDE.md](docs/USAGE_GUIDE.md).
-For upgrade notes toward the stable API, see [docs/MIGRATION_1_0.md](docs/MIGRATION_1_0.md).
+See the endpoint-by-endpoint matrix in [API_COVERAGE.md](API_COVERAGE.md).
+For complete usage snippets grouped by API family, see [USAGE_GUIDE.md](USAGE_GUIDE.md).
+For upgrade notes toward the stable API, see [MIGRATION_1_0.md](MIGRATION_1_0.md).
 
 ### Crawler debugging example
 
@@ -416,7 +416,7 @@ print(trace.crawlRequests.length);
 - [x] Add robust validation and error mapping per endpoint
 - [x] Add broad behavior/error regression tests
 - [x] Final docs pass (examples per API family + migration notes)
-- [ ] Integration test pass against a live Enterprise Search deployment ([runbook](docs/INTEGRATION_TESTS.md))
+- [ ] Integration test pass against a live Enterprise Search deployment ([runbook](INTEGRATION_TESTS.md))
 - [ ] Freeze public Dart API and publish `1.0.0`
 
 ## Release helper
