@@ -1,5 +1,9 @@
 ## Unreleased
 
+### Added
+
+- Restored nullable `id` and `engine` fields on `ElasticResultMeta` for meta-engine search results.
+
 ## 1.0.0 - 2026-05-08
 
 ### Added

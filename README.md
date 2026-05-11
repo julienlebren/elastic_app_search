@@ -351,6 +351,8 @@ An object containing information about a given result.
 Param | Type | Description
 ----- | ---- | -------------
 score | double | The relevance of the result
+id | String | The original document ID returned when searching a meta-engine
+engine | String | The source engine name returned when searching a meta-engine
 
 #### ElasticResultSnippet
 

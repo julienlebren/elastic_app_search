@@ -23,6 +23,12 @@ abstract class ElasticResultMeta with _$ElasticResultMeta {
   factory ElasticResultMeta({
     /// The relevance of the result
     double? score,
+
+    /// The original document ID returned when searching a meta-engine.
+    String? id,
+
+    /// The source engine name returned when searching a meta-engine.
+    String? engine,
   }) = _ElasticResultMeta;
 
   factory ElasticResultMeta.fromJson(Map<String, dynamic> json) =>

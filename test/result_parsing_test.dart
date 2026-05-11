@@ -46,6 +46,18 @@ void main() {
       expect(result.data?['title'], 'Yosemite');
       expect(result.score, 4.0);
     });
+
+    test('parses meta-engine result metadata', () {
+      final result = ElasticResult.fromJson({
+        'id': {'raw': 'source-engine|doc-1'},
+        '_meta': {'id': 'doc-1', 'engine': 'source-engine', 'score': 5.0},
+      });
+
+      expect(result.meta.id, 'doc-1');
+      expect(result.meta.engine, 'source-engine');
+      expect(result.score, 5.0);
+      expect(result.data?['id'], 'source-engine|doc-1');
+    });
   });
 
   group('Result model fromJson', () {

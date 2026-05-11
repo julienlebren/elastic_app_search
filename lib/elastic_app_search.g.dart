@@ -834,10 +834,18 @@ Map<String, dynamic> _$ElasticEnginesResponseToJson(
 };
 
 _ElasticResultMeta _$ElasticResultMetaFromJson(Map<String, dynamic> json) =>
-    _ElasticResultMeta(score: (json['score'] as num?)?.toDouble());
+    _ElasticResultMeta(
+      score: (json['score'] as num?)?.toDouble(),
+      id: json['id'] as String?,
+      engine: json['engine'] as String?,
+    );
 
 Map<String, dynamic> _$ElasticResultMetaToJson(_ElasticResultMeta instance) =>
-    <String, dynamic>{'score': ?instance.score};
+    <String, dynamic>{
+      'score': ?instance.score,
+      'id': ?instance.id,
+      'engine': ?instance.engine,
+    };
 
 _ElasticResult _$ElasticResultFromJson(Map<String, dynamic> json) =>
     _ElasticResult(

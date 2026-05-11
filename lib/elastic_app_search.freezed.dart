@@ -13642,7 +13642,9 @@ $ElasticDocumentsListMetaCopyWith<$Res> get meta {
 mixin _$ElasticResultMeta {
 
 /// The relevance of the result
- double? get score;
+ double? get score;/// The original document ID returned when searching a meta-engine.
+ String? get id;/// The source engine name returned when searching a meta-engine.
+ String? get engine;
 /// Create a copy of ElasticResultMeta
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -13655,16 +13657,16 @@ $ElasticResultMetaCopyWith<ElasticResultMeta> get copyWith => _$ElasticResultMet
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticResultMeta&&(identical(other.score, score) || other.score == score));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ElasticResultMeta&&(identical(other.score, score) || other.score == score)&&(identical(other.id, id) || other.id == id)&&(identical(other.engine, engine) || other.engine == engine));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,score);
+int get hashCode => Object.hash(runtimeType,score,id,engine);
 
 @override
 String toString() {
-  return 'ElasticResultMeta(score: $score)';
+  return 'ElasticResultMeta(score: $score, id: $id, engine: $engine)';
 }
 
 
@@ -13675,7 +13677,7 @@ abstract mixin class $ElasticResultMetaCopyWith<$Res>  {
   factory $ElasticResultMetaCopyWith(ElasticResultMeta value, $Res Function(ElasticResultMeta) _then) = _$ElasticResultMetaCopyWithImpl;
 @useResult
 $Res call({
- double? score
+ double? score, String? id, String? engine
 });
 
 
@@ -13692,10 +13694,12 @@ class _$ElasticResultMetaCopyWithImpl<$Res>
 
 /// Create a copy of ElasticResultMeta
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? score = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? score = freezed,Object? id = freezed,Object? engine = freezed,}) {
   return _then(_self.copyWith(
 score: freezed == score ? _self.score : score // ignore: cast_nullable_to_non_nullable
-as double?,
+as double?,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,engine: freezed == engine ? _self.engine : engine // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -13780,10 +13784,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double? score)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( double? score,  String? id,  String? engine)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ElasticResultMeta() when $default != null:
-return $default(_that.score);case _:
+return $default(_that.score,_that.id,_that.engine);case _:
   return orElse();
 
 }
@@ -13801,10 +13805,10 @@ return $default(_that.score);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double? score)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( double? score,  String? id,  String? engine)  $default,) {final _that = this;
 switch (_that) {
 case _ElasticResultMeta():
-return $default(_that.score);case _:
+return $default(_that.score,_that.id,_that.engine);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -13821,10 +13825,10 @@ return $default(_that.score);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double? score)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( double? score,  String? id,  String? engine)?  $default,) {final _that = this;
 switch (_that) {
 case _ElasticResultMeta() when $default != null:
-return $default(_that.score);case _:
+return $default(_that.score,_that.id,_that.engine);case _:
   return null;
 
 }
@@ -13836,11 +13840,15 @@ return $default(_that.score);case _:
 
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _ElasticResultMeta implements ElasticResultMeta {
-   _ElasticResultMeta({this.score});
+   _ElasticResultMeta({this.score, this.id, this.engine});
   factory _ElasticResultMeta.fromJson(Map<String, dynamic> json) => _$ElasticResultMetaFromJson(json);
 
 /// The relevance of the result
 @override final  double? score;
+/// The original document ID returned when searching a meta-engine.
+@override final  String? id;
+/// The source engine name returned when searching a meta-engine.
+@override final  String? engine;
 
 /// Create a copy of ElasticResultMeta
 /// with the given fields replaced by the non-null parameter values.
@@ -13855,16 +13863,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticResultMeta&&(identical(other.score, score) || other.score == score));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ElasticResultMeta&&(identical(other.score, score) || other.score == score)&&(identical(other.id, id) || other.id == id)&&(identical(other.engine, engine) || other.engine == engine));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,score);
+int get hashCode => Object.hash(runtimeType,score,id,engine);
 
 @override
 String toString() {
-  return 'ElasticResultMeta(score: $score)';
+  return 'ElasticResultMeta(score: $score, id: $id, engine: $engine)';
 }
 
 
@@ -13875,7 +13883,7 @@ abstract mixin class _$ElasticResultMetaCopyWith<$Res> implements $ElasticResult
   factory _$ElasticResultMetaCopyWith(_ElasticResultMeta value, $Res Function(_ElasticResultMeta) _then) = __$ElasticResultMetaCopyWithImpl;
 @override @useResult
 $Res call({
- double? score
+ double? score, String? id, String? engine
 });
 
 
@@ -13892,10 +13900,12 @@ class __$ElasticResultMetaCopyWithImpl<$Res>
 
 /// Create a copy of ElasticResultMeta
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? score = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? score = freezed,Object? id = freezed,Object? engine = freezed,}) {
   return _then(_ElasticResultMeta(
 score: freezed == score ? _self.score : score // ignore: cast_nullable_to_non_nullable
-as double?,
+as double?,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,engine: freezed == engine ? _self.engine : engine // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
