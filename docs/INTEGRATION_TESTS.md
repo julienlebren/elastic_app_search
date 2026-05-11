@@ -44,6 +44,8 @@ flutter test test/live_enterprise_search_integration_test.dart
   - Search endpoint.
   - Query suggestions endpoint.
   - Multi-search endpoint.
+  - Note: the public Elastic docs demo credentials are skipped in CI because the
+    backing endpoint availability is not guaranteed.
 
 ## Notes
 
