@@ -8,7 +8,7 @@
 
 ### Added
 
-- Full endpoint coverage for engine/account APIs:
+- Complete App Search-native endpoint coverage for engine/account APIs:
   - documents, schema, search settings
   - engines and meta-engine source management
   - synonyms, curations
@@ -21,6 +21,7 @@
   - domains, entry points, crawl rules, sitemaps
   - URL/domain validation, URL extraction, URL tracing
   - crawler user-agent endpoint.
+- Documented the Elasticsearch `_search` passthrough endpoint as intentionally out of scope for `1.0.0`.
 - Stronger request payload validation across APIs.
 - Consistent `ElasticAppSearchException` mapping with operation/engine/url/status/response payload context.
 

@@ -369,7 +369,7 @@ highlights | List\<String\> | The words matching the query
 
 ## API coverage status
 
-The package now covers the App Search public API surface used in production search apps, including:
+The package now covers the App Search-native public API surface used in production search apps, including:
 
 - Search, multi-search, search explain, query suggestions
 - Documents, schema, search settings
@@ -378,6 +378,8 @@ The package now covers the App Search public API surface used in production sear
 - Credentials, log settings
 - Adaptive relevance (beta API)
 - Web crawler API (crawl requests/schedules/process crawls/domains/rules/sitemaps/url validation/url extraction/url tracing)
+
+The Elasticsearch `_search` passthrough endpoint is intentionally out of scope for `1.0.0`: it accepts Elasticsearch Query DSL and returns raw Elasticsearch responses rather than App Search request/response objects.
 
 See the endpoint-by-endpoint matrix in [docs/API_COVERAGE.md](docs/API_COVERAGE.md).
 For complete usage snippets grouped by API family, see [docs/USAGE_GUIDE.md](docs/USAGE_GUIDE.md).
@@ -410,7 +412,7 @@ print(trace.crawlRequests.length);
 
 ## 1.0.0 roadmap
 
-- [x] Cover App Search and crawler endpoints exposed by the public API
+- [x] Cover App Search-native and crawler endpoints exposed by the public API
 - [x] Add robust validation and error mapping per endpoint
 - [x] Add broad behavior/error regression tests
 - [x] Final docs pass (examples per API family + migration notes)
@@ -428,7 +430,7 @@ This package uses external dependencies:
 ## Credits
 
 This package was originally created for personal needs and then generalized for broader use.
-The objective is full public API coverage with stable, typed Dart ergonomics.
+The objective is complete App Search-native API coverage with stable, typed Dart ergonomics.
 
 I am not related to Elastic in any way, I am just a developer who needed to use Elastic through a library, so I created this library to do so.
 

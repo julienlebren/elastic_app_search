@@ -164,7 +164,7 @@ class ElasticEngine {
 
   /// Refreshes adaptive relevance suggestions for this engine.
   ///
-  /// Uses `POST /api/as/v0/engines/{engine}/adaptive_relevance/update_process`.
+  /// Uses `POST /api/as/v0/engines/{engine}/adaptive_relevance/update_process/{type}/refresh`.
   Future<void> refreshAdaptiveRelevanceSuggestions([
     ElasticAdaptiveRelevanceSuggestionType type =
         ElasticAdaptiveRelevanceSuggestionType.curation,

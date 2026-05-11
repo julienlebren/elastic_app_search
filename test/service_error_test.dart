@@ -459,7 +459,7 @@ void main() {
                 .having(
                   (e) => e.url,
                   'url',
-                  'http://127.0.0.1:1/api/as/v0/engines/parks/adaptive_relevance/update_process',
+                  'http://127.0.0.1:1/api/as/v0/engines/parks/adaptive_relevance/update_process/curation/refresh',
                 ),
           ),
         );

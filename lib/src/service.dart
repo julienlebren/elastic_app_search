@@ -628,11 +628,14 @@ class ElasticAppSearch {
         Operation.adaptiveRelevanceSettingsGet.value,
       );
 
-  String _adaptiveRelevanceRefreshUrl(String engine) =>
+  String _adaptiveRelevanceRefreshUrl(
+    String engine,
+    ElasticAdaptiveRelevanceSuggestionType type,
+  ) =>
       _engineApiUrlWithVersion(
         'v0',
         engine,
-        Operation.adaptiveRelevanceRefresh.value,
+        '${Operation.adaptiveRelevanceRefresh.value}/${type.apiValue}/refresh',
       );
 
   String _crawlerUrl(String engine, [String suffix = '']) {
@@ -1950,7 +1953,7 @@ class ElasticAppSearch {
 
   /// Triggers adaptive relevance process refresh.
   ///
-  /// Uses `POST /api/as/v0/engines/{engine}/adaptive_relevance/update_process`.
+  /// Uses `POST /api/as/v0/engines/{engine}/adaptive_relevance/update_process/{type}/refresh`.
   Future<void> refreshAdaptiveRelevanceSuggestions(
     String engine, {
     ElasticAdaptiveRelevanceSuggestionType type =
@@ -1962,13 +1965,12 @@ class ElasticAppSearch {
       parameter: 'engine',
       context: 'Engine',
     );
-    final url = _adaptiveRelevanceRefreshUrl(engineName);
+    final url = _adaptiveRelevanceRefreshUrl(engineName, type);
     await _sendRequest<void>(
       method: 'POST',
       url: url,
       operation: Operation.adaptiveRelevanceRefresh,
       engine: engineName,
-      body: {'suggestion_type': type.apiValue},
       cancelToken: cancelToken,
       acceptEmptyResponse: true,
       parse: (_) {},

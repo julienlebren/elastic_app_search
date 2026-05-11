@@ -4,7 +4,7 @@ This guide focuses on practical upgrade steps from `0.5.x` to `1.0.0`.
 
 ## What changes in 1.0.0
 
-- Full App Search public API coverage (engine + account-level), including crawler and adaptive relevance.
+- Complete App Search-native public API coverage (engine + account-level), including crawler and adaptive relevance. The Elasticsearch `_search` passthrough endpoint is intentionally out of scope for `1.0.0`.
 - Stronger runtime request validation across query DSL and endpoint payloads.
 - Consistent HTTP/API error mapping through `ElasticAppSearchException`.
 - Expanded typed request/response models for new endpoint families.

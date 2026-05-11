@@ -703,10 +703,8 @@ void main() {
         }
 
         if (request.uri.path ==
-                '/api/as/v0/engines/parks/adaptive_relevance/update_process' &&
+                '/api/as/v0/engines/parks/adaptive_relevance/update_process/curation/refresh' &&
             request.method == 'POST') {
-          final body = await _readJson(request);
-          expect(body['suggestion_type'], 'curation');
           request.response.statusCode = 200;
           await request.response.close();
           return;
@@ -3994,7 +3992,7 @@ void main() {
         }
 
         if (request.uri.path ==
-                '/api/as/v0/engines/parks/adaptive_relevance/update_process' &&
+                '/api/as/v0/engines/parks/adaptive_relevance/update_process/curation/refresh' &&
             request.method == 'POST') {
           await _writeJson(request, 503, {
             'errors': ['Adaptive refresh failed'],
