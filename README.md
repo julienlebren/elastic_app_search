@@ -419,6 +419,22 @@ print(trace.crawlRequests.length);
 - [ ] Integration test pass against a live Enterprise Search deployment ([runbook](docs/INTEGRATION_TESTS.md))
 - [ ] Freeze public Dart API and publish `1.0.0`
 
+## Release helper
+
+Prepare the next release locally:
+
+```bash
+scripts/release.sh --bump patch
+```
+
+Publish the committed version to pub.dev:
+
+```bash
+scripts/release.sh --publish-only
+```
+
+The helper runs `flutter analyze`, offline tests with live Enterprise Search variables unset, and the live smoke test when `ELASTIC_APP_SEARCH_ENDPOINT` plus an App Search API key are available.
+
 ## Third party packages
 
 This package uses external dependencies:

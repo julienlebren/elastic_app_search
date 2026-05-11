@@ -3,6 +3,7 @@
 ### Added
 
 - Restored nullable `id` and `engine` fields on `ElasticResultMeta` for meta-engine search results.
+- Added a local release helper script for version bumps, checks, changelog updates, and pub.dev publish flow.
 
 ## 1.0.0 - 2026-05-08
 
